@@ -19,7 +19,7 @@ interface CustomInput {
     type?: string;
 }
 
-const formSchema = authFormSchema('sign-up');
+const formSchema = authFormSchema();
 
 const CustomInput = ({
     control,
@@ -34,9 +34,9 @@ const CustomInput = ({
             name={name}
             render={({ field }) => (
                 <div className='form-item'>
-                    <FormLabel className='form-label'>
+                    {label !== '' && <FormLabel className='form-label'>
                         {label}
-                    </FormLabel>
+                    </FormLabel>}
                     <div className="flex w-full flex-col">
                         <FormControl>
                             <Input

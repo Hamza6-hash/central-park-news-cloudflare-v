@@ -20,14 +20,6 @@ const config = {
     },
     extend: {
       colors: {
-        fill: {
-          1: "rgba(255, 255, 255, 0.10)",
-        },
-        bankGradient: "#0179FE",
-        indigo: {
-          500: "#6172F3",
-          700: "#3538CD",
-        },
         success: {
           25: "#F6FEF9",
           50: "#ECFDF3",
@@ -36,43 +28,18 @@ const config = {
           700: "#027A48",
           900: "#054F31",
         },
-        pink: {
-          25: "#FEF6FB",
-          100: "#FCE7F6",
-          500: "#EE46BC",
-          600: "#DD2590",
-          700: "#C11574",
-          900: "#851651",
-        },
-        blue: {
+        primary: {
           100: "#67B3D94F",
-          500: "#2E90FA",
-          600: "#1570EF",
-          700: "#175CD3",
           900: "#1E3D5A",
         },
-        sky: {
-          1: "#F3F9FF",
-        },
-        black: {
-          1: "#00214F",
-          2: "#344054",
-        },
         gray: {
-          25: "#FCFCFD",
-          200: "#EAECF0",
-          300: "#D0D5DD",
+          300: "#A3A0A0",
           500: "#807F7F",
-          600: "#475467",
-          700: "#344054",
-          900: "#101828",
         },
       },
       backgroundImage: {
-        "bank-gradient": "linear-gradient(90deg, #0179FE 0%, #4893FF 100%)",
-        "gradient-mesh": "url('/icons/gradient-mesh.svg')",
-        "bank-green-gradient":
-          "linear-gradient(90deg, #01797A 0%, #489399 100%)",
+        "blue-gradient": "linear-gradient(90.28deg, #2B4864 0.25%, #6DBEE5 107.4%)",
+        'blue-gradient-hover': 'linear-gradient(90.28deg, #6DBEE5 0%, #2B4864 100%)',
       },
       boxShadow: {
         form: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
@@ -83,8 +50,9 @@ const config = {
         creditCard: "8px 10px 16px 0px rgba(0, 0, 0, 0.05)",
       },
       fontFamily: {
-        inter: "var(--font-inter)",
-        "ibm-plex-serif": "var(--font-ibm-plex-serif)",
+        "Century-751-BT": ['Century-BT', 'sans-serif'],
+        "century-schoolbook": ['century-schoolbook', 'sans-serif'],
+        "century-gothic": ['century-gothic', 'sans-serif']
       },
       keyframes: {
         "accordion-down": {

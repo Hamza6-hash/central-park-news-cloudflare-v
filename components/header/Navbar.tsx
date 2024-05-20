@@ -12,7 +12,7 @@ const Navbar = () => {
 
     return (
         <section className="navbar">
-            <nav className="flex justify-between items-center gap-4">
+            <nav className="flex justify-between items-center gap-4 uppercase">
                 {navbarLinks.map((item) => {
                     const isActive =
                         pathName === item.route || pathName.startsWith(`${item.route}/`);
@@ -32,7 +32,7 @@ const Navbar = () => {
                                 <Link href={item.route}>
                                     <p
                                         className={cn("navbar-label", {
-                                            "!font-medium": isActive,
+                                            "!font-bold": isActive,
                                         })}
                                     >
                                         {item.label}

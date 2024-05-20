@@ -2,80 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Century-BT";
+  src: url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.eot");
+  src: url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.eot?#iefix")
+      format("embedded-opentype"),
+    url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.woff")
+      format("woff"),
+    url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.woff2")
+      format("woff2"),
+    url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.ttf")
+      format("truetype"),
+    url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.svg#Century 751 BT")
+      format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "century-schoolbook";
+  src: url("/fonts/century-schoolbook/SCHLBKB.TTF") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "century-gothic";
+  src: url("/fonts/century-gothic/centurygothic.TTF") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+  * {
+    @apply m-0 p-0 box-border;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+  body,
+  html {
+    @apply font-century-gothic;
   }
 }
 
 @layer utilities {
   .navbar {
-    @apply bg-blue-900 px-96 py-4;
+    @apply bg-primary-900 px-96 py-4 font-Century-751-BT;
   }
 
   .navbar-label {
-    @apply text-lg font-normal text-white max-xl:hidden hover:font-medium transition-all;
+    @apply text-lg font-normal text-white max-xl:hidden hover:font-bold transition-all;
   }
 
   .banner {
-    @apply w-full px-80 bg-blue-100 py-5 space-y-2;
+    @apply w-full px-80 bg-primary-100 py-8 space-y-6;
+  }
+
+  .input-class {
+    @apply text-sm placeholder:text-sm placeholder:text-gray-300 rounded-lg border border-primary-900 text-gray-900;
+  }
+
+  .form-item {
+    @apply flex flex-col gap-1.5 w-full;
+  }
+
+  .form-label {
+    @apply text-sm w-full max-w-[280px] font-medium text-gray-700;
   }
 }
