@@ -4,8 +4,11 @@ declare type AppDownloadButton = {
   heading: string;
 };
 
-
 declare type SocialMedia = {
   icon: any;
   link: string;
+};
+
+declare type TopStories = {
+  showViewMore?: boolean;
 };

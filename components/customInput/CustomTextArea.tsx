@@ -5,33 +5,31 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-
 import { Control, FieldPath } from 'react-hook-form';
 import { z, ZodType } from 'zod';
-import { subscribtionFormSchema } from '@/lib/utils';
+import { Textarea } from '@/components/ui/textarea';
 
-// Define the CustomInputProps interface at the file level
-interface CustomInputProps<T extends ZodType<any, any>> {
+// Define the CustomInput interface at the file level
+interface CustomInput<T extends ZodType<any, any>> {
     control: Control<z.infer<T>>;
     name: FieldPath<z.infer<T>>;
     label: string;
     placeholder: string;
-    type?: string;
     fieldClassName?: string;
-    schema: T; // Pass the schema as a prop
+    schema: T;
 }
 
-// Define the CustomInput component at the file level
-const CustomInput = <T extends ZodType<any, any>>({
-    control,
-    name,
-    label,
-    placeholder,
-    type = 'text',
-    fieldClassName,
-    schema
-}: CustomInputProps<T>) => {
+// Define the CustomTextArea component at the file level
+const CustomTextArea = <T extends ZodType<any, any>>(
+    {
+        control,
+        name,
+        label,
+        placeholder,
+        fieldClassName,
+        schema
+    }: CustomInput<T>
+) => {
     return (
         <FormField
             control={control}
@@ -43,10 +41,9 @@ const CustomInput = <T extends ZodType<any, any>>({
                     </FormLabel>}
                     <div className="flex w-full flex-col">
                         <FormControl>
-                            <Input
+                            <Textarea
                                 placeholder={placeholder}
                                 className={`input-class ${fieldClassName}`}
-                                type={type}
                                 {...field}
                             />
                         </FormControl>
@@ -58,4 +55,4 @@ const CustomInput = <T extends ZodType<any, any>>({
     )
 }
 
-export default CustomInput;
+export default CustomTextArea;

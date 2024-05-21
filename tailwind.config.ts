@@ -30,16 +30,37 @@ const config = {
         },
         primary: {
           100: "#67B3D94F",
+          200: '#2B4864',
+          300: "#224667",
+          500: '#26619C',
+          700: '#E9F4FA',
+          800: '#2668A5',
           900: "#1E3D5A",
         },
         gray: {
+          100: '#26619C33',
+          200: '#26619C',
           300: "#A3A0A0",
+          400: "#A1A1A1",
           500: "#807F7F",
+          600: '#353535E3',
+          700: '#EAF5FB',
+        },
+        yellow: {
+          500: "#FFEB84",
+        },
+        dark: {
+          400: '#4D4D4D',
+          500: "#252525",
+          600: "#1F1F1F",
+          700: '#363636'
         },
       },
       backgroundImage: {
-        "blue-gradient": "linear-gradient(90.28deg, #2B4864 0.25%, #6DBEE5 107.4%)",
-        'blue-gradient-hover': 'linear-gradient(90.28deg, #6DBEE5 0%, #2B4864 100%)',
+        "blue-gradient":
+          "linear-gradient(90.28deg, #2B4864 0.25%, #6DBEE5 107.4%)",
+        "blue-gradient-hover":
+          "linear-gradient(90.28deg, #6DBEE5 0%, #2B4864 100%)",
       },
       boxShadow: {
         form: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
@@ -50,9 +71,9 @@ const config = {
         creditCard: "8px 10px 16px 0px rgba(0, 0, 0, 0.05)",
       },
       fontFamily: {
-        "Century-751-BT": ['Century-BT', 'sans-serif'],
-        "century-schoolbook": ['century-schoolbook', 'sans-serif'],
-        "century-gothic": ['century-gothic', 'sans-serif']
+        "Century-751-BT": ["Century-BT", "sans-serif"],
+        "century-schoolbook": ["century-schoolbook", "sans-serif"],
+        "century-gothic": ["century-gothic", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {

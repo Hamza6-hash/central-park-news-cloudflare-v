@@ -46,6 +46,14 @@
 }
 
 @layer utilities {
+  .px-generic {
+    @apply px-24;
+  }
+
+  .heading {
+    @apply font-century-schoolbook text-primary-200 capitalize text-3xl;
+  }
+
   .navbar {
     @apply bg-primary-900 px-96 py-4 font-Century-751-BT;
   }
@@ -67,6 +75,14 @@
   }
 
   .form-label {
-    @apply text-sm w-full max-w-[280px] font-medium text-gray-700;
+    @apply text-sm w-full max-w-[280px] font-medium;
+  }
+
+  .footer {
+    @apply w-full;
+  }
+
+  .lastestNews {
+    @apply bg-blue-gradient w-full;
   }
 }

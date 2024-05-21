@@ -1,6 +1,6 @@
 "use client"
 
-import { authFormSchema } from "@/lib/utils";
+import { subscribtionFormSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -15,9 +15,8 @@ import SocialMedia from "../common/SocialMedia";
 
 
 const Banner = () => {
-    const formSchema = authFormSchema();
+    const formSchema = subscribtionFormSchema();
 
-    // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -26,10 +25,7 @@ const Banner = () => {
         },
     })
 
-    // 2. Define a submit handler.
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
-
-
         try {
 
         } catch (error) {
@@ -52,12 +48,14 @@ const Banner = () => {
                         name='email'
                         label=''
                         placeholder='Your email address'
+                        schema={formSchema}
                     />
                     <CustomInput
                         control={form.control}
                         name='contactNumber'
                         label=''
                         placeholder='Your contact number'
+                        schema={formSchema}
                     />
                     <Button
                         variant='gradient'

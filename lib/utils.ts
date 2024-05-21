@@ -6,10 +6,19 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const authFormSchema = () => {
+export const subscribtionFormSchema = () => {
 
   return z.object({
     contactNumber: z.number().min(3),
     email: z.string().email(),
+  })
+}
+
+export const contactFormSchema = () => {
+
+  return z.object({
+    name: z.string().min(3),
+    email: z.string().email(),
+    message: z.string()
   })
 }
