@@ -34,6 +34,8 @@
   font-style: normal;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
 @layer base {
   * {
     @apply m-0 p-0 box-border;
@@ -50,20 +52,42 @@
     @apply px-20;
   }
 
+  .pageTopBottonMargin {
+    @apply py-16;
+  }
+
+  .removingDefalutgap {
+    @apply mx-[-6rem] mb-[-4rem];
+  }
+
+
   .heading {
     @apply font-century-schoolbook text-primary-200 capitalize text-3xl;
   }
 
   .navbar {
-    @apply bg-primary-900 px-96 py-4 font-Century-751-BT;
+    @apply bg-primary-900 py-4 font-Century-751-BT;
   }
 
   .navbar-label {
-    @apply text-lg font-normal text-white max-xl:hidden hover:font-bold transition-all;
+    @apply text-lg font-normal uppercase text-white lg:block hidden hover:font-bold transition-all;
+  }
+
+  /* Mobile nav */
+  .mobilenav-sheet {
+    @apply flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto;
+  }
+
+  .mobilenav-sheet_close {
+    @apply flex gap-3 items-center p-4 rounded-lg w-full;
+  }
+
+  .footer-label {
+    @apply font-Century-751-BT text-sm text-primary-900 uppercase hover:font-bold transition-all;
   }
 
   .banner {
-    @apply w-full px-80 bg-primary-100 py-8 space-y-6;
+    @apply w-full bg-primary-100 py-8 flex justify-center items-center;
   }
 
   .input-class {

@@ -4,7 +4,7 @@ import DummyImg from "@/assets/Rectangle-4.png";
 
 const VerticalCard = () => {
     return (
-        <div className="bg-primary-300 p-2 h-80 w-[20%] relative rounded text-white">
+        <div className="bg-primary-300 p-2 h-80 min-w-[242px] relative rounded text-white">
             <Image src={DummyImg} alt={"new image"} height={250} objectFit="cover" />
 
             <div className="my-2.5 space-y-2">

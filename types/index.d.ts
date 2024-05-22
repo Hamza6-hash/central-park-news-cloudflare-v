@@ -12,3 +12,7 @@ declare type SocialMedia = {
 declare type TopStories = {
   showViewMore?: boolean;
 };
+
+declare type DynamicBlog = {
+  showWritter?: boolean;
+}

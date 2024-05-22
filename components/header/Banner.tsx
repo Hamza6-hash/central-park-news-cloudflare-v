@@ -37,40 +37,42 @@ const Banner = () => {
 
     return (
         <section className="banner">
-            <div className="w-full flex flex-col items-center gap-0.5">
-                <p className="text-primary-900  text-xl font-century-schoolbook">Newsletter</p>
-                <p className="text-gray-500 text-base">Stay up to date with our latest news.</p>
-            </div>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4 w-full max-lg:flex-col">
-                    <CustomInput
-                        control={form.control}
-                        name='email'
-                        label=''
-                        placeholder='Your email address'
-                        schema={formSchema}
-                    />
-                    <CustomInput
-                        control={form.control}
-                        name='contactNumber'
-                        label=''
-                        placeholder='Your contact number'
-                        schema={formSchema}
-                    />
-                    <Button
-                        variant='gradient'
-                    >
-                        SUBSCRIBE
-                    </Button>
-                </form>
-            </Form>
-            <div className="flex items-center justify-between w-full">
-                <div className="flex gap-4 items-center">
-                    <AppDownloadButton icon={<BiLogoPlayStore className="text-primary-900" size={30} />} subHeading="GET IT ON" heading="Google Play" />
-                    <AppDownloadButton icon={<IoLogoApple className="text-primary-900" size={30} />} subHeading="Download on the" heading="App Store" />
+            <div className="space-y-6 px-6 md:px-0 w-[762px]">
+                <div className="w-full flex flex-col items-center gap-0.5">
+                    <p className="text-primary-900  text-xl font-century-schoolbook">Newsletter</p>
+                    <p className="text-gray-500 text-base">Stay up to date with our latest news.</p>
                 </div>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4 sm:flex-row flex-col w-full">
+                        <CustomInput
+                            control={form.control}
+                            name='email'
+                            label=''
+                            placeholder='Your email address'
+                            schema={formSchema}
+                        />
+                        <CustomInput
+                            control={form.control}
+                            name='contactNumber'
+                            label=''
+                            placeholder='Your contact number'
+                            schema={formSchema}
+                        />
+                        <Button
+                            variant='gradient'
+                        >
+                            SUBSCRIBE
+                        </Button>
+                    </form>
+                </Form>
+                <div className="flex sm:flex-row sm:mb-0 mb-2.5 flex-col gap-4 items-center justify-between w-full">
+                    <div className="flex gap-4 items-center">
+                        <AppDownloadButton icon={<BiLogoPlayStore className="text-primary-900" size={30} />} subHeading="GET IT ON" heading="Google Play" />
+                        <AppDownloadButton icon={<IoLogoApple className="text-primary-900" size={30} />} subHeading="Download on the" heading="App Store" />
+                    </div>
 
-                <SocialMedia />
+                    <SocialMedia />
+                </div>
             </div>
         </section>
     );

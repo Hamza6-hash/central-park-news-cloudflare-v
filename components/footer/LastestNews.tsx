@@ -7,7 +7,7 @@ const LastestNews = () => {
         <section className='lastestNews py-12 px-generic'>
             <h1 className='uppercase text-xl font-bold text-white mb-4'>Lastest news</h1>
             <div className='flex gap-6 items-center justify-between'>
-                <div className='w-full flex gap-3'>
+                <div className='w-full flex gap-3 overflow-hidden'>
                     {[1, 2, 3, 4, 5,].map((item) => (<React.Fragment key={item}>
                         <VerticalCard />
                     </React.Fragment>))}
