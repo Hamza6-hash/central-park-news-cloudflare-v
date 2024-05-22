@@ -19,7 +19,7 @@ const MobileNav = () => {
     const pathName = usePathname();
 
     return (
-        <section className='w-full max-w-[264px]'>
+        <section className='w-full block lg:hidden max-w-[264px]'>
             <Sheet>
                 <SheetTrigger>
                     <IoMenu className='cursor-pointer' color='white' size={40} />

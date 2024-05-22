@@ -52,6 +52,7 @@ const Navbar = () => {
                     quality={100}
                     height={150}
                     alt='Horizon logo'
+                    className="block lg:hidden"
                 />
             </nav>
         </section>
