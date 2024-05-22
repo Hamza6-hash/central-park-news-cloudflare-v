@@ -7,13 +7,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MobileNav from "./MobileNav";
+import Logo from '@/assets/logo.png';
 
 const Navbar = () => {
     const pathName = usePathname();
 
     return (
         <section className="navbar">
-            <nav className="flex justify-center items-center gap-20 uppercase">
+            <nav className="flex justify-center items-center gap-20 uppercase px-4">
                 <MobileNav />
                 {navbarLinks.map((item) => {
                     const isActive =
@@ -44,6 +45,14 @@ const Navbar = () => {
                         </React.Fragment>
                     );
                 })}
+
+                <Image
+                    src={Logo}
+                    width={150}
+                    quality={100}
+                    height={150}
+                    alt='Horizon logo'
+                />
             </nav>
         </section>
     );
