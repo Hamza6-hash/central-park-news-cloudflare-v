@@ -27,12 +27,13 @@ const Navbar = () => {
                                     <Image
                                         src={item.imgURL}
                                         alt={item.label}
+                                        quality={100}
                                         height={60}
                                         width={120}
                                     />
                                 </div>
                             ) : (
-                                <Link href={item.route}>
+                                <Link href={item.route} className="lg:block hidden">
                                     <p
                                         className={cn("navbar-label", {
                                             "!font-bold": isActive,
@@ -48,9 +49,10 @@ const Navbar = () => {
 
                 <Image
                     src={Logo}
-                    width={150}
                     quality={100}
-                    height={150}
+                    objectFit="cover"
+                    height={60}
+                    width={120}
                     alt='Horizon logo'
                     className="block lg:hidden"
                 />
