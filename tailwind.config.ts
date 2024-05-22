@@ -74,6 +74,7 @@ const config = {
         "Century-751-BT": ["Century-BT", "sans-serif"],
         "century-schoolbook": ["century-schoolbook", "sans-serif"],
         "century-gothic": ["century-gothic", "sans-serif"],
+        inter: ['Inter', 'sans-serif'],
       },
       keyframes: {
         "accordion-down": {

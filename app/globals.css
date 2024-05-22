@@ -34,6 +34,8 @@
   font-style: normal;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
 @layer base {
   * {
     @apply m-0 p-0 box-border;
@@ -48,6 +50,14 @@
 @layer utilities {
   .px-generic {
     @apply px-24;
+  }
+
+  .pageTopBottonMargin {
+    @apply py-16;
+  }
+
+  .removingDefalutgap {
+    @apply mx-[-6rem] mb-[-4rem];
   }
 
   .heading {

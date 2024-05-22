@@ -7,7 +7,7 @@ import SocialMedia from "../common/SocialMedia";
 
 const Footer = () => {
     return (
-        <footer className="mt-16">
+        <footer className="">
             <LastestNews />
             <PopularLinks />
 
