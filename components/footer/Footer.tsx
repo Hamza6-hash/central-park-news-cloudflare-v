@@ -25,7 +25,7 @@ const Footer = () => {
             </section>
 
             <div className="bg-primary-900 w-full text-white p-4">
-                <p className="text-center text-sm">
+                <p className="text-center sm:text-sm text-xs">
                     COPYRIGHT 2024 © <strong>BLOCKCHAIN BRIEFING</strong>. ALL RIGHTS
                     RESERVED
                 </p>

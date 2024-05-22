@@ -6,13 +6,15 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import MobileNav from "./MobileNav";
 
 const Navbar = () => {
     const pathName = usePathname();
 
     return (
         <section className="navbar">
-            <nav className="flex justify-center items-center gap-16 uppercase">
+            <nav className="flex justify-center items-center gap-20 uppercase">
+                <MobileNav />
                 {navbarLinks.map((item) => {
                     const isActive =
                         pathName === item.route || pathName.startsWith(`${item.route}/`);
@@ -20,7 +22,7 @@ const Navbar = () => {
                     return (
                         <React.Fragment key={item.label}>
                             {item.imgURL !== "" ? (
-                                <div className="relative">
+                                <div className="relative  lg:block hidden xl:px-12 px-0">
                                     <Image
                                         src={item.imgURL}
                                         alt={item.label}

@@ -12,7 +12,7 @@ const FooterLinks = () => {
     return (
         <div className="flex flex-col justify-center items-center gap-2">
             <h4 className="font-bold text-primary-900 uppercase">LINKS</h4>
-            <div className="flex gap-3">
+            <div className="flex sm:flex-row flex-col items-center gap-3">
                 {navbarLinks.map((item) => {
                     const isActive =
                         pathName === item.route || pathName.startsWith(`${item.route}/`);

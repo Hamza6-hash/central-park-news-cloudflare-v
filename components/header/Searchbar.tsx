@@ -9,11 +9,11 @@ const Searchbar = () => {
 
     return (
         <section className="pt-10 px-generic">
-            <div className="flex justify-center items-center">
-                <div className="bg-blue-gradient rounded-full py-2 px-5 gap-1 flex justify-center items-center">
+            <div className="flex justify-center items-center w-full">
+                <div className="bg-blue-gradient rounded-full py-2 sm:w-fit w-full px-5 gap-1 flex justify-center items-center">
                     <input
                         type="text"
-                        className="bg-transparent border-none focus:outline-none w-96"
+                        className="bg-transparent border-none focus:outline-none sm:w-96 w-full"
                     />
                     <button>
                         <IoIosSearch color="white" size={25} />
@@ -21,9 +21,13 @@ const Searchbar = () => {
                 </div>
             </div>
 
-            {pathName === '/' && <div className="py-2 px-4 font-bold bg-yellow-500 rounded-full w-fit">
-                <p>TODAY’S TOP STORY</p>
-            </div>}
+            {pathName === '/' &&
+                <div className="w-full flex md:items-start items-center flex-col">
+                    <div className="py-2 px-4 mt-12 font-bold bg-yellow-500 rounded-full w-fit">
+                        <p>TODAY’S TOP STORY</p>
+                    </div>
+                </div>
+            }
         </section>
     );
 };
