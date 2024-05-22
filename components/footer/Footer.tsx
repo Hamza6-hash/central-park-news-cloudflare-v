@@ -1,9 +1,10 @@
+"use client"
+
 import React from "react";
 import LastestNews from "./LastestNews";
 import PopularLinks from "./PopularLinks";
-import Link from "next/link";
-import { navbarLinks } from "@/constants";
 import SocialMedia from "../common/SocialMedia";
+import FooterLinks from "./FooterLinks";
 
 const Footer = () => {
     return (
@@ -12,20 +13,9 @@ const Footer = () => {
             <PopularLinks />
 
             <section className="w-full flex flex-col justify-center items-center gap-8 bg-gray-100 p-4">
-                <div className="flex flex-col justify-center items-center gap-2">
-                    <h4 className="font-bold text-primary-900 uppercase">LINKS</h4>
-                    <div className="flex gap-3">
-                        {navbarLinks.map((item) => {
-                            return (
-                                <Link href={item.route} key={item.label}>
-                                    <p className=" font-Century-751-BT text-sm text-primary-900 uppercase">
-                                        {item.label}
-                                    </p>
-                                </Link>
-                            );
-                        })}
-                    </div>
-                </div>
+
+                <FooterLinks />
+
 
                 <div className="space-y-3">
                     <p className="font-bold text-primary-900">Follow Blockchain Briefing:</p>

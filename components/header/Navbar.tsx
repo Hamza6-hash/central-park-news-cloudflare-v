@@ -12,7 +12,7 @@ const Navbar = () => {
 
     return (
         <section className="navbar">
-            <nav className="flex justify-between items-center gap-4 uppercase">
+            <nav className="flex justify-center items-center gap-16 uppercase">
                 {navbarLinks.map((item) => {
                     const isActive =
                         pathName === item.route || pathName.startsWith(`${item.route}/`);

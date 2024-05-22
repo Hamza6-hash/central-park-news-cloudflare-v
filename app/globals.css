@@ -65,11 +65,15 @@
   }
 
   .navbar {
-    @apply bg-primary-900 px-96 py-4 font-Century-751-BT;
+    @apply bg-primary-900 py-4 font-Century-751-BT;
   }
 
   .navbar-label {
-    @apply text-lg font-normal text-white max-xl:hidden hover:font-bold transition-all;
+    @apply text-lg font-normal uppercase text-white max-xl:hidden hover:font-bold transition-all;
+  }
+
+  .footer-label {
+    @apply font-Century-751-BT text-sm text-primary-900 uppercase hover:font-bold transition-all;
   }
 
   .banner {
