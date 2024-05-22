@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-century-gothic">
         <Header />
-        <main className="max-w-[100vw] px-generic overflow-hidden">
+        <main className="max-w-[100vw] md:px-generic overflow-hidden">
           <hr className="w-48 h-0.5 mb-1.5 bg-gray-200" />
           {children}
         </main>

@@ -47,7 +47,7 @@
 
 @layer utilities {
   .px-generic {
-    @apply px-24;
+    @apply px-20;
   }
 
   .heading {

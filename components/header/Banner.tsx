@@ -42,7 +42,7 @@ const Banner = () => {
                 <p className="text-gray-500 text-base">Stay up to date with our latest news.</p>
             </div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4 w-full">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4 w-full max-lg:flex-col">
                     <CustomInput
                         control={form.control}
                         name='email'

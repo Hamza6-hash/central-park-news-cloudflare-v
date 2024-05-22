@@ -5,9 +5,9 @@ import React from 'react';
 const Blogs = () => {
     return (
         <section>
-            <h1 className='heading'>Blogs</h1>
+            <h1 className='heading max-md:text-center'>Blogs</h1>
 
-            <div className="grid grid-rows-3 grid-flow-col gap-4 mt-5">
+            <div className="grid grid-cols-3 gap-4 mt-5 max-lg:grid-cols-2 max-md:grid-cols-1 max-md:px-11">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (<React.Fragment key={item}>
                     <BlogsCard />
                 </React.Fragment>))}
