@@ -1,14 +1,21 @@
 import Logo from '@/assets/logo.png';
 
+export const routes = {
+  home: "/",
+  articles: "/articles",
+  blogs: "/blogs",
+  contact: "/contact",
+}
+
 export const navbarLinks = [
   {
     imgURL: "",
-    route: "/",
+    route: routes.home,
     label: "Home",
   },
   {
     imgURL: "",
-    route: "/articles",
+    route: routes.articles,
     label: "Articles",
   },
   {
@@ -18,12 +25,12 @@ export const navbarLinks = [
   },
   {
     imgURL: "",
-    route: "/blogs",
+    route: routes.blogs,
     label: "Blogs",
   },
   {
     imgURL: "",
-    route: "/contact",
+    route: routes.contact,
     label: "Contact",
   },
 ];

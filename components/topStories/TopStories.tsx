@@ -2,11 +2,13 @@ import React from 'react'
 import HorizontalCard from '../common/HorizontalCard'
 
 const TopStories = ({ showViewMore = false }: TopStories) => {
+    let delLater = showViewMore ? [1, 2,] : [1, 2, 3, 4, 5, 6,];
+
     return (
         <div>
-            <h2 className='font-bold text-2xl mb-4'>TOP <span className='text-primary-500'>10</span> STORIES</h2>
+            <h2 className='font-bold text-2xl mb-4 font-century-schoolbook'>TOP <span className='text-primary-500'>10</span> STORIES</h2>
             <div className='flex flex-col gap-3'>
-                {[1, 2, 3,].map((item) => (<React.Fragment key={item}>
+                {delLater.map((item) => (<React.Fragment key={item}>
                     <HorizontalCard />
                 </React.Fragment>))}
             </div>

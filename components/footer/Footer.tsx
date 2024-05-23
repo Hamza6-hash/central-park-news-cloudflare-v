@@ -5,10 +5,18 @@ import LastestNews from "./LastestNews";
 import PopularLinks from "./PopularLinks";
 import SocialMedia from "../common/SocialMedia";
 import FooterLinks from "./FooterLinks";
+import SuggestedBlogs from "../suggestedBlogs/SuggestedBlogs";
+import { usePathname } from "next/navigation";
+import { routes } from "@/constants";
 
 const Footer = () => {
+    const pathName = usePathname();
+    const showSuggestedBlogs =
+        pathName === routes.blogs || pathName.startsWith(`${routes.blogs}/`) || pathName === routes.articles || pathName.startsWith(`${routes.articles}/`);
+
     return (
         <footer className="">
+            {showSuggestedBlogs && <SuggestedBlogs />}
             <LastestNews />
             <PopularLinks />
 

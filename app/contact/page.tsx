@@ -36,7 +36,7 @@ const Contacts = () => {
     return (
         <section className="flex gap-5 max-xl:flex-col">
             <div className="xl:w-[60%] max-w-full">
-                <h1 className="heading max-md:text-center">Contact Us</h1>
+                <h1 className="heading max-md:text-center font-century-schoolbook">Contact Us</h1>
 
                 <Form {...form}>
                     <form
@@ -67,11 +67,13 @@ const Contacts = () => {
                             placeholder="Message Here.."
                             schema={formSchema}
                         />
-                        <Button variant="primary" className="w-fit max-md:w-full">SUBMIT</Button>
+                        <div className="flex justify-end">
+                            <Button variant="primary" className="w-fit max-md:w-full">SUBMIT</Button>
+                        </div>
                     </form>
                 </Form>
             </div>
-            <div className="xl:max-w-[40%] md:pl-5 px-5">
+            <div className="xl:max-w-[40%] max-xl:px-5">
                 <TopStories showViewMore={true} />
             </div>
         </section>

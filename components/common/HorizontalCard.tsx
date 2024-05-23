@@ -5,7 +5,7 @@ import DummyImg from "@/assets/Rectangle-4.png";
 const HorizontalCard = () => {
     return (
         <div className="p-2 flex gap-3 relative rounded-sm text-black max-md:flex-col max-md:w-full">
-            <Image src={DummyImg} alt={"new image"} width={600} quality={100} objectFit="cover" />
+            <Image src={DummyImg} alt={"new image"} className="max-w-[204px]" width={800} quality={100} objectFit="cover" />
 
             <div className="my-2.5 space-y-2">
                 <h4 className="font-century-schoolbook capitalize text-xl leading-5">
@@ -24,7 +24,7 @@ const HorizontalCard = () => {
 
                 </div>
                 <div>
-                    <p className="text-gray-600 text-sm">Derek Chauvin was found guilty on the three charges he faced — second-degree murder, third-degree murder, and second-degree manslaughter..</p>
+                    <p className="text-gray-600 capitalize text-sm">Derek Chauvin was found guilty on the three charges he faced — second-degree murder, third-degree murder, and second-degree manslaughter..</p>
                 </div>
             </div>
         </div>
