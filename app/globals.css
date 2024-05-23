@@ -49,7 +49,7 @@
 
 @layer utilities {
   .px-generic {
-    @apply xl:px-24 lg:px-12 px-6;
+    @apply px-20;
   }
 
   .pageTopBottonMargin {
@@ -59,6 +59,7 @@
   .removingDefalutgap {
     @apply mx-[-6rem] mb-[-4rem];
   }
+
 
   .heading {
     @apply font-century-schoolbook text-primary-200 capitalize text-3xl;

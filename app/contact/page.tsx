@@ -34,14 +34,14 @@ const Contacts = () => {
     };
 
     return (
-        <section className="flex gap-5">
-            <div className="w-[60%]">
-                <h1 className="heading">Contact Us</h1>
+        <section className="flex gap-5 max-xl:flex-col">
+            <div className="xl:w-[60%] max-w-full">
+                <h1 className="heading max-md:text-center">Contact Us</h1>
 
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex flex-col gap-4 w-full max-w-[70%] mt-12"
+                        className="flex flex-col gap-4 w-full xl:max-w-[70%] max-w-full mt-12 max-md:px-5"
                     >
                         <CustomInput
                             control={form.control}
@@ -67,11 +67,11 @@ const Contacts = () => {
                             placeholder="Message Here.."
                             schema={formSchema}
                         />
-                        <Button variant="primary" className="w-fit">SUBMIT</Button>
+                        <Button variant="primary" className="w-fit max-md:w-full">SUBMIT</Button>
                     </form>
                 </Form>
             </div>
-            <div className="w-[40%]">
+            <div className="xl:max-w-[40%] md:pl-5 px-5">
                 <TopStories showViewMore={true} />
             </div>
         </section>

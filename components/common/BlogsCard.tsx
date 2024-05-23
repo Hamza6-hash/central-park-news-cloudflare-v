@@ -5,7 +5,7 @@ import DummyImg from "@/assets/Rectangle-4.png";
 const BlogsCard = () => {
     return (
         <div className="bg-primary-700 p-2 relative rounded-sm">
-            <Image src={DummyImg} alt={"new image"} height={350} objectFit="cover" />
+            <Image src={DummyImg} alt={"new image"} height={350} quality={100} objectFit="cover" />
 
             <div className="my-2.5 space-y-2">
                 <h4 className="font-century-schoolbook capitalize leading-5">
