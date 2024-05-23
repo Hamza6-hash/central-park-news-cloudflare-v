@@ -54,13 +54,13 @@ def get_data():
     }
     print("I am hitted")
     
-    def kickoff_crew_work():
-        results = crew.kickoff()
-        print("Crew Work Results:", results)
+    # def kickoff_crew_work():
+    #     results = crew.kickoff()
+    #     print("Crew Work Results:", results)
     
-    # Start the crew work in a separate thread
-    crew_thread = Thread(target=kickoff_crew_work)
-    crew_thread.start()
+    # # Start the crew work in a separate thread
+    # crew_thread = Thread(target=kickoff_crew_work)
+    # crew_thread.start()
     
     return jsonify(response_data)
 
