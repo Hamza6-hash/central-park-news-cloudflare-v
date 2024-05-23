@@ -1,3 +1,4 @@
+"use client"
 import TopStories from "@/components/topStories/TopStories";
 import Image from "next/image";
 import DummyImg from "@/assets/Rectangle-3.png";
@@ -24,9 +25,36 @@ const socialMediaArray = [
   },
 ];
 
+// async function hitPythonApi() {
+//   const response = await fetch("http://localhost:3000/api", {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+//   const data = await response.json();
+//   console.log(data)
+//   return data;
+// }
+
 export default function Home() {
+  // const data = await hitPythonApi();
+  // console.log(data);
+  async function hitPythonApi() {
+    const response = await fetch("http://localhost:3000/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
+
   return (
     <section className="flex gap-5 max-xl:flex-col">
+      <button onClick={hitPythonApi}>OnClick</button>
       <div className="xl:w-[60%] max-w-full">
         <div className="space-y-3 mb-4">
           <h1 className="font-century-schoolbook text-3xl capitalize max-md:px-5 max-md:text-center">
