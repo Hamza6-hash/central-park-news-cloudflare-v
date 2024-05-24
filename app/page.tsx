@@ -41,7 +41,7 @@ export default function Home() {
   // const data = await hitPythonApi();
   // console.log(data);
   async function hitPythonApi() {
-    const response = await fetch("http://localhost:3000/api", {
+    const response = await fetch("/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
