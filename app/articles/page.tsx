@@ -1,13 +1,12 @@
 import DynamicBlog from "@/components/common/DynamicBlog";
 import React from "react";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 const Articles = () => {
     return (
-        <section>
-            <h1 className="heading">Articles</h1>
-
-            <DynamicBlog />
-        </section>
+        <>
+            <DynamicBlog mainHeading='Articles' />
+        </>
     );
 };
 

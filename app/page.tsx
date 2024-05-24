@@ -53,21 +53,21 @@ export default function Home() {
   }
 
   return (
-    <section className="flex gap-5 max-xl:flex-col">
-      <button onClick={hitPythonApi}>OnClick</button>
-      <div className="xl:w-[60%] max-w-full">
+    <section className="flex gap-6 max-xl:flex-col w-full">
+      {/* <button onClick={hitPythonApi}>OnClick</button> */}
+      <div className="xl:w-[658px] max-w-full">
         <div className="space-y-3 mb-4">
-          <h1 className="font-century-schoolbook text-3xl capitalize max-md:px-5 max-md:text-center">
+          <h1 className="font-century-schoolbook text-3xl capitalize px-generic max-md:text-center">
             Oligarch Son Told to Pay Mom
           </h1>
           <Image
             src={DummyImg}
             alt="new image"
-            width={1000}
+            width={1200}
             quality={100}
             objectFit="cover"
           />
-          <div className="flex items-center gap-2 max-md:px-5">
+          <div className="flex items-center gap-2 px-generic">
             <hr className="w-6 h-1" />
             <h6 className="text-sm font-Century-751-BT capitalize">
               Docket Digest News Room
@@ -78,7 +78,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <article className="space-y-2 capitalize max-md:px-5">
+        <article className="space-y-2 capitalize px-sm-generic">
           <p>
             After losing a court decision over his part in shielding assets from
             his mother, Temur Akhmedov, the son of a Russian oligarch embroiled
@@ -118,7 +118,7 @@ export default function Home() {
           Advertisement
         </div>
       </div>
-      <div className="xl:max-w-[40%] md:pl-5 px-5">
+      <div className="xl:w-[518px]">
         <TopStories />
       </div>
     </section>

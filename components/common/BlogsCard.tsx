@@ -3,16 +3,16 @@ import React from "react";
 import DummyImg from "@/assets/Rectangle-4.png";
 
 const BlogsCard = ({ showDateTimeInRow = false }: BlogsCard) => {
-    const dateRowCol = showDateTimeInRow ? "flex flex-col" : "flex items-center gap-2";
+    const dateRowCol = showDateTimeInRow ? "flex md:flex-col max-md:items-end max-md:gap-1" : "flex items-center gap-2";
 
     const hideLine = showDateTimeInRow ? 'hidden' : '';
 
     return (
-        <div className="bg-primary-700 p-4 relative rounded-sm">
+        <div className={`${!showDateTimeInRow ? 'bg-primary-700' : 'max-md:bg-gray-800'} p-4 relative rounded-sm`}>
             <Image src={DummyImg} alt={"new image"} height={500} quality={100} objectFit="cover" />
 
             <div className="my-2.5 space-y-2">
-                <h4 className="font-century-schoolbook capitalize leading-5">
+                <h4 className="font-century-schoolbook max-md:text-center capitalize leading-5">
                     Three Guilty Verdicts for Derek Chauvin
                 </h4>
                 <div className="flex items-center gap-2.5">

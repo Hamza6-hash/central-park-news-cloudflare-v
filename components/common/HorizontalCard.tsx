@@ -4,10 +4,12 @@ import DummyImg from "@/assets/Rectangle-4.png";
 
 const HorizontalCard = () => {
     return (
-        <div className="p-2 flex gap-3 relative rounded-sm text-black max-md:flex-col max-md:w-full">
-            <Image src={DummyImg} alt={"new image"} className="max-w-[204px]" width={800} quality={100} objectFit="cover" />
+        <div className="flex gap-3.5 relative rounded-sm text-black max-md:flex-col max-md:w-full">
+            <div className="md:w-[204px] md:h-[154px]">
+                <Image src={DummyImg} alt={"new image"} className="md:max-w-[204px]" width={800} quality={100} objectFit="cover" />
+            </div>
 
-            <div className="my-2.5 space-y-2">
+            <div className="space-y-2">
                 <h4 className="font-century-schoolbook capitalize text-xl leading-5">
                     Three Guilty Verdicts for Derek Chauvin
                 </h4>

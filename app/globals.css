@@ -29,8 +29,17 @@
 
 @font-face {
   font-family: "century-gothic";
-  src: url("/fonts/century-gothic/gothic.TTF") format("truetype");
+  src: url("/fonts/century-gothic/CenturyGothicPaneuropeanRegular.TTF")
+    format("truetype");
   font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "century-gothic";
+  src: url("/fonts/century-gothic/CenturyGothicPaneuropeanBold.TTF")
+    format("truetype");
+  font-weight: 700;
   font-style: normal;
 }
 
@@ -63,7 +72,11 @@
   }
 
   .px-generic {
-    @apply sm:px-12 px-8;
+    @apply md:px-12 px-5;
+  }
+
+  .px-sm-generic {
+    @apply md:px-0 px-5;
   }
 
   .pageTopBottonMargin {
@@ -79,7 +92,7 @@
   }
 
   .navbar-label {
-    @apply text-lg font-normal uppercase text-white hover:font-bold transition duration-150 ease-in-out;
+    @apply text-lg font-normal uppercase text-white hover:font-bold transition-all ease-in-out duration-700;
   }
 
   /* Mobile nav */

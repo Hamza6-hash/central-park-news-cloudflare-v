@@ -35,13 +35,13 @@ const Contacts = () => {
 
     return (
         <section className="flex gap-5 max-xl:flex-col">
-            <div className="xl:w-[60%] max-w-full">
+            <div className="xl:w-[658px] max-w-full">
                 <h1 className="heading max-md:text-center font-century-schoolbook">Contact Us</h1>
 
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex flex-col gap-4 w-full xl:max-w-[70%] max-w-full mt-12 max-md:px-5"
+                        className="flex flex-col gap-4 w-full xl:max-w-[70%] max-w-full mt-10 px-sm-generic"
                     >
                         <CustomInput
                             control={form.control}
@@ -73,7 +73,7 @@ const Contacts = () => {
                     </form>
                 </Form>
             </div>
-            <div className="xl:max-w-[40%] max-xl:px-5">
+            <div className="xl:w-[518px]">
                 <TopStories showViewMore={true} />
             </div>
         </section>

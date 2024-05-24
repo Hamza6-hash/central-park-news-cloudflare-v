@@ -18,7 +18,7 @@ const LastestNews = () => {
     };
 
     return (
-        <section className='lastestNews py-12 px-generic'>
+        <section className='lastestNews py-10 px-generic'>
             <div className="max-width w-full">
                 <h1 className='uppercase text-xl font-bold text-white mb-4'>Latest news</h1>
                 <div className='flex gap-6 items-center justify-between relative w-full mx-auto'>

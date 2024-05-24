@@ -15,6 +15,7 @@ declare type TopStories = {
 
 declare type DynamicBlog = {
   showWritter?: boolean;
+  mainHeading: string;
 }
 
 declare type BlogsCard = {
