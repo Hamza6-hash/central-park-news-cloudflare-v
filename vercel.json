@@ -1,26 +1,26 @@
 {
-    "crons": [
-        {
-            "path": "/api",
-            "schedule": "0 4,20 * * *"
-        }
-    ],
-    "version": 2,
-    "builds": [
-      {
-        "src": "app/api/index.py",
-        "use": "@vercel/python"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "/app/api/index.py"
-      }
-    ],
-    "functions": {
-        "api/**": {
-            "excludeFiles": "{.next,*.cache,node_modules,public,app}/**"
-        }
+  "crons": [
+    {
+      "path": "/api",
+      "schedule": "0 4,20 * * *"
     }
+  ],
+  "version": 2,
+  "builds": [
+    {
+      "src": "app/api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/app/api/index.py"
+    }
+  ],
+  "functions": {
+    "api/*.py": {
+      "runtime": "vercel-python"
+    }
+  }
 }
