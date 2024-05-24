@@ -11,7 +11,7 @@ const buttonVariants = cva(
             variant: {
                 default: 'bg-primary text-primary-foreground hover:bg-primary/90',
                 gradient:
-                    'rounded bg-blue-gradient text-white hover:bg-blue-gradient-hover transition-all',
+                    'rounded bg-blue-gradient text-white hover:bg-blue-gradient-hover',
                 primary: 'text-white bg-primary-900 rounded-full !w-36'
 
             },

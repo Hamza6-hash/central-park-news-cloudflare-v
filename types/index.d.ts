@@ -16,3 +16,7 @@ declare type TopStories = {
 declare type DynamicBlog = {
   showWritter?: boolean;
 }
+
+declare type BlogsCard = {
+  showDateTimeInRow?: boolean;
+}

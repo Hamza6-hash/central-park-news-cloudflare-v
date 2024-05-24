@@ -72,7 +72,6 @@ const DynamicBlog = ({ showWritter = true }: DynamicBlog) => {
                 </div>
             </div>
 
-            <SuggestedBlogs />
         </section>
     )
 }

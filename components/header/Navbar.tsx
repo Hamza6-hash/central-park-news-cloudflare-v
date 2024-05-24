@@ -14,8 +14,20 @@ const Navbar = () => {
 
     return (
         <section className="navbar">
-            <nav className="flex justify-center items-center gap-20 uppercase px-4">
+            <div className="justify-between w-full  flex lg:hidden items-center">
                 <MobileNav />
+                <Image
+                    src={Logo}
+                    quality={100}
+                    objectFit="cover"
+                    height={60}
+                    width={120}
+                    alt='Horizon logo'
+                    className="block lg:hidden"
+                />
+            </div>
+
+            <nav className="justify-center lg:flex hidden items-center gap-20">
                 {navbarLinks.map((item) => {
                     const isActive =
                         pathName === item.route || pathName.startsWith(`${item.route}/`);
@@ -46,16 +58,6 @@ const Navbar = () => {
                         </React.Fragment>
                     );
                 })}
-
-                <Image
-                    src={Logo}
-                    quality={100}
-                    objectFit="cover"
-                    height={60}
-                    width={120}
-                    alt='Horizon logo'
-                    className="block lg:hidden"
-                />
             </nav>
         </section>
     );
