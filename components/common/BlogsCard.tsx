@@ -22,9 +22,9 @@ const BlogsCard = ({ showDateTimeInRow = false }: BlogsCard) => {
                             Docket Digest New Room
                         </h6>
                         <span className={hideLine}>|</span>
-                        <p className="font-Century-751-BT text-xs text-dark-400">
+                        <h6 className="font-Century-751-BT text-sm text-dark-400 capitalize">
                             April 21,2021
-                        </p>
+                        </h6>
                     </div>
                 </div>
             </div>
