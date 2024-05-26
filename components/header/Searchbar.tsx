@@ -24,7 +24,7 @@ const Searchbar = () => {
 
                 {pathName === '/' &&
                     <div className="w-full flex md:items-start items-center flex-col">
-                        <div className="py-2 px-4 mt-12 font-bold bg-yellow-500 rounded-full w-fit">
+                        <div className="py-2 px-4 mt-12 font-bold bg-yellow-500 font-century-schoolbook rounded-full w-fit">
                             <p>TODAY’S TOP STORY</p>
                         </div>
                     </div>
