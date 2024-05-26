@@ -8,13 +8,13 @@ const BlogsCard = ({ showDateTimeInRow = false }: BlogsCard) => {
     const hideLine = showDateTimeInRow ? 'hidden' : '';
 
     return (
-        <div className={`${!showDateTimeInRow ? 'bg-primary-700' : 'max-md:bg-gray-800'} p-4 relative rounded-sm`}>
+        <div className={`${!showDateTimeInRow ? 'bg-primary-700  md:p-6 p-3' : 'max-md:bg-gray-800  p-3'} relative rounded-sm`}>
             <Image src={DummyImg} alt={"new image"} height={500} quality={100} objectFit="cover" />
 
-            <div className="my-2.5 space-y-2">
-                <h4 className="font-century-schoolbook max-md:text-center capitalize leading-5">
+            <div className="mt-2.5 mb-5 space-y-1">
+                <h1 className={`font-century-schoolbook max-md:text-center text-2xl capitalize leading-7 ${showDateTimeInRow && 'tracking-tighter'}`}>
                     Three Guilty Verdicts for Derek Chauvin
-                </h4>
+                </h1>
                 <div className="flex items-center gap-2.5">
                     <hr className="w-6 h-1" />
                     <div className={dateRowCol}>
@@ -30,7 +30,7 @@ const BlogsCard = ({ showDateTimeInRow = false }: BlogsCard) => {
             </div>
 
             <div>
-                <p className="text-gray-600 text-sm">Derek Chauvin was found guilty on the three charges he faced — second-degree murder, third-degree murder, and second-degree manslaughter..</p>
+                <p className="text-gray-600 text-[15px]">Derek Chauvin was found guilty on the three charges he faced — second-degree murder, thir{!showDateTimeInRow && 'd-degree murder'}..</p>
             </div>
 
             <div className="flex justify-end items-end mt-6 mb-1.5">

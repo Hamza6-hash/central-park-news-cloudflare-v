@@ -43,6 +43,7 @@ const CustomTextArea = <T extends ZodType<any, any>>(
                         <FormControl>
                             <Textarea
                                 placeholder={placeholder}
+                                rows={8}
                                 className={`input-class ${fieldClassName}`}
                                 {...field}
                             />

@@ -20,7 +20,7 @@ const LastestNews = () => {
     return (
         <section className='lastestNews py-10 px-generic'>
             <div className="max-width w-full">
-                <h1 className='uppercase text-xl font-bold text-white mb-4'>Latest news</h1>
+                <h1 className='uppercase text-3xl font-bold text-white mb-4'>Latest news</h1>
                 <div className='flex gap-6 items-center justify-between relative w-full mx-auto'>
                     <div ref={productContainerRef} className='w-full flex gap-4 overflow-x-scroll hide-scrollbar mx-auto py-1'>
                         {[1, 2, 3, 4, 5, 6, 7].map((item) => (<React.Fragment key={item}>
