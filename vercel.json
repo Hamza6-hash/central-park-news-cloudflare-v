@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "http://localhost:5238/api/hello",
-      "schedule": "0 4,20 * * *"
-    }
-  ]
-}
