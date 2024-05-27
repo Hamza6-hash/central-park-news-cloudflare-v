@@ -72,11 +72,11 @@
   }
 
   .px-generic {
-    @apply md:px-12 px-5;
+    @apply md:px-12 px-6;
   }
 
   .px-sm-generic {
-    @apply md:px-0 px-5;
+    @apply md:px-0 px-6;
   }
 
   .pageTopBottonMargin {
