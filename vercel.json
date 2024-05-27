@@ -1,26 +1,8 @@
 {
   "crons": [
     {
-      "path": "/api",
+      "path": "http://localhost:5238/api/hello",
       "schedule": "0 4,20 * * *"
     }
-  ],
-  "version": 2,
-  "builds": [
-    {
-      "src": "app/api/index.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/app/api/index.py"
-    }
-  ],
-  "functions": {
-    "api/*.py": {
-      "runtime": "vercel-python"
-    }
-  }
+  ]
 }
