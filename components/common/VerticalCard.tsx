@@ -9,7 +9,7 @@ const VerticalCard = () => {
                 <Image src={DummyImg} alt={"new image"} className="w-[159px] h-[121px] gap-0 custom-rounded" quality={100} objectFit="cover" />
             </div>
             <div className="flex flex-col gap-1.5">
-                <h4 className="font-century-schoolbook font-normal capitalize leading-5">
+                <h4 className="font-century-schoolbook capitalize leading-5">
                     Three Guilty Verdicts for Derek Chauvin
                 </h4>
 
@@ -17,13 +17,13 @@ const VerticalCard = () => {
                     <div className="flex items-center gap-2">
                         <hr className="w-6 h-0.5 bg-white" />
                         <div>
-                            <h6 className="text-xs font-Century-751-BT capitalize">Docket Digest New Room</h6>
-                            <p className="font-Century-751-BT text-xs text-gray-300">April 21,2021</p>
+                            <h6 className="text-xs capitalize">Docket Digest New Room</h6>
+                            <p className="text-xs text-gray-300 italic">April 21,2021</p>
                         </div>
                     </div>
                 </div>
                 <div className="h-full flex justify-end pt-3">
-                    <button className="uppercase text-yellow-500 font-bold text-xs">VIEW MORE</button>
+                    <button className="uppercase font-century-gothic text-yellow-500 font-bold text-xs">VIEW MORE</button>
                 </div>
             </div>
         </div>

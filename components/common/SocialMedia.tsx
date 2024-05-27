@@ -6,7 +6,7 @@ import { FaFacebookSquare } from "react-icons/fa";
 
 const SocialMediaTag = ({ icon, link }: SocialMedia) => {
     return (
-        <div className="rounded-full border border-primary-900 p-2 cursor-pointer">
+        <div className="rounded-full border border-primary-900 p-1.5 cursor-pointer">
             {icon}
         </div>
     );
@@ -15,25 +15,25 @@ const SocialMediaTag = ({ icon, link }: SocialMedia) => {
 const SocialMedia = () => {
     const socialMediaArray = [
         {
-            icon: <IoLogoLinkedin className="text-primary-900" size={20} />,
+            icon: <IoLogoLinkedin className="text-primary-900" size={15} />,
             link: ''
         },
         {
-            icon: <FaInstagram className="text-primary-900" size={20} />,
+            icon: <FaInstagram className="text-primary-900" size={15} />,
             link: ''
         },
         {
-            icon: <FaTwitter className="text-primary-900" size={20} />,
+            icon: <FaTwitter className="text-primary-900" size={15} />,
             link: ''
         },
         {
-            icon: <FaFacebookSquare className="text-primary-900" size={20} />,
+            icon: <FaFacebookSquare className="text-primary-900" size={15} />,
             link: ''
         },
     ]
 
     return (
-        <section className="flex gap-4">
+        <section className="flex gap-[15px]">
             {socialMediaArray.map((item) => {
 
                 return (<React.Fragment key={item.link}>

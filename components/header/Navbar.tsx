@@ -27,7 +27,7 @@ const Navbar = () => {
                 />
             </div>
 
-            <nav className="justify-center lg:flex hidden items-center gap-20">
+            <nav className="justify-center lg:flex hidden items-center gap-28">
                 {navbarLinks.map((item) => {
                     const isActive =
                         pathName === item.route || pathName.startsWith(`${item.route}/`);
@@ -35,7 +35,7 @@ const Navbar = () => {
                     return (
                         <React.Fragment key={item.label}>
                             {item.imgURL !== "" ? (
-                                <div className="relative  lg:block hidden xl:px-12 px-0">
+                                <div className="relative  lg:block hidden xl:px-10 px-0">
                                     <Image
                                         src={item.imgURL}
                                         alt={item.label}

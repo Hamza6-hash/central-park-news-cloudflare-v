@@ -55,9 +55,9 @@ export default function Home() {
   // }
 
   return (
-    <section className="flex gap-6 max-xl:flex-col w-full">
+    <section className="flex gap-10 max-xl:flex-col w-full">
       {/* <button onClick={hitPythonApi}>OnClick</button> */}
-      <div className="xl:w-[658px] max-w-full">
+      <div className="xl:w-[650px] max-w-full">
         <div className="space-y-3 mb-4">
           <h1 className="font-century-schoolbook text-3xl capitalize px-sm-generic max-md:text-center">
             Oligarch Son Told to Pay Mom
@@ -69,13 +69,13 @@ export default function Home() {
             quality={100}
             objectFit="cover"
           />
-          <div className="flex items-center font-Century-751-BT gap-2 px-sm-generic">
+          <div className="flex items-center text-lg max-sm:text-xs gap-2 px-sm-generic">
             <hr className="w-6 h-1" />
             <h6 className="capitalize">
               Docket Digest News Room
             </h6>
             <span className="text-primary-500">|</span>
-            <p className="text-primary-500">
+            <p className="text-primary-500 italic">
               April 21, 2021
             </p>
           </div>
@@ -104,7 +104,7 @@ export default function Home() {
         </article>
 
         <div className="my-8 max-md:flex max-md:flex-col max-md:items-center max-md:justify-center">
-          <p className="font-bold font-century-schoolbook mb-2">Share This:</p>
+          <p className="font-bold mb-2">Share This:</p>
           <div className="flex gap-4">
             {socialMediaArray.map((item) => {
               return (
@@ -120,7 +120,7 @@ export default function Home() {
           Advertisement
         </div>
       </div>
-      <div className="xl:w-[518px]">
+      <div className="xl:w-[510px]">
         <TopStories />
       </div>
     </section>
