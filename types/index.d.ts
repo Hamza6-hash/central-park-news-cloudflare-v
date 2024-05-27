@@ -1,7 +1,7 @@
 declare type AppDownloadButton = {
   icon: any;
-  subHeading: string;
-  heading: string;
+  subHeading: any;
+  heading: any;
 };
 
 declare type SocialMedia = {

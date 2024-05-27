@@ -8,21 +8,21 @@ const BlogsCard = ({ showDateTimeInRow = false }: BlogsCard) => {
     const hideLine = showDateTimeInRow ? 'hidden' : '';
 
     return (
-        <div className={`${!showDateTimeInRow ? 'bg-primary-700  md:p-6 p-3' : 'max-md:bg-gray-800  p-3'} relative rounded-sm`}>
+        <div className={`${!showDateTimeInRow ? 'bg-primary-700  p-5' : 'max-md:bg-gray-800 py-3 px-3.5'} capitalize relative rounded-md`}>
             <Image src={DummyImg} alt={"new image"} height={500} quality={100} objectFit="cover" />
 
             <div className="mt-2.5 mb-5 space-y-1">
-                <h1 className={`font-century-schoolbook max-md:text-center text-2xl capitalize leading-7 ${showDateTimeInRow && 'tracking-tighter'}`}>
+                <h1 className={`font-century-schoolbook text-2xl capitalize leading-7 ${showDateTimeInRow && 'tracking-tighter  max-md:text-center'}`}>
                     Three Guilty Verdicts for Derek Chauvin
                 </h1>
-                <div className="flex items-center gap-2.5">
-                    <hr className="w-6 h-1" />
+                <div className="flex items-center gap-1.5">
+                    <hr className="sm:w-5 w-4 h-1" />
                     <div className={dateRowCol}>
-                        <h6 className="text-sm font-Century-751-BT text-dark-400 capitalize">
+                        <h6 className="text-sm text-dark-400 capitalize">
                             Docket Digest New Room
                         </h6>
                         <span className={hideLine}>|</span>
-                        <h6 className="font-Century-751-BT text-sm text-dark-400 capitalize">
+                        <h6 className="italic text-sm text-dark-400 capitalize">
                             April 21,2021
                         </h6>
                     </div>

@@ -11,7 +11,7 @@ const TopStories = ({ showViewMore = false }: TopStories) => {
 
     return (
         <div className='px-sm-generic'>
-            <h2 className={`font-bold text-2xl mb-4 ${activeRoute && 'font-century-schoolbook'}`}>TOP <span className='text-primary-500'>10</span> STORIES</h2>
+            <h2 className='font-bold text-2xl mb-4'>TOP <span className='text-primary-500'>10</span> STORIES</h2>
             <div className='flex flex-col xl:gap-5 sm:gap-7 gap-8'>
                 {delLater.map((item) => (<React.Fragment key={item}>
                     <HorizontalCard />

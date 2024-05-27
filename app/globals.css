@@ -44,6 +44,7 @@
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
@@ -62,7 +63,7 @@
 
   body,
   html {
-    @apply font-century-gothic;
+    @apply font-montserrat;
   }
 }
 
@@ -80,7 +81,7 @@
   }
 
   .pageTopBottonMargin {
-    @apply py-16;
+    @apply py-14;
   }
 
   .heading {
@@ -88,11 +89,11 @@
   }
 
   .navbar {
-    @apply bg-primary-900 py-4 font-Century-751-BT  w-full  px-4  uppercase;
+    @apply bg-primary-900 py-4  w-full  px-6  uppercase;
   }
 
   .navbar-label {
-    @apply text-lg font-normal uppercase text-white hover:font-bold transition-all ease-in-out duration-700;
+    @apply text-lg font-extralight uppercase text-white hover:font-bold transition-all ease-in-out duration-700;
   }
 
   /* Mobile nav */
@@ -105,7 +106,7 @@
   }
 
   .footer-label {
-    @apply font-Century-751-BT text-sm text-primary-900 uppercase hover:font-bold transition-all;
+    @apply text-sm text-primary-900 uppercase hover:font-bold transition-all;
   }
 
   .banner {

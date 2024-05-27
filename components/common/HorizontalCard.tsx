@@ -17,11 +17,11 @@ const HorizontalCard = () => {
                     <div className="flex items-center text-xs gap-2">
                         <hr className="w-6 bg-primary-900 h-[1px] border-none" />
 
-                        <h6 className="font-Century-751-BT capitalize text-nowrap">
+                        <h6 className="capitalize text-nowrap">
                             Docket Digest New Room
                         </h6>
                         <span className="text-primary-500">|</span>
-                        <p className="font-Century-751-BT text-primary-500 text-nowrap">
+                        <p className="font-medium italic text-primary-500 text-nowrap">
                             April 21,2021
                         </p>
                     </div>

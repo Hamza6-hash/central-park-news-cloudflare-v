@@ -15,12 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-century-gothic">
+      <body className="font-montserrat">
         <Header />
         <main className="flex items-center justify-center md:px-generic pageTopBottonMargin overflow-hidden">
           <div className="max-width">
             <div className="max-md:flex max-md:justify-center max-md:items-center">
-              <hr className="w-60 h-0.5 mb-2 bg-gray-200" />
+              <hr className="w-64 h-0.5 mb-2 bg-gray-200" />
             </div>
             {children}
           </div>

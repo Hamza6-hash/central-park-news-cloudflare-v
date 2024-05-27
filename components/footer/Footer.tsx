@@ -27,7 +27,9 @@ const Footer = () => {
 
                 <div className="space-y-3">
                     <p className="font-bold text-primary-900">Follow Blockchain Briefing:</p>
-                    <SocialMedia />
+                    <div className="w-full flex items-center justify-center">
+                        <SocialMedia />
+                    </div>
 
                 </div>
             </section>
