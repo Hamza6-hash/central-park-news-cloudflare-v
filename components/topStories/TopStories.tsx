@@ -2,6 +2,7 @@ import React from 'react';
 import HorizontalCard from '../common/HorizontalCard';
 import { usePathname } from 'next/navigation';
 import { routes } from '@/constants';
+import { Button } from '../button/Button';
 
 const TopStories = ({ showViewMore = false }: TopStories) => {
     let delLater = showViewMore ? [1, 2,] : [1, 2, 3, 4, 5, 6, 7, 8];
@@ -18,9 +19,10 @@ const TopStories = ({ showViewMore = false }: TopStories) => {
             </div>
 
             {showViewMore && <div className="flex justify-end items-end mt-6">
-                <button className="uppercase text-primary-900 font-bold text-xs">
+                <button className="uppercase text-primary-900 font-bold text-xs xl:block hidden">
                     VIEW MORE
                 </button>
+                <Button variant="primary" className="xl:hidden block">VIEW MORE</Button>
             </div>}
         </div>
     )
