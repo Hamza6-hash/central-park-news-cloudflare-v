@@ -68,7 +68,7 @@ const Contacts = () => {
                             schema={formSchema}
                         />
                         <div className="flex justify-end">
-                            <Button variant="primary" className="w-fit max-md:w-full">SUBMIT</Button>
+                            <Button variant="primary" className="">SUBMIT</Button>
                         </div>
                     </form>
                 </Form>
