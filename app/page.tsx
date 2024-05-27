@@ -40,17 +40,19 @@ const socialMediaArray = [
 export default function Home() {
   // const data = await hitPythonApi();
   // console.log(data);
-  async function hitPythonApi() {
-    const response = await fetch("/api", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    console.log(data);
-    return data;
-  }
+
+  // for testing
+  // async function hitPythonApi() {
+  //   const response = await fetch("http://localhost:5238/api/hello", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   const data = await response.json();
+  //   console.log(data);
+  //   return data;
+  // }
 
   return (
     <section className="flex gap-10 max-xl:flex-col w-full">
