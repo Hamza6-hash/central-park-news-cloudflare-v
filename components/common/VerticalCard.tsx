@@ -4,7 +4,7 @@ import DummyImg from "@/assets/Rectangle-4.png";
 
 const VerticalCard = () => {
     return (
-        <div className="bg-primary-300 py-3 px-4 flex flex-col gap-3 h-[270px] min-w-[214px] max-w-[214px] relative rounded text-white">
+        <div className="bg-primary-300 py-3 px-4 flex flex-col gap-3 min-w-[214px] max-w-[214px] relative rounded text-white">
             <div className="flex justify-center items-center">
                 <Image src={DummyImg} alt={"new image"} className="w-[159px] h-[121px] gap-0 custom-rounded" quality={100} objectFit="cover" />
             </div>
