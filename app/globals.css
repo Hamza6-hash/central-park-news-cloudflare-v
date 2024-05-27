@@ -113,7 +113,7 @@
   }
 
   .input-class {
-    @apply text-sm placeholder:text-sm placeholder:text-gray-300 rounded-lg border border-primary-900 text-gray-900;
+    @apply text-sm placeholder:text-sm placeholder:text-gray-300 rounded-lg border border-primary-900 text-gray-900 resize-none;
   }
 
   .form-item {

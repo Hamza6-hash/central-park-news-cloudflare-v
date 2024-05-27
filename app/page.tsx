@@ -57,7 +57,7 @@ export default function Home() {
       {/* <button onClick={hitPythonApi}>OnClick</button> */}
       <div className="xl:w-[658px] max-w-full">
         <div className="space-y-3 mb-4">
-          <h1 className="font-century-schoolbook text-3xl capitalize px-generic max-md:text-center">
+          <h1 className="font-century-schoolbook text-3xl capitalize px-sm-generic max-md:text-center">
             Oligarch Son Told to Pay Mom
           </h1>
           <Image
@@ -67,18 +67,18 @@ export default function Home() {
             quality={100}
             objectFit="cover"
           />
-          <div className="flex items-center gap-2 px-generic">
+          <div className="flex items-center font-Century-751-BT gap-2 px-sm-generic">
             <hr className="w-6 h-1" />
-            <h6 className="text-sm font-Century-751-BT capitalize">
+            <h6 className="capitalize">
               Docket Digest News Room
             </h6>
             <span className="text-primary-500">|</span>
-            <p className="font-Century-751-BT text-xs text-primary-500">
+            <p className="text-primary-500">
               April 21, 2021
             </p>
           </div>
         </div>
-        <article className="space-y-2 capitalize px-sm-generic">
+        <article className="space-y-2 capitalize text-justify text-2xl px-sm-generic">
           <p>
             After losing a court decision over his part in shielding assets from
             his mother, Temur Akhmedov, the son of a Russian oligarch embroiled

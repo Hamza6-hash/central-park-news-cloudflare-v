@@ -7,7 +7,7 @@ const Blogs = () => {
         <section>
             <h1 className='heading max-md:text-center'>Blogs</h1>
 
-            <div className="grid grid-cols-3 gap-4 mt-5 max-lg:grid-cols-2 max-md:grid-cols-1 px-generic">
+            <div className="grid grid-cols-3 gap-6 mt-5 max-lg:grid-cols-2 max-md:grid-cols-1 px-generic">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (<React.Fragment key={item}>
                     <BlogsCard />
                 </React.Fragment>))}

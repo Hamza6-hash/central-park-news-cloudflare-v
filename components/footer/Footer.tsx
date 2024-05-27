@@ -12,7 +12,7 @@ import { routes } from "@/constants";
 const Footer = () => {
     const pathName = usePathname();
     const showSuggestedBlogs =
-        pathName === routes.blogs || pathName.startsWith(`${routes.blogs}/`) || pathName === routes.articles || pathName.startsWith(`${routes.articles}/`);
+        pathName.startsWith(`${routes.blogs}/`) || pathName === routes.articles || pathName.startsWith(`${routes.articles}/`);
 
     return (
         <footer className="">
@@ -20,7 +20,7 @@ const Footer = () => {
             <LastestNews />
             <PopularLinks />
 
-            <section className="w-full flex flex-col justify-center items-center gap-8 bg-gray-100 p-4">
+            <section className="w-full flex flex-col justify-center items-center gap-10 bg-gray-100 p-4 py-6">
 
                 <FooterLinks />
 
@@ -32,7 +32,7 @@ const Footer = () => {
                 </div>
             </section>
 
-            <div className="bg-primary-900 w-full text-white p-4">
+            <div className="bg-primary-900 w-full text-white py-3 px-1">
                 <p className="text-center sm:text-sm text-xs">
                     COPYRIGHT 2024 © <strong>BLOCKCHAIN BRIEFING</strong>. ALL RIGHTS
                     RESERVED
