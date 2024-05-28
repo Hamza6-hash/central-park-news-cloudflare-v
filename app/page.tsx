@@ -80,7 +80,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <article className="space-y-2 capitalize text-justify text-2xl px-sm-generic">
+        <article className="space-y-2 capitalize text-justify md:text-lg text-base px-sm-generic">
           <p>
             After losing a court decision over his part in shielding assets from
             his mother, Temur Akhmedov, the son of a Russian oligarch embroiled
@@ -103,7 +103,7 @@ export default function Home() {
           </p>
         </article>
 
-        <div className="my-8 max-md:flex max-md:flex-col max-md:items-center max-md:justify-center">
+        <div className="my-10 max-md:flex max-md:flex-col max-md:items-center max-md:justify-center">
           <p className="font-bold mb-2">Share This:</p>
           <div className="flex gap-4">
             {socialMediaArray.map((item) => {

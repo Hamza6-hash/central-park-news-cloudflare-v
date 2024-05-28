@@ -34,7 +34,7 @@ const Contacts = () => {
     };
 
     return (
-        <section className="flex gap-5 max-xl:flex-col">
+        <section className="flex xl:gap-5 gap-8 max-xl:flex-col">
             <div className="xl:w-[658px] max-w-full">
                 <h1 className="heading max-md:text-center font-century-schoolbook">Contact Us</h1>
 

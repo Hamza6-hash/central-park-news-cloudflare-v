@@ -9,7 +9,6 @@ export function cn(...inputs: ClassValue[]) {
 export const subscribtionFormSchema = () => {
 
   return z.object({
-    contactNumber: z.number().min(3),
     email: z.string().email(),
   })
 }

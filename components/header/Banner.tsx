@@ -21,7 +21,6 @@ const Banner = () => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
-            contactNumber: undefined,
         },
     });
 
@@ -47,23 +46,19 @@ const Banner = () => {
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex gap-4 sm:flex-row flex-col w-full"
+                        className="flex gap-4 sm:flex-row flex-col items-center justify-center w-full"
                     >
-                        <CustomInput
-                            control={form.control}
-                            name="email"
-                            label=""
-                            placeholder="Your email address"
-                            schema={formSchema}
-                        />
-                        <CustomInput
-                            control={form.control}
-                            name="contactNumber"
-                            label=""
-                            placeholder="Your contact number"
-                            schema={formSchema}
-                        />
-                        <Button variant="gradient">SUBSCRIBE</Button>
+                        <div className="flex gap-4 sm:flex-row flex-col items-center justify-center sm:w-fit w-full">
+                            <CustomInput
+                                control={form.control}
+                                name="email"
+                                label=""
+                                placeholder="Your email address"
+                                fieldClassName={'sm:w-80'}
+                                schema={formSchema}
+                            />
+                            <Button variant="gradient" className="py-3 px-6 w-full">SUBSCRIBE</Button>
+                        </div>
                     </form>
                 </Form>
                 <div className="flex sm:flex-row sm:mb-0 mb-2.5 flex-col gap-4 items-center justify-between w-full px-2">

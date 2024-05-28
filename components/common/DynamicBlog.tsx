@@ -33,11 +33,11 @@ const DynamicBlog = ({ showWritter = true, mainHeading }: DynamicBlog) => {
                 <h1 className='heading'>{mainHeading}</h1>
                 <div className='flex items-center gap-2'>
                     <MdOutlineKeyboardArrowRight color='#A3A0A0' size={35} />
-                    <h6 className='font-century-schoolbook text-gray-400 capitalize'>Oligarch Son Told to Pay Mom</h6>
+                    <h6 className='font-century-schoolbook capitalize'>Oligarch Son Told to Pay Mom</h6>
                 </div>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-14">
                 <div className="space-y-3 mb-4">
                     <div className='px-sm-generic'>
                         <h1 className="font-century-schoolbook text-3xl  max-md:text-center capitalize">Oligarch Son Told to Pay Mom</h1>
@@ -51,7 +51,7 @@ const DynamicBlog = ({ showWritter = true, mainHeading }: DynamicBlog) => {
                         <p className="text-primary-500 italic">April 21, 2021</p>
                     </div>
                 </div>
-                <article className="space-y-3  text-2xl text-justify px-sm-generic capitalize">
+                <article className="space-y-3  sm:text-lg text-justify px-sm-generic capitalize">
                     <p>After losing a court decision over his part in shielding assets from his mother, Temur Akhmedov, the son of a Russian oligarch embroiled in the UK’s biggest divorce lawsuit, will have to compensate his mother $100 million.</p>
                     <p>{`Temur Akhmedov and his billionaire father, Farkhad Akhmedov, worked together to prevent his mother from receiving a $627 million court-ordered divorce settlement. The court described Temur as “an untrustworthy person who will go to every length to help his parent (referring to father).”`}</p>
                     <p>The trial drew public attention when Temur admitted to losing more than $50 million while day trading as a college student. He argued that instead of shielding his father’s wealth from his mother, he lost some of it by poor investments.</p>

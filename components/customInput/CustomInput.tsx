@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 
 import { Control, FieldPath } from 'react-hook-form';
 import { z, ZodType } from 'zod';
-import { subscribtionFormSchema } from '@/lib/utils';
 
 // Define the CustomInputProps interface at the file level
 interface CustomInputProps<T extends ZodType<any, any>> {

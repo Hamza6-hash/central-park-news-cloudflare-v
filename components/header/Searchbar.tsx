@@ -8,7 +8,7 @@ const Searchbar = () => {
     const pathName = usePathname();
 
     return (
-        <section className="pt-10 px-generic w-full  flex justify-center items-center">
+        <section className="pt-[83px] px-generic w-full  flex justify-center items-center">
             <div className="w-[1200px]">
                 <div className="flex justify-center items-center w-full">
                     <div className="bg-blue-gradient rounded-full py-2 sm:w-fit w-full px-5 gap-1 flex justify-center items-center">
