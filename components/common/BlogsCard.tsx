@@ -1,11 +1,18 @@
+"use client"
+
 import Image from "next/image";
 import React from "react";
 import DummyImg from "@/assets/Rectangle-4.png";
+import Link from "next/link";
+import { routes } from "@/constants";
+import TruncateText from "./TruncateProps";
 
 const BlogsCard = ({ showDateTimeInRow = false }: BlogsCard) => {
     const dateRowCol = showDateTimeInRow ? "flex md:flex-col max-md:items-end max-md:gap-1" : "flex items-center gap-2";
 
     const hideLine = showDateTimeInRow ? 'hidden' : '';
+
+    const delLater = 'Derek Chauvin was found guilty on the three charges he faced — second-degree murder, third-degree murder, and second-degree manslaughter. Derek Chauvin was found guilty on the three charges he faced — second-degree murder, third-degree murder, and second-degree manslaughter.'
 
     return (
         <div className={`${!showDateTimeInRow ? 'bg-primary-700  p-5' : 'max-md:bg-gray-800 py-3 px-3.5'} capitalize relative rounded-md`}>
@@ -29,14 +36,17 @@ const BlogsCard = ({ showDateTimeInRow = false }: BlogsCard) => {
                 </div>
             </div>
 
-            <div>
-                <p className="text-gray-600 text-[15px]">Derek Chauvin was found guilty on the three charges he faced — second-degree murder, thir{!showDateTimeInRow && 'd-degree murder'}..</p>
+            <div className="text-gray-600 truncate-text text-[15px]">
+                <p className="">{delLater}</p>
+                <TruncateText lines={3} content={delLater} />
             </div>
 
             <div className="flex justify-end items-end mt-6 mb-1.5">
-                <button className="uppercase text-primary-900 font-bold text-xs">
-                    VIEW MORE
-                </button>
+                <Link href={`${routes.blogs}/2`} className="">
+                    <p className="uppercase text-primary-900 font-bold text-xs">
+                        VIEW MORE
+                    </p>
+                </Link>
             </div>
         </div>
     );

@@ -32,7 +32,7 @@ const Paginator = () => {
             <PaginationEllipsis className='text-primary-800' />
           </PaginationItem>
           <PaginationItem>
-            <PaginationNext className='border border-gray-700 text-primary-900 font-bold' href="#" />
+            <PaginationNext className='border border-gray-700 text-primary-900 font-bold flex items-center justify-center' href="#" />
           </PaginationItem>
         </PaginationContent>
       </Pagination>

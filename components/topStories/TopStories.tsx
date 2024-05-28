@@ -19,7 +19,7 @@ const TopStories = ({ showViewMore = false }: TopStories) => {
             </div>
 
             {showViewMore && <div className="flex justify-end items-end mt-6">
-                <button className="uppercase text-primary-900 font-bold text-xs xl:block hidden">
+                <button className="uppercase text-primary-900 font-bold text-sm xl:block hidden">
                     VIEW MORE
                 </button>
                 <Button variant="primary" className="xl:hidden block">VIEW MORE</Button>

@@ -35,7 +35,7 @@ const Footer = () => {
             </section>
 
             <div className="bg-primary-900 w-full text-white py-3 px-1">
-                <p className="text-center sm:text-sm text-xs">
+                <p className="text-center sm:text-xs text-[10px]">
                     COPYRIGHT 2024 © <strong>BLOCKCHAIN BRIEFING</strong>. ALL RIGHTS
                     RESERVED
                 </p>
