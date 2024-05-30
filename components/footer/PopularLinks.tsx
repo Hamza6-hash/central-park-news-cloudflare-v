@@ -1,6 +1,6 @@
 import React from 'react';
 
-const linkClass = 'text-xl max-lg:text-center font-Century-751-BT  cursor-pointer';
+const linkClass = 'text-xl max-lg:text-center font-Century-751-BT transition-font-weight duration-300 hover:font-black  cursor-pointer';
 
 const linkOne = ['Three Guilty Verdicts for Derek Chauvin', 'Media Piracy Lawsuit', 'Update on Commission of SCOTUS', 'Nike v. MSCHF: Lil Nas X Satan Shoes', 'Broadway’s Appropriate Cancels Performance']
 
@@ -19,7 +19,7 @@ const PopularLinks = () => {
                             ))
                         }
                     </div>
-                    <div className='space-y-5'>
+                    <div className='flex flex-col gap-[26px]'>
                         {
                             linkOne.map((item) => (
                                 <p className={linkClass} key={item}>

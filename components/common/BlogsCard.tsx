@@ -36,8 +36,7 @@ const BlogsCard = ({ showDateTimeInRow = false }: BlogsCard) => {
                 </div>
             </div>
 
-            <div className="text-gray-600 truncate-text text-[15px]">
-                <p className="">{delLater}</p>
+            <div className="text-gray-600 text-[15px]">
                 <TruncateText lines={3} content={delLater} />
             </div>
 

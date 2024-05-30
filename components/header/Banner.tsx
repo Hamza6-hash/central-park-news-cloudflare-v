@@ -26,9 +26,11 @@ const Banner = () => {
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         try {
+
         } catch (error) {
             console.log(error);
         } finally {
+
         }
     };
 
