@@ -4,7 +4,7 @@ import { subscribtionFormSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { Form } from "@/components/ui/form";
 import CustomInput from "@/components/customInput/CustomInput";
 import { Button } from "@/components/button/Button";
@@ -13,9 +13,11 @@ import { BiLogoPlayStore } from "react-icons/bi";
 import { IoLogoApple } from "react-icons/io5";
 import SocialMedia from "../common/SocialMedia";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const Banner = () => {
     const formSchema = subscribtionFormSchema();
+    const pathname = usePathname();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -34,6 +36,11 @@ const Banner = () => {
         }
     };
 
+    // Reset form on route change
+    useEffect(() => {
+        form.reset();
+    }, [pathname, form]);
+
     return (
         <section className="banner">
             <div className="space-y-6 px-6 md:px-0 w-[780px]">
@@ -50,7 +57,7 @@ const Banner = () => {
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="flex gap-4 sm:flex-row flex-col items-center justify-center w-full"
                     >
-                        <div className="flex gap-4 sm:flex-row flex-col items-center justify-center sm:w-fit w-full">
+                        <div className="flex gap-4 sm:flex-row flex-col justify-center sm:w-fit w-full">
                             <CustomInput
                                 control={form.control}
                                 name="email"

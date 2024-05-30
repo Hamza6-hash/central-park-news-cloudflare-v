@@ -137,6 +137,10 @@
     @apply text-sm w-full max-w-[280px] font-medium;
   }
 
+  .form-message {
+    @apply text-red-500;
+  }
+
   .footer {
     @apply w-full;
   }

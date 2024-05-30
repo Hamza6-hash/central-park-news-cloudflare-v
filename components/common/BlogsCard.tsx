@@ -42,7 +42,7 @@ const BlogsCard = ({ showDateTimeInRow = false }: BlogsCard) => {
 
             <div className="flex justify-end items-end mt-6 mb-1.5">
                 <Link href={`${routes.blogs}/2`} className="">
-                    <p className="uppercase text-primary-900 font-bold text-xs">
+                    <p className="uppercase text-primary-900 font-bold transition-colors duration-300 hover:text-yellow-500 text-xs">
                         VIEW MORE
                     </p>
                 </Link>

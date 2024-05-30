@@ -1,15 +1,18 @@
 import React from "react";
 import Image from "next/image";
 import DummyImg from "@/assets/Rectangle-4.png";
+import TruncateText from "./TruncateProps";
 
 const HorizontalCard = () => {
+    const delLater = 'Derek Chauvin was found guilty on the three charges he faced — second-degree murder, third-degree murder, and second-degree manslaughter..'
+
     return (
-        <div className="flex gap-4 relative rounded-sm md:h-[183px] text-black max-md:flex-col max-md:w-full">
+        <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 hover:shadow-top-news hover:p-3 rounded-lg">
             <div className="md:w-[204px]">
                 <Image src={DummyImg} alt={"new image"} className="md:max-w-[204px] md:h-[183px]" width={800} quality={100} objectFit="cover" />
             </div>
 
-            <div className="space-y-4">
+            <div className="flex flex-col gap-4">
                 <div className="space-y-1">
                     <h4 className="font-century-schoolbook capitalize text-2xl leading-7">
                         Three Guilty Verdicts for Derek Chauvin
@@ -26,8 +29,8 @@ const HorizontalCard = () => {
                         </p>
                     </div>
                 </div>
-                <div>
-                    <p className="text-gray-600 capitalize text-[15px]">Derek Chauvin was found guilty on the three charges he faced — second-degree murder, third-degree murder, and second-degree manslaughter..</p>
+                <div className="text-gray-600 capitalize text-[15px]">
+                    <TruncateText lines={4} content={delLater} />
                 </div>
             </div>
         </div>
