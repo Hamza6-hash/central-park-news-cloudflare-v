@@ -23,7 +23,7 @@ const VerticalCard = () => {
                     </div>
                 </div>
                 <div className="h-full flex justify-end pt-3">
-                    <button className="uppercase font-century-gothic text-yellow-500 font-bold text-xs">VIEW MORE</button>
+                    <button className="uppercase font-century-gothic text-yellow-500 transition-colors duration-300 hover:text-primary-900 font-bold text-xs">VIEW MORE</button>
                 </div>
             </div>
         </div>

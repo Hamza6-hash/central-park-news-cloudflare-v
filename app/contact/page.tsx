@@ -1,7 +1,7 @@
 "use client"
 
 import TopStories from "@/components/topStories/TopStories";
-import React from "react";
+import React, { useState } from "react";
 import { contactFormSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -10,11 +10,14 @@ import { Form } from "@/components/ui/form";
 import CustomInput from "@/components/customInput/CustomInput";
 import { Button } from "@/components/button/Button";
 import CustomTextArea from "@/components/customInput/CustomTextArea";
+import ThankYouDialog from "@/components/dialogs/ThankYouDialog";
 
 const fieldClass = '!border-gray-100'
 
 const Contacts = () => {
     const formSchema = contactFormSchema();
+    const [openDialog, setOpenDialog] = useState(false);
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -27,6 +30,7 @@ const Contacts = () => {
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         try {
+            setOpenDialog(true);
         } catch (error) {
             console.log(error);
         } finally {
@@ -68,7 +72,7 @@ const Contacts = () => {
                             schema={formSchema}
                         />
                         <div className="flex justify-end">
-                            <Button variant="primary" className="">SUBMIT</Button>
+                            <Button variant="primary" type="submit" className="">SUBMIT</Button>
                         </div>
                     </form>
                 </Form>
@@ -76,6 +80,8 @@ const Contacts = () => {
             <div className="xl:w-[518px]">
                 <TopStories showViewMore={true} />
             </div>
+
+            <ThankYouDialog openDialog={openDialog} setOpenDialog={setOpenDialog} />
         </section>
     );
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { navbarLinks } from "@/constants";
+import { navbarLinks, routes } from "@/constants";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,15 +16,17 @@ const Navbar = () => {
         <section className="navbar">
             <div className="justify-between w-full  flex lg:hidden items-center">
                 <MobileNav />
-                <Image
-                    src={Logo}
-                    quality={100}
-                    objectFit="cover"
-                    height={60}
-                    width={120}
-                    alt='Horizon logo'
-                    className="block lg:hidden"
-                />
+                <Link href={routes.home}>
+                    <Image
+                        src={Logo}
+                        quality={100}
+                        objectFit="cover"
+                        height={60}
+                        width={120}
+                        alt='Horizon logo'
+                        className="block lg:hidden"
+                    />
+                </Link>
             </div>
 
             <nav className="justify-center lg:flex hidden items-center gap-28">
@@ -35,7 +37,7 @@ const Navbar = () => {
                     return (
                         <React.Fragment key={item.label}>
                             {item.imgURL !== "" ? (
-                                <div className="relative  lg:block hidden xl:px-10 px-0">
+                                <Link href={item.route} className="relative  lg:block hidden xl:px-10 px-0">
                                     <Image
                                         src={item.imgURL}
                                         alt={item.label}
@@ -43,7 +45,7 @@ const Navbar = () => {
                                         height={60}
                                         width={120}
                                     />
-                                </div>
+                                </Link>
                             ) : (
                                 <Link href={item.route} className="lg:block hidden">
                                     <p

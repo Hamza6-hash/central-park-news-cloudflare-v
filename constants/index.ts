@@ -20,7 +20,7 @@ export const navbarLinks = [
   },
   {
     imgURL: Logo,
-    route: "",
+    route: routes.home,
     label: "logo",
   },
   {

@@ -55,9 +55,8 @@ export default function Home() {
   // }
 
   return (
-    <section className="flex gap-10 max-xl:flex-col w-full">
-      {/* <button onClick={hitPythonApi}>OnClick</button> */}
-      <div className="xl:w-[650px] max-w-full">
+    <section className="flex gap-9 max-xl:flex-col w-full">
+      <div className="xl:w-[644px] max-w-full">
         <div className="space-y-3 mb-4">
           <h1 className="font-century-schoolbook text-3xl capitalize px-sm-generic max-md:text-center">
             Oligarch Son Told to Pay Mom
@@ -120,7 +119,7 @@ export default function Home() {
           Advertisement
         </div>
       </div>
-      <div className="xl:w-[510px]">
+      <div className="xl:w-[520px]">
         <TopStories />
       </div>
     </section>
