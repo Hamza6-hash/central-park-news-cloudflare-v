@@ -41,6 +41,10 @@ const Banner = () => {
         form.reset();
     }, [pathname, form]);
 
+    const onChangeField = (e: any) => {
+        if (!e?.target?.value) form.reset();
+    }
+
     return (
         <section className="banner">
             <div className="space-y-6 px-6 md:px-0 w-[780px]">
@@ -65,6 +69,7 @@ const Banner = () => {
                                 placeholder="Your email address"
                                 fieldClassName={'sm:w-80'}
                                 schema={formSchema}
+                                onChange={onChangeField}
                             />
                             <Button variant="gradient" className="py-3 px-6 w-full">SUBSCRIBE</Button>
                         </div>

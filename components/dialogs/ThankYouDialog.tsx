@@ -18,7 +18,7 @@ const ThankYouDialog = ({ openDialog, setOpenDialog }: ThankYouDialogProps) => {
     return (
         <Dialog onOpenChange={setOpenDialog} open={openDialog}>
             <DialogTrigger asChild />
-            <DialogContent className={`rounded-md flex flex-col gap-4 bg-white items-center justify-center p-10 shadow-md`}>
+            <DialogContent className={`rounded-md flex flex-col gap-4 bg-white items-center justify-center p-10 shadow-md hide-cross-dialog`}>
                 <div className='w-28 h-28 relative bg-[#1BC0001A] flex items-center justify-center rounded-full'>
                     <Image
                         src={emailIcon}

@@ -149,3 +149,13 @@
     @apply bg-blue-gradient w-full flex items-center justify-center;
   }
 }
+
+.hide-cross-dialog .lucide,
+.hide-cross-dialog .lucide-x {
+  display: none !important;
+}
+
+.hide-cross-dialog .ring-offset-background {
+  --tw-ring-offset-color: white;
+  --tw-ring-color: white;
+}

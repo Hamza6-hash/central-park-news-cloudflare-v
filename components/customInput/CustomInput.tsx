@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import {
     FormControl,
     FormField,
@@ -19,6 +19,7 @@ interface CustomInputProps<T extends ZodType<any, any>> {
     type?: string;
     fieldClassName?: string;
     schema: T; // Pass the schema as a prop
+    onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
 // Define the CustomInput component at the file level
@@ -29,7 +30,8 @@ const CustomInput = <T extends ZodType<any, any>>({
     placeholder,
     type = 'text',
     fieldClassName,
-    schema
+    schema,
+    onChange
 }: CustomInputProps<T>) => {
     return (
         <FormField
@@ -45,6 +47,7 @@ const CustomInput = <T extends ZodType<any, any>>({
                             <Input
                                 placeholder={placeholder}
                                 className={`input-class ${fieldClassName}`}
+                                onChangeCapture={onChange}
                                 type={type}
                                 {...field}
                             />
