@@ -1,7 +1,7 @@
 "use client"
 
 import TopStories from "@/components/topStories/TopStories";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { contactFormSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -36,6 +36,16 @@ const Contacts = () => {
         } finally {
         }
     };
+
+    useEffect(() => {
+        let timer: number | NodeJS.Timeout;;
+        if (openDialog) {
+            timer = setTimeout(() => {
+                setOpenDialog(false);
+            }, 2000); // Auto close 
+        }
+        return () => clearTimeout(timer);
+    }, [openDialog]);
 
     return (
         <section className="flex xl:gap-5 gap-8 max-xl:flex-col">

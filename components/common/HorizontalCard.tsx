@@ -7,7 +7,7 @@ const HorizontalCard = () => {
     const delLater = 'Derek Chauvin was found guilty on the three charges he faced — second-degree murder, third-degree murder, and second-degree manslaughter..'
 
     return (
-        <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 hover:shadow-top-news hover:p-3 rounded-lg">
+        <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 hover:shadow-top-news hover:p-3 rounded-lg cursor-pointer">
             <div className="md:w-[204px]">
                 <Image src={DummyImg} alt={"new image"} className="md:max-w-[204px] md:h-[183px]" width={800} quality={100} objectFit="cover" />
             </div>
