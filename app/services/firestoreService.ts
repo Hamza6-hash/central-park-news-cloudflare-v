@@ -1,19 +1,17 @@
 import { db } from '@/lib/firebaseConfig';
-import { log } from 'console';
 import {
   collection,
   query,
   where,
   getDocs,
   addDoc,
-  updateDoc,
   orderBy,
-  deleteDoc,
   limit,
   doc,
   getDoc,
   WhereFilterOp
 } from 'firebase/firestore';
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
 interface Article {
   imageURL: string | StaticImport;
@@ -250,8 +248,6 @@ export const fireServices = {
         author
       };
     }));
-    console.log(articlesWithDetails);
-
     return articlesWithDetails;
   }
 };
