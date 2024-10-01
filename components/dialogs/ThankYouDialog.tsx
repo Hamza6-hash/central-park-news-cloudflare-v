@@ -26,7 +26,7 @@ const ThankYouDialog = ({ openDialog, setOpenDialog }: ThankYouDialogProps) => {
                         height={75}
                         width={75}
                         quality={100}
-                        objectFit="cover"
+                        style={{ objectFit: "cover" }}
                     />
                 </div>
                 <p className='text-primary-900 text-sm text-center'>Thank you for contacting us! We have received your message and will get back to you as soon as possible.</p>

@@ -20,7 +20,7 @@ const Navbar = () => {
                     <Image
                         src={Logo}
                         quality={100}
-                        objectFit="cover"
+                        style={{ objectFit: "cover" }}
                         height={60}
                         width={120}
                         alt='Horizon logo'
@@ -30,12 +30,12 @@ const Navbar = () => {
             </div>
 
             <nav className="justify-center lg:flex hidden items-center gap-28">
-                {navbarLinks.map((item) => {
+                {navbarLinks.map((item, index) => {
                     const isActive =
                         pathName === item.route || pathName.startsWith(`${item.route}/`);
 
                     return (
-                        <React.Fragment key={item.label}>
+                        <React.Fragment key={index}>
                             {item.imgURL !== "" ? (
                                 <Link href={item.route} className="relative  lg:block hidden xl:px-10 px-0">
                                     <Image

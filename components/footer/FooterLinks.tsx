@@ -13,12 +13,12 @@ const FooterLinks = () => {
         <div className="flex flex-col justify-center items-center gap-2">
             <h4 className="font-bold text-primary-900 uppercase">LINKS</h4>
             <div className="flex sm:flex-row flex-col items-center gap-3">
-                {navbarLinks.map((item) => {
+                {navbarLinks.map((item, index) => {
                     const isActive =
                         pathName === item.route || pathName.startsWith(`${item.route}/`);
 
                     return (
-                        <>
+                        <React.Fragment key={index}>
                             {!item.imgURL && <Link href={item.route} key={item.label}>
                                 <p className={cn("footer-label", {
                                     "!font-bold": isActive,
@@ -26,7 +26,7 @@ const FooterLinks = () => {
                                     {item.label}
                                 </p>
                             </Link>}
-                        </>
+                        </React.Fragment>
                     );
                 })}
             </div>

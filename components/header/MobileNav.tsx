@@ -38,11 +38,11 @@ const MobileNav = () => {
                     <div className="mobilenav-sheet">
                         <SheetClose asChild>
                             <nav className="flex h-full flex-col gap-6 pt-8 text-white">
-                                {navbarLinks.map((item) => {
+                                {navbarLinks.map((item, index) => {
                                     const isActive = pathName === item.route || pathName.startsWith(`${item.route}/`)
 
                                     return (
-                                        <>
+                                        <React.Fragment key={index}>
                                             {!item.imgURL && <SheetClose asChild key={item.label}>
                                                 <Link href={item.route} className={cn(
                                                     'mobilenav-sheet_close w-full',
@@ -55,7 +55,7 @@ const MobileNav = () => {
                                                     </p>
                                                 </Link>
                                             </SheetClose>}
-                                        </>
+                                        </React.Fragment>
                                     )
                                 })}
 

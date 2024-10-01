@@ -66,7 +66,7 @@ export default function Home() {
             alt="new image"
             width={1200}
             quality={100}
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
           />
           <div className="flex items-center text-lg max-sm:text-xs gap-2 px-sm-generic">
             <hr className="w-6 h-1" />
@@ -105,9 +105,9 @@ export default function Home() {
         <div className="my-10 max-md:flex max-md:flex-col max-md:items-center max-md:justify-center">
           <p className="font-bold mb-2">Share This:</p>
           <div className="flex gap-4">
-            {socialMediaArray.map((item) => {
+            {socialMediaArray.map((item, index) => {
               return (
-                <React.Fragment key={item.link}>
+                <React.Fragment key={index}>
                   <SocialMediaTag icon={item.icon} link={item.link} />
                 </React.Fragment>
               );
