@@ -6,6 +6,7 @@ import avatar from "@/assets/avatar@2x.png";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebookSquare } from "react-icons/fa";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+// import { fireServices } from "@/app/services/firestoreService";
 
 const SocialMediaTag = ({ icon, link }: SocialMedia) => {
     return (
@@ -25,6 +26,17 @@ const socialMediaArray = [
         link: ''
     },
 ]
+
+// const Articles = async () => {
+//     const articles = await fireServices.getArticles(10);
+//     return (
+//         <div>
+//             {articles.map((article) => (
+//                 <div key={article.id}>{article.title}</div>
+//             ))}
+//         </div>
+//     )
+// }
 
 const DynamicBlog = ({ showWritter = true, mainHeading }: DynamicBlog) => {
     return (
