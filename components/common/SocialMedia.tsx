@@ -34,9 +34,9 @@ const SocialMedia = () => {
 
     return (
         <section className="flex gap-[15px]">
-            {socialMediaArray.map((item) => {
+            {socialMediaArray.map((item, index) => {
 
-                return (<React.Fragment key={item.link}>
+                return (<React.Fragment key={index}>
                     <SocialMediaTag icon={item.icon} link={item.link} />
                 </React.Fragment>)
             })}

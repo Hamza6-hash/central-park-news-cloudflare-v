@@ -43,7 +43,7 @@ const DynamicBlog = ({ showWritter = true, mainHeading }: DynamicBlog) => {
                         <h1 className="font-century-schoolbook text-3xl  max-md:text-center capitalize">Oligarch Son Told to Pay Mom</h1>
                     </div>
 
-                    <Image src={DummyImg} alt="new image" height={700} objectFit="cover" />
+                    <Image src={DummyImg} alt="new image" height={700} style={{ objectFit: "cover" }} />
                     <div className="flex items-center sm:text-lg text-sm px-sm-generic gap-2">
                         <hr className="w-6 h-1" />
                         <h6 className="capitalize">Docket Digest News Room</h6>
@@ -62,7 +62,7 @@ const DynamicBlog = ({ showWritter = true, mainHeading }: DynamicBlog) => {
                     {showWritter === true && <div className="flex gap-2 flex-col max-sm:justify-center max-sm:items-center">
                         <h4 className="text-lg">Written By:</h4>
                         <div className="w-12 h-12 relative rounded-full">
-                            <Image src={avatar} alt="new image" fill objectFit="cover" />
+                            <Image src={avatar} alt="new image" fill style={{ objectFit: "cover" }} />
                         </div>
                         <div className='font-century-gothic  max-sm:text-center text-lg'>
                             <p>Jane Doe</p>
@@ -73,9 +73,9 @@ const DynamicBlog = ({ showWritter = true, mainHeading }: DynamicBlog) => {
                     <div className="">
                         <p className="text-lg mb-2">Share This:</p>
                         <div className="flex gap-4">
-                            {socialMediaArray.map((item) => {
+                            {socialMediaArray.map((item, index) => {
 
-                                return (<React.Fragment key={item.link}>
+                                return (<React.Fragment key={index}>
                                     <SocialMediaTag icon={item.icon} link={item.link} />
                                 </React.Fragment>)
                             })}
