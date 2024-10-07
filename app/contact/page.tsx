@@ -32,7 +32,7 @@ const Contacts = () => {
         try {
             setOpenDialog(true);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         } finally {
         }
     };
@@ -88,7 +88,7 @@ const Contacts = () => {
                 </Form>
             </div>
             <div className="xl:w-[518px]">
-                <TopStories showViewMore={true} />
+                <TopStories />
             </div>
 
             <ThankYouDialog openDialog={openDialog} setOpenDialog={setOpenDialog} />

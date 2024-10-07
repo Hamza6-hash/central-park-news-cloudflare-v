@@ -4,12 +4,29 @@ import { usePathname } from "next/navigation";
 import { routes } from "@/constants";
 import { Button } from "../button/Button";
 import { fireServices } from "@/app/services/firestoreService";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import DummyImg from "@/assets/Rectangle-4.png";
+import Link from "next/link";
 
-
-const TopStories = ({ showViewMore = false }: TopStories) => {
-    let delLater = showViewMore ? [1, 2] : [1, 2, 3, 4, 5, 6, 7, 8];
+const TopStories = () => {
     const pathName = usePathname();
-    const activeRoute = pathName === routes.contact || pathName.startsWith(`${routes.contact}/`);
+    const isContactPage = pathName === routes.contact;
+
+    const { data: articles, error } = useQuery({
+        queryKey: ["getFirstFewArticles"],
+        queryFn: () => fireServices.getArticles(10),
+        placeholderData: keepPreviousData,
+    });
+
+    if (error) {
+        console.error("Error fetching articles:", error);
+    }
+
+    // Update delLater based on the current page
+    const displayedArticles = isContactPage ? articles?.slice(0, 2) : articles;
+
+    // Check if we should show the "VIEW MORE" button
+    const showViewMoreButton = isContactPage && articles && articles?.length > 2;
 
     return (
         <div className="px-sm-generic">
@@ -35,14 +52,22 @@ Looking ahead…the deal is subject to regulatory approval—though Morrow said 
                 TOP <span className="text-primary-500">10</span> STORIES
             </h2>
             <div className="flex flex-col xl:gap-5 sm:gap-7 gap-8">
-                {delLater.map((item, index) => (
+                {displayedArticles?.map((article, index) => (
                     <React.Fragment key={index}>
-                        <HorizontalCard />
+                        <Link href={`/articles/${article?.id}`}>
+                            <HorizontalCard
+                                title={article?.title}
+                                imageURL={article?.imageURL ? article.imageURL : DummyImg}
+                                authorName={article?.author?.author_name || ""}
+                                publishDate={article?.publishDate}
+                                content={article?.content}
+                            />
+                        </Link>
                     </React.Fragment>
                 ))}
             </div>
 
-            {showViewMore && (
+            {showViewMoreButton && (
                 <div className="flex justify-end items-end mt-6">
                     <button className="uppercase text-primary-900  transition-colors duration-300 hover:text-yellow-500 font-bold text-sm xl:block hidden">
                         VIEW MORE

@@ -7,6 +7,7 @@ import { FaFacebookSquare } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import { ArticleWithDetails, fireServices } from "@/app/services/firestoreService";
 import { Timestamp } from 'firebase/firestore';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 const SocialMediaTag = ({ icon, link }: SocialMedia) => {
   return (
@@ -36,23 +37,19 @@ const formatDate = (timestamp: any) => {
 
 
 export default function Home() {
-  const [articles, setArticles] = useState<ArticleWithDetails[]>([]); // Initialize correctly
+  const { data: articles, error } = useQuery<ArticleWithDetails[]>({
+    queryKey: ['featuredArticles'],
+    queryFn: fireServices.getFeaturedArticles,
+    placeholderData: keepPreviousData,
+  });
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const fetchedArticles = await fireServices.getFeaturedArticles(); // Ensure this returns an array
-        setArticles(fetchedArticles);
-      } catch (error) {
-        console.error('Error fetching articles:', error);
-      }
-    };
+  if (error) {
+    console.error('Error fetching articles:', error);
+  }
 
-    fetchArticles();
-  }, []);
   return (
     <section className="flex gap-9 max-xl:flex-col w-full">
-      {articles.map((article: any) => (
+      {articles?.map((article: any) => (
         <div key={article.id}>
           <div className="xl:w-[644px] max-w-full">
             <div className="space-y-3 mb-4">

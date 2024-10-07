@@ -13,21 +13,21 @@ export const navbarLinks = [
     route: routes.home,
     label: "Home",
   },
-  {
-    imgURL: "",
-    route: routes.articles,
-    label: "Articles",
-  },
+  // {
+  //   imgURL: "",
+  //   route: routes.articles,
+  //   label: "Articles",
+  // },
   {
     imgURL: Logo,
     route: routes.home,
     label: "logo",
   },
-  {
-    imgURL: "",
-    route: routes.blogs,
-    label: "Blogs",
-  },
+  // {
+  //   imgURL: "",
+  //   route: routes.blogs,
+  //   label: "Blogs",
+  // },
   {
     imgURL: "",
     route: routes.contact,

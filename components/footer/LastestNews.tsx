@@ -1,8 +1,23 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import VerticalCard from "../common/VerticalCard";
 import { GoArrowRight } from "react-icons/go";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { fireServices } from "@/app/services/firestoreService";
+import DummyImg from "@/assets/Rectangle-4.png";
 
 const LastestNews = () => {
+    const [limit, setLimit] = useState(5);
+
+    const { data: articles, error } = useQuery({
+        queryKey: ["getArticlesWithOffset", limit],
+        queryFn: () => fireServices.getArticlesWithOffset(10, limit),
+        placeholderData: keepPreviousData,
+    });
+
+    if (error) {
+        console.error("Error fetching articles:", error);
+    }
+
     const productContainerRef = useRef<HTMLDivElement>(null);
 
     const slideLeft = () => {
@@ -12,10 +27,15 @@ const LastestNews = () => {
     };
 
     const slideRight = () => {
+        if (articles && articles.length === limit)
+            setLimit((prevLimit) => prevLimit + 1);
         if (productContainerRef.current) {
+            setLimit((prevLimit) => prevLimit + 1);
             productContainerRef.current.scrollLeft += 230;
         }
     };
+
+    if (!articles?.length) return;
 
     return (
         <section className="lastestNews py-[58px] px-generic">
@@ -28,9 +48,15 @@ const LastestNews = () => {
                         ref={productContainerRef}
                         className="w-full flex gap-4 overflow-x-scroll hide-scrollbar mx-auto py-1"
                     >
-                        {[1, 2, 3, 4, 5, 6, 7].map((item, index) => (
+                        {articles?.map((article, index) => (
                             <React.Fragment key={index}>
-                                <VerticalCard />
+                                <VerticalCard
+                                    title={article?.title}
+                                    imageURL={article?.imageURL ? article.imageURL : DummyImg}
+                                    authorName={article?.author?.author_name || ""}
+                                    publishDate={article?.publishDate}
+                                    articleId={article?.id}
+                                />
                             </React.Fragment>
                         ))}
                     </div>
