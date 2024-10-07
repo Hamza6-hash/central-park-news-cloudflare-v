@@ -1,11 +1,18 @@
 import DynamicBlog from "@/components/common/DynamicBlog";
 import React from "react";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import DummyImg from "@/assets/Rectangle-2.png";
 
 const Articles = () => {
     return (
         <>
-            <DynamicBlog mainHeading='Articles' />
+            <DynamicBlog
+                mainHeading='Articles'
+                title={""}
+                imageURL={DummyImg}
+                authorName={""}
+                publishDate={null}
+                content={""}
+            />
         </>
     );
 };

@@ -3,6 +3,7 @@ import "./globals.css";
 import { Montserrat } from 'next/font/google';
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
+import QueryProviders from '@/ReatQuery/provider';
 
 const montserratFont = Montserrat({
   weight: ['300', '400', '500', '600', '700'],
@@ -25,16 +26,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-montserrat">
-        <Header />
-        <main className="flex items-center justify-center md:px-generic pageTopBottonMargin overflow-hidden">
-          <div className="max-width">
-            <div className="max-md:flex max-md:justify-center max-md:items-center">
-              <hr className="w-64 h-0.5 mb-2 bg-gray-200" />
+        <QueryProviders>
+          <Header />
+          <main className="flex items-center justify-center md:px-generic pageTopBottonMargin overflow-hidden">
+            <div className="max-width">
+              <div className="max-md:flex max-md:justify-center max-md:items-center">
+                <hr className="w-64 h-0.5 mb-2 bg-gray-200" />
+              </div>
+              {children}
             </div>
-            {children}
-          </div>
-        </main>
-        <Footer />
+          </main>
+          <Footer />
+        </QueryProviders>
       </body>
     </html>
   );

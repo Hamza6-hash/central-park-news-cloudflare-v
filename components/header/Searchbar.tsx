@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { fireServices } from "@/app/services/firestoreService";
 import { ArticleWithDetails } from "@/app/services/firestoreService"; // Make sure to export this interface
+import Link from "next/link";
 
 const Searchbar = () => {
     const pathName = usePathname();
@@ -41,7 +42,7 @@ const Searchbar = () => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Search articles..."
-                            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                         />
                         <button onClick={handleSearch} disabled={isSearching}>
                             <IoIosSearch color="white" size={25} />
@@ -53,13 +54,20 @@ const Searchbar = () => {
                         <h3 className="text-lg font-bold mb-2">Search Results:</h3>
                         <ul>
                             {searchResults.map((article) => (
-                                <li key={article.id} className="mb-2">
-                                    <h4 className="font-semibold">{article.title}</h4>
-                                    <p className="text-sm text-gray-600">
-                                        Category: {article.category?.name || 'N/A'} |
-                                        Author: {article.author?.name || 'N/A'}
-                                    </p>
-                                </li>
+                                <React.Fragment key={article.id}>
+                                    <Link href={`/articles/${article?.id}`} onClick={() => {
+                                        setSearchTerm('');
+                                        setSearchResults([])
+                                    }}>
+                                        <li className="mb-2">
+                                            <h4 className="font-semibold">{article.title}</h4>
+                                            <p className="text-sm text-gray-600">
+                                                Category: {article.category?.name || 'N/A'} |
+                                                Author: {article.author?.name || 'N/A'}
+                                            </p>
+                                        </li>
+                                    </Link>
+                                </React.Fragment>
                             ))}
                         </ul>
                     </div>

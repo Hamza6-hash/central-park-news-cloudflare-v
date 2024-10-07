@@ -16,8 +16,35 @@ declare type TopStories = {
 declare type DynamicBlog = {
   showWritter?: boolean;
   mainHeading: string;
-}
+  title: string;
+  imageURL: string | StaticImport;
+  authorName: string;
+  publishDate: PublishDateType;
+  content: string;
+};
 
 declare type BlogsCard = {
   showDateTimeInRow?: boolean;
-}
+};
+
+type PublishDateType =
+  | { seconds: number; nanoseconds: number } // Firestore timestamp
+  | Date
+  | string
+  | null;
+
+declare type HorizontalCard = {
+  title: string;
+  imageURL: string | StaticImport;
+  authorName: string;
+  publishDate: PublishDateType;
+  content: string;
+};
+
+declare type VerticalCard = {
+  title: string;
+  imageURL: string | StaticImport;
+  authorName: string;
+  publishDate: PublishDateType;
+  articleId: string;
+};

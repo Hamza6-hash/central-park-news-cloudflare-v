@@ -5,18 +5,18 @@ import LastestNews from "./LastestNews";
 import PopularLinks from "./PopularLinks";
 import SocialMedia from "../common/SocialMedia";
 import FooterLinks from "./FooterLinks";
-import SuggestedBlogs from "../suggestedBlogs/SuggestedBlogs";
+// import SuggestedBlogs from "../suggestedBlogs/SuggestedBlogs";
 import { usePathname } from "next/navigation";
-import { routes } from "@/constants";
+// import { routes } from "@/constants";
 
 const Footer = () => {
     const pathName = usePathname();
-    const showSuggestedBlogs =
-        pathName.startsWith(`${routes.blogs}/`) || pathName === routes.articles || pathName.startsWith(`${routes.articles}/`);
+    // const showSuggestedBlogs =
+    //     pathName.startsWith(`${routes.blogs}/`) || pathName === routes.articles || pathName.startsWith(`${routes.articles}/`);
 
     return (
         <footer className="">
-            {showSuggestedBlogs && <SuggestedBlogs />}
+            {/* {showSuggestedBlogs && <SuggestedBlogs />} */}
             <LastestNews />
             <PopularLinks />
 
