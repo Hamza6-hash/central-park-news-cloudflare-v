@@ -7,19 +7,56 @@ import { fireServices } from "@/app/services/firestoreService";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import DummyImg from "@/assets/Rectangle-4.png";
 import Link from "next/link";
+import { collection, getDocs } from "firebase/firestore";
+// import { db } from "@/app/config/firebase";
+import { db } from "@/lib/firebaseConfig";
 
 const TopStories = () => {
     const pathName = usePathname();
     const isContactPage = pathName === routes.contact;
 
-    const { data: articles, error } = useQuery({
-        queryKey: ["getFirstFewArticles"],
-        queryFn: () => fireServices.getArticles(10),
+    const { data: articles, error, isLoading } = useQuery({
+        queryKey: ["getAllArticles"],
+        queryFn: async () => {
+            try {
+                const articlesRef = collection(db, "blog/blockchainBriefing/articles");
+                const snapshot = await getDocs(articlesRef);
+                const articlesData = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                return articlesData;
+            } catch (error) {
+                console.error("Error fetching articles:", error);
+                throw error;
+            }
+        },
         placeholderData: keepPreviousData,
     });
 
     if (error) {
         console.error("Error fetching articles:", error);
+        return (
+            <div className="px-sm-generic">
+                <h2 className="font-bold text-2xl mb-4">
+                    TOP <span className="text-primary-500">STORIES</span>
+                </h2>
+                <div className="text-red-500">Error loading articles. Please try again later.</div>
+            </div>
+        );
+    }
+
+    if (isLoading) {
+        return (
+            <div className="px-sm-generic">
+                <h2 className="font-bold text-2xl mb-4">
+                    TOP <span className="text-primary-500">STORIES</span>
+                </h2>
+                <div className="flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+                </div>
+            </div>
+        );
     }
 
     // Update delLater based on the current page
@@ -49,18 +86,18 @@ Looking ahead…the deal is subject to regulatory approval—though Morrow said 
                 });
             }}>Add Article</button> */}
             <h2 className="font-bold text-2xl mb-4">
-                TOP <span className="text-primary-500">10</span> STORIES
+                TOP <span className="text-primary-500">STORIES</span>
             </h2>
             <div className="flex flex-col xl:gap-5 sm:gap-7 gap-8">
-                {displayedArticles?.map((article, index) => (
-                    <React.Fragment key={index}>
-                        <Link href={`/articles/${article?.id}`}>
+                {displayedArticles?.map((article) => (
+                    <React.Fragment key={article.id}>
+                        <Link href={`/articles/${article.id}`}>
                             <HorizontalCard
-                                title={article?.title}
-                                imageURL={article?.imageURL ? article.imageURL : DummyImg}
-                                authorName={article?.author?.author_name || ""}
-                                publishDate={article?.publishDate}
-                                content={article?.content}
+                                title={article.title}
+                                imageURL={article.imageURL || DummyImg}
+                                authorName={article.authorId || "Unknown Author"}
+                                publishDate={article.publishDate}
+                                content={article.content}
                             />
                         </Link>
                     </React.Fragment>
@@ -69,7 +106,7 @@ Looking ahead…the deal is subject to regulatory approval—though Morrow said 
 
             {showViewMoreButton && (
                 <div className="flex justify-end items-end mt-6">
-                    <button className="uppercase text-primary-900  transition-colors duration-300 hover:text-yellow-500 font-bold text-sm xl:block hidden">
+                    <button className="uppercase text-primary-900 transition-colors duration-300 hover:text-yellow-500 font-bold text-sm xl:block hidden">
                         VIEW MORE
                     </button>
                     <Button
