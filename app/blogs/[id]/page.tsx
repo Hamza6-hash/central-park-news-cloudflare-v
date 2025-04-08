@@ -13,6 +13,7 @@ const page = () => {
                 content={""}
                 showWritter={false}
                 mainHeading="Blog"
+                articleId="dummy-id"
             />
         </>
     );

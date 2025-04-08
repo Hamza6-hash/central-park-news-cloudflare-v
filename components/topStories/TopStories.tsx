@@ -11,11 +11,23 @@ import { collection, getDocs } from "firebase/firestore";
 // import { db } from "@/app/config/firebase";
 import { db } from "@/lib/firebaseConfig";
 
+interface Article {
+    id: string;
+    title?: string;
+    content?: string;
+    authorId?: string;
+    publishDate?: any;
+    imageURL?: string;
+    tags?: string;
+    categoryId?: string;
+    featuredArticle?: boolean;
+}
+
 const TopStories = () => {
     const pathName = usePathname();
     const isContactPage = pathName === routes.contact;
 
-    const { data: articles, error, isLoading } = useQuery({
+    const { data: articles, error, isLoading } = useQuery<Article[]>({
         queryKey: ["getAllArticles"],
         queryFn: async () => {
             try {
@@ -24,7 +36,7 @@ const TopStories = () => {
                 const articlesData = snapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
-                }));
+                })) as Article[];
                 return articlesData;
             } catch (error) {
                 console.error("Error fetching articles:", error);
@@ -93,11 +105,11 @@ Looking ahead…the deal is subject to regulatory approval—though Morrow said 
                     <React.Fragment key={article.id}>
                         <Link href={`/articles/${article.id}`}>
                             <HorizontalCard
-                                title={article.title}
+                                title={article.title || "-"}
                                 imageURL={article.imageURL || DummyImg}
                                 authorName={article.authorId || "Unknown Author"}
                                 publishDate={article.publishDate}
-                                content={article.content}
+                                content={article.content || "-"}
                             />
                         </Link>
                     </React.Fragment>

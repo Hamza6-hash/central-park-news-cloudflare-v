@@ -9,16 +9,18 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { format } from "date-fns";
 import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
+import { StaticImageData } from "next/image";
 
 interface DynamicBlog {
     showWritter?: boolean;
     mainHeading?: string;
     title: string;
-    imageURL?: string;
+    imageURL?: string | StaticImageData;
     authorName: string;
     publishDate: any;
     content: string;
     articleId: string;
+    isArticlePage?: boolean;
 }
 
 interface SocialMedia {
@@ -54,6 +56,7 @@ const DynamicBlog = ({
     publishDate,
     content,
     articleId,
+    isArticlePage = false,
 }: DynamicBlog) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
 
@@ -72,16 +75,24 @@ const DynamicBlog = ({
             <div className="mt-14">
                 <div className="space-y-3 mb-4">
                     <div className="px-sm-generic">
-                        <Link href={`/articles/${articleId}`}>
-                            <h1 className="font-century-schoolbook text-3xl  max-md:text-center capitalize hover:text-primary-500 transition-colors">
+                        {isArticlePage ? (
+                            <h1 className="font-century-schoolbook text-3xl max-md:text-center capitalize">
                                 {title}
                             </h1>
-                        </Link>
+                        ) : (
+                            <Link href={`/articles/${articleId}`}>
+                                <h1 className="font-century-schoolbook text-3xl max-md:text-center capitalize hover:text-primary-500 transition-colors">
+                                    {title}
+                                </h1>
+                            </Link>
+                        )}
                     </div>
 
                     <Image
-                        src={imageURL || DummyImg}
+                        src={imageURL || 'no-img'}
                         alt="new image"
+                        // fill
+                        width={1000}
                         height={700}
                         style={{ objectFit: "cover" }}
                     />

@@ -151,10 +151,12 @@ const Page = (props: PageProps) => {
         <DynamicBlog
             mainHeading="Articles"
             title={article.title || '-'}
-            imageURL={article.imageURL || DummyImg}
+            imageURL={article.imageURL || 'no-img'}
             authorName={authorName}
             publishDate={formattedDate || null}
             content={article.content || '-'}
+            articleId={article.id || '-'}
+            isArticlePage={true}
         />
     );
 };

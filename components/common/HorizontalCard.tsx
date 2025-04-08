@@ -3,6 +3,15 @@ import Image from "next/image";
 import TruncateText from "./TruncateProps";
 import { format } from "date-fns";
 import { formatedDate } from "@/lib/utils";
+import { StaticImageData } from "next/image";
+
+interface HorizontalCard {
+    title?: string;
+    imageURL: string | StaticImageData;
+    authorName?: string;
+    publishDate?: any;
+    content?: string;
+}
 
 const HorizontalCard = ({
     title,
@@ -18,6 +27,8 @@ const HorizontalCard = ({
             <div className="md:w-[204px]">
                 <Image
                     src={imageURL}
+                    // fill
+                    height={800}
                     alt={"new image"}
                     className="md:max-w-[204px] md:h-[183px]"
                     width={800}

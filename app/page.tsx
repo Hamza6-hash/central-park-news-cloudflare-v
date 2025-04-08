@@ -137,9 +137,10 @@ export default function Home() {
                     </Link>
 
                     <Image
-                        src={article.imageURL || DummyImage}
+                        src={article.imageURL || 'no-image'}
                         alt="Description of image"
                         width={1200}
+                        // fill
                         height={800}
                         quality={100}
                         style={{ objectFit: 'cover' }}

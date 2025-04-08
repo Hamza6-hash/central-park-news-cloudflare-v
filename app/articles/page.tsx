@@ -4,7 +4,7 @@ import DynamicBlog from "@/components/common/DynamicBlog";
 import React, { useEffect, useState } from "react";
 import DummyImg from "@/assets/Rectangle-2.png";
 import { db } from '@/lib/firebaseConfig';
-import { collection, getDocs, doc, getDoc, query, where } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, query, where, Query, DocumentData, DocumentReference } from 'firebase/firestore';
 import { format } from 'date-fns';
 
 interface Article {
@@ -72,7 +72,7 @@ const Articles = () => {
         }
 
         const articlesRef = collection(db, 'blog/blockchainBriefing/articles');
-        let articlesQuery = articlesRef;
+        let articlesQuery: Query<DocumentData, DocumentData> = articlesRef;
 
         if (selectedCategory !== 'all') {
           articlesQuery = query(articlesRef, where('categoryId', '==', selectedCategory));
@@ -87,8 +87,8 @@ const Articles = () => {
         }
 
         const articlesData = await Promise.all(
-          articlesSnapshot.docs.map(async (doc) => {
-            const articleData = doc.data() as Article;
+          articlesSnapshot.docs.map(async (articleDoc) => {
+            const articleData = articleDoc.data() as Article;
             let authorName = 'Unknown Author';
             let formattedDate = '';
 
@@ -116,7 +116,7 @@ const Articles = () => {
 
             return {
               ...articleData,
-              id: doc.id,
+              id: articleDoc.id,
               authorName,
               formattedDate
             };
@@ -214,7 +214,7 @@ const Articles = () => {
             key={article.id}
             mainHeading='Articles'
             title={article.title || ''}
-            imageURL={article.imageURL as string || DummyImg}
+            imageURL={article.imageURL}
             authorName={article.authorName}
             publishDate={article.formattedDate || null}
             content={article.content || ''}
