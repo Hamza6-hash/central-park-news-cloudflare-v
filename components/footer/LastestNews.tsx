@@ -4,19 +4,74 @@ import { GoArrowRight } from "react-icons/go";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fireServices } from "@/app/services/firestoreService";
 import DummyImg from "@/assets/Rectangle-4.png";
+import { db } from '@/lib/firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
+import { formatedDate } from '@/lib/utils';
+
+interface News {
+    id: string;
+    title: string;
+    content: string;
+    imageURL?: string;
+    author: string;
+    date: any;
+}
 
 const LastestNews = () => {
     const [limit, setLimit] = useState(5);
+    const [news, setNews] = useState<News[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const { data: articles, error } = useQuery({
-        queryKey: ["getArticlesWithOffset", limit],
-        queryFn: () => fireServices.getArticlesWithOffset(10, limit),
-        placeholderData: keepPreviousData,
-    });
+    const fetchNews = async () => {
+        try {
+            setLoading(true);
+            setError(null);
 
-    if (error) {
-        console.error("Error fetching articles:", error);
-    }
+            // Check if database is available
+            if (!db) {
+                throw new Error('Database connection is not available');
+            }
+
+            // Fetch news from the newsletter collection
+            const newsRef = collection(db, 'blog/blockchainBriefing/newsletter');
+            console.log('Fetching news from:', 'blog/blockchainBriefing/newsletter');
+            
+            const newsSnapshot = await getDocs(newsRef);
+            console.log('Raw news data:', newsSnapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            })));
+            
+            if (newsSnapshot.empty) {
+                console.log('No news found in the collection');
+                setError('No news available at the moment.');
+                setLoading(false);
+                return;
+            }
+
+            // Process news
+            const processedNews = newsSnapshot.docs.map((newsDoc) => {
+                const newsData = newsDoc.data() as News;
+                return {
+                    ...newsData,
+                    id: newsDoc.id,
+                    date: formatedDate(newsData.date)
+                };
+            });
+
+            setNews(processedNews);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching news:', error);
+            setError('Failed to load news. Please try again later.');
+            setLoading(false);
+        }
+    };
+
+    React.useEffect(() => {
+        fetchNews();
+    }, []);
 
     const productContainerRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +82,7 @@ const LastestNews = () => {
     };
 
     const slideRight = () => {
-        if (articles && articles.length === limit)
+        if (news && news.length === limit)
             setLimit((prevLimit) => prevLimit + 1);
         if (productContainerRef.current) {
             setLimit((prevLimit) => prevLimit + 1);
@@ -35,7 +90,23 @@ const LastestNews = () => {
         }
     };
 
-    if (!articles?.length) return;
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center py-[58px]">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="py-[58px] px-generic text-center text-red-500">
+                {error}
+            </div>
+        );
+    }
+
+    if (!news?.length) return null;
 
     return (
         <section className="lastestNews py-[58px] px-generic">
@@ -48,14 +119,14 @@ const LastestNews = () => {
                         ref={productContainerRef}
                         className="w-full flex gap-4 overflow-x-scroll hide-scrollbar mx-auto py-1"
                     >
-                        {articles?.map((article, index) => (
+                        {news?.slice(0, limit).map((newsItem, index) => (
                             <React.Fragment key={index}>
                                 <VerticalCard
-                                    title={article?.title}
-                                    imageURL={article?.imageURL ? article.imageURL : DummyImg}
-                                    authorName={article?.author?.author_name || ""}
-                                    publishDate={article?.publishDate}
-                                    articleId={article?.id}
+                                    title={newsItem?.title}
+                                    imageURL={newsItem?.imageURL ? newsItem.imageURL : DummyImg}
+                                    authorName={newsItem?.author || ""}
+                                    publishDate={newsItem?.date}
+                                    articleId={newsItem?.id}
                                 />
                             </React.Fragment>
                         ))}

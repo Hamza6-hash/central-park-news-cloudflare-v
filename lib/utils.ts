@@ -21,12 +21,36 @@ export const contactFormSchema = () => {
   });
 };
 
-export const formatedDate = (date: any, formatString: string) => {
-  if (typeof date === "object" && date && "seconds" in date) {
-    const dateObject = new Date(
-      date.seconds * 1000 + date.nanoseconds / 1000000
-    );
-    return format(dateObject, formatString);
+export const formatedDate = (date: any, formatString: string = 'MMM dd, yyyy'): string => {
+  if (!date) return '';
+
+  try {
+    let dateToFormat: Date | null = null;
+
+    // If it's a Firestore timestamp
+    if (date.toDate) {
+      dateToFormat = date.toDate();
+    }
+    // If it's a string that can be parsed to a date
+    else if (typeof date === 'string') {
+      const parsedDate = new Date(date);
+      if (!isNaN(parsedDate.getTime())) {
+        dateToFormat = parsedDate;
+      }
+    }
+    // If it's already a Date object
+    else if (date instanceof Date) {
+      dateToFormat = date;
+    }
+
+    // Only format if we have a valid date
+    if (dateToFormat && !isNaN(dateToFormat.getTime())) {
+      return format(dateToFormat, formatString);
+    }
+
+    return '';
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    return '';
   }
-  return format(new Date(date), formatString);
 };

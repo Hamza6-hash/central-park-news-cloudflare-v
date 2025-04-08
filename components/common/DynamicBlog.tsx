@@ -8,6 +8,23 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { format } from "date-fns";
 import { formatedDate } from "@/lib/utils";
+import Link from "next/link";
+
+interface DynamicBlog {
+    showWritter?: boolean;
+    mainHeading?: string;
+    title: string;
+    imageURL?: string;
+    authorName: string;
+    publishDate: any;
+    content: string;
+    articleId: string;
+}
+
+interface SocialMedia {
+    icon: React.ReactNode;
+    link: string;
+}
 
 const SocialMediaTag = ({ icon, link }: SocialMedia) => {
     return (
@@ -30,12 +47,13 @@ const socialMediaArray = [
 
 const DynamicBlog = ({
     showWritter = true,
-    mainHeading,
+    mainHeading = 'Articles',
     title,
     imageURL,
     authorName,
     publishDate,
     content,
+    articleId,
 }: DynamicBlog) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
 
@@ -54,13 +72,15 @@ const DynamicBlog = ({
             <div className="mt-14">
                 <div className="space-y-3 mb-4">
                     <div className="px-sm-generic">
-                        <h1 className="font-century-schoolbook text-3xl  max-md:text-center capitalize">
-                            {title}
-                        </h1>
+                        <Link href={`/articles/${articleId}`}>
+                            <h1 className="font-century-schoolbook text-3xl  max-md:text-center capitalize hover:text-primary-500 transition-colors">
+                                {title}
+                            </h1>
+                        </Link>
                     </div>
 
                     <Image
-                        src={DummyImg}
+                        src={imageURL || DummyImg}
                         alt="new image"
                         height={700}
                         style={{ objectFit: "cover" }}
@@ -89,7 +109,7 @@ const DynamicBlog = ({
                                 />
                             </div>
                             <div className="font-century-gothic  max-sm:text-center text-lg">
-                                <p>Jane Doe</p>
+                                <p>{authorName}</p>
                                 <p className="text-gray-500">
                                     Founder and CEO, Financial Health Network
                                 </p>
@@ -97,17 +117,10 @@ const DynamicBlog = ({
                         </div>
                     )}
 
-                    <div className="">
-                        <p className="text-lg mb-2">Share This:</p>
-                        <div className="flex gap-4">
-                            {socialMediaArray.map((item, index) => {
-                                return (
-                                    <React.Fragment key={index}>
-                                        <SocialMediaTag icon={item.icon} link={item.link} />
-                                    </React.Fragment>
-                                );
-                            })}
-                        </div>
+                    <div className="flex gap-2">
+                        {socialMediaArray.map((item, index) => (
+                            <SocialMediaTag key={index} {...item} />
+                        ))}
                     </div>
                 </div>
             </div>
