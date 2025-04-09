@@ -123,10 +123,10 @@ const LastestNews = () => {
                             <React.Fragment key={index}>
                                 <VerticalCard
                                     title={newsItem?.title}
-                                    imageURL={newsItem?.imageURL ? newsItem.imageURL : DummyImg}
+                                    imageURL={typeof newsItem?.imageURL === 'string' ? newsItem.imageURL : DummyImg.src}
                                     authorName={newsItem?.author || ""}
                                     publishDate={newsItem?.date}
-                                    articleId={newsItem?.id}
+                                    titleSlug={newsItem?.id}
                                 />
                             </React.Fragment>
                         ))}

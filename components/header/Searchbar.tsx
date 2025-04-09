@@ -4,31 +4,54 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { fireServices } from "@/app/services/firestoreService";
-import { ArticleWithDetails } from "@/app/services/firestoreService"; // Make sure to export this interface
+import { ArticleWithDetails } from "@/app/services/firestoreService";
 import Link from "next/link";
 
 const Searchbar = () => {
     const pathName = usePathname();
-    // const router = useRouter();
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState<ArticleWithDetails[]>([]);
     const [isSearching, setIsSearching] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSearch = async () => {
         if (searchTerm.trim() === "") {
             setSearchResults([]);
+            setError(null);
             return;
         }
+
         setIsSearching(true);
+        setError(null);
+
         try {
-            const results = await fireServices.searchArticles(searchTerm);
-            setSearchResults(results);
+            // Convert search term to lowercase for case-insensitive search
+            const normalizedSearchTerm = searchTerm.toLowerCase().trim();
+            const results = await fireServices.searchArticles(normalizedSearchTerm);
+            
+            // Filter results to ensure they contain the search term
+            const filteredResults = results.filter(article => 
+                article.title.toLowerCase().includes(normalizedSearchTerm)
+            );
+
+            if (filteredResults.length === 0) {
+                setError("No articles found matching your search.");
+            } else {
+                setError(null);
+            }
+            setSearchResults(filteredResults);
         } catch (error) {
             console.error("Error searching articles:", error);
+            setError("Failed to search articles. Please try again.");
             setSearchResults([]);
         } finally {
             setIsSearching(false);
         }
+    };
+
+    // Generate slug from title
+    const generateSlug = (title: string) => {
+        return title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     };
 
     return (
@@ -44,26 +67,44 @@ const Searchbar = () => {
                             placeholder="Search articles..."
                             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                         />
-                        <button onClick={handleSearch} disabled={isSearching}>
+                        <button 
+                            onClick={handleSearch} 
+                            disabled={isSearching}
+                            className="disabled:opacity-50"
+                        >
                             <IoIosSearch color="white" size={25} />
                         </button>
                     </div>
                 </div>
+                {isSearching && (
+                    <div className="mt-4 text-center">
+                        <p className="text-gray-600">Searching...</p>
+                    </div>
+                )}
+                {error && (
+                    <div className="mt-4 text-center">
+                        <p className="text-red-500">{error}</p>
+                    </div>
+                )}
                 {searchResults.length > 0 && (
                     <div className="mt-4 bg-white rounded-lg shadow-lg p-4">
                         <h3 className="text-lg font-bold mb-2">Search Results:</h3>
                         <ul>
                             {searchResults.map((article) => (
                                 <React.Fragment key={article.id}>
-                                    <Link href={`/articles/${article?.id}`} onClick={() => {
-                                        setSearchTerm('');
-                                        setSearchResults([])
-                                    }}>
-                                        <li className="mb-2">
+                                    <Link 
+                                        href={`/articles/${article.titleSlug}`} 
+                                        onClick={() => {
+                                            setSearchTerm('');
+                                            setSearchResults([]);
+                                            setError(null);
+                                        }}
+                                    >
+                                        <li className="mb-2 p-2 hover:bg-gray-50 rounded">
                                             <h4 className="font-semibold">{article.title}</h4>
                                             <p className="text-sm text-gray-600">
                                                 Category: {article.category?.name || 'N/A'} |
-                                                Author: {article.author?.name || 'N/A'}
+                                                Author: {article.author?.author_name || 'N/A'}
                                             </p>
                                         </li>
                                     </Link>

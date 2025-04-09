@@ -1,7 +1,7 @@
 import React from "react";
 // import SuggestedBlogs from "@/components/suggestedBlogs/SuggestedBlogs";
 import Image from "next/image";
-import DummyImg from "@/assets/Rectangle-2.png";
+import { StaticImageData } from "next/image";
 import avatar from "@/assets/avatar@2x.png";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebookSquare } from "react-icons/fa";
@@ -9,17 +9,19 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { format } from "date-fns";
 import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
-import { StaticImageData } from "next/image";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
-interface DynamicBlog {
-    showWritter?: boolean;
-    mainHeading?: string;
+interface DynamicBlogProps {
     title: string;
-    imageURL?: string | StaticImageData;
+    imageURL: string | StaticImageData;
     authorName: string;
     publishDate: any;
     content: string;
-    articleId: string;
+    showWritter?: boolean;
+    mainHeading?: string;
+    articleId?: string;
+    titleSlug?: string;
     isArticlePage?: boolean;
 }
 
@@ -30,7 +32,7 @@ interface SocialMedia {
 
 const SocialMediaTag = ({ icon, link }: SocialMedia) => {
     return (
-        <div className="rounded-full border border-primary-500 p-2 cursor-pointer">
+        <div className="rounded-full border border-primary-900 w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-primary-900 hover:border-primary-900 transition-colors group">
             {icon}
         </div>
     );
@@ -38,26 +40,27 @@ const SocialMediaTag = ({ icon, link }: SocialMedia) => {
 
 const socialMediaArray = [
     {
-        icon: <FaTwitter className="text-primary-500" size={15} />,
+        icon: <FaTwitter className="text-primary-900 group-hover:text-white transition-colors" size={15} />,
         link: "",
     },
     {
-        icon: <FaFacebookSquare className="text-primary-500" size={15} />,
+        icon: <FaFacebookSquare className="text-primary-900 group-hover:text-white transition-colors" size={15} />,
         link: "",
     },
 ];
 
-const DynamicBlog = ({
-    showWritter = true,
-    mainHeading = 'Articles',
+const DynamicBlog: React.FC<DynamicBlogProps> = ({
     title,
     imageURL,
     authorName,
     publishDate,
     content,
+    showWritter = true,
+    mainHeading = "Blog",
     articleId,
-    isArticlePage = false,
-}: DynamicBlog) => {
+    titleSlug,
+    isArticlePage = false
+}) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
 
     return (
@@ -80,7 +83,7 @@ const DynamicBlog = ({
                                 {title}
                             </h1>
                         ) : (
-                            <Link href={`/articles/${articleId}`}>
+                            <Link href={`/articles/${titleSlug}`}>
                                 <h1 className="font-century-schoolbook text-3xl max-md:text-center capitalize hover:text-primary-500 transition-colors">
                                     {title}
                                 </h1>
@@ -88,14 +91,15 @@ const DynamicBlog = ({
                         )}
                     </div>
 
-                    <Image
-                        src={imageURL || 'no-img'}
-                        alt="new image"
-                        // fill
-                        width={1000}
-                        height={700}
-                        style={{ objectFit: "cover" }}
-                    />
+                    <div className="relative w-full h-[514px]">
+                        <Image
+                            src={imageURL || 'no-img'}
+                            alt={title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                    </div>
                     <div className="flex items-center sm:text-lg text-sm px-sm-generic gap-2">
                         <hr className="w-6 h-1" />
                         <h6 className="capitalize">{authorName}</h6>
@@ -107,7 +111,7 @@ const DynamicBlog = ({
                     {content}
                 </article>
 
-                <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between justify-center max-sm:items-center px-sm-generic">
+                <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between sm:items-center justify-center max-sm:items-center px-sm-generic">
                     {showWritter === true && (
                         <div className="flex gap-2 flex-col max-sm:justify-center max-sm:items-center">
                             <h4 className="text-lg">Written By:</h4>
@@ -119,7 +123,7 @@ const DynamicBlog = ({
                                     style={{ objectFit: "cover" }}
                                 />
                             </div>
-                            <div className="font-century-gothic  max-sm:text-center text-lg">
+                            <div className="font-century-gothic max-sm:text-center text-lg">
                                 <p>{authorName}</p>
                                 <p className="text-gray-500">
                                     Founder and CEO, Financial Health Network
@@ -128,7 +132,7 @@ const DynamicBlog = ({
                         </div>
                     )}
 
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-3">
                         {socialMediaArray.map((item, index) => (
                             <SocialMediaTag key={index} {...item} />
                         ))}

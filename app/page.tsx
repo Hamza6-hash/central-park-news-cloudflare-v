@@ -6,17 +6,25 @@ import { FaTwitter } from "react-icons/fa";
 import { FaFacebookSquare } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import { db } from '@/lib/firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { formatedDate } from '@/lib/utils';
 import Link from "next/link";
+import { generateSlug } from '@/lib/utils';
+import { useParams } from 'next/navigation';
 
 interface Article {
     id: string;
     title: string;
     content: string;
     imageURL?: string;
-    author: string;
-    date: any;
+    authorId: string;
+    authorName?: string;
+    publishDate: {
+        seconds: number;
+        nanoseconds: number;
+    };
+    date?: string;
+    titleSlug?: string;
 }
 
 interface SocialMedia {
@@ -47,6 +55,7 @@ export default function Home() {
     const [article, setArticle] = useState<Article | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const params = useParams();
 
     const fetchArticle = async () => {
         try {
@@ -60,29 +69,69 @@ export default function Home() {
 
             // Fetch articles from the articles collection
             const articlesRef = collection(db, 'blog/blockchainBriefing/articles');
-            console.log('Fetching articles from:', 'blog/blockchainBriefing/articles');
-            
             const articlesSnapshot = await getDocs(articlesRef);
-            console.log('Raw articles data:', articlesSnapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            })));
             
             if (articlesSnapshot.empty) {
-                console.log('No articles found in the collection');
                 setError('No articles available at the moment.');
                 setLoading(false);
                 return;
             }
 
-            // Get the first article
-            const firstArticleDoc = articlesSnapshot.docs[0];
-            const articleData = firstArticleDoc.data() as Article;
+            // Process all articles to handle duplicate titles
+            const articlesMap = new Map();
+            const articles = articlesSnapshot.docs.map(doc => {
+                const data = doc.data() as Article;
+                const baseSlug = data.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                
+                // Count how many articles have this base slug
+                const count = articlesMap.get(baseSlug) || 0;
+                articlesMap.set(baseSlug, count + 1);
+                
+                return {
+                    doc,
+                    data,
+                    baseSlug,
+                    count: count + 1
+                };
+            });
+
+            // Sort articles by publish date
+            articles.sort((a, b) => a.data.publishDate.seconds - b.data.publishDate.seconds);
+
+            // Get the first article and its author
+            const firstArticle = articles[0];
+            const articleData = firstArticle.data;
+
+            // Get author name from authors collection
+            const authorDoc = await getDoc(doc(db, 'blog/blockchainBriefing/authors', articleData.authorId));
+            const authorName = authorDoc.exists() ? authorDoc.data().author_name : 'Unknown Author';
+            
+            // Format the date
+            let formattedDate = 'Unknown Date';
+            if (articleData.publishDate) {
+                try {
+                    const timestamp = articleData.publishDate;
+                    const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+                    
+                    formattedDate = date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                } catch (error) {
+                    console.error('Error formatting date:', error);
+                }
+            }
+
+            // Generate slug for the article
+            const slug = generateSlug(articleData.title, firstArticle.doc.id);
             
             setArticle({
                 ...articleData,
-                id: firstArticleDoc.id,
-                date: formatedDate(articleData.date)
+                id: firstArticle.doc.id,
+                authorName: authorName,
+                date: formattedDate,
+                titleSlug: slug
             });
             setLoading(false);
         } catch (error) {
@@ -130,30 +179,32 @@ export default function Home() {
         <section className="flex gap-9 max-xl:flex-col w-full">
             <div className="xl:w-[644px] max-w-full">
                 <div className="space-y-3 mb-4">
-                    <Link href={`/articles/${article.id}`}>
+                    <Link href={`/articles/${article.titleSlug?.split('-').slice(0, -1).join('-') || article.id}`}>
                         <h1 className="font-century-schoolbook text-3xl capitalize px-sm-generic max-md:text-center hover:text-primary-500 transition-colors">
                             {article.title}
                         </h1>
                     </Link>
 
-                    <Image
-                        src={article.imageURL || 'no-image'}
-                        alt="Description of image"
-                        width={1200}
-                        // fill
-                        height={800}
-                        quality={100}
-                        style={{ objectFit: 'cover' }}
-                    />
+                    <div className="relative w-full h-[400px]">
+                        <Image
+                            src={article.imageURL || 'no-image'}
+                            alt="Description of image"
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                    </div>
                     <div className="flex items-center text-lg max-sm:text-xs gap-2 px-sm-generic">
                         <hr className="w-6 h-1" />
-                        <h6 className="capitalize">{article.author}</h6>
+                        <h6 className="capitalize font-montserrat">{article.authorName}</h6>
                         <span className="text-primary-500">|</span>
-                        <p className="text-primary-500 italic">{article.date}</p>
+                        <p className="text-primary-500 italic font-montserrat">{article.date}</p>
                     </div>
                 </div>
-                <article className="space-y-2 capitalize text-justify md:text-lg text-base px-sm-generic">
-                    <p>{article.content}</p>
+                <article className="w-[648px] h-[778px] font-montserrat font-normal text-[18px] leading-[1.8] tracking-[0%] text-justify capitalize px-sm-generic text-gray-600">
+                    {article.content.split('\n\n').map((paragraph, index) => (
+                        <p key={index} className="mb-10 last:mb-0">{paragraph.trim()}</p>
+                    ))}
                 </article>
 
                 <div className="my-10 max-md:flex max-md:flex-col max-md:items-center max-md:justify-center">
