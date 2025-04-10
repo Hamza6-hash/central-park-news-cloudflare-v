@@ -190,6 +190,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
                 content={article.content}
                 titleSlug={article.titleSlug}
                 isArticlePage={true}
+                mainHeading="Article"
             />
         </div>
     );
