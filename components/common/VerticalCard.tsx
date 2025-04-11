@@ -46,7 +46,7 @@ const VerticalCard = ({
                     <div className="flex items-center gap-2">
                         <hr className="w-6 h-0.5 bg-white" />
                         <div>
-                            <h6 className="text-xs capitalize font-montserrat font-normal tracking-wide">{authorName || "-"}</h6>
+                            <h6 className="text-sm capitalize font-montserrat font-wider tracking-sm">{authorName || "-"}</h6>
                             <p className="text-xs text-gray-300 italic">{formatedPublishDate && formatedPublishDate}</p>
                         </div>
                     </div>

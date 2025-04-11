@@ -131,10 +131,9 @@ const TopStories = () => {
         );
     }
 
-    // Update displayed newsletters based on the current page
+    
     const displayedNewsletters = isContactPage && newsletters ? newsletters.slice(0, 2) : newsletters;
 
-    // Check if we should show the "VIEW MORE" button
     const showViewMoreButton = isContactPage && newsletters && newsletters.length > 2;
 
     return (
