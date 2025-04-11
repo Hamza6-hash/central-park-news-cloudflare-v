@@ -5,7 +5,6 @@ import { routes } from "@/constants";
 import { Button } from "../button/Button";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import DummyImg from "@/assets/Rectangle-4.png";
-import Link from "next/link";
 import { collection, getDocs, doc, getDoc, DocumentData, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -152,15 +151,13 @@ const TopStories = () => {
 
                     return (
                         <React.Fragment key={newsletter.id}>
-                            <Link href={`/articles/${newsletter.titleSlug}`}>
-                                <HorizontalCard
-                                    title={newsletter.title || "-"}
-                                    imageURL={newsletter.imageURL || DummyImg}
-                                    authorName={newsletter.authorName || "Docket Digest New Room"}
-                                    publishDate={formattedDate}
-                                    content={newsletter.content || "-"}
-                                />
-                            </Link>
+                            <HorizontalCard
+                                title={newsletter.title || "-"}
+                                imageURL={newsletter.imageURL || DummyImg}
+                                authorName={newsletter.authorName || "Docket Digest New Room"}
+                                publishDate={formattedDate}
+                                content={newsletter.content || "-"}
+                            />
                         </React.Fragment>
                     );
                 })}
