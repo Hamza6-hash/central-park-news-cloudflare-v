@@ -28,10 +28,12 @@ const VerticalCard = ({
                 <Image
                     src={imageURL}
                     alt={"new image"}
-                    className="w-[159px] h-[121px] gap-0 custom-rounded"
+                    // className="w-[159px] h-[121px] gap-0 custom-rounded"
+                    className="w-[200px] h-[121px] gap-0 custom-rounded"
                     quality={100}
                     style={{ objectFit: "cover" }}
-                    width={159}
+                    // width={159}
+                    width={200}
                     height={121}
                 />
             </div>
@@ -50,7 +52,7 @@ const VerticalCard = ({
                     </div>
                 </div>
                 <div className="h-full flex justify-end items-end flex-grow pt-3">
-                    <Link href={`/articles/${titleSlug?.split('-').slice(0, -1).join('-') || titleSlug}`} className="uppercase font-century-gothic text-yellow-500 transition-colors duration-300 hover:text-primary-900 font-bold text-xs">
+                    <Link href={`/articles/${titleSlug}`} className="uppercase font-century-gothic text-yellow-500 transition-colors duration-300 hover:text-primary-900 font-bold text-xs">
                         VIEW MORE
                     </Link>
                 </div>
