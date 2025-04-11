@@ -17,6 +17,7 @@ import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
 import { generateSlug } from "@/lib/utils";
 import { useParams } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Article {
   id: string;
@@ -161,9 +162,30 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
+      <section className="flex gap-9 max-xl:flex-col w-full px-0 max-w-[1200px] mx-auto">
+        <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
+          <div className="space-y-3 mb-4 px-4">
+            <Skeleton className="h-8 w-3/4 bg-gray-100" />
+            <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
+              <Skeleton className="h-full w-full rounded-lg bg-gray-100" />
+            </div>
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-4 w-4 bg-gray-100" />
+              <Skeleton className="h-4 w-32 bg-gray-100" />
+              <Skeleton className="h-4 w-4 bg-gray-100" />
+              <Skeleton className="h-4 w-24 bg-gray-100" />
+            </div>
+          </div>
+          <div className="px-4 space-y-4">
+            {[1, 2, 3, 4].map((index) => (
+              <Skeleton key={index} className="h-4 w-full bg-gray-100" />
+            ))}
+          </div>
+        </div>
+        <div className="xl:w-[520px] w-full">
+          <TopStories />
+        </div>
+      </section>
     );
   }
 
@@ -191,48 +213,48 @@ export default function Home() {
 
   return (
     <section className="flex gap-9 max-xl:flex-col w-full px-0 max-w-[1200px] mx-auto">
-    <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
+      <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
         <div className="space-y-3 mb-4 px-4">
-            <Link href={`/articles/${article.titleSlug?.split('-').slice(0, -1).join('-') || article.id}`}>
-                <h1 className="font-century-schoolbook text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full">
-                    {article.title}
-                </h1>
-            </Link>
+          <Link href={`/articles/${article.titleSlug?.split('-').slice(0, -1).join('-') || article.id}`}>
+            <h1 className="font-century-schoolbook text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full">
+              {article.title}
+            </h1>
+          </Link>
 
-            <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
-                <Image
-                    src={article.imageURL || 'no-image'}
-                    alt="Description of image"
-                    fill
-                    className="object-cover rounded-lg"
-                    sizes="(max-width: 320px) 100vw, (max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-            </div>
-            <div className="flex items-center text-[10px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
-                <hr className="w-4 sm:w-6 h-1" />
-                <h6 className="capitalize font-montserrat text-[10px] sm:text-xs md:text-sm lg:text-base">{article.authorName}</h6>
-                <span className="text-primary-500">|</span>
-                <p className="text-primary-500 italic font-montserrat text-[10px] sm:text-xs md:text-sm lg:text-base">{article.date}</p>
-            </div>
+          <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
+            <Image
+              src={article.imageURL || 'no-image'}
+              alt="Description of image"
+              fill
+              className="object-cover rounded-lg"
+              sizes="(max-width: 320px) 100vw, (max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </div>
+          <div className="flex items-center text-[10px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
+            <hr className="w-4 sm:w-6 h-1" />
+            <h6 className="capitalize font-montserrat text-[10px] sm:text-xs md:text-sm lg:text-base">{article.authorName}</h6>
+            <span className="text-primary-500">|</span>
+            <p className="text-primary-500 italic font-montserrat text-[10px] sm:text-xs md:text-sm lg:text-base">{article.date}</p>
+          </div>
         </div>
         <article className="w-full font-montserrat font-normal text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-[18px] leading-[1.8] tracking-[0%] text-justify capitalize text-gray-600 break-words px-4">
-            {article.content.split('\n\n').map((paragraph, index) => (
-                <p key={index} className="mb-3 sm:mb-4 md:mb-6 lg:mb-8 xl:mb-10 last:mb-0">{paragraph.trim()}</p>
-            ))}
+          {article.content.split('\n\n').map((paragraph, index) => (
+            <p key={index} className="mb-3 sm:mb-4 md:mb-6 lg:mb-8 xl:mb-10 last:mb-0">{paragraph.trim()}</p>
+          ))}
         </article>
 
         <div className="my-4 sm:my-6 md:my-8 lg:my-10 px-4">
-            <p className="font-bold mb-2 text-[10px] sm:text-xs md:text-sm lg:text-base">Share This:</p>
-            <div className="flex gap-2 sm:gap-4">
-                {socialMediaArray.map((item, index) => (
-                    <SocialMediaTag key={index} {...item} />
-                ))}
-            </div>
+          <p className="font-bold mb-2 text-[10px] sm:text-xs md:text-sm lg:text-base">Share This:</p>
+          <div className="flex gap-2 sm:gap-4">
+            {socialMediaArray.map((item, index) => (
+              <SocialMediaTag key={index} {...item} />
+            ))}
+          </div>
         </div>
-    </div>
-    <div className="xl:w-[520px] w-full">
+      </div>
+      <div className="xl:w-[520px] w-full">
         <TopStories />
-    </div>
-</section>
+      </div>
+    </section>
   );
 }

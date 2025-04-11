@@ -18,8 +18,8 @@ const FooterLinks = () => {
                     return (
                         <React.Fragment key={index}>
                             {!item.imgURL && <Link href={item.route} key={item.label}>
-                                <p className={cn("footer-label", {
-                                    "!font-bold": isActive,
+                                <p className={cn("footer-label h-[20px] flex items-center", {
+                                    "font-bold": isActive,
                                 })} >
                                     {item.label}
                                 </p>

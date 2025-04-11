@@ -6,6 +6,7 @@ import { collection, doc, getDoc, getDocs, query, where, updateDoc } from "fireb
 import { generateSlug } from "@/lib/utils";
 import DynamicBlog from "@/components/common/DynamicBlog";
 import { useRouter } from 'next/navigation';
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Article {
     id: string;
@@ -170,8 +171,22 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            <div className="container mx-auto px-1 py-8">
+            {/* // <div className=""> */}
+                <div className="space-y-4 w-[90vw] ">
+                    <Skeleton className="h-8 w-1/2 bg-gray-100" />
+                    <Skeleton className="h-[200px] w-full rounded-lg bg-gray-100" />
+                    <div className="flex items-center gap-2">
+                        <Skeleton className="h-4 w-32 bg-gray-100" />
+                        <Skeleton className="h-4 w-4 bg-gray-100" />
+                        <Skeleton className="h-4 w-24 bg-gray-100" />
+                    </div>
+                    <div className="space-y-4 mt-6">
+                        {[1, 2, 3, 4, 5].map((index) => (
+                            <Skeleton key={index} className="h-4 w-full bg-gray-100" />
+                        ))}
+                    </div>
+                </div>
             </div>
         );
     }

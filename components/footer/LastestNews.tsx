@@ -12,6 +12,7 @@ import {
     DocumentData,
 } from "firebase/firestore";
 import DummyImg from "@/assets/Rectangle-4.png";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Article {
     id: string;
@@ -152,13 +153,13 @@ const LastestNews = () => {
     const slideLeft = () => {
         if (productContainerRef.current) {
             const container = productContainerRef.current;
-            const cardWidth = 214;
-            const gap = 16;
+            const cardWidth = 214; // Width of each card
+            const gap = 16; // Gap between cards
             const scrollAmount = cardWidth + gap;
             const currentScroll = container.scrollLeft;
-            
+
             if (currentScroll <= 10) {
-                // If we're at the beginning, automatically start scrolling right
+                // If we're at the start, automatically start scrolling right
                 setIsReversed(false);
                 container.scrollTo({
                     left: Math.min(container.scrollWidth - container.clientWidth, currentScroll + scrollAmount),
@@ -200,9 +201,33 @@ const LastestNews = () => {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center py-[58px]">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-            </div>
+            <section className="lastestNews py-[58px] px-generic">
+                <div className="max-width w-full">
+                    <h1 className="uppercase text-3xl font-bold text-white mb-4">
+                        Latest Articles
+                    </h1>
+                    <div className="flex gap-6 items-center justify-between relative w-full mx-auto">
+                        <div className="w-full flex gap-4 overflow-x-scroll hide-scrollbar mx-auto py-1">
+                            {[1, 2, 3, 4].map((index) => (
+                                <div key={index} className="min-w-[214px] flex-shrink-0">
+                                    <div className="flex flex-col gap-2">
+                                        <Skeleton className="h-[160px] w-full rounded-lg bg-gray-100" />
+                                        <Skeleton className="h-4 w-3/4 bg-gray-100" />
+                                        <div className="flex items-center gap-2">
+                                            <Skeleton className="h-3 w-20 bg-gray-100" />
+                                            <Skeleton className="h-3 w-3 bg-gray-100" />
+                                            <Skeleton className="h-3 w-16 bg-gray-100" />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <button className="bg-primary-300 p-2 rounded-full">
+                            <GoArrowRight color="white" size={25} />
+                        </button>
+                    </div>
+                </div>
+            </section>
         );
     }
 

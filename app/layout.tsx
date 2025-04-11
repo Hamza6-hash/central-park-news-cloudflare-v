@@ -1,17 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Montserrat } from 'next/font/google';
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
 import QueryProviders from '@/ReatQuery/provider';
-
-const montserratFont = Montserrat({
-  weight: ['300', '400', '500', '600', '700'],
-  style: ['normal'],
-  display: 'swap',
-  subsets: ['latin'],
-  variable: '--inter-font',
-});
 
 export const metadata: Metadata = {
   title: "Blockchain Briefing",

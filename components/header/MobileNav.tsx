@@ -24,7 +24,7 @@ const MobileNav = () => {
                 <SheetTrigger>
                     <IoMenu className='cursor-pointer' color='white' size={30} />
                 </SheetTrigger>
-                <SheetContent side={'left'} className='border-none bg-white'>
+                <SheetContent side={'left'} className='border-none bg-[#1E3D5A] [&>button]:text-white'>
                     <Link href={'/'} className='cursor-pointer flex items-center gap-1 px-4'>
                         <Image
                             src={Logo}
@@ -37,7 +37,7 @@ const MobileNav = () => {
 
                     <div className="mobilenav-sheet">
                         <SheetClose asChild>
-                            <nav className="flex h-full flex-col gap-6 pt-8 text-white">
+                            <nav className="flex h-full flex-col gap-6 pt-8">
                                 {navbarLinks.map((item, index) => {
                                     const isActive = pathName === item.route || pathName.startsWith(`${item.route}/`)
 
@@ -46,10 +46,11 @@ const MobileNav = () => {
                                             {!item.imgURL && <SheetClose asChild key={item.label}>
                                                 <Link href={item.route} className={cn(
                                                     'mobilenav-sheet_close w-full',
-                                                    { 'bg-blue-gradient': isActive }
+                                                    { 'bg-white': isActive }
                                                 )}>
-                                                    <p className={cn('text-16 font-semibold text-black', {
-                                                        'text-white': isActive
+                                                    <p className={cn('font-montserrat text-[18px] font-light leading-none tracking-normal uppercase', {
+                                                        'text-[#1E3D5A]': isActive,
+                                                        'text-white': !isActive
                                                     })}>
                                                         {item.label}
                                                     </p>
@@ -58,14 +59,11 @@ const MobileNav = () => {
                                         </React.Fragment>
                                     )
                                 })}
-
-                                USER
                             </nav>
                         </SheetClose>
                     </div>
                 </SheetContent>
             </Sheet>
-
         </section>
     )
 }

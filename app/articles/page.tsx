@@ -16,6 +16,7 @@ import {
   DocumentReference,
 } from "firebase/firestore";
 import { format } from "date-fns";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Article {
   id: string;
@@ -174,8 +175,48 @@ const Articles = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="w-screen min-h-screen bg-white">
+        {/* <div className="w-[70vw] mx-auto px-4 py-8"> */}
+        <div className="w-[70vw] py-30">
+          {/* Article Navigation */}
+          <div className="mb-8 w-full">
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-6 w-20 bg-gray-100" />
+              <Skeleton className="h-6 w-4 bg-gray-100" />
+              <Skeleton className="h-6 w-48 bg-gray-100" />
+            </div>
+          </div>
+
+          {/* Main Article Title */}
+          <div className="mb-8 w-full">
+            <Skeleton className="h-12 w-full bg-gray-100" />
+          </div>
+
+          {/* Featured Image */}
+          <div className="mb-8 w-full">
+            <Skeleton className="h-[500px] w-full rounded-lg bg-gray-100" />
+          </div>
+
+          {/* Article Meta */}
+          <div className="mb-6 w-full">
+            <div className="flex items-center gap-4 mb-4">
+              <Skeleton className="h-12 w-12 rounded-full bg-gray-100" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-40 bg-gray-100" />
+                <Skeleton className="h-4 w-32 bg-gray-100" />
+              </div>
+            </div>
+          </div>
+
+          {/* Article Content */}
+          <div className="space-y-4 w-full">
+            {[1, 2, 3, 4, 5].map((index) => (
+              <Skeleton key={index} className="h-4 w-full bg-gray-100" />
+            ))}
+            <Skeleton className="h-4 w-[90%] bg-gray-100" />
+            <Skeleton className="h-4 w-[85%] bg-gray-100" />
+          </div>
+        </div>
       </div>
     );
   }
