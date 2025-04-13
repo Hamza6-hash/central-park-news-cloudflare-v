@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import VerticalCard from "../common/VerticalCard";
 import { GoArrowRight, GoArrowLeft } from "react-icons/go";
 import { db } from "@/lib/firebaseConfig";
+import { usePathname } from "next/navigation";
 import {
     collection,
     getDocs,
@@ -25,11 +26,16 @@ interface Article {
         seconds: number;
         nanoseconds: number;
     };
-    date?: string;
+    date?: {
+        seconds: number;
+        nanoseconds: number;
+    };
+    formattedDate?: string;
     categoryId?: string;
     featuredArticle?: boolean;
     tags?: string;
     titleSlug?: string;
+    type?: "article" | "news";
 }
 
 const LastestNews = () => {
@@ -38,6 +44,17 @@ const LastestNews = () => {
     const [error, setError] = useState<string | null>(null);
     const [isReversed, setIsReversed] = useState(false);
     const productContainerRef = useRef<HTMLDivElement>(null);
+    const pathname = usePathname();
+
+    const getTitle = () => {
+        if (pathname.includes("/news")) {
+            return "Latest Articles";
+        } else if (pathname.includes("/articles")) {
+            return "Latest News";
+        } else {
+            return "Latest Articles";
+        }
+    };
 
     const fetchArticles = async () => {
         try {
@@ -49,8 +66,15 @@ const LastestNews = () => {
                 throw new Error("Database connection is not available");
             }
 
-            // Fetch articles from the articles collection
-            const articlesRef = collection(db, "blog/blockchainBriefing/articles");
+            // Determine which collection to fetch based on the current path
+            const collectionPath = pathname.includes("/news") 
+                ? "blog/blockchainBriefing/articles"
+                : pathname.includes("/articles")
+                    ? "blog/blockchainBriefing/newsletter"
+                    : "blog/blockchainBriefing/articles";
+
+            // Fetch articles from the appropriate collection
+            const articlesRef = collection(db, collectionPath);
             const articlesSnapshot = await getDocs(articlesRef);
 
             if (articlesSnapshot.empty) {
@@ -83,11 +107,21 @@ const LastestNews = () => {
                         }
                     }
 
-                    // Format the date
+                    // Format the date based on the collection
                     let formattedDate = "Unknown Date";
-                    if (articleData.publishDate) {
+                    let dateToFormat: { seconds: number; nanoseconds: number } | undefined;
+                    
+                    if (collectionPath.includes("newsletter")) {
+                        // For news collection, use the date field
+                        dateToFormat = articleData.date;
+                    } else {
+                        // For articles collection, use the publishDate field
+                        dateToFormat = articleData.publishDate;
+                    }
+
+                    if (dateToFormat) {
                         try {
-                            const date = new Date(articleData.publishDate.seconds * 1000);
+                            const date = new Date(dateToFormat.seconds * 1000);
                             formattedDate = date.toLocaleDateString("en-US", {
                                 year: "numeric",
                                 month: "long",
@@ -98,19 +132,48 @@ const LastestNews = () => {
                         }
                     }
 
+                    // Generate title slug
+                    const titleSlug = articleData.title
+                        ?.toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-') // Replace any non-alphanumeric characters with a single hyphen
+                        || '';
+
                     return {
                         ...articleData,
                         id: articleDoc.id,
                         authorName: authorName,
-                        date: formattedDate,
+                        formattedDate: formattedDate,
+                        publishDate: dateToFormat || { seconds: 0, nanoseconds: 0 },
+                        titleSlug: titleSlug,
+                        type: collectionPath.includes("newsletter") ? "news" as const : "article" as const
                     };
                 })
             );
 
-            // Sort articles by publish date
-            articlesData.sort((a, b) => b.publishDate.seconds - a.publishDate.seconds);
+            // Sort articles by date
+            articlesData.sort((a, b) => {
+                const dateA = a.publishDate.seconds;
+                const dateB = b.publishDate.seconds;
+                return dateB - dateA;
+            });
 
-            setArticles(articlesData);
+            // Handle duplicate titles and generate unique slugs
+            const slugCounts = new Map<string, number>();
+            const articlesWithUniqueSlugs = articlesData.map(article => {
+                const baseSlug = article.titleSlug;
+                const count = slugCounts.get(baseSlug) || 0;
+                slugCounts.set(baseSlug, count + 1);
+                
+                // For duplicate titles, append sequential number (except first occurrence)
+                const uniqueSlug = count > 0 ? `${baseSlug}-${count + 1}` : baseSlug;
+                
+                return {
+                    ...article,
+                    titleSlug: uniqueSlug
+                };
+            });
+
+            setArticles(articlesWithUniqueSlugs);
             setLoading(false);
         } catch (error) {
             console.error("Error fetching articles:", error);
@@ -121,7 +184,7 @@ const LastestNews = () => {
 
     React.useEffect(() => {
         fetchArticles();
-    }, []);
+    }, [pathname]);
 
     const slideRight = () => {
         if (productContainerRef.current) {
@@ -204,7 +267,7 @@ const LastestNews = () => {
             <section className="lastestNews py-[58px] px-generic">
                 <div className="max-width w-full">
                     <h1 className="uppercase text-3xl font-bold text-white mb-4">
-                        Latest Articles
+                        {getTitle()}
                     </h1>
                     <div className="flex gap-6 items-center justify-between relative w-full mx-auto">
                         <div className="w-full flex gap-4 overflow-x-scroll hide-scrollbar mx-auto py-1">
@@ -241,37 +304,18 @@ const LastestNews = () => {
 
     if (!articles?.length) return null;
 
-    // Process duplicate titles
-    const slugCounts = new Map<string, number>();
-    const articlesWithSlugs = articles.map(article => {
-        const baseSlug = article.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '';
-        const count = slugCounts.get(baseSlug) || 0;
-        slugCounts.set(baseSlug, count + 1);
-        
-        // For duplicate titles, append sequential number (except first occurrence)
-        const titleSlug = count > 0 ? `${baseSlug}-${count + 1}` : baseSlug;
-        
-        // Ensure the slug is properly formatted
-        const formattedSlug = titleSlug.replace(/-+/g, '-').replace(/^-|-$/g, '');
-        
-        return {
-            ...article,
-            titleSlug: formattedSlug
-        };
-    });
-
     return (
         <section className="lastestNews py-[58px] px-generic">
             <div className="max-width w-full">
                 <h1 className="uppercase text-3xl font-bold text-white mb-4">
-                    Latest Articles
+                    {getTitle()}
                 </h1>
                 <div className="flex gap-6 items-center justify-between relative w-full mx-auto">
                     <div
                         ref={productContainerRef}
                         className="w-full flex gap-4 overflow-x-scroll hide-scrollbar mx-auto py-1"
                     >
-                        {articlesWithSlugs.map((article, index) => (
+                        {articles.map((article, index) => (
                             <React.Fragment key={index}>
                                 <VerticalCard
                                     title={article.title}
@@ -279,6 +323,7 @@ const LastestNews = () => {
                                     authorName={article.authorName || "Unknown Author"}
                                     publishDate={article.publishDate}
                                     titleSlug={article.titleSlug}
+                                    type={article.type}
                                 />
                             </React.Fragment>
                         ))}

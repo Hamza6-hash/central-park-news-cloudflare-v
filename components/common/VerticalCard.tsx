@@ -4,6 +4,7 @@ import DummyImg from "@/assets/Rectangle-4.png";
 import { format } from "date-fns";
 import Link from "next/link";
 import { formatedDate } from "@/lib/utils";
+import { routes } from "@/constants";
 
 interface VerticalCard {
     title: string;
@@ -11,6 +12,7 @@ interface VerticalCard {
     authorName: string;
     publishDate: any;
     titleSlug?: string;
+    type?: "article" | "news";
 }
 
 const VerticalCard = ({
@@ -19,8 +21,16 @@ const VerticalCard = ({
     authorName,
     publishDate,
     titleSlug,
+    type = "article"
 }: VerticalCard) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
+
+    const getLinkPath = () => {
+        if (type === "news") {
+            return `${routes.news}/${titleSlug}`;
+        }
+        return `${routes.articles}/${titleSlug}`;
+    };
 
     return (
         <div className="bg-primary-300 py-3 px-4 flex flex-col gap-3 min-w-[214px] max-w-[214px] relative rounded text-white">
@@ -52,7 +62,7 @@ const VerticalCard = ({
                     </div>
                 </div>
                 <div className="h-full flex justify-end items-end flex-grow pt-3">
-                    <Link href={`/articles/${titleSlug}`} className="uppercase font-century-gothic text-yellow-500 transition-colors duration-300 hover:text-primary-900 font-bold text-xs">
+                    <Link href={getLinkPath()} className="uppercase font-century-gothic text-yellow-500 transition-colors duration-300 hover:text-primary-900 font-bold text-xs">
                         VIEW MORE
                     </Link>
                 </div>

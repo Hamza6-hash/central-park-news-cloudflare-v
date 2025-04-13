@@ -93,7 +93,9 @@ const Searchbar = () => {
                             {searchResults.map((article) => (
                                 <React.Fragment key={article.id}>
                                     <Link 
-                                        href={`/articles/${article.titleSlug}`} 
+                                        href={article.type === 'news' 
+                                            ? `/news/${article.titleSlug}`
+                                            : `/articles/${article.titleSlug}`} 
                                         onClick={() => {
                                             setSearchTerm('');
                                             setSearchResults([]);

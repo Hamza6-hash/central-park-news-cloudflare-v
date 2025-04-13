@@ -13,17 +13,27 @@ import {
 } from "firebase/firestore";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
-interface Article {
-  imageURL: string | StaticImport;
+export interface Article {
   id: string;
   title: string;
   content: string;
-  publishDate: string;
-  tags: string;
+  imageURL?: string | StaticImport;
   authorId: string;
-  categoryId: string;
-  name: string;
-  featuredArticle: boolean;
+  authorName?: string;
+  publishDate: {
+    seconds: number;
+    nanoseconds: number;
+  };
+  date?: {
+    seconds: number;
+    nanoseconds: number;
+  };
+  formattedDate?: string;
+  categoryId?: string;
+  featuredArticle?: boolean;
+  tags?: string;
+  titleSlug: string;
+  type: 'article' | 'news';
 }
 
 interface Author {
@@ -40,7 +50,8 @@ interface Category {
 export interface ArticleWithDetails extends Article {
   category: Category | null;
   author: Author | null;
-  titleSlug?: string;
+  titleSlug: string;
+  type: 'article' | 'news';
 }
 
 // Global variables
@@ -341,49 +352,57 @@ export const fireServices = {
   ): Promise<ArticleWithDetails[]> => {
     try {
       console.log('Searching for:', searchTerm);
+      
+      // Search in both collections
       const articlesRef = collection(db, 'blog/blockchainBriefing/articles');
+      const newsRef = collection(db, 'blog/blockchainBriefing/newsletter');
       
-      // Get all articles
-      const querySnapshot = await getDocs(articlesRef);
-      console.log('Total articles found:', querySnapshot.size);
+      // Get all articles and news
+      const [articlesSnapshot, newsSnapshot] = await Promise.all([
+        getDocs(articlesRef),
+        getDocs(newsRef)
+      ]);
       
-      const articles = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Article[];
+      console.log('Total articles found:', articlesSnapshot.size);
+      console.log('Total news found:', newsSnapshot.size);
+      
+      // Combine and process both collections
+      const allItems = [
+        ...articlesSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, type: 'article' as const })),
+        ...newsSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, type: 'news' as const }))
+      ] as (Article & { type: 'article' | 'news' })[];
 
-      // Filter articles that contain the search term in their title
-      const matchingArticles = articles.filter(article => {
-        const title = article.title?.toLowerCase() || '';
+      // Filter items that contain the search term in their title
+      const matchingItems = allItems.filter(item => {
+        const title = item.title?.toLowerCase() || '';
         const search = searchTerm.toLowerCase();
         return title.includes(search);
       });
 
-      console.log('Matching articles:', matchingArticles.length);
+      console.log('Matching items:', matchingItems.length);
 
-      // Group articles by their base title slug
-      const articlesBySlug = new Map<string, Article[]>();
-      matchingArticles.forEach(article => {
-        const baseSlug = article.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '';
-        if (!articlesBySlug.has(baseSlug)) {
-          articlesBySlug.set(baseSlug, []);
+      // Group items by their base title slug
+      const itemsBySlug = new Map<string, (Article & { type: 'article' | 'news' })[]>();
+      matchingItems.forEach(item => {
+        const baseSlug = item.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '';
+        if (!itemsBySlug.has(baseSlug)) {
+          itemsBySlug.set(baseSlug, []);
         }
-        articlesBySlug.get(baseSlug)?.push(article);
+        itemsBySlug.get(baseSlug)?.push(item);
       });
 
-      // Fetch category and author details for matching articles
-      const articlesWithDetails = await Promise.all(
-        matchingArticles.map(async (article) => {
-          let category = null;
-          let author = null;
+      // Fetch category and author details for matching items
+      const itemsWithDetails = await Promise.all(
+        matchingItems.map(async (item) => {
+          let category: Category | null = null;
+          let author: Author | null = null;
 
-          if (article.categoryId) {
+          if (item.categoryId) {
             try {
-              // Get all categories and find the one matching the categoryId
               const categoriesRef = collection(db, 'blog/blockchainBriefing/categories');
               const categoriesSnapshot = await getDocs(categoriesRef);
               const matchingCategory = categoriesSnapshot.docs.find(
-                doc => doc.data().id === article.categoryId
+                doc => doc.data().id === item.categoryId
               );
 
               if (matchingCategory) {
@@ -392,21 +411,16 @@ export const fireServices = {
                   id: matchingCategory.id,
                   name: categoryData.name || 'Uncategorized',
                 } as Category;
-                console.log('Category found:', category);
               }
             } catch (categoryError) {
-              console.error(
-                "Error fetching category for article:",
-                article,
-                categoryError
-              );
+              console.error("Error fetching category:", categoryError);
             }
           }
 
-          if (article.authorId) {
+          if (item.authorId) {
             try {
               const authorDoc = await getDoc(
-                doc(db, 'blog/blockchainBriefing/authors', article.authorId)
+                doc(db, 'blog/blockchainBriefing/authors', item.authorId)
               );
               if (authorDoc.exists()) {
                 const authorData = authorDoc.data();
@@ -416,45 +430,40 @@ export const fireServices = {
                 } as Author;
               }
             } catch (authorError) {
-              console.error(
-                "Error fetching author for article:",
-                article,
-                authorError
-              );
+              console.error("Error fetching author:", authorError);
             }
           }
 
           // Generate titleSlug with numbering for duplicates
-          const baseSlug = article.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '';
-          const articlesWithSameTitle = articlesBySlug.get(baseSlug) || [];
+          const baseSlug = item.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '';
+          const itemsWithSameTitle = itemsBySlug.get(baseSlug) || [];
           let titleSlug = baseSlug;
 
-          if (articlesWithSameTitle.length > 1) {
-            // Sort articles by publish date
-            articlesWithSameTitle.sort((a, b) => {
-              const dateA = a.publishDate ? new Date(a.publishDate).getTime() : 0;
-              const dateB = b.publishDate ? new Date(b.publishDate).getTime() : 0;
+          if (itemsWithSameTitle.length > 1) {
+            itemsWithSameTitle.sort((a, b) => {
+              const dateA = a.publishDate?.seconds || 0;
+              const dateB = b.publishDate?.seconds || 0;
               return dateA - dateB;
             });
 
-            // Find the index of this article in the sorted array
-            const index = articlesWithSameTitle.findIndex(a => a.id === article.id);
+            const index = itemsWithSameTitle.findIndex(a => a.id === item.id);
             if (index > 0) {
               titleSlug = `${baseSlug}-${index + 1}`;
             }
           }
 
           return {
-            ...article,
+            ...item,
             category,
             author,
-            titleSlug
-          };
+            titleSlug,
+            type: item.type
+          } as ArticleWithDetails;
         })
       );
 
-      console.log('Articles with details:', articlesWithDetails.length);
-      return articlesWithDetails;
+      console.log('Items with details:', itemsWithDetails.length);
+      return itemsWithDetails;
     } catch (error) {
       console.error("Error in searchArticles:", error);
       throw error;

@@ -156,6 +156,8 @@ const TopStories = () => {
                                 authorName={newsletter.authorName || "Docket Digest New Room"}
                                 publishDate={formattedDate}
                                 content={newsletter.content || "-"}
+                                titleSlug={newsletter.titleSlug}
+                                type="news"
                             />
                         </React.Fragment>
                     );
