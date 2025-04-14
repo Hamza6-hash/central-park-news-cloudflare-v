@@ -38,30 +38,28 @@ const VerticalCard = ({
                 <Image
                     src={imageURL}
                     alt={"new image"}
-                    // className="w-[159px] h-[121px] gap-0 custom-rounded"
                     className="w-[200px] h-[121px] gap-0 custom-rounded"
                     quality={100}
                     style={{ objectFit: "cover" }}
-                    // width={159}
                     width={200}
                     height={121}
                 />
             </div>
-            <div className="flex flex-grow flex-col gap-1.5 h-full">
-                <h4 className="font-century-schoolbook capitalize leading-5">
-                    {title || "-"}
-                </h4>
+            <div className="flex flex-col h-full">
+                <div className="h-[48px]">
+                    <h4 className="font-century-schoolbook capitalize font-normal leading-5 line-clamp-2">
+                        {title || "-"}
+                    </h4>
+                </div>
 
-                <div className="">
-                    <div className="flex items-center gap-2">
-                        <hr className="w-6 h-0.5 bg-white" />
-                        <div>
-                            <h6 className="text-sm capitalize font-montserrat font-wider tracking-sm">{authorName || "-"}</h6>
-                            <p className="text-xs text-gray-300 italic">{formatedPublishDate && formatedPublishDate}</p>
-                        </div>
+                <div className="flex items-center gap-2">
+                    <hr className="w-6 h-0.5 bg-white" />
+                    <div className="flex flex-col">
+                        <h6 className="text-sm capitalize font-montserrat font-wider font-normal tracking-sm">{authorName || "-"}</h6>
+                        <p className="text-xs text-gray-300 italic">{formatedPublishDate && formatedPublishDate}</p>
                     </div>
                 </div>
-                <div className="h-full flex justify-end items-end flex-grow pt-3">
+                <div className="flex justify-end mt-3">
                     <Link href={getLinkPath()} className="uppercase font-century-gothic text-yellow-500 transition-colors duration-300 hover:text-primary-900 font-bold text-xs">
                         VIEW MORE
                     </Link>
