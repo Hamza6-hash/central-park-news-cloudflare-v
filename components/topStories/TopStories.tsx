@@ -5,21 +5,19 @@ import { routes } from "@/constants";
 import { Button } from "../button/Button";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import DummyImg from "@/assets/Rectangle-4.png";
-import Link from "next/link";
-import { collection, getDocs, doc, getDoc, DocumentData } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, DocumentData, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
+import { Skeleton } from "@/components/ui/skeleton";
+import { format } from "date-fns";
 
-interface Article {
+interface Newsletter {
     id: string;
     title?: string;
     content?: string;
     authorId?: string;
     authorName?: string;
-    publishDate?: any;
+    date?: Timestamp;
     imageURL?: string;
-    tags?: string;
-    categoryId?: string;
-    featuredArticle?: boolean;
     titleSlug?: string;
 }
 
@@ -27,94 +25,72 @@ const TopStories = () => {
     const pathName = usePathname();
     const isContactPage = pathName === routes.contact;
 
-    const { data: articles, error, isLoading } = useQuery<Article[]>({
-        queryKey: ["getAllArticles"],
-        queryFn: async () => {
+    const { data: newsletters, error, isLoading } = useQuery<Newsletter[]>({
+        queryKey: ["getAllNewsletters"],
+        queryFn: async (): Promise<Newsletter[]> => {
             if (!db) {
                 throw new Error('Database connection is not available');
             }
 
             try {
-                const articlesRef = collection(db, "blog/blockchainBriefing/articles");
-                const snapshot = await getDocs(articlesRef);
+                const newslettersRef = collection(db, "blog/blockchainBriefing/newsletter");
+                const snapshot = await getDocs(newslettersRef);
                 
                 if (snapshot.empty) {
-                    console.log('No articles found');
+                    console.log('No newsletters found');
                     return [];
                 }
 
-                // Process articles and sort by publish date (newest first)
-                const articlesWithData = await Promise.all(
-                    snapshot.docs.map(async (articleDoc) => {
-                        const data = articleDoc.data() as Article;
+                // Process newsletters and sort by publish date (newest first)
+                const newslettersWithData = await Promise.all(
+                    snapshot.docs.map(async (newsletterDoc) => {
+                        const data = newsletterDoc.data();
                         
                         try {
-                            // Get author name
-                            let authorName = 'Unknown Author';
+                            // Get author name from authors collection if authorId exists
+                            let authorName = 'Docket Digest New Room';
                             if (data.authorId) {
                                 const authorRef = doc(db, 'blog/blockchainBriefing/authors', data.authorId);
                                 const authorDoc = await getDoc(authorRef);
                                 if (authorDoc.exists()) {
                                     const authorData = authorDoc.data() as DocumentData;
-                                    authorName = authorData.author_name || 'Unknown Author';
+                                    authorName = authorData.author_name || 'Docket Digest New Room';
                                 }
                             }
 
-                            // Format date
-                            let formattedDate = null;
-                            if (data.publishDate) {
-                                const timestamp = data.publishDate;
-                                formattedDate = new Date(timestamp.seconds * 1000);
-                            }
-
                             // Generate base slug from title
-                            const baseSlug = data.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '';
+                            const titleSlug = data.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '';
 
                             return {
                                 ...data,
-                                id: articleDoc.id,
+                                id: newsletterDoc.id,
                                 authorName,
-                                publishDate: formattedDate,
-                                baseSlug
-                            };
+                                titleSlug,
+                                date: data.date as Timestamp
+                            } as Newsletter;
                         } catch (error) {
-                            console.error('Error processing article:', articleDoc.id, error);
+                            console.error('Error processing newsletter:', newsletterDoc.id, error);
                             return {
                                 ...data,
-                                id: articleDoc.id,
-                                authorName: 'Unknown Author',
-                                baseSlug: data.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || ''
-                            };
+                                id: newsletterDoc.id,
+                                authorName: 'Docket Digest New Room',
+                                titleSlug: data.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || ''
+                            } as Newsletter;
                         }
                     })
                 );
 
                 // Sort by publish date (newest first)
-                const sortedArticles = articlesWithData.sort((a, b) => {
-                    const dateA = a.publishDate?.getTime() || 0;
-                    const dateB = b.publishDate?.getTime() || 0;
+                const sortedNewsletters = newslettersWithData.sort((a, b) => {
+                    const dateA = a.date?.seconds || 0;
+                    const dateB = b.date?.seconds || 0;
                     return dateB - dateA;
                 });
 
-                // Process duplicate titles
-                const slugCounts = new Map<string, number>();
-                const processedArticles = sortedArticles.map(article => {
-                    const count = slugCounts.get(article.baseSlug) || 0;
-                    slugCounts.set(article.baseSlug, count + 1);
-                    
-                    // For duplicate titles, append number to slug (except first occurrence)
-                    const titleSlug = count > 0 ? `${article.baseSlug}-${count + 1}` : article.baseSlug;
-                    
-                    return {
-                        ...article,
-                        titleSlug
-                    };
-                });
-
-                return processedArticles;
+                return sortedNewsletters;
             } catch (error) {
-                console.error("Error fetching articles:", error);
-                throw new Error('Failed to fetch articles. Please try again later.');
+                console.error("Error fetching newsletters:", error);
+                throw new Error('Failed to fetch newsletters. Please try again later.');
             }
         },
         placeholderData: keepPreviousData,
@@ -128,7 +104,7 @@ const TopStories = () => {
                 <h2 className="font-bold text-2xl mb-4 font-century-gothic">
                     TOP <span className="text-primary-500">STORIES</span>
                 </h2>
-                <div className="text-red-500">Error loading articles. Please try again later.</div>
+                <div className="text-red-500">Error loading newsletters. Please try again later.</div>
             </div>
         );
     }
@@ -139,56 +115,53 @@ const TopStories = () => {
                 <h2 className="font-bold text-2xl mb-4 font-century-gothic">
                     TOP <span className="text-primary-500">STORIES</span>
                 </h2>
-                <div className="flex justify-center items-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+                <div className="flex flex-col xl:gap-5 sm:gap-7 gap-8">
+                    {[1, 2, 3].map((index) => (
+                        <div key={index} className="flex gap-4 w-full">
+                            <Skeleton className="h-[100px] w-[100px] rounded-lg bg-gray-100" />
+                            <div className="flex flex-col gap-2 flex-1">
+                                <Skeleton className="h-4 w-3/4 bg-gray-100" />
+                                <Skeleton className="h-4 w-1/2 bg-gray-100" />
+                                <Skeleton className="h-4 w-1/4 bg-gray-100" />
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         );
     }
 
-    // Update delLater based on the current page
-    const displayedArticles = isContactPage ? articles?.slice(0, 2) : articles;
+    
+    const displayedNewsletters = isContactPage && newsletters ? newsletters.slice(0, 2) : newsletters;
 
-    // Check if we should show the "VIEW MORE" button
-    const showViewMoreButton = isContactPage && articles && articles?.length > 2;
+    const showViewMoreButton = isContactPage && newsletters && newsletters.length > 2;
 
     return (
         <div className="px-sm-generic">
-            {/* <button onClick={() => {
-                fireServices.addArticle({
-                    title: `DirecTV's buying its rival for $1 (kinda)`,
-                    content: `In the satellite TV equivalent of Godzilla and Kong teaming up against Skar King, DirecTV announced it's buying longtime rival Dish for $1 in a deal that unites the two providers as they fight to maintain relevance in the age of streaming.
-
-The complex deal entails DirecTV buying Dish (and Sling) from its parent company, EchoStar, for $1 and the assumption of nearly $10 billion in debt. At the same time, private equity firm TPG will buy AT&T's 70% stake in DirecTV for $7.6 billion, giving TPG full ownership of the combined company (it bought the other 30% of DirecTV from AT&T in 2021).
-
-It's a bid to save the satellites. The two companies have lost a combined 63% of their customers since 2016. The merger will make DirecTV the largest US TV distributor, with 18 million subscribers—a number that CEO Bill Morrow hopes will help it negotiate better deals and offer smaller packages, so customers aren't forced into paying for the Bob Ross Channel and Disney Junior.
-
-Looking ahead…the deal is subject to regulatory approval—though Morrow said he's confident that regulators won't block the merger (which they did the last time the companies tried to merge in 2002)—before DirecTV upholds its promise to investors to cut $1 billion in costs annually. That's typically corporate speak for layoffs.—CC`,
-                    authorId: "Cassandra Cassidy",
-                    publishDate: new Date().toISOString(),
-                    imageURL: "", // Add a default empty string or actual image URL
-                    tags: "", // Add a default empty string or actual tags
-                    categorieId: "", // Add a default empty string or actual category ID
-                    featuredArticle: false// Add a default empty string or actual category ID
-                });
-            }}>Add Article</button> */}
             <h2 className="font-bold text-2xl mb-4 font-century-gothic">
                 TOP <span className="text-primary-500">STORIES</span>
             </h2>
             <div className="flex flex-col xl:gap-5 sm:gap-7 gap-8">
-                {displayedArticles?.map((article) => (
-                    <React.Fragment key={article.id}>
-                        <Link href={`/articles/${article.titleSlug}`}>
+                {displayedNewsletters?.map((newsletter: Newsletter) => {
+                    // Format the date here
+                    const formattedDate = newsletter.date 
+                        ? format(new Date(newsletter.date.toDate()), 'MMM d, yyyy')
+                        : '';
+
+                    return (
+                        <React.Fragment key={newsletter.id}>
                             <HorizontalCard
-                                title={article.title || "-"}
-                                imageURL={article.imageURL || DummyImg}
-                                authorName={article.authorName || "Unknown Author"}
-                                publishDate={article.publishDate}
-                                content={article.content || "-"}
+                                title={newsletter.title || "-"}
+                                imageURL={newsletter.imageURL || DummyImg}
+                                authorName={newsletter.authorName || "Docket Digest New Room"}
+                                publishDate={formattedDate}
+                                content={newsletter.content || "-"}
+                                titleSlug={newsletter.titleSlug}
+                                type="news"
                             />
-                        </Link>
-                    </React.Fragment>
-                ))}
+                        </React.Fragment>
+                    );
+                })}
             </div>
 
             {showViewMoreButton && (

@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Montserrat } from 'next/font/google';
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
 import QueryProviders from '@/ReatQuery/provider';
+import { Montserrat } from 'next/font/google';
 
-const montserratFont = Montserrat({
-  weight: ['300', '400', '500', '600', '700'],
-  style: ['normal'],
-  display: 'swap',
+const montserrat = Montserrat({
   subsets: ['latin'],
-  variable: '--inter-font',
+  variable: '--font-montserrat',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -24,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="font-montserrat">
+    <html lang="en" className={montserrat.variable}>
+      <body>
         <QueryProviders>
           <Header />
           <main className="flex items-center justify-center md:px-generic pageTopBottonMargin overflow-hidden">

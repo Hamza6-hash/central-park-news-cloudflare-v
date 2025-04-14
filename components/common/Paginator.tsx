@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -9,7 +8,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-
 
 const Paginator = () => {
   return (
@@ -36,7 +34,6 @@ const Paginator = () => {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-
     </div>
   )
 }

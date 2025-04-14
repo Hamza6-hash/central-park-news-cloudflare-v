@@ -71,7 +71,7 @@ const config = {
         "century-schoolbook": ["century-schoolbook", "sans-serif"],
         "century-gothic": ["century-gothic", "sans-serif"],
         inter: ['Inter', 'sans-serif'],
-        montserrat: ['Montserrat', 'sans-serif'],
+        montserrat: ['var(--font-montserrat)', 'sans-serif'],
       },
       keyframes: {
         "accordion-down": {

@@ -8,125 +8,125 @@ import DynamicBlog from "@/components/common/DynamicBlog";
 import { useRouter } from 'next/navigation';
 import { Skeleton } from "@/components/ui/skeleton";
 
-interface Article {
+interface News {
     id: string;
     title: string;
     content: string;
     imageURL?: string;
     authorId: string;
     authorName?: string;
-    publishDate: {
+    date: {
         seconds: number;
         nanoseconds: number;
     };
-    date?: string;
+    formattedDate?: string;
     titleSlug?: string;
 }
 
-export default function ArticlePage({ params }: { params: { slug: string } }) {
-    const [article, setArticle] = useState<Article | null>(null);
+export default function NewsPage({ params }: { params: { slug: string } }) {
+    const [news, setNews] = useState<News | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
-    const fetchArticle = useCallback(async () => {
+    const fetchNews = useCallback(async () => {
         try {
             setLoading(true);
             setError(null);
 
-            console.log('Fetching article with slug:', params.slug);
+            console.log('Fetching news with slug:', params.slug);
 
             // Check if database is available
             if (!db) {
                 throw new Error('Database connection is not available');
             }
 
-            // Get all articles that match this title slug
-            const articlesRef = collection(db, 'blog/blockchainBriefing/articles');
-            const querySnapshot = await getDocs(articlesRef);
+            // Get all news items that match this title slug
+            const newsRef = collection(db, 'blog/blockchainBriefing/newsletter');
+            const querySnapshot = await getDocs(newsRef);
             
-            let matchingArticles = [];
+            let matchingNews = [];
             const requestedSlug = params.slug;
             const baseSlug = requestedSlug.replace(/-\d+$/, ''); // Remove any trailing numbers
             const requestedNumber = requestedSlug.match(/-(\d+)$/)?.[1]; // Get the number if present
 
-            // Find all articles with the same base title
+            // Find all news items with the same base title
             for (const doc of querySnapshot.docs) {
-                const data = doc.data() as Article;
-                const articleBaseSlug = data.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                if (articleBaseSlug === baseSlug) {
-                    matchingArticles.push({
+                const data = doc.data() as News;
+                const newsBaseSlug = data.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                if (newsBaseSlug === baseSlug) {
+                    matchingNews.push({
                         doc,
                         data,
-                        publishDate: data.publishDate
+                        date: data.date
                     });
                 }
             }
 
-            let articleDoc;
-            let articleData;
+            let newsDoc;
+            let newsData;
 
-            if (matchingArticles.length > 0) {
-                // Sort by publish date (oldest first to maintain consistent numbering)
-                matchingArticles.sort((a, b) => a.publishDate.seconds - b.publishDate.seconds);
+            if (matchingNews.length > 0) {
+                // Sort by date (oldest first to maintain consistent numbering)
+                matchingNews.sort((a, b) => a.date.seconds - b.date.seconds);
                 
                 if (requestedNumber) {
-                    // If a specific number was requested (e.g., ai-world-2), get that article
+                    // If a specific number was requested (e.g., ai-world-2), get that news item
                     const index = parseInt(requestedNumber) - 1;
-                    if (index >= 0 && index < matchingArticles.length) {
-                        articleDoc = matchingArticles[index].doc;
-                        articleData = matchingArticles[index].data;
+                    if (index >= 0 && index < matchingNews.length) {
+                        newsDoc = matchingNews[index].doc;
+                        newsData = matchingNews[index].data;
                     } else {
                         // If the requested number is out of range, redirect to 404
-                        console.log('Article number out of range:', requestedNumber);
+                        console.log('News number out of range:', requestedNumber);
                         router.push('/404');
                         return;
                     }
                 } else {
-                    // No number in URL, get the first/oldest article
-                    articleDoc = matchingArticles[0].doc;
-                    articleData = matchingArticles[0].data;
+                    // No number in URL, get the first/oldest news item
+                    newsDoc = matchingNews[0].doc;
+                    newsData = matchingNews[0].data;
                 }
             } else {
-                // If no matching articles found, redirect to 404
-                console.log('No articles found with base slug:', baseSlug);
+                // If no matching news items found, redirect to 404
+                console.log('No news items found with base slug:', baseSlug);
                 router.push('/404');
                 return;
             }
 
             // If not found by slug, try to find by ID (for backward compatibility)
-            if (!articleDoc) {
-                console.log('Trying to find article by ID:', params.slug);
-                const articleRef = doc(db, 'blog/blockchainBriefing/articles', params.slug);
-                const articleSnap = await getDoc(articleRef);
+            if (!newsDoc) {
+                console.log('Trying to find news by ID:', params.slug);
+                const newsRef = doc(db, 'blog/blockchainBriefing/newsletter', params.slug);
+                const newsSnap = await getDoc(newsRef);
                 
-                if (articleSnap.exists()) {
-                    articleDoc = articleSnap;
-                    articleData = articleSnap.data() as Article;
-                    console.log('Article found by ID:', articleData.title);
+                if (newsSnap.exists()) {
+                    newsDoc = newsSnap;
+                    newsData = newsSnap.data() as News;
+                    console.log('News found by ID:', newsData.title);
                 } else {
-                    console.log('Article not found by either slug or ID');
+                    console.log('News not found by either slug or ID');
                     router.push('/404');
                     return;
                 }
             }
 
-            if (!articleData) {
-                throw new Error('Article data is missing');
+            if (!newsData) {
+                throw new Error('News data is missing');
             }
 
             // Get author name from authors collection
-            console.log('Fetching author name for ID:', articleData.authorId);
-            const authorDoc = await getDoc(doc(db, 'blog/blockchainBriefing/authors', articleData.authorId));
+            console.log('Fetching author name for ID:', newsData.authorId);
+            const authorDoc = await getDoc(doc(db, 'blog/blockchainBriefing/authors', newsData.authorId));
             const authorName = authorDoc.exists() ? authorDoc.data().author_name : 'Unknown Author';
             console.log('Author name:', authorName);
             
             // Format the date
             let formattedDate = 'Unknown Date';
-            if (articleData.publishDate) {
+            if (newsData.date) {
                 try {
                     // Convert Firestore timestamp to JavaScript Date
-                    const timestamp = articleData.publishDate;
+                    const timestamp = newsData.date;
                     const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
                     
                     formattedDate = date.toLocaleDateString('en-US', {
@@ -140,40 +140,39 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
                 }
             }
 
-            // If article doesn't have a slug, generate and update it
-            if (!articleData.titleSlug && articleDoc) {
-                console.log('Generating new slug for article');
-                const slug = generateSlug(articleData.title, articleDoc.id);
-                await updateDoc(articleDoc.ref, { titleSlug: slug });
-                articleData.titleSlug = slug;
+            // If news item doesn't have a slug, generate and update it
+            if (!newsData.titleSlug && newsDoc) {
+                console.log('Generating new slug for news');
+                const slug = generateSlug(newsData.title, newsDoc.id);
+                await updateDoc(newsDoc.ref, { titleSlug: slug });
+                newsData.titleSlug = slug;
                 console.log('New slug generated:', slug);
             }
             
-            const article: Article = {
-                ...articleData,
-                id: articleDoc.id,
+            const newsItem: News = {
+                ...newsData,
+                id: newsDoc.id,
                 authorName: authorName,
-                date: formattedDate
+                formattedDate: formattedDate
             };
             
-            setArticle(article);
+            setNews(newsItem);
             setLoading(false);
         } catch (error) {
-            console.error('Error fetching article:', error);
-            setError('Failed to fetch article');
+            console.error('Error fetching news:', error);
+            setError('Failed to fetch news');
             setLoading(false);
         }
     }, [params.slug, router]);
 
     useEffect(() => {
-        fetchArticle();
-    }, [params.slug, fetchArticle]);
+        fetchNews();
+    }, [params.slug, fetchNews]);
 
     if (loading) {
         return (
             <div className="container mx-auto px-1 py-8">
-            {/* // <div className=""> */}
-                <div className="space-y-4 w-[90vw] ">
+                <div className="space-y-4 w-[90vw]">
                     <Skeleton className="h-8 w-1/2 bg-gray-100" />
                     <Skeleton className="h-[200px] w-full rounded-lg bg-gray-100" />
                     <div className="flex items-center gap-2">
@@ -191,21 +190,21 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
         );
     }
 
-    if (!article) {
+    if (!news) {
         return null; // The router will handle the 404 redirect
     }
 
     return (
         <div className="container mx-auto px-4 py-8">
             <DynamicBlog
-                title={article.title}
-                imageURL={article.imageURL || '/images/default-article.jpg'}
-                authorName={article.authorName || 'Unknown Author'}
-                publishDate={article.publishDate}
-                content={article.content}
-                titleSlug={article.titleSlug}
-                isArticlePage={true}
-                mainHeading="Article"
+                title={news.title}
+                imageURL={news.imageURL || '/images/default-news.jpg'}
+                authorName={news.authorName || 'Unknown Author'}
+                publishDate={news.date}
+                content={news.content}
+                titleSlug={news.titleSlug}
+                isArticlePage={false}
+                mainHeading="News"
             />
         </div>
     );

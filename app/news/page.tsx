@@ -3,10 +3,10 @@
 import React from "react";
 import NewsArticleCollection from "@/components/news-article/NewsArticleCollection";
 
-export default function ArticlesPage() {
+export default function NewsPage() {
     return (
         <section className="min-h-screen">
             <NewsArticleCollection />
         </section>
     );
-}
+} 

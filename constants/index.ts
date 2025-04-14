@@ -5,6 +5,7 @@ export const routes = {
   articles: "/articles",
   blogs: "/blogs",
   contact: "/contact",
+  news: "/news"
 }
 
 export const navbarLinks = [
@@ -13,21 +14,21 @@ export const navbarLinks = [
     route: routes.home,
     label: "Home",
   },
-  // {
-  //   imgURL: "",
-  //   route: routes.articles,
-  //   label: "Articles",
-  // },
+  {
+    imgURL: "",
+    route: routes.news,
+    label: "News",
+  },
   {
     imgURL: Logo,
     route: routes.home,
     label: "logo",
   },
-  // {
-  //   imgURL: "",
-  //   route: routes.blogs,
-  //   label: "Blogs",
-  // },
+  {
+    imgURL: "",
+    route: routes.articles,
+    label: "Article",
+  },
   {
     imgURL: "",
     route: routes.contact,

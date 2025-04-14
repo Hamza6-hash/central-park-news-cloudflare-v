@@ -1,64 +1,84 @@
 "use client";
 
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import React from "react";
 import DummyImg from "@/assets/Rectangle-4.png";
 import Link from "next/link";
 import { routes } from "@/constants";
 import TruncateText from "./TruncateProps";
 
-const BlogsCard = ({ showDateTimeInRow = false }: BlogsCard) => {
-    const dateRowCol = showDateTimeInRow
-        ? "flex md:flex-col max-md:items-end max-md:gap-1"
-        : "flex items-center gap-2";
+interface BlogsCard {
+    showDateTimeInRow?: boolean;
+    title: string;
+    content: string;
+    imageURL?: string | StaticImageData;
+    authorName?: string;
+    publishDate: {
+        seconds: number;
+        nanoseconds: number;
+    };
+    titleSlug?: string;
+    type?: "article" | "news";
+}
 
-    const hideLine = showDateTimeInRow ? "hidden" : "";
+const BlogsCard = ({ 
+    showDateTimeInRow = false,
+    title,
+    content,
+    imageURL = DummyImg,
+    authorName = "Docket Digest New Room",
+    publishDate,
+    titleSlug = "",
+    type = "article"
+}: BlogsCard) => {
+    const formattedDate = new Date(publishDate.seconds * 1000).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
 
-    const delLater =
-        "Derek Chauvin was found guilty on the three charges he faced — second-degree murder, third-degree murder, and second-degree manslaughter. Derek Chauvin was found guilty on the three charges he faced — second-degree murder, third-degree murder, and second-degree manslaughter.";
+    const getLinkPath = () => {
+        if (type === "news") {
+            return `${routes.news}/${titleSlug}`;
+        }
+        return `${routes.articles}/${titleSlug}`;
+    };
 
     return (
-        <div
-            className={`${!showDateTimeInRow
-                    ? "bg-primary-700  p-5"
-                    : "max-md:bg-gray-800 py-3 px-3.5"
-                } capitalize relative rounded-md`}
-        >
-            <Image
-                src={DummyImg}
-                alt={"new image"}
-                height={500}
-                quality={100}
-                style={{ objectFit: "cover" }}
-            />
+        <div className="bg-[#67B6DF24] capitalize relative w-[337px] h-[435px] rounded-[6px] p-6 flex flex-col gap-4">
+            <div className="relative w-full h-[290px] rounded-[6px] overflow-hidden">
+                <Image
+                    src={imageURL}
+                    alt={title}
+                    fill
+                    className="object-cover"
+                />
+            </div>
 
-            <div className="mt-2.5 mb-5 space-y-1">
-                <h1
-                    className={`font-century-schoolbook text-2xl capitalize leading-7 ${showDateTimeInRow && "tracking-tighter  max-md:text-center"
-                        }`}
-                >
-                    Three Guilty Verdicts for Derek Chauvin
+            <div className="space-y-0">
+                <h1 className="font-century-schoolbook text-2xl capitalize leading-7">
+                    {title}
                 </h1>
                 <div className="flex items-center gap-1.5">
-                    <hr className="sm:w-5 w-4 h-1" />
-                    <div className={dateRowCol}>
-                        <h6 className="text-sm text-dark-400 capitalize">
-                            Docket Digest New Room
+                    <hr className="w-4 sm:w-5 h-1" />
+                    <div className="flex items-center gap-2">
+                        <h6 className="text-dark-400 capitalize font-century-725 text-xs leading-none">
+                            {authorName}
                         </h6>
-                        <span className={hideLine}>|</span>
+                        <span>|</span>
                         <h6 className="italic text-sm text-dark-400 capitalize">
-                            April 21,2021
+                            {formattedDate}
                         </h6>
                     </div>
                 </div>
             </div>
 
-            <div className="text-gray-600 text-[15px]">
-                <TruncateText lines={3} content={delLater} />
+            <div className="text-gray-600 text-[15px] font-century-gothic leading-[142%] capitalize">
+                <TruncateText lines={3} content={content} />
             </div>
 
-            <div className="flex justify-end items-end mt-6 mb-1.5">
-                <Link href={`${routes.blogs}/2`} className="">
+            <div className="flex justify-end items-end mt-auto">
+                <Link href={getLinkPath()} className="">
                     <p className="uppercase text-primary-900 font-bold transition-colors duration-300 hover:text-yellow-500 text-xs">
                         VIEW MORE
                     </p>
