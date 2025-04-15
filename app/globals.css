@@ -147,6 +147,13 @@
   .lastestNews {
     @apply bg-blue-gradient w-full flex items-center justify-center;
   }
+
+  .title-container {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .hide-cross-dialog .lucide,

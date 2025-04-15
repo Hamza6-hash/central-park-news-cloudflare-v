@@ -45,8 +45,9 @@ const BlogsCard = ({
     };
 
     return (
-        <div className="bg-[#67B6DF24] capitalize relative w-[337px] h-[435px] rounded-[6px] p-6 flex flex-col gap-4">
-            <div className="relative w-full h-[290px] rounded-[6px] overflow-hidden">
+        <div className="bg-[#67B6DF24] relative w-full sm:max-w-[337px] h-[465px] rounded-[6px] p-6 flex flex-col">
+            {/* Image Container - Fixed position */}
+            <div className="relative w-full h-[189px]  overflow-hidden">
                 <Image
                     src={imageURL}
                     alt={title}
@@ -55,31 +56,40 @@ const BlogsCard = ({
                 />
             </div>
 
-            <div className="space-y-0">
-                <h1 className="font-century-schoolbook text-2xl capitalize leading-7">
+            {/* Title - Fixed position */}
+            <div className="mt-2 h-[52px]">
+                <h1 className="font-century-schoolbook font-bold text-[24px] leading-[26px] line-clamp-2">
                     {title}
                 </h1>
+            </div>
+
+            {/* Author and Date - Fixed position */}
+            <div className="mt-1 h-[14px]">
                 <div className="flex items-center gap-1.5">
-                    <hr className="w-4 sm:w-5 h-1" />
-                    <div className="flex items-center gap-2">
-                        <h6 className="text-dark-400 capitalize font-century-725 text-xs leading-none">
+                    <hr className="min-w-[16px] sm:min-w-[20px] h-1 shrink-0" />
+                    <div className="flex items-center gap-1 min-w-0 flex-1">
+                        <h6 className="text-dark-400 capitalize font-century-725 text-[12px] leading-[14px] truncate">
                             {authorName}
                         </h6>
-                        <span>|</span>
-                        <h6 className="italic text-sm text-dark-400 capitalize">
+                        <span className="shrink-0 text-[12px] leading-[14px]">|</span>
+                        <h6 className="italic text-[12px] leading-[14px] text-dark-400 capitalize truncate font-century-725">
                             {formattedDate}
                         </h6>
                     </div>
                 </div>
             </div>
 
-            <div className="text-gray-600 text-[15px] font-century-gothic leading-[142%] capitalize">
-                <TruncateText lines={3} content={content} />
+            {/* Content - Fixed position */}
+            <div className="mt-4 h-[60px]">
+                <div className="text-[#000000] text-[15px] leading-[20px] font-normal font-century-gothic">
+                    <TruncateText lines={3} content={content} />
+                </div>
             </div>
 
-            <div className="flex justify-end items-end mt-auto">
-                <Link href={getLinkPath()} className="">
-                    <p className="uppercase text-primary-900 font-bold transition-colors duration-300 hover:text-yellow-500 text-xs">
+            {/* View More Link - Fixed position */}
+            <div className="absolute bottom-[24px] right-6">
+                <Link href={getLinkPath()}>
+                    <p className="text-primary-900 font-bold text-[12px] leading-[14px] tracking-[0.06em] uppercase transition-colors duration-300 hover:text-yellow-500">
                         VIEW MORE
                     </p>
                 </Link>

@@ -6,11 +6,17 @@ import { IoIosSearch } from "react-icons/io";
 import { fireServices } from "@/app/services/firestoreService";
 import { ArticleWithDetails } from "@/app/services/firestoreService";
 import Link from "next/link";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebaseConfig";
+
+interface SearchResult extends ArticleWithDetails {
+    categoryName: string;
+}
 
 const Searchbar = () => {
     const pathName = usePathname();
     const [searchTerm, setSearchTerm] = useState("");
-    const [searchResults, setSearchResults] = useState<ArticleWithDetails[]>([]);
+    const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
     const [isSearching, setIsSearching] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -29,8 +35,56 @@ const Searchbar = () => {
             const normalizedSearchTerm = searchTerm.toLowerCase().trim();
             const results = await fireServices.searchArticles(normalizedSearchTerm);
             
-            // Filter results to ensure they contain the search term
-            const filteredResults = results.filter(article => 
+            // Fetch categories
+            const categoriesRef = collection(db, "blog/blockchainBriefing/categories");
+            const categoriesSnapshot = await getDocs(categoriesRef);
+            const categoriesMap = new Map<string, string>();
+            
+            // Log categories for debugging
+            // console.log("Categories from Firestore:");
+            categoriesSnapshot.forEach(doc => {
+                const categoryData = doc.data();
+                // console.log("Category data:", {
+                //     id: categoryData.id,
+                //     name: categoryData.name,
+                //     type: typeof categoryData.id
+                // });
+                // Use the 'id' field as the key and 'name' as the value
+                if (categoryData.id && categoryData.name) {
+                    categoriesMap.set(categoryData.id, categoryData.name);
+                }
+            });
+
+            // Process results with category names
+            const processedResults = await Promise.all(results.map(async (article) => {
+                let categoryName = "N/A";
+                if (article.categoryId) {
+                    // console.log("Article data:", {
+                    //     categoryId: article.categoryId,
+                    //     type: typeof article.categoryId,
+                    //     title: article.title
+                    // });
+                    
+                    // Convert both IDs to strings for comparison
+                    const articleCategoryId = String(article.categoryId);
+                    const categoryNameFromMap = categoriesMap.get(articleCategoryId);
+                    
+                    // console.log("Category lookup:", {
+                    //     articleCategoryId,
+                    //     availableIds: Array.from(categoriesMap.keys()),
+                    //     foundName: categoryNameFromMap
+                    // });
+                    
+                    categoryName = categoryNameFromMap || "N/A";
+                }
+
+                return {
+                    ...article,
+                    categoryName
+                } as SearchResult;
+            }));
+
+            const filteredResults = processedResults.filter(article => 
                 article.title.toLowerCase().includes(normalizedSearchTerm)
             );
 
@@ -41,7 +95,7 @@ const Searchbar = () => {
             }
             setSearchResults(filteredResults);
         } catch (error) {
-            console.error("Error searching articles:", error);
+            // console.error("Error searching articles:", error);
             setError("Failed to search articles. Please try again.");
             setSearchResults([]);
         } finally {
@@ -49,7 +103,6 @@ const Searchbar = () => {
         }
     };
 
-    // Generate slug from title
     const generateSlug = (title: string) => {
         return title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     };
@@ -105,7 +158,7 @@ const Searchbar = () => {
                                         <li className="mb-2 p-2 hover:bg-gray-50 rounded">
                                             <h4 className="font-semibold">{article.title}</h4>
                                             <p className="text-sm text-gray-600">
-                                                Category: {article.category?.name || 'N/A'} |
+                                                Category: {article.categoryName} |
                                                 Author: {article.author?.author_name || 'N/A'}
                                             </p>
                                         </li>

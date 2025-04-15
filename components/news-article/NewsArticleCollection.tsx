@@ -6,7 +6,7 @@ import { db } from "@/lib/firebaseConfig";
 import { collection, getDocs, doc, getDoc, query, where, orderBy, DocumentData, limit, startAfter } from "firebase/firestore";
 import { Skeleton } from "@/components/ui/skeleton";
 import BlogsCard from "../common/BlogsCard";
-import Paginator from "../common/Paginator";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import DummyImg from "@/assets/Rectangle-4.png";
 import { StaticImageData } from "next/image";
 
@@ -185,6 +185,26 @@ export default function NewsArticleCollection() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    // Function to generate page numbers array
+    const getPageNumbers = () => {
+        const pageNumbers = [];
+        const maxVisiblePages = 5; // Show max 5 page numbers at a time
+        
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+        
+        // Adjust start if we're near the end
+        if (endPage - startPage + 1 < maxVisiblePages) {
+            startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        }
+        
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(i);
+        }
+        
+        return pageNumbers;
+    };
+
     return (
         <section className="w-full">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6 max-w-7xl mx-auto w-full pl-0 pr-4 sm:pr-6 md:pr-8 lg:pr-10 xl:pr-12">
@@ -225,7 +245,7 @@ export default function NewsArticleCollection() {
 
             {/* Loading State */}
             {loading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-[53px] w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 mt-[53px] w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
                         <div key={index} className="w-full flex justify-center">
                             <div className="bg-white transition-shadow w-full max-w-[337px]">
@@ -249,9 +269,9 @@ export default function NewsArticleCollection() {
                 </div>
             ) : (
                 <>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-[53px] w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 mt-[53px] w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
                         {items.map((item) => (
-                            <div key={item.id} className="w-full flex justify-center">
+                            <div key={item.id} className="w-full">
                                 <BlogsCard
                                     title={item.title}
                                     content={item.content}
@@ -266,10 +286,51 @@ export default function NewsArticleCollection() {
                         ))}
                     </div>
                     
-                    {/* Pagination */}
-                    <div className='mt-9'>
-                        <Paginator />
-                    </div>
+                    {/* Updated Pagination */}
+                    {totalPages > 1 && (
+                        <div className='mt-8 flex justify-center'>
+                            <Pagination>
+                                <PaginationContent>
+                                    <PaginationItem>
+                                        <PaginationPrevious 
+                                            href="#" 
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                if (currentPage > 1) handlePageChange(currentPage - 1);
+                                            }}
+                                            className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                                        />
+                                    </PaginationItem>
+
+                                    {getPageNumbers().map((pageNumber) => (
+                                        <PaginationItem key={pageNumber}>
+                                            <PaginationLink
+                                                href="#"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handlePageChange(pageNumber);
+                                                }}
+                                                isActive={currentPage === pageNumber}
+                                            >
+                                                {pageNumber}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                    ))}
+
+                                    <PaginationItem>
+                                        <PaginationNext 
+                                            href="#" 
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                if (currentPage < totalPages) handlePageChange(currentPage + 1);
+                                            }}
+                                            className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                                        />
+                                    </PaginationItem>
+                                </PaginationContent>
+                            </Pagination>
+                        </div>
+                    )}
                 </>
             )}
         </section>

@@ -351,7 +351,7 @@ export const fireServices = {
     limitCount: number = 10
   ): Promise<ArticleWithDetails[]> => {
     try {
-      console.log('Searching for:', searchTerm);
+      // console.log('Searching for:', searchTerm);
       
       // Search in both collections
       const articlesRef = collection(db, 'blog/blockchainBriefing/articles');
@@ -363,8 +363,8 @@ export const fireServices = {
         getDocs(newsRef)
       ]);
       
-      console.log('Total articles found:', articlesSnapshot.size);
-      console.log('Total news found:', newsSnapshot.size);
+      // console.log('Total articles found:', articlesSnapshot.size);
+      // console.log('Total news found:', newsSnapshot.size);
       
       // Combine and process both collections
       const allItems = [
@@ -379,7 +379,7 @@ export const fireServices = {
         return title.includes(search);
       });
 
-      console.log('Matching items:', matchingItems.length);
+      // console.log('Matching items:', matchingItems.length);
 
       // Group items by their base title slug
       const itemsBySlug = new Map<string, (Article & { type: 'article' | 'news' })[]>();
@@ -462,7 +462,7 @@ export const fireServices = {
         })
       );
 
-      console.log('Items with details:', itemsWithDetails.length);
+      // console.log('Items with details:', itemsWithDetails.length);
       return itemsWithDetails;
     } catch (error) {
       console.error("Error in searchArticles:", error);
