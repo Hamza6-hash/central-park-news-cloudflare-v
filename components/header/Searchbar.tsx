@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { IoIosSearch } from "react-icons/io";
+import { IoIosSearch, IoIosClose } from "react-icons/io";
 import { fireServices } from "@/app/services/firestoreService";
 import { ArticleWithDetails } from "@/app/services/firestoreService";
 import Link from "next/link";
@@ -19,6 +19,7 @@ const Searchbar = () => {
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
     const [isSearching, setIsSearching] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [hasSearched, setHasSearched] = useState(false);
 
     const handleSearch = async () => {
         if (searchTerm.trim() === "") {
@@ -29,6 +30,7 @@ const Searchbar = () => {
 
         setIsSearching(true);
         setError(null);
+        setHasSearched(true);
 
         try {
             // Convert search term to lowercase for case-insensitive search
@@ -103,6 +105,13 @@ const Searchbar = () => {
         }
     };
 
+    const handleClear = () => {
+        setSearchTerm('');
+        setSearchResults([]);
+        setError(null);
+        setHasSearched(false);
+    };
+
     const generateSlug = (title: string) => {
         return title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     };
@@ -114,19 +123,28 @@ const Searchbar = () => {
                     <div className="bg-blue-gradient rounded-full py-2 sm:w-fit w-full px-5 gap-1 flex justify-center items-center">
                         <input
                             type="text"
-                            className="bg-transparent border-none focus:outline-none sm:w-96 text-white w-full"
+                            className="bg-transparent border-none focus:outline-none focus sm:w-96 text-white w-full"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Search articles..."
                             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                         />
-                        <button 
-                            onClick={handleSearch} 
-                            disabled={isSearching}
-                            className="disabled:opacity-50"
-                        >
-                            <IoIosSearch color="white" size={25} />
-                        </button>
+                        {hasSearched && searchTerm ? (
+                            <button 
+                                onClick={handleClear}
+                                className="text-white hover:text-gray-200"
+                            >
+                                <IoIosClose color="white" size={25} />
+                            </button>
+                        ) : (
+                            <button 
+                                onClick={handleSearch} 
+                                disabled={isSearching || !searchTerm.trim()}
+                                className="disabled:opacity-50"
+                            >
+                                <IoIosSearch color="white" size={25} />
+                            </button>
+                        )}
                     </div>
                 </div>
                 {isSearching && (
@@ -157,7 +175,7 @@ const Searchbar = () => {
                                     >
                                         <li className="mb-2 p-2 hover:bg-gray-50 rounded">
                                             <h4 className="font-semibold">{article.title}</h4>
-                                            <p className="text-sm text-gray-600">
+                                            <p className="text-sm text-gray-600 capitalize">
                                                 Category: {article.categoryName} |
                                                 Author: {article.author?.author_name || 'N/A'}
                                             </p>

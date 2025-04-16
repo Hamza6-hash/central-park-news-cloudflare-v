@@ -83,11 +83,9 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
                                 {title}
                             </h1>
                         ) : (
-                            <Link href={`/articles/${titleSlug}`}>
-                                <h1 className="font-century-schoolbook text-3xl max-md:text-center capitalize hover:text-primary-500 transition-colors">
-                                    {title}
-                                </h1>
-                            </Link>
+                            <h1 className="font-century-schoolbook text-3xl max-md:text-center capitalize">
+                                {title}
+                            </h1>
                         )}
                     </div>
 
