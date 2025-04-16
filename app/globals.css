@@ -43,7 +43,40 @@
   font-style: normal;
 }
 
+/* Add Montserrat font */
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/montserrat/Montserrat-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/montserrat/Montserrat-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Century-725";
+  src: url("/fonts/Century-725/Century725-BT.ttf") format("truetype");
+  font-weight: 400; /* Normal weight */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Century-725";
+  src: url("/fonts/Century-725/Century725-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+:root {
+  --font-montserrat: 'Montserrat', sans-serif;
+}
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;

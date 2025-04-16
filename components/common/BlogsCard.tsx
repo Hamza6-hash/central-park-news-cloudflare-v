@@ -7,6 +7,8 @@ import Link from "next/link";
 import { routes } from "@/constants";
 import TruncateText from "./TruncateProps";
 
+
+
 interface BlogsCard {
     showDateTimeInRow?: boolean;
     title: string;

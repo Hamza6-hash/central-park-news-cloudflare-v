@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import TopStories from "@/components/topStories/TopStories";
 import React, { useEffect, useState } from "react";
@@ -11,89 +11,102 @@ import CustomInput from "@/components/customInput/CustomInput";
 import { Button } from "@/components/button/Button";
 import CustomTextArea from "@/components/customInput/CustomTextArea";
 import ThankYouDialog from "@/components/dialogs/ThankYouDialog";
+import Head from "next/head"; // Import Head for metadata
 
-const fieldClass = '!border-gray-100'
+const fieldClass = "!border-gray-100";
 
 const Contacts = () => {
-    const formSchema = contactFormSchema();
-    const [openDialog, setOpenDialog] = useState(false);
+  const formSchema = contactFormSchema();
+  const [openDialog, setOpenDialog] = useState(false);
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      name: "",
+      message: "",
+    },
+  });
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            email: "",
-            name: '',
-            message: ''
-        },
-    });
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      setOpenDialog(true);
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
+  };
 
-    const onSubmit = async (data: z.infer<typeof formSchema>) => {
-        try {
-            setOpenDialog(true);
-        } catch (error) {
-            console.error(error);
-        } finally {
-        }
-    };
+  useEffect(() => {
+    let timer: number | NodeJS.Timeout;
+    if (openDialog) {
+      timer = setTimeout(() => {
+        setOpenDialog(false);
+      }, 2000); // Auto close
+    }
+    return () => clearTimeout(timer);
+  }, [openDialog]);
 
-    useEffect(() => {
-        let timer: number | NodeJS.Timeout;;
-        if (openDialog) {
-            timer = setTimeout(() => {
-                setOpenDialog(false);
-            }, 2000); // Auto close 
-        }
-        return () => clearTimeout(timer);
-    }, [openDialog]);
+  return (
+    <>
+      <Head>
+        <title>Contact Us</title>
+        <meta
+          name="description"
+          content="Contact us for any queries or feedback."
+        />
+      </Head>
+      <section className="flex xl:gap-5 gap-8 max-xl:flex-col">
+        <div className="xl:w-[658px] max-w-full">
+          <h1 className="heading max-md:text-center font-century-schoolbook">
+            Contact Us
+          </h1>
 
-    return (
-        <section className="flex xl:gap-5 gap-8 max-xl:flex-col">
-            <div className="xl:w-[658px] max-w-full">
-                <h1 className="heading max-md:text-center font-century-schoolbook">Contact Us</h1>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-4 w-full xl:max-w-[70%] max-w-full mt-10 px-sm-generic"
+            >
+              <CustomInput
+                control={form.control}
+                name="name"
+                label="Name"
+                fieldClassName={`${fieldClass}`}
+                placeholder="Name Here.."
+                schema={formSchema}
+              />
+              <CustomInput
+                control={form.control}
+                name="email"
+                label="Email"
+                fieldClassName={`${fieldClass}`}
+                placeholder="Email Here.."
+                schema={formSchema}
+              />
+              <CustomTextArea
+                control={form.control}
+                name="message"
+                label="Message"
+                fieldClassName={`${fieldClass}`}
+                placeholder="Message Here.."
+                schema={formSchema}
+              />
+              <div className="flex justify-end">
+                <Button variant="primary" type="submit" className="">
+                  SUBMIT
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </div>
+        <div className="xl:w-[518px]">
+          <TopStories />
+        </div>
 
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex flex-col gap-4 w-full xl:max-w-[70%] max-w-full mt-10 px-sm-generic"
-                    >
-                        <CustomInput
-                            control={form.control}
-                            name="name"
-                            label="Name"
-                            fieldClassName={`${fieldClass}`}
-                            placeholder="Name Here.."
-                            schema={formSchema}
-                        />
-                        <CustomInput
-                            control={form.control}
-                            name="email"
-                            label="Email"
-                            fieldClassName={`${fieldClass}`}
-                            placeholder="Email Here.."
-                            schema={formSchema}
-                        />
-                        <CustomTextArea
-                            control={form.control}
-                            name="message"
-                            label="Message"
-                            fieldClassName={`${fieldClass}`}
-                            placeholder="Message Here.."
-                            schema={formSchema}
-                        />
-                        <div className="flex justify-end">
-                            <Button variant="primary" type="submit" className="">SUBMIT</Button>
-                        </div>
-                    </form>
-                </Form>
-            </div>
-            <div className="xl:w-[518px]">
-                <TopStories />
-            </div>
-
-            <ThankYouDialog openDialog={openDialog} setOpenDialog={setOpenDialog} />
-        </section>
-    );
+        <ThankYouDialog openDialog={openDialog} setOpenDialog={setOpenDialog} />
+      </section>
+    </>
+  );
 };
 
 export default Contacts;

@@ -65,7 +65,8 @@ const HorizontalCard = ({
                             </p>
                         </div>
                     </div>
-                    <div className="text-gray-600 capitalize text-[15px]">
+                    {/* <div className="text-gray-600 capitalize  text-[15px]"> */}
+                    <div className="text-gray-600 capitalize font-montserrat font-normal text-[15px]">
                         <TruncateText lines={4} content={content || "-"} />
                     </div>
                 </div>

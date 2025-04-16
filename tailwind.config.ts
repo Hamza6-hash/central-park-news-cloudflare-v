@@ -70,6 +70,7 @@ const config = {
         "Century-751-BT": ["Century-BT", "sans-serif"],
         "century-schoolbook": ["century-schoolbook", "sans-serif"],
         "century-gothic": ["century-gothic", "sans-serif"],
+        "font-century-725": ["Century-725", "sans-serif"],
         inter: ['Inter', 'sans-serif'],
         montserrat: ['var(--font-montserrat)', 'sans-serif'],
       },
