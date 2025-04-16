@@ -70,11 +70,11 @@ const BlogsCard = ({
             <div className="flex items-center gap-1.5">
                 <hr className="min-w-[16px] sm:min-w-[20px] h-1 shrink-0" />
                 <div className="flex items-center gap-1 min-w-0 flex-1">
-                    <h6 className="text-dark-400 capitalize font-century-725 text-[12px] leading-[14px] truncate">
+                    <h6 className="text-dark-400 capitalize font-font-century-725-cn  font-normal text-[12px] leading-[14px] truncate">
                         {authorName}
                     </h6>
                     <span className="shrink-0 text-[12px] leading-[14px]">|</span>
-                    <h6 className="italic text-[12px] leading-[14px] text-dark-400 capitalize truncate font-century-725">
+                    <h6 className="italic text-[12px] leading-[14px] text-dark-400 capitalize truncate font-font-century-725-cn font-normal">
                         {formattedDate}
                     </h6>
                 </div>

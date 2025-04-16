@@ -2,7 +2,7 @@ import React from "react";
 import ArticleClient from "@/components/ArticleSingle/ArticleClient";
 import { db } from "@/lib/firebaseConfig";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
-import { generateSlug } from "@/lib/utils"; // Utility function to generate slugs
+import { generateSlug } from "@/lib/utils";
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const { slug } = params;
