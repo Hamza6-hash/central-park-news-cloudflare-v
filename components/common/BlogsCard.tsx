@@ -66,15 +66,15 @@ const BlogsCard = ({
         </div>
 
         {/* Author and Date - Fixed position */}
-        <div className="mt-4 h-[14px]">
+        <div className="mt-2 h-[14px]">
             <div className="flex items-center gap-1.5">
                 <hr className="min-w-[16px] sm:min-w-[20px] h-1 shrink-0" />
-                <div className="flex items-center gap-1 min-w-0 flex-1">
-                    <h6 className="text-dark-400 capitalize font-font-century-725-cn  font-normal text-[12px] leading-[14px] truncate">
+                <div className="flex items-center gap-1 min-w-0 flex-1 flex-wrap">
+                    <h6 className="text-dark-400 capitalize font-font-century-725-cn font-normal text-[12px] leading-[14px] ">
                         {authorName}
                     </h6>
                     <span className="shrink-0 text-[12px] leading-[14px]">|</span>
-                    <h6 className="italic text-[12px] leading-[14px] text-dark-400 capitalize truncate font-font-century-725-cn font-normal">
+                    <h6 className="text-[12px] leading-[14px] text-dark-400 capitalize  font-font-century-725-cn font-normal">
                         {formattedDate}
                     </h6>
                 </div>

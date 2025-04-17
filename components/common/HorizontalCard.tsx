@@ -52,10 +52,10 @@ const HorizontalCard = ({
 
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">
-                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7">
+                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px]">
                             {title || "-"}
                         </h4>
-                        <div className="flex items-center text-xs gap-2">
+                        <div className="flex items-center gap-2  text-[12px] sm:text-[12px]">
                             <hr className="w-6 bg-primary-900 h-[1px] border-none" />
 
                             <h6 className="capitalize text-nowrap">{authorName || "-"}</h6>
@@ -66,7 +66,7 @@ const HorizontalCard = ({
                         </div>
                     </div>
                     {/* <div className="text-gray-600 capitalize  text-[15px]"> */}
-                    <div className="text-gray-600 capitalize font-montserrat font-normal text-[15px]">
+                    <div className="text-gray-600 capitalize font-montserrat font-normal text-[12px] sm:text-[15px]">
                         <TruncateText lines={4} content={content || "-"} />
                     </div>
                 </div>
