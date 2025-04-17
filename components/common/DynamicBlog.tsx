@@ -100,9 +100,9 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
                     </div>
                     <div className="flex items-center sm:text-lg text-sm px-sm-generic gap-2">
                         <hr className="w-6 h-1" />
-                        <h6 className="capitalize">{authorName}</h6>
+                        <h6 className="capitalize text-nowrap text-[clamp(0.75rem,1.2vw,1rem)] font-montserrat">{authorName}</h6>
                         <span className="text-primary-500">|</span>
-                        <p className="text-primary-500 italic">{formatedPublishDate && formatedPublishDate}</p>
+                        <p className="text-primary-500 italic text-nowrap  text-[clamp(0.75rem,1.2vw,1rem)]">{formatedPublishDate && formatedPublishDate}</p>
                     </div>
                 </div>
                 <article className="space-y-3  sm:text-lg text-justify px-sm-generic capitalize">
