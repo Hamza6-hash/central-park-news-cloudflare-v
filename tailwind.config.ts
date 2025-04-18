@@ -19,6 +19,9 @@ const config = {
       },
     },
     extend: {
+      // screens:{
+      //   'max-380': { max: '380px' }, // custom screen for below 400px
+      // },
       colors: {
         success: {
           25: "#F6FEF9",

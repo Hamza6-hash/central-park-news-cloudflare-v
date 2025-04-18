@@ -67,7 +67,7 @@ const Banner = () => {
                                 name="email"
                                 label=""
                                 placeholder="Your email address"
-                                fieldClassName={'sm:w-80'}
+                                fieldClassName={'sm:w-80 font-century-gothic font-[400] text-[14px] not-italic text-[#A3A0A0]'}
                                 schema={formSchema}
                                 onChange={onChangeField}
                             />
