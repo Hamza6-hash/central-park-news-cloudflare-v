@@ -27,9 +27,11 @@
   font-style: normal;
 }
 
+/* century ghotic */
+
 @font-face {
   font-family: "century-gothic";
-  src: url("/fonts/century-gothic/CenturyGothicPaneuropeanRegular.TTF")
+  src: url("/fonts/century-gothic/CenturyGothicPaneuropeanRegular.ttf")
     format("truetype");
   font-weight: normal;
   font-style: normal;
@@ -37,7 +39,23 @@
 
 @font-face {
   font-family: "century-gothic";
-  src: url("/fonts/century-gothic/CenturyGothicPaneuropeanBold.TTF")
+  src: url("/fonts/century-gothic/century-gothic.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "century-gothic";
+  src: url("/fonts/century-gothic/centurygothic.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "century-gothic";
+  src: url("/fonts/century-gothic/CenturyGothicPaneuropeanBold.ttf")
     format("truetype");
   font-weight: 700;
   font-style: normal;
