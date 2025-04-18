@@ -9,6 +9,7 @@ import BlogsCard from "../common/BlogsCard";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import DummyImg from "@/assets/Rectangle-4.png";
 import { StaticImageData } from "next/image";
+import Link from "next/link";
 
 interface Article {
     id: string;
@@ -210,8 +211,8 @@ export default function NewsArticleCollection() {
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6 max-w-7xl mx-auto w-full pl-0 pr-4 sm:pr-6 md:pr-8 lg:pr-10 xl:pr-12">
                 <h1 className='heading text-center sm:text-left'>{pageTitle}</h1>
                 
-                {/* Buttons aligned to the right */}
-                <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-4 w-auto">
+                {/* -------------- buttons to switch b/w news and articles ------------ */}
+                {/* <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-4 w-auto">
                     <button
                         onClick={() => {
                             setActiveTab("news");
@@ -240,7 +241,7 @@ export default function NewsArticleCollection() {
                     >
                         Articles
                     </button>
-                </div>
+                </div> */}
             </div>
 
             {/* Loading State */}

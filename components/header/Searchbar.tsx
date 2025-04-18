@@ -88,7 +88,7 @@ const Searchbar = () => {
                     <div className="bg-blue-gradient rounded-full py-2 sm:w-fit w-full px-5 gap-1 flex justify-center items-center">
                         <input
                             type="text"
-                            className="bg-transparent border-none focus:outline-none sm:w-96 text-white w-full"
+                            className="bg-transparent border-none focus:outline-none text-[#BFD3E3] font-century-gothic text-[16px] not-italic font-[400] leading-normal sm:w-96 w-full"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Search articles..."
