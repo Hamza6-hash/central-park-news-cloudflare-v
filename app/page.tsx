@@ -18,7 +18,6 @@ import Link from "next/link";
 import { generateSlug } from "@/lib/utils";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import Head from "next/head";
 
 interface Article {
   id: string;
@@ -225,7 +224,7 @@ export default function Home() {
               {article.title}
             </h1>
           </Link>
-
+          
           <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
             <Image
               src={article.imageURL || "no-image"}
