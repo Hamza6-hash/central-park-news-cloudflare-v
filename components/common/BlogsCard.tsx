@@ -87,7 +87,7 @@ const BlogsCard = ({
       {/* View More Link - Fixed position */}
       <div className="absolute bottom-[24px] right-6">
         <Link href={getLinkPath()}>
-          <p className="text-primary-900 font-bold text-[12px] leading-[14px] tracking-[0.06em] uppercase transition-colors duration-300 hover:text-yellow-500">
+          <p className="text-primary-900 font-century-gothic font-bold text-[12px] leading-[14px] tracking-[0.06em] uppercase transition-colors duration-300 hover:text-yellow-500">
             VIEW MORE
           </p>
         </Link>

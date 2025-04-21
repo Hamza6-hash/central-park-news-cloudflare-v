@@ -28,7 +28,7 @@ declare type BlogsCard = {
 };
 
 type PublishDateType =
-  | { seconds: number; nanoseconds: number } // Firestore timestamp
+  | { seconds: number; nanoseconds: number } 
   | Date
   | string
   | null;
