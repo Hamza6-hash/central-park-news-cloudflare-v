@@ -20,7 +20,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "Crypto & Blockchain Briefing | Real-Time News & Insights",
-  description: "Stay ahead with Blockchain Briefing — your source for real-time crypto news, blockchain trends, and market insights. Curated updates from trusted sources.",
+  description: "Stay ahead tiwht  with Blockchain Briefing — your source for real-time crypto news, blockchain trends, and market insights. Curated updates from trusted sources.",
   keywords: 'crypto news, blockchain news, cryptocurrency updates, bitcoin news, ethereum news, defi news, crypto trends, blockchain technology, web3 updates'
 };
 
