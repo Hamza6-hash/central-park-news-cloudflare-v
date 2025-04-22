@@ -55,17 +55,17 @@ const BlogsCard = ({
       </div>
 
       {/* Title - Fixed position */}
-      <div className="mt-2 h-[52px]">
+      <div className="mt-3 h-[52px]">
         <h1 className="font-century-schoolbook font-bold text-[24px] leading-[29px] line-clamp-2">
           {title}
         </h1>
       </div>
 
       {/* Author and Date - Fixed position */}
-      <div className="mt-2 h-[14px]">
+      <div className="mt-3 h-[14px]">
         <div className="flex items-center gap-1.5">
           <hr className="min-w-[16px] sm:min-w-[20px] h-1 shrink-0" />
-          <div className="flex items-center gap-1 min-w-0 flex-1 flex-wrap">
+          <div className="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
             <h6 className="text-dark-400 capitalize font-font-century-725-cn font-normal text-[12px] leading-[14px] ">
               {authorName}
             </h6>
@@ -85,9 +85,10 @@ const BlogsCard = ({
       </div>
 
       {/* View More Link - Fixed position */}
-      <div className="absolute bottom-[24px] right-6">
+      <div className="absolute bottom-[36px] right-6">
         <Link href={getLinkPath()}>
-          <p className="text-primary-900 font-century-gothic font-bold text-[12px] leading-[14px] tracking-[0.06em] uppercase transition-colors duration-300 hover:text-yellow-500">
+          {/* <p className="text-primary-900 font-century-gothic font-bold text-[14px] leading-[14px] tracking-[0.06em] uppercase transition-colors duration-300 hover:text-yellow-500"> */}
+          <p className="text-[#2B4864] text-right font-century-gothic text-[14px] font-bold text-sm leading-[100%] tracking-[0%] capitalize">
             VIEW MORE
           </p>
         </Link>
