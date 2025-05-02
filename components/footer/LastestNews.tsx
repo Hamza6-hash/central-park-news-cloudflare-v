@@ -176,9 +176,9 @@ const LastestNews = () => {
             setArticles(articlesWithUniqueSlugs);
             setLoading(false);
         } catch (error) {
-            console.error("Error fetching articles:", error);
-            setError("Failed to load articles. Please try again later.");
-            setLoading(false);
+                console.error("Error fetching articles:", error);
+                setError("Failed to load articles. Please try again later.");
+                setLoading(false);
         }
     };
 

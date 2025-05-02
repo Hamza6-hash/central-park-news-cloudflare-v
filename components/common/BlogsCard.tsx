@@ -19,6 +19,7 @@ interface BlogsCard {
   };
   titleSlug?: string;
   type?: "article" | "news";
+  suggestedBlog?: boolean;
 }
 
 const BlogsCard = ({
@@ -30,15 +31,15 @@ const BlogsCard = ({
   publishDate,
   titleSlug = "",
   type = "article",
+  suggestedBlog = false,
 }: BlogsCard) => {
-  const formattedDate = new Date(publishDate.seconds * 1000).toLocaleDateString(
-    "en-US",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }
-  );
+  const formattedDate = new Date(
+    publishDate?.seconds * 1000
+  ).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   const getLinkPath = () => {
     if (type === "news") {
@@ -48,7 +49,11 @@ const BlogsCard = ({
   };
 
   return (
-    <div className="bg-[#67B6DF24] relative w-full sm:max-w-[337px] h-[465px] rounded-[6px] p-6 flex flex-col">
+    <div
+      className={` ${
+        suggestedBlog ? "bg-transparent py-3 px-3" : "bg-[#67B6DF24] "
+      } relative w-full sm:max-w-[337px] h-[465px] rounded-[6px] p-6 flex flex-col`}
+    >
       {/* Image Container - Fixed position */}
       <div className="relative w-full h-[189px]  overflow-hidden">
         <Image src={imageURL} alt={title} fill className="object-cover" />
@@ -62,24 +67,39 @@ const BlogsCard = ({
       </div>
 
       {/* Author and Date - Fixed position */}
-      <div className="mt-3 h-[14px]">
-        <div className="flex items-center gap-1.5">
-          <hr className="min-w-[16px] sm:min-w-[20px] h-1 shrink-0" />
-          <div className="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
-            <h6 className="text-dark-400 capitalize font-font-century-725-cn font-normal text-[12px] leading-[14px] ">
-              {authorName}
-            </h6>
-            <span className="shrink-0 text-[12px] leading-[14px]">|</span>
-            <h6 className="text-[12px] leading-[14px] text-dark-400 capitalize  font-font-century-725-cn font-normal">
-              {formattedDate}
-            </h6>
+      <div className="mt-2 h-[14px]">
+        {showDateTimeInRow ? (
+          <div className="flex items-center gap-1.5">
+            <hr className="min-w-[16px] sm:min-w-[20px] h-1 shrink-0" />
+            <div className="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
+              <h6 className="text-dark-400 capitalize font-font-century-725-cn font-normal text-[12px] leading-[14px] ">
+                {authorName}
+              </h6>
+              <span className="shrink-0 text-[12px] leading-[14px]">|</span>
+              <h6 className="text-[12px] leading-[14px] text-dark-400 capitalize  font-font-century-725-cn font-normal">
+                {formattedDate}
+              </h6>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex items-center gap-2 ">
+            <hr className="w-6 h-0.5 text-dark-900" />
+            <div>
+              <h6 className="text-dark-400 capitalize font-monserrat font-normal text-[16px] leading-[14px] mb-1">
+                {authorName}
+              </h6>
+              <h6 className="text-[14px] leading-[16px] text-dark-400 capitalize  font-monserrat font-normal">
+                {formattedDate}
+              </h6>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Content - Fixed position */}
-      <div className="mt-4 h-[60px]">
-        <div className="text-[#000] text-ellipsis line-clamp-3 font-century-gothic text-[15px] font-normal capitalize">
+      <div className={`${suggestedBlog ? "mt-8 h-[60px]" : "mt-4 h-[60px]"}`}>
+        <div 
+        className={` text-[#000] text-ellipsis line-clamp-3 text-[15px] font-normal capitalize ${suggestedBlog ? "font-monserrat font-normal text-[15px]" : "font-century-gothic"}`}>
           <TruncateText lines={3} content={content} />
         </div>
       </div>

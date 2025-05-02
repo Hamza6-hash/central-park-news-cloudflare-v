@@ -47,7 +47,7 @@ const MobileNav = () => {
                 <SheetTrigger className="focus:outline-none focus:ring-0">
                     <IoMenu className='cursor-pointer' color='white' size={30} />
                 </SheetTrigger>
-                <SheetContent side={'right'} className='border-none bg-[#1E3D5A] [&>button]:text-white [&>button]:outline-none [&>button]:ring-0 [&>button]:focus:outline-none [&>button]:focus:ring-0 [&>button]:focus-visible:outline-none [&>button]:focus-visible:ring-0 [&>button]:focus-within:outline-none [&>button]:focus-within:ring-0 [&_button]:focus:ring-0 [&_button]:focus:ring-offset-0 [&_button]:focus-visible:ring-0 [&_button]:focus-visible:ring-offset-0'>
+                <SheetContent side={'left'} className='border-none bg-[#1E3D5A] [&>button]:text-white [&>button]:outline-none [&>button]:ring-0 [&>button]:focus:outline-none [&>button]:focus:ring-0 [&>button]:focus-visible:outline-none [&>button]:focus-visible:ring-0 [&>button]:focus-within:outline-none [&>button]:focus-within:ring-0 [&_button]:focus:ring-0 [&_button]:focus:ring-offset-0 [&_button]:focus-visible:ring-0 [&_button]:focus-visible:ring-offset-0'>
                     <Link href={'/'} className='cursor-pointer flex items-center gap-1 px-4'>
                         <Image
                             src={Logo}

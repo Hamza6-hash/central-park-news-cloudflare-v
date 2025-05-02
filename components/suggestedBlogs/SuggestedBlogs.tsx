@@ -1,71 +1,152 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BlogsCard from "../common/BlogsCard";
-import { routes } from "@/constants";
-import { usePathname } from "next/navigation";
 
-const SuggestedBlogs = () => {
-    const pathName = usePathname();
-    const isActive =
-        pathName === routes.articles || pathName.startsWith(`${routes.articles}/`);
+import { db } from "@/lib/firebaseConfig";
+import DummyImg from "@/assets/Rectangle-4.png";
 
-    // Mock data for suggested blogs with unique titles
-    const suggestedBlogs = [
-        {
-            title: 'Blockchain Technology: The Future of Digital Transactions',
-            content: 'Exploring how blockchain is revolutionizing digital transactions and what it means for the future of finance.',
-            publishDate: { seconds: Date.now() / 1000, nanoseconds: 0 },
-            imageURL: '/placeholder.jpg',
-            titleSlug: 'blockchain-technology-future-digital-transactions',
-            type: 'article' as const,
-            authorName: 'Tech Analyst'
-        },
-        {
-            title: 'Understanding Smart Contracts: A Comprehensive Guide',
-            content: 'A deep dive into smart contracts, their applications, and how they are changing the way we do business.',
-            publishDate: { seconds: Date.now() / 1000, nanoseconds: 0 },
-            imageURL: '/placeholder.jpg',
-            titleSlug: 'understanding-smart-contracts-comprehensive-guide',
-            type: 'article' as const,
-            authorName: 'Blockchain Expert'
-        },
-        {
-            title: 'The Rise of DeFi: Decentralized Finance Explained',
-            content: 'An in-depth look at decentralized finance and its impact on traditional financial systems.',
-            publishDate: { seconds: Date.now() / 1000, nanoseconds: 0 },
-            imageURL: '/placeholder.jpg',
-            titleSlug: 'rise-defi-decentralized-finance-explained',
-            type: 'article' as const,
-            authorName: 'Finance Specialist'
-        },
-        {
-            title: 'NFTs and Digital Ownership: A New Era of Art',
-            content: 'How NFTs are transforming the art world and redefining digital ownership.',
-            publishDate: { seconds: Date.now() / 1000, nanoseconds: 0 },
-            imageURL: '/placeholder.jpg',
-            titleSlug: 'nfts-digital-ownership-new-era-art',
-            type: 'article' as const,
-            authorName: 'Art Curator'
-        }
-    ];
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+  orderBy,
+  DocumentData,
+  limit,
+  startAfter,
+} from "firebase/firestore";
+import { Skeleton } from "@/components/ui/skeleton";
 
-    return (
-        <div className="bg-primary-700 px-generic md:py-14 py-10 flex items-center justify-center">
-            <div className="max-width">
-                <h1 className="font-bold text-[32px] text-primary-900 mb-7 uppercase">
-                    {isActive ? "BLOGS" : "Articles"}
-                </h1>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {suggestedBlogs.map((blog, index) => (
-                        <React.Fragment key={index}>
-                            <BlogsCard {...blog} />
-                        </React.Fragment>
-                    ))}
-                </div>
-            </div>
+// Define the type for a blog
+interface Blog {
+  id: string;
+  title: string;
+  content: string;
+  // @ts-ignore
+  imageURL: any;
+  authorName: string;
+  publishDate: {
+    seconds: number;
+    nanoseconds: number;
+  };
+  titleSlug: string;
+}
+
+const SuggestedBlogs: React.FC = () => {
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [articles, setArticles] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchArticles = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      if (!db) {
+        throw new Error("Database connection is not available");
+      }
+
+      const articlesRef = collection(db, "blog/blockchainBriefing/articles");
+      const q = query(articlesRef, orderBy("publishDate", "desc"), limit(4));
+
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        setArticles([]);
+        setLoading(false);
+        return;
+      }
+
+      const articlesData = await Promise.all(
+        snapshot.docs.map(async (docSnapshot) => {
+          const data = docSnapshot.data();
+          let authorName = "Docket Digest News Room";
+
+          if (data.authorId) {
+            try {
+              const authorRef = doc(
+                db,
+                "blog/blockchainBriefing/authors",
+                data.authorId
+              );
+              const authorSnap = await getDoc(authorRef);
+              if (authorSnap.exists()) {
+                const authorData = authorSnap.data();
+                authorName = authorData.author_name || authorName;
+              }
+            } catch (error) {
+              console.error("Error fetching author:", error);
+            }
+          }
+
+          return {
+            id: docSnapshot.id,
+            title: data.title || "Untitled",
+            content: data.content || "No content available.",
+            imageURL: data.imageURL || DummyImg,
+            authorName: authorName,
+            publishDate: data.publishDate || {
+              seconds: new Date().getTime() / 1000,
+              nanoseconds: 0,
+            },
+            titleSlug:
+              data.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") ||
+              "untitled",
+          };
+        })
+      );
+
+      setArticles(articlesData);
+    } catch (error) {
+      console.error("Error fetching articles:", error);
+      setError("Failed to load articles. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchArticles();
+  }, []);
+
+  return (
+    // <div className="bg-[#67B6DF24]  md:py-14 py-10 flex items-center justify-center">
+    <div className="bg-[#67B6DF24] py-10 flex items-center justify-center">
+      <div className="max-width">
+        <h1 className="font-century-gothic font-bold text-[32px] mb-7 uppercase">
+          Articles
+        </h1>
+        {/* <div className="grid grid-cols-4 md:gap-4 gap-8 max-xl:grid-cols-2 max-md:grid-cols-1"> */}
+        <div className="grid grid-cols-4 md:gap-1 gap-8 max-xl:grid-cols-2 max-md:grid-cols-1 ">
+          {loading
+            ? [1, 2, 3, 4].map((item) => (
+                <div
+                  key={item}
+                  className="bg-gray-300 h-40 w-full rounded-md"
+                />
+              ))
+            : articles.map((blog) => (
+                <React.Fragment key={blog.id}>
+                  <BlogsCard
+                    suggestedBlog={true}
+                    showDateTimeInRow={false}
+                    title={blog.title}
+                    content={blog.content}
+                    imageURL={blog.imageURL}
+                    authorName={blog.authorName}
+                    publishDate={blog.publishDate}
+                    titleSlug={blog.titleSlug}
+                  />
+                </React.Fragment>
+              ))}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default SuggestedBlogs;

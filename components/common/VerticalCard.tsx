@@ -37,12 +37,12 @@ const VerticalCard = ({
             <div className="flex justify-center items-center">
                 <Image
                     src={imageURL}
+                    width={200}
+                    height={121}
                     alt={"new image"}
                     className="w-[200px] h-[121px] gap-0 custom-rounded"
                     quality={100}
                     style={{ objectFit: "cover" }}
-                    width={200}
-                    height={121}
                 />
             </div>
             <div className="flex flex-col h-full">
