@@ -1,6 +1,6 @@
 import React from "react";
 import HorizontalCard from "../common/HorizontalCard";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { routes } from "@/constants";
 import { Button } from "../button/Button";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -18,6 +18,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import Link from "next/link";
 
+
 interface Newsletter {
   id: string;
   title?: string;
@@ -32,6 +33,7 @@ interface Newsletter {
 const TopStories = () => {
   const pathName = usePathname();
   const isContactPage = pathName === routes.contact;
+  const router = useRouter();
 
   const {
     data: newsletters,
@@ -198,11 +200,13 @@ const TopStories = () => {
           <button className="uppercase text-primary-900 transition-colors duration-300 hover:text-yellow-500 font-bold text-sm xl:block hidden font-century-gothic">
             VIEW MORE
           </button>
+
           <Button
+            onClick={() => router.push("/news")}
             variant="primary"
             className="transition-colors duration-300 hover:text-yellow-500 font-century-gothic xl:hidden block"
           >
-            <Link href={"/news"}>VIEW MORE</Link>
+           VIEW MORE
           </Button>
         </div>
       )}
