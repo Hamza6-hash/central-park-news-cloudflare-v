@@ -184,7 +184,7 @@ const TopStories = () => {
               <HorizontalCard
                 title={newsletter.title || "-"}
                 imageURL={newsletter.imageURL || DummyImg}
-                authorName={newsletter.authorName || "Docket Digest New Room"}
+                authorName={newsletter.authorName || "Docket Digest Old Room"}
                 publishDate={formattedDate}
                 content={newsletter.content || "-"}
                 titleSlug={newsletter.titleSlug}
