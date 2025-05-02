@@ -85,10 +85,10 @@ const BlogsCard = ({
           <div className="flex items-center gap-2 ">
             <hr className="w-6 h-0.5 text-dark-900" />
             <div>
-              <h6 className="text-dark-400 capitalize font-monserrat font-normal text-[16px] leading-[14px] mb-1">
+              <h6 className="text-dark-400 capitalize font-montserrat font-normal text-[16px] leading-[14px] mb-1">
                 {authorName}
               </h6>
-              <h6 className="text-[14px] leading-[16px] text-dark-400 capitalize  font-monserrat font-normal">
+              <h6 className="text-[14px] leading-[16px] text-dark-400 capitalize font-montserrat font-normal">
                 {formattedDate}
               </h6>
             </div>
@@ -98,8 +98,11 @@ const BlogsCard = ({
 
       {/* Content - Fixed position */}
       <div className={`${suggestedBlog ? "mt-8 h-[60px]" : "mt-4 h-[60px]"}`}>
-        <div 
-        className={` text-[#000] text-ellipsis line-clamp-3 text-[15px] font-normal capitalize ${suggestedBlog ? "font-monserrat font-normal text-[15px]" : "font-century-gothic"}`}>
+        <div
+          className={`text-[#000] text-ellipsis line-clamp-3 text-[15px] font-normal capitalize ${
+            suggestedBlog ? "font-montserrat" : "font-century-gothic"
+          }`}
+        >
           <TruncateText lines={3} content={content} />
         </div>
       </div>
