@@ -1,6 +1,6 @@
 import React from "react";
 import HorizontalCard from "../common/HorizontalCard";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { routes } from "@/constants";
 import { Button } from "../button/Button";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -18,7 +18,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import Link from "next/link";
 
-
 interface Newsletter {
   id: string;
   title?: string;
@@ -33,7 +32,6 @@ interface Newsletter {
 const TopStories = () => {
   const pathName = usePathname();
   const isContactPage = pathName === routes.contact;
-  const router = useRouter();
 
   const {
     data: newsletters,
@@ -58,7 +56,7 @@ const TopStories = () => {
           return [];
         }
 
-        // Process newsletters and sort by publish date (newest first)
+        // Process newsletters and fetch author names
         const newslettersWithData = await Promise.all(
           snapshot.docs.map(async (newsletterDoc) => {
             const data = newsletterDoc.data();
@@ -80,15 +78,12 @@ const TopStories = () => {
                 }
               }
 
-              // Generate base slug from title
-              const titleSlug =
-                data.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "";
-
+              // Use the titleSlug directly from the backend
               return {
                 ...data,
                 id: newsletterDoc.id,
                 authorName,
-                titleSlug,
+                titleSlug: data.titleSlug || "", // Directly from backend
                 date: data.date as Timestamp,
               } as Newsletter;
             } catch (error) {
@@ -101,8 +96,7 @@ const TopStories = () => {
                 ...data,
                 id: newsletterDoc.id,
                 authorName: "Docket Digest New Room",
-                titleSlug:
-                  data.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "",
+                titleSlug: data.titleSlug || "", // Directly from backend
               } as Newsletter;
             }
           })
@@ -125,6 +119,8 @@ const TopStories = () => {
     retry: 2,
     staleTime: 1000 * 60 * 5,
   });
+
+  
 
   if (error) {
     return (
@@ -184,7 +180,7 @@ const TopStories = () => {
               <HorizontalCard
                 title={newsletter.title || "-"}
                 imageURL={newsletter.imageURL || DummyImg}
-                authorName={newsletter.authorName || "Docket Digest Old Room"}
+                authorName={newsletter.authorName || "Docket Digest New Room"}
                 publishDate={formattedDate}
                 content={newsletter.content || "-"}
                 titleSlug={newsletter.titleSlug}
@@ -200,13 +196,11 @@ const TopStories = () => {
           <button className="uppercase text-primary-900 transition-colors duration-300 hover:text-yellow-500 font-bold text-sm xl:block hidden font-century-gothic">
             VIEW MORE
           </button>
-
           <Button
-            onClick={() => router.push("/news")}
             variant="primary"
             className="transition-colors duration-300 hover:text-yellow-500 font-century-gothic xl:hidden block"
           >
-           VIEW MORE
+            <Link href={"/news"}>VIEW MORE</Link>
           </Button>
         </div>
       )}

@@ -8,6 +8,8 @@ import {
   getDoc,
   getDocs,
   updateDoc,
+  query,
+  where
 } from "firebase/firestore";
 import { generateSlug } from "@/lib/utils";
 import DynamicBlog from "@/components/common/DynamicBlog";
@@ -35,123 +37,75 @@ const NewsClient = ({ slug }: { slug: string }) => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  // console.log(slug, "slug");
+
   const fetchNews = useCallback(async () => {
     try {
-      setLoading(true);
-      setError(null);
+        setLoading(true);
+        setError(null);
 
-      if (!db) {
-        throw new Error("Database connection is not available");
-      }
-
-      const newsRef = collection(db, "blog/blockchainBriefing/newsletter");
-      const querySnapshot = await getDocs(newsRef);
-
-      let matchingNews = [];
-      const baseSlug = slug.replace(/-\d+$/, "");
-      const requestedNumber = slug.match(/-(\d+)$/)?.[1];
-
-      for (const doc of querySnapshot.docs) {
-        const data = doc.data() as News;
-        const newsBaseSlug = data.title
-          ?.toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-");
-        if (newsBaseSlug === baseSlug) {
-          matchingNews.push({
-            doc,
-            data,
-            date: data.date,
-          });
+        if (!db) {
+            throw new Error("Database connection is not available");
         }
-      }
 
-      let newsDoc;
-      let newsData;
+        const newsRef = collection(db, "blog/blockchainBriefing/newsletter");
+        const q = query(newsRef, where("titleSlug", "==", slug));
+        const querySnapshot = await getDocs(q);
 
-      if (matchingNews.length > 0) {
-        matchingNews.sort((a, b) => a.date.seconds - b.date.seconds);
-
-        if (requestedNumber) {
-          const index = parseInt(requestedNumber) - 1;
-          if (index >= 0 && index < matchingNews.length) {
-            newsDoc = matchingNews[index].doc;
-            newsData = matchingNews[index].data;
-          } else {
+        if (querySnapshot.empty) {
+            console.warn(`No news found for slug: ${slug}`);
             router.push("/404");
             return;
-          }
-        } else {
-          newsDoc = matchingNews[0].doc;
-          newsData = matchingNews[0].data;
         }
-      } else {
-        router.push("/404");
-        return;
-      }
 
-      if (!newsDoc) {
-        const newsRef = doc(db, "blog/blockchainBriefing/newsletter", slug);
-        const newsSnap = await getDoc(newsRef);
+        const newsDoc = querySnapshot.docs[0];
+        const newsData = newsDoc.data() as News;
 
-        if (newsSnap.exists()) {
-          newsDoc = newsSnap;
-          newsData = newsSnap.data() as News;
-        } else {
-          router.push("/404");
-          return;
+        if (!newsData) {
+            throw new Error("News data is missing");
         }
-      }
 
-      if (!newsData) {
-        throw new Error("News data is missing");
-      }
+        const authorDoc = await getDoc(
+            doc(db, "blog/blockchainBriefing/authors", newsData.authorId)
+        );
+        const authorName = authorDoc.exists()
+            ? authorDoc.data().author_name
+            : "Unknown Author";
 
-      const authorDoc = await getDoc(
-        doc(db, "blog/blockchainBriefing/authors", newsData.authorId)
-      );
-      const authorName = authorDoc.exists()
-        ? authorDoc.data().author_name
-        : "Unknown Author";
+        // Format the publish date
+        let formattedDate = "Unknown Date";
+        if (newsData.date) {
+            try {
+                const timestamp = newsData.date;
+                const date = new Date(
+                    timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
+                );
 
-      let formattedDate = "Unknown Date";
-      if (newsData.date) {
-        try {
-          const timestamp = newsData.date;
-          const date = new Date(
-            timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
-          );
-
-          formattedDate = date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          });
-        } catch (error) {
-          console.error("Error formatting date:", error);
+                formattedDate = date.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                });
+            } catch (error) {
+                console.error("Error formatting date:", error);
+            }
         }
-      }
 
-      if (!newsData.titleSlug && newsDoc) {
-        const slug = generateSlug(newsData.title, newsDoc.id);
-        await updateDoc(newsDoc.ref, { titleSlug: slug });
-        newsData.titleSlug = slug;
-      }
+        const newsItem: News = {
+            ...newsData,
+            id: newsDoc.id,
+            authorName: authorName,
+            formattedDate: formattedDate,
+        };
 
-      const newsItem: News = {
-        ...newsData,
-        id: newsDoc.id,
-        authorName: authorName,
-        formattedDate: formattedDate,
-      };
-
-      setNews(newsItem);
-      setLoading(false);
+        setNews(newsItem);
+        setLoading(false);
     } catch (error) {
-      console.error("Error fetching news:", error);
-      setError("Failed to fetch news");
-      setLoading(false);
+        console.error("Error fetching news:", error);
+        setError("Failed to fetch news");
+        setLoading(false);
     }
-  }, [slug, router]);
+}, [slug, router]);
 
   useEffect(() => {
     fetchNews();

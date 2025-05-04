@@ -67,7 +67,7 @@ const BlogsCard = ({
       </div>
 
       {/* Author and Date - Fixed position */}
-      <div className="mt-2 h-[14px]">
+      <div className="mt-3 h-[14px]">
         {showDateTimeInRow ? (
           <div className="flex items-center gap-1.5">
             <hr className="min-w-[16px] sm:min-w-[20px] h-1 shrink-0" />

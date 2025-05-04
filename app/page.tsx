@@ -64,70 +64,148 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const params = useParams();
 
+  // const fetchArticle = async () => {
+  //   try {
+  //     setLoading(true);
+  //     setError(null);
+
+  //     // Check if database is available
+  //     if (!db) {
+  //       throw new Error("Database connection is not available");
+  //     }
+
+  //     // Fetch articles from the articles collection
+  //     const articlesRef = collection(db, "blog/blockchainBriefing/articles");
+  //     const articlesSnapshot = await getDocs(articlesRef);
+
+  //     if (articlesSnapshot.empty) {
+  //       setError("No articles available at the moment.");
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     // Process all articles to handle duplicate titles
+  //     const articlesMap = new Map();
+  //     const articles = articlesSnapshot.docs.map((doc) => {
+  //       const data = doc.data() as Article;
+  //       const baseSlug = data.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+  //       // Count how many articles have this base slug
+  //       const count = articlesMap.get(baseSlug) || 0;
+  //       articlesMap.set(baseSlug, count + 1);
+
+  //       return {
+  //         doc,
+  //         data,
+  //         baseSlug,
+  //         count: count + 1,
+  //       };
+  //     });
+
+  //     // Sort articles by publish date
+  //     articles.sort(
+  //       (a, b) => a.data.publishDate.seconds - b.data.publishDate.seconds
+  //     );
+
+  //     // Get the first article and its author
+  //     const firstArticle = articles[0];
+  //     const articleData = firstArticle.data;
+
+  //     // Get author name from authors collection
+  //     const authorDoc = await getDoc(
+  //       doc(db, "blog/blockchainBriefing/authors", articleData.authorId)
+  //     );
+  //     const authorName = authorDoc.exists()
+  //       ? authorDoc.data().author_name
+  //       : "Unknown Author";
+
+  //     // Format the date
+  //     let formattedDate = "Unknown Date";
+  //     if (articleData.publishDate) {
+  //       try {
+  //         const timestamp = articleData.publishDate;
+  //         const date = new Date(
+  //           timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
+  //         );
+
+  //         formattedDate = date.toLocaleDateString("en-US", {
+  //           year: "numeric",
+  //           month: "long",
+  //           day: "numeric",
+  //         });
+  //       } catch (error) {
+  //         console.error("Error formatting date:", error);
+  //       }
+  //     }
+
+  //     // Generate slug for the article
+  //     const slug = generateSlug(articleData.title, firstArticle.doc.id);
+
+  //     setArticle({
+  //       ...articleData,
+  //       id: firstArticle.doc.id,
+  //       authorName: authorName,
+  //       date: formattedDate,
+  //       titleSlug: slug,
+  //     });
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error("Error fetching article:", error);
+  //     setError("Failed to load article. Please try again later.");
+  //     setLoading(false);
+  //   }
+  // };
+
   const fetchArticle = async () => {
     try {
       setLoading(true);
       setError(null);
-
+  
       // Check if database is available
       if (!db) {
         throw new Error("Database connection is not available");
       }
-
+  
       // Fetch articles from the articles collection
       const articlesRef = collection(db, "blog/blockchainBriefing/articles");
       const articlesSnapshot = await getDocs(articlesRef);
-
+  
       if (articlesSnapshot.empty) {
         setError("No articles available at the moment.");
         setLoading(false);
         return;
       }
-
-      // Process all articles to handle duplicate titles
-      const articlesMap = new Map();
-      const articles = articlesSnapshot.docs.map((doc) => {
-        const data = doc.data() as Article;
-        const baseSlug = data.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-
-        // Count how many articles have this base slug
-        const count = articlesMap.get(baseSlug) || 0;
-        articlesMap.set(baseSlug, count + 1);
-
-        return {
-          doc,
-          data,
-          baseSlug,
-          count: count + 1,
-        };
-      });
-
+  
       // Sort articles by publish date
+      const articles = articlesSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Article[];
+  
       articles.sort(
-        (a, b) => a.data.publishDate.seconds - b.data.publishDate.seconds
+        (a, b) => a.publishDate.seconds - b.publishDate.seconds
       );
-
+  
       // Get the first article and its author
       const firstArticle = articles[0];
-      const articleData = firstArticle.data;
-
+  
       // Get author name from authors collection
       const authorDoc = await getDoc(
-        doc(db, "blog/blockchainBriefing/authors", articleData.authorId)
+        doc(db, "blog/blockchainBriefing/authors", firstArticle.authorId)
       );
       const authorName = authorDoc.exists()
         ? authorDoc.data().author_name
         : "Unknown Author";
-
+  
       // Format the date
       let formattedDate = "Unknown Date";
-      if (articleData.publishDate) {
+      if (firstArticle.publishDate) {
         try {
-          const timestamp = articleData.publishDate;
+          const timestamp = firstArticle.publishDate;
           const date = new Date(
             timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
           );
-
+  
           formattedDate = date.toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
@@ -137,16 +215,11 @@ export default function Home() {
           console.error("Error formatting date:", error);
         }
       }
-
-      // Generate slug for the article
-      const slug = generateSlug(articleData.title, firstArticle.doc.id);
-
+  
       setArticle({
-        ...articleData,
-        id: firstArticle.doc.id,
+        ...firstArticle,
         authorName: authorName,
         date: formattedDate,
-        titleSlug: slug,
       });
       setLoading(false);
     } catch (error) {
@@ -217,7 +290,7 @@ export default function Home() {
         <div className="space-y-3 mb-4 px-4">
           <Link
             href={`/articles/${
-              article.titleSlug?.split("-").slice(0, -1).join("-") || article.id
+              article.titleSlug
             }`}
           >
             <h1 className="font-century-schoolbook sm:text-[12px] text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full">
