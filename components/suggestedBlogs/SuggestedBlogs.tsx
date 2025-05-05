@@ -93,9 +93,7 @@ const SuggestedBlogs: React.FC = () => {
               seconds: new Date().getTime() / 1000,
               nanoseconds: 0,
             },
-            titleSlug:
-              data.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") ||
-              "untitled",
+            titleSlug: data.titleSlug,
           };
         })
       );
@@ -126,7 +124,7 @@ const SuggestedBlogs: React.FC = () => {
             ? [1, 2, 3, 4].map((item) => (
                 <div
                   key={item}
-                  className="bg-gray-300 h-40 w-full rounded-md"
+                  className="bg-transparent h-40 w-full rounded-md"
                 />
               ))
             : articles.map((blog) => (

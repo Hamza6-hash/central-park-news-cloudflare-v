@@ -59,28 +59,28 @@ export default function NewsArticleCollection() {
             try {
                 setLoading(true);
                 setError(null);
-
+        
                 if (!db) {
                     throw new Error("Database connection is not available");
                 }
-
+        
                 const collectionPath = activeTab === "article" 
                     ? "blog/blockchainBriefing/articles"
                     : "blog/blockchainBriefing/newsletter";
                 const itemsRef = collection(db, collectionPath);
                 const orderByField = activeTab === "article" ? "publishDate" : "date";
-
+        
                 let q = query(
                     itemsRef,
                     orderBy(orderByField, "desc"),
                     limit(ITEMS_PER_PAGE)
                 );
-
+        
                 // Get total count for pagination
                 const totalSnapshot = await getDocs(itemsRef);
                 const totalItems = totalSnapshot.size;
                 setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE));
-
+        
                 // If not on first page, apply startAfter
                 if (currentPage > 1) {
                     const previousItems = await getDocs(q);
@@ -92,7 +92,7 @@ export default function NewsArticleCollection() {
                         limit(ITEMS_PER_PAGE)
                     );
                 }
-
+        
                 const snapshot = await getDocs(q);
                 
                 if (snapshot.empty) {
@@ -100,7 +100,7 @@ export default function NewsArticleCollection() {
                     setLoading(false);
                     return;
                 }
-
+        
                 // Process each article
                 const itemsData = await Promise.all(
                     snapshot.docs.map(async (docSnapshot) => {
@@ -119,9 +119,7 @@ export default function NewsArticleCollection() {
                                 console.error("Error fetching author:", error);
                             }
                         }
-
-                        const baseSlug = data.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '';
-
+        
                         return {
                             id: docSnapshot.id,
                             title: data.title || "",
@@ -129,7 +127,7 @@ export default function NewsArticleCollection() {
                             imageURL: data.imageURL || DummyImg,
                             authorId: data.authorId || "",
                             authorName: authorName,
-                            titleSlug: baseSlug,
+                            titleSlug: data.titleSlug || "", // Use the slug provided by the backend
                             type: activeTab,
                             publishDate: activeTab === "news" 
                                 ? {
@@ -143,23 +141,8 @@ export default function NewsArticleCollection() {
                         };
                     })
                 );
-
-                // Handle duplicate titles and generate unique slugs
-                const slugCounts = new Map<string, number>();
-                const updatedItems = itemsData.map(item => {
-                    const count = slugCounts.get(item.titleSlug) || 0;
-                    slugCounts.set(item.titleSlug, count + 1);
-                    
-                    // For duplicate titles, append sequential number (except first occurrence)
-                    const uniqueSlug = count > 0 ? `${item.titleSlug}-${count + 1}` : item.titleSlug;
-                    
-                    return {
-                        ...item,
-                        titleSlug: uniqueSlug
-                    };
-                });
-                
-                setItems(updatedItems);
+        
+                setItems(itemsData);
             } catch (error) {
                 console.error("Error fetching items:", error);
                 setError("Failed to load items. Please try again later.");

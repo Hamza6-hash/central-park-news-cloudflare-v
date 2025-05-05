@@ -56,7 +56,7 @@ const TopStories = () => {
           return [];
         }
 
-        // Process newsletters and sort by publish date (newest first)
+        // Process newsletters and fetch author names
         const newslettersWithData = await Promise.all(
           snapshot.docs.map(async (newsletterDoc) => {
             const data = newsletterDoc.data();
@@ -78,15 +78,12 @@ const TopStories = () => {
                 }
               }
 
-              // Generate base slug from title
-              const titleSlug =
-                data.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "";
-
+              // Use the titleSlug directly from the backend
               return {
                 ...data,
                 id: newsletterDoc.id,
                 authorName,
-                titleSlug,
+                titleSlug: data.titleSlug || "", // Directly from backend
                 date: data.date as Timestamp,
               } as Newsletter;
             } catch (error) {
@@ -99,8 +96,7 @@ const TopStories = () => {
                 ...data,
                 id: newsletterDoc.id,
                 authorName: "Docket Digest New Room",
-                titleSlug:
-                  data.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "",
+                titleSlug: data.titleSlug || "", // Directly from backend
               } as Newsletter;
             }
           })
@@ -123,6 +119,8 @@ const TopStories = () => {
     retry: 2,
     staleTime: 1000 * 60 * 5,
   });
+
+  
 
   if (error) {
     return (

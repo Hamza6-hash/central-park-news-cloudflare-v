@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { db } from "@/lib/firebaseConfig";
-import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, updateDoc, query, where } from "firebase/firestore";
 import { generateSlug } from "@/lib/utils";
 import DynamicBlog from "@/components/common/DynamicBlog";
 import { useRouter } from "next/navigation";
@@ -30,121 +30,69 @@ const ArticleClient = ({ slug }: { slug: string }) => {
     const router = useRouter();
 
     const fetchArticle = useCallback(async () => {
-        try {
-            setLoading(true);
-            setError(null);
-
-            // console.log("Fetching article with slug:", slug);
-
-            if (!db) {
-                throw new Error("Database connection is not available");
-            }
-
-            const articlesRef = collection(db, "blog/blockchainBriefing/articles");
-            const querySnapshot = await getDocs(articlesRef);
-
-            let matchingArticles = [];
-            const baseSlug = slug.replace(/-\d+$/, "");
-            const requestedNumber = slug.match(/-(\d+)$/)?.[1];
-
-            for (const doc of querySnapshot.docs) {
-                const data = doc.data() as Article;
-                const articleBaseSlug = data.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-                if (articleBaseSlug === baseSlug) {
-                    matchingArticles.push({
-                        doc,
-                        data,
-                        publishDate: data.publishDate,
-                    });
-                }
-            }
-
-            let articleDoc;
-            let articleData;
-
-            if (matchingArticles.length > 0) {
-                matchingArticles.sort((a, b) => a.publishDate.seconds - b.publishDate.seconds);
-
-                if (requestedNumber) {
-                    const index = parseInt(requestedNumber) - 1;
-                    if (index >= 0 && index < matchingArticles.length) {
-                        articleDoc = matchingArticles[index].doc;
-                        articleData = matchingArticles[index].data;
-                    } else {
-                        // console.log("Article number out of range:", requestedNumber);
-                        router.push("/404");
-                        return;
-                    }
-                } else {
-                    articleDoc = matchingArticles[0].doc;
-                    articleData = matchingArticles[0].data;
-                }
-            } else {
-                // console.log("No articles found with base slug:", baseSlug);
-                router.push("/404");
-                return;
-            }
-
-            if (!articleDoc) {
-                // console.log("Trying to find article by ID:", slug);
-                const articleRef = doc(db, "blog/blockchainBriefing/articles", slug);
-                const articleSnap = await getDoc(articleRef);
-
-                if (articleSnap.exists()) {
-                    articleDoc = articleSnap;
-                    articleData = articleSnap.data() as Article;
-                    // console.log("Article found by ID:", articleData.title);
-                } else {
-                    console.log("Article not found by either slug or ID");
-                    router.push("/404");
-                    return;
-                }
-            }
-
-            if (!articleData) {
-                throw new Error("Article data is missing");
-            }
-
-            const authorDoc = await getDoc(doc(db, "blog/blockchainBriefing/authors", articleData.authorId));
-            const authorName = authorDoc.exists() ? authorDoc.data().author_name : "Unknown Author";
-
-            let formattedDate = "Unknown Date";
-            if (articleData.publishDate) {
-                try {
-                    const timestamp = articleData.publishDate;
-                    const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
-
-                    formattedDate = date.toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                    });
-                } catch (error) {
-                    console.error("Error formatting date:", error);
-                }
-            }
-
-            if (!articleData.titleSlug && articleDoc) {
-                const slug = generateSlug(articleData.title, articleDoc.id);
-                await updateDoc(articleDoc.ref, { titleSlug: slug });
-                articleData.titleSlug = slug;
-            }
-
-            const article: Article = {
-                ...articleData,
-                id: articleDoc.id,
-                authorName: authorName,
-                date: formattedDate,
-            };
-
-            setArticle(article);
-            setLoading(false);
-        } catch (error) {
-            console.error("Error fetching article:", error);
-            setError("Failed to fetch article");
-            setLoading(false);
-        }
-    }, [slug, router]);
+      try {
+          setLoading(true);
+          setError(null);
+  
+          if (!db) {
+              throw new Error("Database connection is not available");
+          }
+  
+          // Fetch the article directly using the complete slug
+          const articlesRef = collection(db, "blog/blockchainBriefing/articles");
+          const q = query(articlesRef, where("titleSlug", "==", slug));
+          const querySnapshot = await getDocs(q);
+  
+          if (querySnapshot.empty) {
+              console.warn(`No article found for slug: ${slug}`);
+              router.push("/404");
+              return;
+          }
+  
+          // Get the first matching article
+          const articleDoc = querySnapshot.docs[0];
+          const articleData = articleDoc.data() as Article;
+  
+          if (!articleData) {
+              throw new Error("Article data is missing");
+          }
+  
+          // Fetch the author details
+          const authorDoc = await getDoc(doc(db, "blog/blockchainBriefing/authors", articleData.authorId));
+          const authorName = authorDoc.exists() ? authorDoc.data().author_name : "Unknown Author";
+  
+          // Format the publish date
+          let formattedDate = "Unknown Date";
+          if (articleData.publishDate) {
+              try {
+                  const timestamp = articleData.publishDate;
+                  const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+  
+                  formattedDate = date.toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                  });
+              } catch (error) {
+                  console.error("Error formatting date:", error);
+              }
+          }
+  
+          const article: Article = {
+              ...articleData,
+              id: articleDoc.id,
+              authorName: authorName,
+              date: formattedDate,
+          };
+  
+          setArticle(article);
+          setLoading(false);
+      } catch (error) {
+          console.error("Error fetching article:", error);
+          setError("Failed to fetch article");
+          setLoading(false);
+      }
+  }, [slug, router]);
 
     useEffect(() => {
         fetchArticle();

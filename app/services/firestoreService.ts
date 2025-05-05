@@ -351,119 +351,81 @@ export const fireServices = {
     limitCount: number = 10
   ): Promise<ArticleWithDetails[]> => {
     try {
-      // console.log('Searching for:', searchTerm);
-      
-      // Search in both collections
-      const articlesRef = collection(db, 'blog/blockchainBriefing/articles');
-      const newsRef = collection(db, 'blog/blockchainBriefing/newsletter');
-      
-      // Get all articles and news
+      const articlesRef = collection(db, "blog/blockchainBriefing/articles");
+      const newsRef = collection(db, "blog/blockchainBriefing/newsletter");
+  
       const [articlesSnapshot, newsSnapshot] = await Promise.all([
         getDocs(articlesRef),
-        getDocs(newsRef)
+        getDocs(newsRef),
       ]);
-      
-      // console.log('Total articles found:', articlesSnapshot.size);
-      // console.log('Total news found:', newsSnapshot.size);
-      
-      // Combine and process both collections
+  
       const allItems = [
-        ...articlesSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, type: 'article' as const })),
-        ...newsSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id, type: 'news' as const }))
-      ] as (Article & { type: 'article' | 'news' })[];
-
-      // Filter items that contain the search term in their title
-      const matchingItems = allItems.filter(item => {
-        const title = item.title?.toLowerCase() || '';
+        ...articlesSnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+          type: "article" as const,
+        })),
+        ...newsSnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+          type: "news" as const,
+        })),
+      ] as (Article & { type: "article" | "news" })[];
+  
+      const matchingItems = allItems.filter((item) => {
+        const title = item.title?.toLowerCase() || "";
         const search = searchTerm.toLowerCase();
         return title.includes(search);
       });
-
-      // console.log('Matching items:', matchingItems.length);
-
-      // Group items by their base title slug
-      const itemsBySlug = new Map<string, (Article & { type: 'article' | 'news' })[]>();
-      matchingItems.forEach(item => {
-        const baseSlug = item.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '';
-        if (!itemsBySlug.has(baseSlug)) {
-          itemsBySlug.set(baseSlug, []);
-        }
-        itemsBySlug.get(baseSlug)?.push(item);
-      });
-
-      // Fetch category and author details for matching items
+  
       const itemsWithDetails = await Promise.all(
         matchingItems.map(async (item) => {
           let category: Category | null = null;
           let author: Author | null = null;
-
+  
           if (item.categoryId) {
             try {
-              const categoriesRef = collection(db, 'blog/blockchainBriefing/categories');
-              const categoriesSnapshot = await getDocs(categoriesRef);
-              const matchingCategory = categoriesSnapshot.docs.find(
-                doc => doc.data().id === item.categoryId
+              const categoryDoc = await getDoc(
+                doc(db, "blog/blockchainBriefing/categories", item.categoryId)
               );
-
-              if (matchingCategory) {
-                const categoryData = matchingCategory.data();
+              if (categoryDoc.exists()) {
                 category = {
-                  id: matchingCategory.id,
-                  name: categoryData.name || 'Uncategorized',
+                  id: categoryDoc.id,
+                  ...categoryDoc.data(),
                 } as Category;
               }
             } catch (categoryError) {
               console.error("Error fetching category:", categoryError);
             }
           }
-
+  
           if (item.authorId) {
             try {
               const authorDoc = await getDoc(
-                doc(db, 'blog/blockchainBriefing/authors', item.authorId)
+                doc(db, "blog/blockchainBriefing/authors", item.authorId)
               );
               if (authorDoc.exists()) {
-                const authorData = authorDoc.data();
-                author = { 
-                  id: authorDoc.id, 
-                  author_name: authorData.author_name || 'Unknown Author'
+                author = {
+                  id: authorDoc.id,
+                  ...authorDoc.data(),
                 } as Author;
               }
             } catch (authorError) {
               console.error("Error fetching author:", authorError);
             }
           }
-
-          // Generate titleSlug with numbering for duplicates
-          const baseSlug = item.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '';
-          const itemsWithSameTitle = itemsBySlug.get(baseSlug) || [];
-          let titleSlug = baseSlug;
-
-          if (itemsWithSameTitle.length > 1) {
-            itemsWithSameTitle.sort((a, b) => {
-              const dateA = a.publishDate?.seconds || 0;
-              const dateB = b.publishDate?.seconds || 0;
-              return dateA - dateB;
-            });
-
-            const index = itemsWithSameTitle.findIndex(a => a.id === item.id);
-            if (index > 0) {
-              titleSlug = `${baseSlug}-${index + 1}`;
-            }
-          }
-
+  
           return {
             ...item,
             category,
             author,
-            titleSlug,
-            type: item.type
+            titleSlug: item.titleSlug,
+            type: item.type,
           } as ArticleWithDetails;
         })
       );
-
-      // console.log('Items with details:', itemsWithDetails.length);
-      return itemsWithDetails;
+  
+      return itemsWithDetails.slice(0, limitCount); 
     } catch (error) {
       console.error("Error in searchArticles:", error);
       throw error;
