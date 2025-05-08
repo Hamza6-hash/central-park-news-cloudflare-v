@@ -72,6 +72,7 @@ export default function NewsArticleCollection() {
         
                 let q = query(
                     itemsRef,
+                    where("status", "==", "published"),
                     orderBy(orderByField, "desc"),
                     limit(ITEMS_PER_PAGE)
                 );

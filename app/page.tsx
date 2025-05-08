@@ -12,12 +12,15 @@ import {
   doc,
   getDoc,
   updateDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
 import { generateSlug } from "@/lib/utils";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { fireServices } from "./services/firestoreService";
 
 interface Article {
   id: string;
@@ -64,98 +67,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const params = useParams();
 
-  // const fetchArticle = async () => {
-  //   try {
-  //     setLoading(true);
-  //     setError(null);
-
-  //     // Check if database is available
-  //     if (!db) {
-  //       throw new Error("Database connection is not available");
-  //     }
-
-  //     // Fetch articles from the articles collection
-  //     const articlesRef = collection(db, "blog/blockchainBriefing/articles");
-  //     const articlesSnapshot = await getDocs(articlesRef);
-
-  //     if (articlesSnapshot.empty) {
-  //       setError("No articles available at the moment.");
-  //       setLoading(false);
-  //       return;
-  //     }
-
-  //     // Process all articles to handle duplicate titles
-  //     const articlesMap = new Map();
-  //     const articles = articlesSnapshot.docs.map((doc) => {
-  //       const data = doc.data() as Article;
-  //       const baseSlug = data.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-
-  //       // Count how many articles have this base slug
-  //       const count = articlesMap.get(baseSlug) || 0;
-  //       articlesMap.set(baseSlug, count + 1);
-
-  //       return {
-  //         doc,
-  //         data,
-  //         baseSlug,
-  //         count: count + 1,
-  //       };
-  //     });
-
-  //     // Sort articles by publish date
-  //     articles.sort(
-  //       (a, b) => a.data.publishDate.seconds - b.data.publishDate.seconds
-  //     );
-
-  //     // Get the first article and its author
-  //     const firstArticle = articles[0];
-  //     const articleData = firstArticle.data;
-
-  //     // Get author name from authors collection
-  //     const authorDoc = await getDoc(
-  //       doc(db, "blog/blockchainBriefing/authors", articleData.authorId)
-  //     );
-  //     const authorName = authorDoc.exists()
-  //       ? authorDoc.data().author_name
-  //       : "Unknown Author";
-
-  //     // Format the date
-  //     let formattedDate = "Unknown Date";
-  //     if (articleData.publishDate) {
-  //       try {
-  //         const timestamp = articleData.publishDate;
-  //         const date = new Date(
-  //           timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
-  //         );
-
-  //         formattedDate = date.toLocaleDateString("en-US", {
-  //           year: "numeric",
-  //           month: "long",
-  //           day: "numeric",
-  //         });
-  //       } catch (error) {
-  //         console.error("Error formatting date:", error);
-  //       }
-  //     }
-
-  //     // Generate slug for the article
-  //     const slug = generateSlug(articleData.title, firstArticle.doc.id);
-
-  //     setArticle({
-  //       ...articleData,
-  //       id: firstArticle.doc.id,
-  //       authorName: authorName,
-  //       date: formattedDate,
-  //       titleSlug: slug,
-  //     });
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error("Error fetching article:", error);
-  //     setError("Failed to load article. Please try again later.");
-  //     setLoading(false);
-  //   }
-  // };
-
+  
   const fetchArticle = async () => {
     try {
       setLoading(true);
@@ -168,7 +80,11 @@ export default function Home() {
   
       // Fetch articles from the articles collection
       const articlesRef = collection(db, "blog/blockchainBriefing/articles");
-      const articlesSnapshot = await getDocs(articlesRef);
+        const articlesQuery = query(
+              articlesRef,
+              where("status", "==", "published") 
+            );
+      const articlesSnapshot = await getDocs(articlesQuery);
   
       if (articlesSnapshot.empty) {
         setError("No articles available at the moment.");
@@ -229,7 +145,22 @@ export default function Home() {
     }
   };
 
+  const [stats, setStats] = useState<any>(null);
+  console.log(stats)
+  const fetchStats = async () => {
+    try {
+      const stats = await fireServices.getArticlesStats()
+      setStats(stats)
+    } catch (error) {
+      console.error("Error fetching stats:", error)
+    } finally {
+      // setIsLoading(false)
+    }
+  }
+
+
   useEffect(() => {
+    fetchStats()
     fetchArticle();
   }, []);
 

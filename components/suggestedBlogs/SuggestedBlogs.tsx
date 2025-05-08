@@ -51,7 +51,10 @@ const SuggestedBlogs: React.FC = () => {
       }
 
       const articlesRef = collection(db, "blog/blockchainBriefing/articles");
-      const q = query(articlesRef, orderBy("publishDate", "desc"), limit(4));
+      const q = query(articlesRef,
+        where("status", "==", "published"),
+        orderBy("publishDate", "desc"),
+        limit(4));
 
       const snapshot = await getDocs(q);
 
@@ -122,25 +125,25 @@ const SuggestedBlogs: React.FC = () => {
         <div className="grid grid-cols-4 md:gap-1 gap-8 max-xl:grid-cols-2 max-md:grid-cols-1 ">
           {loading
             ? [1, 2, 3, 4].map((item) => (
-                <div
-                  key={item}
-                  className="bg-transparent h-40 w-full rounded-md"
-                />
-              ))
+              <div
+                key={item}
+                className="bg-transparent h-40 w-full rounded-md"
+              />
+            ))
             : articles.map((blog) => (
-                <React.Fragment key={blog.id}>
-                  <BlogsCard
-                    suggestedBlog={true}
-                    showDateTimeInRow={false}
-                    title={blog.title}
-                    content={blog.content}
-                    imageURL={blog.imageURL}
-                    authorName={blog.authorName}
-                    publishDate={blog.publishDate}
-                    titleSlug={blog.titleSlug}
-                  />
-                </React.Fragment>
-              ))}
+              <React.Fragment key={blog.id}>
+                <BlogsCard
+                  suggestedBlog={true}
+                  showDateTimeInRow={false}
+                  title={blog.title}
+                  content={blog.content}
+                  imageURL={blog.imageURL}
+                  authorName={blog.authorName}
+                  publishDate={blog.publishDate}
+                  titleSlug={blog.titleSlug}
+                />
+              </React.Fragment>
+            ))}
         </div>
       </div>
     </div>

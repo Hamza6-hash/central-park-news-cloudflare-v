@@ -75,7 +75,11 @@ const LastestNews = () => {
 
             // Fetch articles from the appropriate collection
             const articlesRef = collection(db, collectionPath);
-            const articlesSnapshot = await getDocs(articlesRef);
+            const articlesQuery = query(
+                articlesRef,
+                where("status", "==", "published") 
+            );
+            const articlesSnapshot = await getDocs(articlesQuery);
 
             if (articlesSnapshot.empty) {
                 setError("No articles available at the moment.");
