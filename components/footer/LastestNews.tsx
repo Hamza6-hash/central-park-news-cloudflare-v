@@ -60,34 +60,38 @@ const LastestNews = () => {
         try {
             setLoading(true);
             setError(null);
-
+    
             // Check if database is available
             if (!db) {
                 throw new Error("Database connection is not available");
             }
-
+    
             // Determine which collection to fetch based on the current path
-            const collectionPath = pathname.includes("/news") 
+            const collectionPath = pathname.includes("/news")
                 ? "blog/blockchainBriefing/articles"
                 : pathname.includes("/articles")
                     ? "blog/blockchainBriefing/newsletter"
                     : "blog/blockchainBriefing/articles";
-
+    
             // Fetch articles from the appropriate collection
             const articlesRef = collection(db, collectionPath);
-            const articlesSnapshot = await getDocs(articlesRef);
-
+            const articlesQuery = query(
+                articlesRef,
+                where("status", "==", "published")
+            );
+            const articlesSnapshot = await getDocs(articlesQuery);
+    
             if (articlesSnapshot.empty) {
                 setError("No articles available at the moment.");
                 setLoading(false);
                 return;
             }
-
+    
             // Process each article
             const articlesData = await Promise.all(
                 articlesSnapshot.docs.map(async (articleDoc) => {
                     const articleData = articleDoc.data() as Article;
-
+    
                     // Get author name from authors collection
                     let authorName = "Unknown Author";
                     if (articleData.authorId) {
@@ -106,19 +110,19 @@ const LastestNews = () => {
                             console.error("Error fetching author:", error);
                         }
                     }
-
+    
                     // Format the date based on the collection
                     let formattedDate = "Unknown Date";
-                    let dateToFormat: { seconds: number; nanoseconds: number } | undefined;
-                    
+                    let dateToFormat:
+                        | { seconds: number; nanoseconds: number }
+                        | undefined;
+    
                     if (collectionPath.includes("newsletter")) {
-                        // For news collection, use the date field
                         dateToFormat = articleData.date;
                     } else {
-                        // For articles collection, use the publishDate field
                         dateToFormat = articleData.publishDate;
                     }
-
+    
                     if (dateToFormat) {
                         try {
                             const date = new Date(dateToFormat.seconds * 1000);
@@ -131,56 +135,37 @@ const LastestNews = () => {
                             console.error("Error formatting date:", error);
                         }
                     }
-
-                    // Generate title slug
-                    const titleSlug = articleData.title
-                        ?.toLowerCase()
-                        .replace(/[^a-z0-9]+/g, '-') // Replace any non-alphanumeric characters with a single hyphen
-                        || '';
-
+    
                     return {
                         ...articleData,
                         id: articleDoc.id,
                         authorName: authorName,
                         formattedDate: formattedDate,
                         publishDate: dateToFormat || { seconds: 0, nanoseconds: 0 },
-                        titleSlug: titleSlug,
-                        type: collectionPath.includes("newsletter") ? "news" as const : "article" as const
+                        titleSlug: articleData.titleSlug,
+                        type: collectionPath.includes("newsletter")
+                            ? "news" as const
+                            : "article" as const,
                     };
                 })
             );
-
+    
             // Sort articles by date
             articlesData.sort((a, b) => {
                 const dateA = a.publishDate.seconds;
                 const dateB = b.publishDate.seconds;
                 return dateB - dateA;
             });
-
-            // Handle duplicate titles and generate unique slugs
-            const slugCounts = new Map<string, number>();
-            const articlesWithUniqueSlugs = articlesData.map(article => {
-                const baseSlug = article.titleSlug;
-                const count = slugCounts.get(baseSlug) || 0;
-                slugCounts.set(baseSlug, count + 1);
-                
-                // For duplicate titles, append sequential number (except first occurrence)
-                const uniqueSlug = count > 0 ? `${baseSlug}-${count + 1}` : baseSlug;
-                
-                return {
-                    ...article,
-                    titleSlug: uniqueSlug
-                };
-            });
-
-            setArticles(articlesWithUniqueSlugs);
+    
+            setArticles(articlesData);
             setLoading(false);
         } catch (error) {
-                console.error("Error fetching articles:", error);
-                setError("Failed to load articles. Please try again later.");
-                setLoading(false);
+            console.error("Error fetching articles:", error);
+            setError("Failed to load articles. Please try again later.");
+            setLoading(false);
         }
     };
+    
 
     React.useEffect(() => {
         fetchArticles();

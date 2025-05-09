@@ -21,6 +21,7 @@ interface Article {
     };
     date?: string;
     titleSlug?: string;
+    status?: string;
 }
 
 const ArticleClient = ({ slug }: { slug: string }) => {
@@ -48,14 +49,22 @@ const ArticleClient = ({ slug }: { slug: string }) => {
               router.push("/404");
               return;
           }
-  
-          // Get the first matching article
+
           const articleDoc = querySnapshot.docs[0];
           const articleData = articleDoc.data() as Article;
   
           if (!articleData) {
               throw new Error("Article data is missing");
           }
+  
+          // 🔒 Check if the article is published
+          if (articleData?.status !== "published") {
+              console.warn(`Article with slug '${slug}' is not published`);
+              router.push("/404");
+              return;
+          }
+          
+  
   
           // Fetch the author details
           const authorDoc = await getDoc(doc(db, "blog/blockchainBriefing/authors", articleData.authorId));

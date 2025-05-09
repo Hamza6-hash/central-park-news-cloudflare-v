@@ -353,10 +353,20 @@ export const fireServices = {
     try {
       const articlesRef = collection(db, "blog/blockchainBriefing/articles");
       const newsRef = collection(db, "blog/blockchainBriefing/newsletter");
+
+      const articlesQuery = query(
+        articlesRef,
+        where("status", "==", "published") // Assuming "status" field exists in articles
+      );
+      const newsQuery = query(
+        newsRef,
+        where("status", "==", "published") // Assuming "status" field exists in newsletter
+      );
+  
   
       const [articlesSnapshot, newsSnapshot] = await Promise.all([
-        getDocs(articlesRef),
-        getDocs(newsRef),
+        getDocs(articlesQuery),
+        getDocs(newsQuery),
       ]);
   
       const allItems = [
@@ -496,4 +506,38 @@ export const fireServices = {
     );
     return articlesWithDetails;
   },
+
+  getArticlesStats: async () => {
+    const blogRef = collection(db, "blog")
+    const blogSnap = await getDocs(blogRef)
+
+    let totalArticles = 0
+    let publishedArticles = 0
+    let draftArticles = 0
+    let apiSources = 0
+
+    for (const docSnap of blogSnap.docs) {
+      const sourceId = docSnap.id // e.g., blockchainBriefing, broadWayBriefing
+      const articlesRef = collection(db, "blog", sourceId, "articles")
+      const articlesSnap = await getDocs(articlesRef)
+
+      if (!articlesSnap.empty) apiSources += 1
+
+      articlesSnap.forEach((articleDoc) => {
+        totalArticles++
+        const status = articleDoc.data().status
+        if (status === "published") publishedArticles++
+        else draftArticles++
+      })
+    }
+
+    return {
+      totalArticles,
+      publishedArticles,
+      draftArticles,
+      apiSources,
+    }
+  },
+
 };
+
