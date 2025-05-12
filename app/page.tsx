@@ -67,44 +67,44 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const params = useParams();
 
-  
+
   const fetchArticle = async () => {
     try {
       setLoading(true);
       setError(null);
-  
+
       // Check if database is available
       if (!db) {
         throw new Error("Database connection is not available");
       }
-  
+
       // Fetch articles from the articles collection
       const articlesRef = collection(db, "blog/blockchainBriefing/articles");
-        const articlesQuery = query(
-              articlesRef,
-              where("status", "==", "published") 
-            );
+      const articlesQuery = query(
+        articlesRef,
+        where("status", "==", "published")
+      );
       const articlesSnapshot = await getDocs(articlesQuery);
-  
+
       if (articlesSnapshot.empty) {
         setError("No articles available at the moment.");
         setLoading(false);
         return;
       }
-  
+
       // Sort articles by publish date
       const articles = articlesSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       })) as Article[];
-  
+
       articles.sort(
         (a, b) => a.publishDate.seconds - b.publishDate.seconds
       );
-  
+
       // Get the first article and its author
       const firstArticle = articles[0];
-  
+
       // Get author name from authors collection
       const authorDoc = await getDoc(
         doc(db, "blog/blockchainBriefing/authors", firstArticle.authorId)
@@ -112,7 +112,7 @@ export default function Home() {
       const authorName = authorDoc.exists()
         ? authorDoc.data().author_name
         : "Unknown Author";
-  
+
       // Format the date
       let formattedDate = "Unknown Date";
       if (firstArticle.publishDate) {
@@ -121,7 +121,7 @@ export default function Home() {
           const date = new Date(
             timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
           );
-  
+
           formattedDate = date.toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
@@ -131,7 +131,7 @@ export default function Home() {
           console.error("Error formatting date:", error);
         }
       }
-  
+
       setArticle({
         ...firstArticle,
         authorName: authorName,
@@ -220,15 +220,14 @@ export default function Home() {
       <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
         <div className="space-y-3 mb-4 px-4">
           <Link
-            href={`/articles/${
-              article.titleSlug
-            }`}
+            href={`/articles/${article.titleSlug
+              }`}
           >
             <h1 className="font-century-schoolbook sm:text-[12px] text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full">
               {article.title}
             </h1>
           </Link>
-          
+
           <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
             <Image
               src={article.imageURL || "no-image"}
@@ -260,17 +259,35 @@ export default function Home() {
           ))}
         </article>
 
-        <div className="my-4 sm:my-6 md:my-8 lg:my-10 px-4">
-          <p className="font-bold mb-2 text-[12px] sm:text-xs md:text-sm lg:text-base">
-            Share This:
-          </p>
-          <div className="flex gap-2 sm:gap-4">
-            {socialMediaArray.map((item, index) => (
-              <SocialMediaTag key={index} {...item} />
-            ))}
+        {/* -------------- 600x600 ad bar -------------------- */}
+        <div className="mb-6 mt-10 p-3 md:p-0 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          {/* Share Section */}
+          <div className="flex flex-col items-start md:items-start">
+            <p className="font-bold mb-2">Share This:</p>
+            <div className="flex gap-4">
+              {socialMediaArray.map((item) => (
+                <React.Fragment key={item.link}>
+                  <SocialMediaTag icon={item.icon} link={item.link} />
+                </React.Fragment>
+              ))}
+            </div>
           </div>
+
+          {/* 300x300 Ad */}
+          <div className="w-full max-w-[300px] aspect-square bg-primary-100 flex items-center justify-center">
+            Ad Space (300x300)
+          </div>
+
         </div>
+
+        {/* Responsive 600x314 Ad */}
+        <div className="w-full aspect-[1.91] bg-primary-100 flex justify-center items-center">
+          Advertisement
+        </div>
+
+
       </div>
+
       <div className="xl:w-[520px] w-full">
         <TopStories />
       </div>
