@@ -275,14 +275,14 @@ export default function Home() {
 
           {/* 300x300 Ad */}
           <div className="w-full max-w-[300px] aspect-square bg-primary-100 flex items-center justify-center">
-            Ad Space (300x300)
+            <span>Ad Space (300x300)</span>
           </div>
 
         </div>
 
         {/* Responsive 600x314 Ad */}
         <div className="w-full aspect-[1.91] bg-primary-100 flex justify-center items-center">
-          Advertisement
+          <span>Ad Space 600x314</span>
         </div>
 
 
