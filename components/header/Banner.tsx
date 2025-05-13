@@ -75,7 +75,7 @@ const Banner = () => {
                         </div>
                     </form>
                 </Form>
-                <div className="flex sm:flex-row sm:mb-0 mb-2.5 flex-col gap-4 items-center justify-between w-full px-2">
+                {/* <div className="flex sm:flex-row sm:mb-0 mb-2.5 flex-col gap-4 items-center justify-between w-full px-2">
                     <div className="flex gap-4 items-center">
                         <AppDownloadButton
                             icon={<BiLogoPlayStore className="text-primary-900" size={26} />}
@@ -96,7 +96,7 @@ const Banner = () => {
                                 />
                             }
                         />
-                        <AppDownloadButton
+                        {/* <AppDownloadButton
                             icon={<IoLogoApple className="text-primary-900" size={26} />}
                             subHeading={
                                 <Image
@@ -114,11 +114,11 @@ const Banner = () => {
                                     alt="App Store"
                                 />
                             }
-                        />
-                    </div>
+                        /> */}
+                    {/* </div> */}
 
-                    <SocialMedia />
-                </div>
+                    {/* <SocialMedia /> */}
+                {/* </div> */} 
             </div>
         </section>
     );

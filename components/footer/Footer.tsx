@@ -25,13 +25,13 @@ const Footer = () => {
                 <FooterLinks />
 
 
-                <div className="space-y-3">
+                {/* <div className="space-y-3">
                     <p className="font-bold text-primary-900">Follow Blockchain Briefing:</p>
                     <div className="w-full flex items-center justify-center">
                         <SocialMedia />
                     </div>
 
-                </div>
+                </div> */}
             </section>
 
             <div className="bg-primary-900 w-full text-white py-3 px-1">
