@@ -27,6 +27,7 @@ interface Newsletter {
   date?: Timestamp;
   imageURL?: string;
   titleSlug?: string;
+  status: string,
 }
 
 const TopStories = () => {
@@ -102,8 +103,12 @@ const TopStories = () => {
           })
         );
 
+        const publishedNewsletters = newslettersWithData.filter(
+          (newsletter) => newsletter?.status === "published"
+        );
+
         // Sort by publish date (newest first)
-        const sortedNewsletters = newslettersWithData.sort((a, b) => {
+        const sortedNewsletters = publishedNewsletters.sort((a, b) => {
           const dateA = a.date?.seconds || 0;
           const dateB = b.date?.seconds || 0;
           return dateB - dateA;
