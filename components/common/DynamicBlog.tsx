@@ -12,8 +12,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
+import DummyImage from "@/assets/Rectangle-2.png";
+
 interface DynamicBlogProps {
   title: string;
+  
   imageURL: string | StaticImageData;
   authorName: string;
   publishDate: any;
@@ -104,7 +107,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
 
           <div className="relative w-full h-[514px]">
             <Image
-              src={imageURL || "no-img"}
+              src={imageURL || DummyImage}
               alt={title}
               fill
               className="object-cover"
