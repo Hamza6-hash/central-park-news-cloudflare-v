@@ -16,7 +16,7 @@ import DynamicBlog from "@/components/common/DynamicBlog";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StaticImageData } from "next/image";
-import avater from '/user-avater.png'
+import user from '/assets/user.png'
 
 interface News {
   id: string;
@@ -206,7 +206,7 @@ const NewsClient = ({ slug }: { slug: string }) => {
         imageURL={news.imageURL || "/images/default-news.jpg"}
         authorName={news.authorName || "Unknown Author"}
         authorPosition={news.authorPosition || "Unknown Position"}
-        authorImg={news.authorImg || "no img"}
+        authorImg={news.authorImg || user}
         publishDate={news.date}
         content={news.content}
         titleSlug={news.titleSlug}
