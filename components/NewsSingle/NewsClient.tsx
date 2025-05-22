@@ -15,6 +15,8 @@ import { generateSlug } from "@/lib/utils";
 import DynamicBlog from "@/components/common/DynamicBlog";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { StaticImageData } from "next/image";
+import avater from '/user-avater.png'
 
 interface News {
   id: string;
@@ -29,6 +31,8 @@ interface News {
   };
   formattedDate?: string;
   titleSlug?: string;
+  authorPosition?: string;
+  authorImg: string | StaticImageData;
 }
 
 const NewsClient = ({ slug }: { slug: string }) => {
@@ -41,71 +45,81 @@ const NewsClient = ({ slug }: { slug: string }) => {
 
   const fetchNews = useCallback(async () => {
     try {
-        setLoading(true);
-        setError(null);
+      setLoading(true);
+      setError(null);
 
-        if (!db) {
-            throw new Error("Database connection is not available");
+      if (!db) {
+        throw new Error("Database connection is not available");
+      }
+
+      const newsRef = collection(db, "blog/blockchainBriefing/newsletter");
+      const q = query(newsRef, where("titleSlug", "==", slug));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        console.warn(`No news found for slug: ${slug}`);
+        router.push("/404");
+        return;
+      }
+
+      const newsDoc = querySnapshot.docs[0];
+      const newsData = newsDoc.data() as News;
+
+      if (!newsData) {
+        throw new Error("News data is missing");
+      }
+
+      const authorDoc = await getDoc(
+        doc(db, "blog/blockchainBriefing/authors", newsData.authorId)
+      );
+      const authorName = authorDoc.exists()
+        ? authorDoc.data().author_name
+        : "Unknown Author";
+
+      const authorPosition = authorDoc.exists()
+        ? authorDoc.data().position
+        : "Unknown Position";
+
+      const authorImg = authorDoc.exists()
+        ? authorDoc.data().imageURL
+        : "Unknown Image";
+
+      // Format the publish date
+      let formattedDate = "Unknown Date";
+      if (newsData.date) {
+        try {
+          const timestamp = newsData.date;
+          const date = new Date(
+            timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
+          );
+
+          formattedDate = date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+        } catch (error) {
+          console.error("Error formatting date:", error);
         }
+      }
 
-        const newsRef = collection(db, "blog/blockchainBriefing/newsletter");
-        const q = query(newsRef, where("titleSlug", "==", slug));
-        const querySnapshot = await getDocs(q);
+      const newsItem: News = {
+        ...newsData,
+        id: newsDoc.id,
+        authorName: authorName,
+        authorPosition: authorPosition,
+        authorImg: authorImg,
+        formattedDate: formattedDate,
+      };
 
-        if (querySnapshot.empty) {
-            console.warn(`No news found for slug: ${slug}`);
-            router.push("/404");
-            return;
-        }
-
-        const newsDoc = querySnapshot.docs[0];
-        const newsData = newsDoc.data() as News;
-
-        if (!newsData) {
-            throw new Error("News data is missing");
-        }
-
-        const authorDoc = await getDoc(
-            doc(db, "blog/blockchainBriefing/authors", newsData.authorId)
-        );
-        const authorName = authorDoc.exists()
-            ? authorDoc.data().author_name
-            : "Unknown Author";
-
-        // Format the publish date
-        let formattedDate = "Unknown Date";
-        if (newsData.date) {
-            try {
-                const timestamp = newsData.date;
-                const date = new Date(
-                    timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
-                );
-
-                formattedDate = date.toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                });
-            } catch (error) {
-                console.error("Error formatting date:", error);
-            }
-        }
-
-        const newsItem: News = {
-            ...newsData,
-            id: newsDoc.id,
-            authorName: authorName,
-            formattedDate: formattedDate,
-        };
-
-        setNews(newsItem);
-        setLoading(false);
+      setNews(newsItem);
+      setLoading(false);
     } catch (error) {
-        console.error("Error fetching news:", error);
-        setError("Failed to fetch news");
-        setLoading(false);
+      console.error("Error fetching news:", error);
+      setError("Failed to fetch news");
+      setLoading(false);
     }
-}, [slug, router]);
+  }, [slug, router]);
 
   useEffect(() => {
     fetchNews();
@@ -191,6 +205,8 @@ const NewsClient = ({ slug }: { slug: string }) => {
         title={news.title}
         imageURL={news.imageURL || "/images/default-news.jpg"}
         authorName={news.authorName || "Unknown Author"}
+        authorPosition={news.authorPosition || "Unknown Position"}
+        authorImg={news.authorImg || "no img"}
         publishDate={news.date}
         content={news.content}
         titleSlug={news.titleSlug}

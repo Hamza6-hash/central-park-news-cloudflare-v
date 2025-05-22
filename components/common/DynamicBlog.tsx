@@ -11,12 +11,12 @@ import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import user from '/assets/user.png'
 
 import DummyImage from "@/assets/Rectangle-2.png";
 
 interface DynamicBlogProps {
   title: string;
-  
   imageURL: string | StaticImageData;
   authorName: string;
   publishDate: any;
@@ -26,6 +26,9 @@ interface DynamicBlogProps {
   articleId?: string;
   titleSlug?: string;
   isArticlePage?: boolean;
+  authorPosition?: string;
+  // @ts-ignore
+  authorImg?: string | StaticImageData;
 }
 
 interface SocialMedia {
@@ -73,6 +76,8 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
   articleId,
   titleSlug,
   isArticlePage = false,
+  authorPosition,
+  authorImg
 }) => {
   const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
 
@@ -152,16 +157,17 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               <h4 className="text-lg">Written By:</h4>
               <div className="w-12 h-12 relative rounded-full">
                 <Image
-                  src={avatar}
+                  src={authorImg || user}
                   alt="new image"
                   fill
+                  className="rounded-full"
                   style={{ objectFit: "cover" }}
                 />
               </div>
               <div className="font-century-gothic max-sm:text-center text-lg">
                 <p>{authorName}</p>
                 <p className="text-gray-500">
-                  Founder and CEO, Financial Health Network
+               {authorPosition ? authorPosition : "Manager"}
                 </p>
               </div>
             </div>
