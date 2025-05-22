@@ -8,6 +8,9 @@ import DynamicBlog from "@/components/common/DynamicBlog";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import DummyImage from "@/assets/Rectangle-2.png";
+
+
 interface Article {
     id: string;
     title: string;
@@ -185,7 +188,7 @@ const ArticleClient = ({ slug }: { slug: string }) => {
         <div className="container mx-auto px-4 py-8">
             <DynamicBlog
                 title={article.title}
-                imageURL={article.imageURL || "/images/default-article.jpg"}
+                imageURL={article.imageURL || DummyImage}
                 authorName={article.authorName || "Unknown Author"}
                 publishDate={article.publishDate}
                 content={article.content}

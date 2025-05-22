@@ -1,6 +1,6 @@
 "use client";
 import TopStories from "@/components/topStories/TopStories";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import DummyImage from "@/assets/Rectangle-2.png";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebookSquare } from "react-icons/fa";
@@ -26,7 +26,7 @@ interface Article {
   id: string;
   title: string;
   content: string;
-  imageURL?: string;
+  imageURL?: string | StaticImageData;
   authorId: string;
   authorName?: string;
   publishDate: {
@@ -230,7 +230,7 @@ export default function Home() {
 
           <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
             <Image
-              src={article.imageURL || "no-image"}
+              src={article.imageURL || DummyImage}
               alt="Description of image"
               fill
               className="object-cover rounded-lg"
