@@ -13,13 +13,14 @@ interface BlogsCard {
   content: string;
   imageURL?: string | StaticImageData;
   authorName?: string;
-  publishDate: {
+  publishDate?: {
     seconds: number;
     nanoseconds: number;
   };
   titleSlug?: string;
   type?: "article" | "news";
   suggestedBlog?: boolean;
+  createdAt?: string;
 }
 
 const BlogsCard = ({
@@ -32,14 +33,15 @@ const BlogsCard = ({
   titleSlug = "",
   type = "article",
   suggestedBlog = false,
+  createdAt
 }: BlogsCard) => {
-  const formattedDate = new Date(
-    publishDate?.seconds * 1000
-  ).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const formattedDate = createdAt
+    ? new Date(createdAt).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+    : "";
 
   const getLinkPath = () => {
     if (type === "news") {
@@ -50,9 +52,8 @@ const BlogsCard = ({
 
   return (
     <div
-      className={` ${
-        suggestedBlog ? "bg-transparent py-3 px-3" : "bg-[#67B6DF24] "
-      } relative w-full sm:max-w-[337px] h-[465px] rounded-[6px] p-6 flex flex-col`}
+      className={` ${suggestedBlog ? "bg-transparent py-3 px-3" : "bg-[#67B6DF24] "
+        } relative w-full sm:max-w-[337px] h-[465px] rounded-[6px] p-6 flex flex-col`}
     >
       {/* Image Container - Fixed position */}
       <div className="relative w-full h-[189px]  overflow-hidden">
@@ -99,9 +100,8 @@ const BlogsCard = ({
       {/* Content - Fixed position */}
       <div className={`${suggestedBlog ? "mt-8 h-[60px]" : "mt-4 h-[60px]"}`}>
         <div
-          className={`text-[#000] text-ellipsis line-clamp-3 text-[15px] font-normal capitalize ${
-            suggestedBlog ? "font-montserrat" : "font-century-gothic"
-          }`}
+          className={`text-[#000] text-ellipsis line-clamp-3 text-[15px] font-normal capitalize ${suggestedBlog ? "font-montserrat" : "font-century-gothic"
+            }`}
         >
           <TruncateText lines={3} content={content} />
         </div>

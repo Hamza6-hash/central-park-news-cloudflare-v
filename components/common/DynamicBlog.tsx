@@ -12,7 +12,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import user from '/assets/user.png'
-
+import ReactMarkdown from 'react-markdown';
 import DummyImage from "@/assets/Rectangle-2.png";
 
 interface DynamicBlogProps {
@@ -147,9 +147,9 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           </div>
         </div>
 
-        <article className="space-y-3  sm:text-lg text-justify px-sm-generic capitalize">
-          {content}
-        </article>
+           <div className="markdown-content">
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </div>
 
         <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between sm:items-center justify-center max-sm:items-center px-sm-generic">
           {showWritter === true && (
@@ -165,9 +165,9 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
                 />
               </div>
               <div className="font-century-gothic max-sm:text-center text-lg">
-                <p>{authorName}</p>
+                <p>{authorName ? authorName.charAt(0).toUpperCase() + authorName.slice(1) : 'Unknown Author'}</p>
                 <p className="text-gray-500">
-               {authorPosition ? authorPosition : "Manager"}
+                  {authorPosition ? authorPosition?.charAt(0).toUpperCase() + authorPosition?.slice(1) : "Author"}
                 </p>
               </div>
             </div>

@@ -28,6 +28,7 @@ interface Newsletter {
   imageURL?: string;
   titleSlug?: string;
   status: string,
+  createdAt?: string,
 }
 
 const TopStories = () => {
@@ -108,10 +109,9 @@ const TopStories = () => {
         );
 
         // Sort by publish date (newest first)
-        const sortedNewsletters = publishedNewsletters.sort((a, b) => {
-          const dateA = a.date?.seconds || 0;
-          const dateB = b.date?.seconds || 0;
-          return dateB - dateA;
+         const sortedNewsletters = publishedNewsletters.sort((a, b) => {
+          if (!a.createdAt || !b.createdAt) return 0;
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         });
 
         return sortedNewsletters;
@@ -176,8 +176,8 @@ const TopStories = () => {
       <div className="flex flex-col xl:gap-5 sm:gap-7 gap-8">
         {displayedNewsletters?.map((newsletter: Newsletter) => {
           // Format the date here
-          const formattedDate = newsletter.date
-            ? format(new Date(newsletter.date.toDate()), "MMM d, yyyy")
+           const formattedDate = newsletter.createdAt
+            ? format(new Date(newsletter.createdAt), "MMM d, yyyy")
             : "";
 
           return (

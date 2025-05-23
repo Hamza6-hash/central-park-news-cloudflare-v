@@ -210,3 +210,16 @@
   --tw-ring-offset-color: white;
   --tw-ring-color: white;
 }
+
+
+
+.markdown-content h1 { font-size: 2em; font-weight: bold; margin: 1em 0; }
+.markdown-content h2 { font-size: 1.5em; font-weight: bold; margin: 1em 0; }
+.markdown-content ul { list-style: disc; margin-left: 2em; }
+.markdown-content p { margin: 1em 0; }
+.markdown-content a { color: #007bff; text-decoration: underline; }
+.markdown-content code { background-color: #f8f9fa; padding: 0.2em 0.4em; border-radius: 0.2em; }
+.markdown-content blockquote { background-color: #f8f9fa; padding: 1em; border-left: 4px solid #007bff; }
+.markdown-content img { max-width: 100%; height: auto; }
+.markdown-content table { width: 100%; border-collapse: collapse; }
+.markdown-content th, .markdown-content td { border: 1px solid #dee0e3; padding: 0.5em; }

@@ -28,6 +28,9 @@ interface Article {
   status?: string;
   Position?: string;
   authorImg: string | StaticImageData;
+  createdAt: string,
+  position: string,
+  authorImage: string | StaticImageData;
 }
 
 const ArticleClient = ({ slug }: { slug: string }) => {
@@ -46,7 +49,6 @@ const ArticleClient = ({ slug }: { slug: string }) => {
         throw new Error("Database connection is not available");
       }
 
-      // Fetch the article directly using the complete slug
       const articlesRef = collection(db, "blog/blockchainBriefing/articles");
       const q = query(articlesRef, where("titleSlug", "==", slug));
       const querySnapshot = await getDocs(q);
@@ -56,24 +58,18 @@ const ArticleClient = ({ slug }: { slug: string }) => {
         router.push("/404");
         return;
       }
-
       const articleDoc = querySnapshot.docs[0];
       const articleData = articleDoc.data() as Article;
 
       if (!articleData) {
         throw new Error("Article data is missing");
       }
-
-      // 🔒 Check if the article is published
       if (articleData?.status !== "published") {
         console.warn(`Article with slug '${slug}' is not published`);
         router.push("/404");
         return;
       }
 
-
-
-      // Fetch the author details
       const authorDoc = await getDoc(doc(db, "blog/blockchainBriefing/authors", articleData.authorId));
       const authorName = authorDoc.exists() ? authorDoc.data().author_name : "Unknown Author";
       const authorPosition = authorDoc.exists() ? authorDoc.data().position : "Unknown Position";
@@ -81,11 +77,9 @@ const ArticleClient = ({ slug }: { slug: string }) => {
 
       // Format the publish date
       let formattedDate = "Unknown Date";
-      if (articleData.publishDate) {
+      if (articleData.createdAt) {
         try {
-          const timestamp = articleData.publishDate;
-          const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
-
+          const date = new Date(articleData?.createdAt);
           formattedDate = date.toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
@@ -96,13 +90,14 @@ const ArticleClient = ({ slug }: { slug: string }) => {
         }
       }
 
+
       const article: Article = {
         ...articleData,
         id: articleDoc.id,
         authorName: authorName,
-        Position: authorPosition,
-        authorImg: authorImg,
-        date: formattedDate,
+        position: authorPosition,
+        authorImage: authorImg,
+        createdAt: formattedDate,
       };
 
       setArticle(article);
@@ -198,9 +193,9 @@ const ArticleClient = ({ slug }: { slug: string }) => {
         title={article.title}
         imageURL={article.imageURL || DummyImage}
         authorName={article.authorName || "Unknown Author"}
-        authorPosition={article?.Position || "Unknown positon"}
+        authorPosition={article?.position || "Unknown positon"}
         authorImg={article?.authorImg || user}
-        publishDate={article.publishDate}
+        publishDate={article.createdAt}
         content={article.content}
         titleSlug={article.titleSlug}
         isArticlePage={true}
