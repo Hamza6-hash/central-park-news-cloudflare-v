@@ -33,6 +33,7 @@ interface Blog {
     nanoseconds: number;
   };
   titleSlug: string;
+  createdAt: string,
 }
 
 const SuggestedBlogs: React.FC = () => {
@@ -97,6 +98,7 @@ const SuggestedBlogs: React.FC = () => {
               nanoseconds: 0,
             },
             titleSlug: data.titleSlug,
+            createdAt: data.createdAt,
           };
         })
       );
@@ -139,7 +141,8 @@ const SuggestedBlogs: React.FC = () => {
                   content={blog.content}
                   imageURL={blog.imageURL}
                   authorName={blog.authorName}
-                  publishDate={blog.publishDate}
+                  // publishDate={blog.publishDate}
+                  createdAt={blog.createdAt}
                   titleSlug={blog.titleSlug}
                 />
               </React.Fragment>

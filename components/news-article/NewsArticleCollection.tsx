@@ -23,6 +23,7 @@ interface Article {
         nanoseconds: number;
     };
     titleSlug: string;
+    createdAt: string;
 }
 
 interface Author {
@@ -54,60 +55,56 @@ export default function NewsArticleCollection() {
 
     const pageTitle = activeTab === "news" ? "News" : "Articles";
 
-    useEffect(() => {
+     useEffect(() => {
         const fetchItems = async () => {
             try {
                 setLoading(true);
                 setError(null);
-        
+
                 if (!db) {
                     throw new Error("Database connection is not available");
                 }
-        
-                const collectionPath = activeTab === "article" 
+
+                const collectionPath = activeTab === "article"
                     ? "blog/blockchainBriefing/articles"
                     : "blog/blockchainBriefing/newsletter";
                 const itemsRef = collection(db, collectionPath);
-                const orderByField = activeTab === "article" ? "publishDate" : "date";
-        
-                let q = query(
+
+                // Base query for total count
+                const baseQuery = query(
                     itemsRef,
                     where("status", "==", "published"),
-                    orderBy(orderByField, "desc"),
-                    limit(ITEMS_PER_PAGE)
+                    orderBy("createdAt", "desc")
                 );
-        
-                // Get total count for pagination
-                const totalSnapshot = await getDocs(itemsRef);
-                const totalItems = totalSnapshot.size;
+
+                // Get total count
+                const totalSnapshot = await getDocs(baseQuery);
+                const totalItems = totalSnapshot.docs.length;
                 setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE));
-        
-                // If not on first page, apply startAfter
-                if (currentPage > 1) {
-                    const previousItems = await getDocs(q);
-                    const lastVisible = previousItems.docs[(currentPage - 1) * ITEMS_PER_PAGE - 1];
-                    q = query(
-                        itemsRef,
-                        orderBy(orderByField, "desc"),
-                        startAfter(lastVisible),
-                        limit(ITEMS_PER_PAGE)
-                    );
-                }
-        
+
+                // Calculate start position
+                const startAt = (currentPage - 1) * ITEMS_PER_PAGE;
+                const startDoc = startAt > 0 ? totalSnapshot.docs[startAt - 1] : null;
+
+                // Final query with pagination
+                const q = startDoc
+                    ? query(baseQuery, startAfter(startDoc), limit(ITEMS_PER_PAGE))
+                    : query(baseQuery, limit(ITEMS_PER_PAGE));
+
                 const snapshot = await getDocs(q);
-                
+
                 if (snapshot.empty) {
                     setItems([]);
                     setLoading(false);
                     return;
                 }
-        
-                // Process each article
+
+                // Process each article - keeping your exact processing logic
                 const itemsData = await Promise.all(
                     snapshot.docs.map(async (docSnapshot) => {
                         const data = docSnapshot.data();
                         let authorName = "Docket Digest News Room";
-                        
+
                         if (data.authorId) {
                             try {
                                 const authorRef = doc(db, "blog/blockchainBriefing/authors", data.authorId);
@@ -120,7 +117,7 @@ export default function NewsArticleCollection() {
                                 console.error("Error fetching author:", error);
                             }
                         }
-        
+
                         return {
                             id: docSnapshot.id,
                             title: data.title || "",
@@ -128,21 +125,17 @@ export default function NewsArticleCollection() {
                             imageURL: data.imageURL || DummyImg,
                             authorId: data.authorId || "",
                             authorName: authorName,
-                            titleSlug: data.titleSlug || "", // Use the slug provided by the backend
+                            titleSlug: data.titleSlug || "",
                             type: activeTab,
-                            publishDate: activeTab === "news" 
-                                ? {
-                                    seconds: data.date?.seconds || new Date().getTime() / 1000,
-                                    nanoseconds: data.date?.nanoseconds || 0
-                                }
-                                : data.publishDate || {
-                                    seconds: new Date().getTime() / 1000,
-                                    nanoseconds: 0
-                                }
+                            createdAt: data.createdAt,
+                            publishDate: {
+                                seconds: data.date?.seconds || new Date().getTime() / 1000,
+                                nanoseconds: data.date?.nanoseconds || 0
+                            }
                         };
                     })
                 );
-        
+
                 setItems(itemsData);
             } catch (error) {
                 console.error("Error fetching items:", error);
@@ -155,7 +148,110 @@ export default function NewsArticleCollection() {
         fetchItems();
     }, [activeTab, currentPage]);
 
+
+    // useEffect(() => {
+    //     const fetchItems = async () => {
+    //         try {
+    //             setLoading(true);
+    //             setError(null);
+        
+    //             if (!db) {
+    //                 throw new Error("Database connection is not available");
+    //             }
+        
+    //             const collectionPath = activeTab === "article" 
+    //                 ? "blog/blockchainBriefing/articles"
+    //                 : "blog/blockchainBriefing/newsletter";
+    //             const itemsRef = collection(db, collectionPath);
+    //             const orderByField = activeTab === "article" ? "publishDate" : "date";
+        
+    //             let q = query(
+    //                 itemsRef,
+    //                 where("status", "==", "published"),
+    //                 orderBy(orderByField, "desc"),
+    //                 limit(ITEMS_PER_PAGE)
+    //             );
+        
+    //             // Get total count for pagination
+    //             const totalSnapshot = await getDocs(itemsRef);
+    //             const totalItems = totalSnapshot.size;
+    //             setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE));
+        
+    //             // If not on first page, apply startAfter
+    //             if (currentPage > 1) {
+    //                 const previousItems = await getDocs(q);
+    //                 const lastVisible = previousItems.docs[(currentPage - 1) * ITEMS_PER_PAGE - 1];
+    //                 q = query(
+    //                     itemsRef,
+    //                     orderBy(orderByField, "desc"),
+    //                     startAfter(lastVisible),
+    //                     limit(ITEMS_PER_PAGE)
+    //                 );
+    //             }
+        
+    //             const snapshot = await getDocs(q);
+                
+    //             if (snapshot.empty) {
+    //                 setItems([]);
+    //                 setLoading(false);
+    //                 return;
+    //             }
+        
+    //             // Process each article
+    //             const itemsData = await Promise.all(
+    //                 snapshot.docs.map(async (docSnapshot) => {
+    //                     const data = docSnapshot.data();
+    //                     let authorName = "Docket Digest News Room";
+                        
+    //                     if (data.authorId) {
+    //                         try {
+    //                             const authorRef = doc(db, "blog/blockchainBriefing/authors", data.authorId);
+    //                             const authorSnap = await getDoc(authorRef);
+    //                             if (authorSnap.exists()) {
+    //                                 const authorData = authorSnap.data() as Author;
+    //                                 authorName = authorData.author_name;
+    //                             }
+    //                         } catch (error) {
+    //                             console.error("Error fetching author:", error);
+    //                         }
+    //                     }
+        
+    //                     return {
+    //                         id: docSnapshot.id,
+    //                         title: data.title || "",
+    //                         content: data.content || "",
+    //                         imageURL: data.imageURL || DummyImg,
+    //                         authorId: data.authorId || "",
+    //                         authorName: authorName,
+    //                         titleSlug: data.titleSlug || "", // Use the slug provided by the backend
+    //                         type: activeTab,
+    //                         publishDate: activeTab === "news" 
+    //                             ? {
+    //                                 seconds: data.date?.seconds || new Date().getTime() / 1000,
+    //                                 nanoseconds: data.date?.nanoseconds || 0
+    //                             }
+    //                             : data.publishDate || {
+    //                                 seconds: new Date().getTime() / 1000,
+    //                                 nanoseconds: 0
+    //                             }
+    //                     };
+    //                 })
+    //             );
+        
+    //             setItems(itemsData);
+    //         } catch (error) {
+    //             console.error("Error fetching items:", error);
+    //             setError("Failed to load items. Please try again later.");
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+
+    //     fetchItems();
+    // }, [activeTab, currentPage]);
+
     // Update active tab when pathname changes
+   
     useEffect(() => {
         const newTab = pathname.includes("/articles") ? "article" : "news";
         if (newTab !== activeTab) {
@@ -173,12 +269,11 @@ export default function NewsArticleCollection() {
     // Function to generate page numbers array
     const getPageNumbers = () => {
         const pageNumbers = [];
-        const maxVisiblePages = 5; // Show max 5 page numbers at a time
+        const maxVisiblePages = 5;
         
         let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
         let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
         
-        // Adjust start if we're near the end
         if (endPage - startPage + 1 < maxVisiblePages) {
             startPage = Math.max(1, endPage - maxVisiblePages + 1);
         }
@@ -194,38 +289,6 @@ export default function NewsArticleCollection() {
         <section className="w-full">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6 max-w-7xl mx-auto w-full pl-0 pr-4 sm:pr-6 md:pr-8 lg:pr-10 xl:pr-12">
                 <h1 className='heading text-center sm:text-left'>{pageTitle}</h1>
-                
-                {/* -------------- buttons to switch b/w news and articles ------------ */}
-                {/* <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-4 w-auto">
-                    <button
-                        onClick={() => {
-                            setActiveTab("news");
-                            setCurrentPage(1);
-                            router.push("/news");
-                        }}
-                        className={`min-w-[80px] w-auto px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-md transition-colors ${
-                            activeTab === "news"
-                                ? "bg-primary-900 text-white"
-                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                        }`}
-                    >
-                        News
-                    </button>
-                    <button
-                        onClick={() => {
-                            setActiveTab("article");
-                            setCurrentPage(1);
-                            router.push("/articles");
-                        }}
-                        className={`min-w-[80px] w-auto px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded-md transition-colors ${
-                            activeTab === "article"
-                                ? "bg-primary-900 text-white"
-                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                        }`}
-                    >
-                        Articles
-                    </button>
-                </div> */}
             </div>
 
             {/* Loading State */}
@@ -263,6 +326,7 @@ export default function NewsArticleCollection() {
                                     imageURL={item.imageURL}
                                     authorName={item.authorName}
                                     publishDate={item.publishDate}
+                                    createdAt={item.createdAt}
                                     showDateTimeInRow={true}
                                     titleSlug={item.titleSlug}
                                     type={activeTab}

@@ -22,10 +22,7 @@ interface Article {
     imageURL?: string;
     authorId: string;
     authorName?: string;
-    publishDate: {
-        seconds: number;
-        nanoseconds: number;
-    };
+    publishDate: string;
     date?: {
         seconds: number;
         nanoseconds: number;
@@ -36,6 +33,7 @@ interface Article {
     tags?: string;
     titleSlug?: string;
     type?: "article" | "news";
+    createdAt?: string;
 }
 
 const LastestNews = () => {
@@ -60,19 +58,19 @@ const LastestNews = () => {
         try {
             setLoading(true);
             setError(null);
-    
+
             // Check if database is available
             if (!db) {
                 throw new Error("Database connection is not available");
             }
-    
+
             // Determine which collection to fetch based on the current path
             const collectionPath = pathname.includes("/news")
                 ? "blog/blockchainBriefing/articles"
                 : pathname.includes("/articles")
                     ? "blog/blockchainBriefing/newsletter"
                     : "blog/blockchainBriefing/articles";
-    
+
             // Fetch articles from the appropriate collection
             const articlesRef = collection(db, collectionPath);
             const articlesQuery = query(
@@ -80,18 +78,18 @@ const LastestNews = () => {
                 where("status", "==", "published")
             );
             const articlesSnapshot = await getDocs(articlesQuery);
-    
+
             if (articlesSnapshot.empty) {
                 setError("No articles available at the moment.");
                 setLoading(false);
                 return;
             }
-    
+
             // Process each article
             const articlesData = await Promise.all(
                 articlesSnapshot.docs.map(async (articleDoc) => {
                     const articleData = articleDoc.data() as Article;
-    
+
                     // Get author name from authors collection
                     let authorName = "Unknown Author";
                     if (articleData.authorId) {
@@ -110,22 +108,12 @@ const LastestNews = () => {
                             console.error("Error fetching author:", error);
                         }
                     }
-    
+
                     // Format the date based on the collection
                     let formattedDate = "Unknown Date";
-                    let dateToFormat:
-                        | { seconds: number; nanoseconds: number }
-                        | undefined;
-    
-                    if (collectionPath.includes("newsletter")) {
-                        dateToFormat = articleData.date;
-                    } else {
-                        dateToFormat = articleData.publishDate;
-                    }
-    
-                    if (dateToFormat) {
+                    if (articleData.createdAt) {
                         try {
-                            const date = new Date(dateToFormat.seconds * 1000);
+                            const date = new Date(articleData.createdAt);
                             formattedDate = date.toLocaleDateString("en-US", {
                                 year: "numeric",
                                 month: "long",
@@ -135,13 +123,14 @@ const LastestNews = () => {
                             console.error("Error formatting date:", error);
                         }
                     }
-    
+
                     return {
                         ...articleData,
                         id: articleDoc.id,
                         authorName: authorName,
                         formattedDate: formattedDate,
-                        publishDate: dateToFormat || { seconds: 0, nanoseconds: 0 },
+                        createdAt: articleData?.createdAt || formattedDate,
+                        publishDate: formattedDate,
                         titleSlug: articleData.titleSlug,
                         type: collectionPath.includes("newsletter")
                             ? "news" as const
@@ -149,14 +138,13 @@ const LastestNews = () => {
                     };
                 })
             );
-    
+
+            // Sort articles by date
             // Sort articles by date
             articlesData.sort((a, b) => {
-                const dateA = a.publishDate.seconds;
-                const dateB = b.publishDate.seconds;
-                return dateB - dateA;
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
             });
-    
+
             setArticles(articlesData);
             setLoading(false);
         } catch (error) {
@@ -165,7 +153,7 @@ const LastestNews = () => {
             setLoading(false);
         }
     };
-    
+
 
     React.useEffect(() => {
         fetchArticles();
@@ -179,7 +167,7 @@ const LastestNews = () => {
             const scrollAmount = cardWidth + gap;
             const maxScroll = container.scrollWidth - container.clientWidth;
             const currentScroll = container.scrollLeft;
-            
+
             if (currentScroll >= maxScroll - 10) {
                 // If we're at the end, automatically start scrolling left
                 setIsReversed(true);
@@ -229,7 +217,7 @@ const LastestNews = () => {
             const container = productContainerRef.current;
             const maxScroll = container.scrollWidth - container.clientWidth;
             const currentScroll = container.scrollLeft;
-            
+
             // Check if we're at the beginning or end
             if (currentScroll <= 10) {
                 setIsReversed(false);

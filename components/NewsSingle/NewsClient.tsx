@@ -18,6 +18,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { StaticImageData } from "next/image";
 import user from '/assets/user.png'
 
+import ReactMarkdown from 'react-markdown';
+
 interface News {
   id: string;
   title: string;
@@ -32,7 +34,10 @@ interface News {
   formattedDate?: string;
   titleSlug?: string;
   authorPosition?: string;
-  authorImg: string | StaticImageData;
+  authorImage: string | StaticImageData;
+  createdAt: string,
+  status: string,
+  position: string,
 }
 
 const NewsClient = ({ slug }: { slug: string }) => {
@@ -43,7 +48,7 @@ const NewsClient = ({ slug }: { slug: string }) => {
 
   // console.log(slug, "slug");
 
-  const fetchNews = useCallback(async () => {
+   const fetchNews = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -69,6 +74,14 @@ const NewsClient = ({ slug }: { slug: string }) => {
         throw new Error("News data is missing");
       }
 
+      // 🔒 Check if the article is published
+      if (newsData?.status !== "published") {
+        console.warn(`Article with slug '${slug}' is not published`);
+        router.push("/404");
+        return;
+      }
+
+
       const authorDoc = await getDoc(
         doc(db, "blog/blockchainBriefing/authors", newsData.authorId)
       );
@@ -78,21 +91,17 @@ const NewsClient = ({ slug }: { slug: string }) => {
 
       const authorPosition = authorDoc.exists()
         ? authorDoc.data().position
-        : "Unknown Position";
+        : "Unknown position";
 
-      const authorImg = authorDoc.exists()
+      const authorImage = authorDoc.exists()
         ? authorDoc.data().imageURL
         : "Unknown Image";
 
       // Format the publish date
       let formattedDate = "Unknown Date";
-      if (newsData.date) {
+      if (newsData.createdAt) {
         try {
-          const timestamp = newsData.date;
-          const date = new Date(
-            timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
-          );
-
+          const date = new Date(newsData?.createdAt);
           formattedDate = date.toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
@@ -107,8 +116,8 @@ const NewsClient = ({ slug }: { slug: string }) => {
         ...newsData,
         id: newsDoc.id,
         authorName: authorName,
-        authorPosition: authorPosition,
-        authorImg: authorImg,
+        authorImage: authorImage,
+        position: authorPosition,
         formattedDate: formattedDate,
       };
 
@@ -205,9 +214,9 @@ const NewsClient = ({ slug }: { slug: string }) => {
         title={news.title}
         imageURL={news.imageURL || "/images/default-news.jpg"}
         authorName={news.authorName || "Unknown Author"}
-        authorPosition={news.authorPosition || "Unknown Position"}
-        authorImg={news.authorImg || user}
-        publishDate={news.date}
+        authorPosition={news.position || "Unknown Position"}
+        authorImg={news.authorImage || user}
+        publishDate={news.formattedDate}
         content={news.content}
         titleSlug={news.titleSlug}
         isArticlePage={false}
