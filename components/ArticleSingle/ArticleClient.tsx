@@ -35,7 +35,7 @@ interface Article {
 
 const ArticleClient = ({ slug }: { slug: string }) => {
   const [article, setArticle] = useState<Article | null>(null);
-  console.log(article)
+  // console.log(article)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -54,7 +54,7 @@ const ArticleClient = ({ slug }: { slug: string }) => {
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        console.warn(`No article found for slug: ${slug}`);
+        // console.warn(`No article found for slug: ${slug}`);
         router.push("/404");
         return;
       }
@@ -65,7 +65,7 @@ const ArticleClient = ({ slug }: { slug: string }) => {
         throw new Error("Article data is missing");
       }
       if (articleData?.status !== "published") {
-        console.warn(`Article with slug '${slug}' is not published`);
+        // console.warn(`Article with slug '${slug}' is not published`);
         router.push("/404");
         return;
       }

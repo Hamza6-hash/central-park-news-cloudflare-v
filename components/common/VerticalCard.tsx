@@ -60,7 +60,7 @@ const VerticalCard = ({
                     </div>
                 </div>
                 <div className="flex justify-end mt-3">
-                    <Link href={getLinkPath()} className="uppercase font-century-gothic text-yellow-500 transition-colors duration-300 hover:text-primary-900 font-bold text-xs">
+                    <Link href={getLinkPath()} className="uppercase font-century-gothic text-yellow-500 transition-colors duration-300 hover:text-white font-bold text-xs">
                         VIEW MORE
                     </Link>
                 </div>

@@ -517,7 +517,7 @@ export const fireServices = {
     let apiSources = 0
 
     for (const docSnap of blogSnap.docs) {
-      const sourceId = docSnap.id // e.g., blockchainBriefing, broadWayBriefing
+      const sourceId = docSnap.id 
       const articlesRef = collection(db, "blog", sourceId, "articles")
       const articlesSnap = await getDocs(articlesRef)
 

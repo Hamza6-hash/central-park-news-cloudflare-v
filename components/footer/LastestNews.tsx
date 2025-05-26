@@ -42,6 +42,7 @@ const LastestNews = () => {
     const [error, setError] = useState<string | null>(null);
     const [isReversed, setIsReversed] = useState(false);
     const productContainerRef = useRef<HTMLDivElement>(null);
+    const [showScrollButton, setShowScrollButton] = useState(false);
     const pathname = usePathname();
 
     const getTitle = () => {
@@ -235,6 +236,27 @@ const LastestNews = () => {
         }
     }, []);
 
+    // handling the scroll button visibility
+    React.useEffect(() => {
+        const container = productContainerRef.current;
+        if (container) {
+            const updateScrollButtonVisibility = () => {
+                const scrollable = container.scrollWidth > container.clientWidth;
+                setShowScrollButton(scrollable);
+            };
+
+            updateScrollButtonVisibility();
+
+            container.addEventListener('scroll', handleScroll);
+            window.addEventListener('resize', updateScrollButtonVisibility); 
+            return () => {
+                container.removeEventListener('scroll', handleScroll);
+                window.removeEventListener('resize', updateScrollButtonVisibility);
+            };
+        }
+    }, [articles]); // Also recheck when articles update
+
+
     if (loading) {
         return (
             <section className="lastestNews py-[58px] px-generic">
@@ -301,16 +323,19 @@ const LastestNews = () => {
                             </React.Fragment>
                         ))}
                     </div>
-                    <button
-                        className="bg-primary-300 p-2 rounded-full"
-                        onClick={isReversed ? slideLeft : slideRight}
-                    >
-                        {isReversed ? (
-                            <GoArrowLeft color="white" size={25} />
-                        ) : (
-                            <GoArrowRight color="white" size={25} />
-                        )}
-                    </button>
+                    {showScrollButton && (
+                        <button
+                            className="bg-primary-300 p-2 rounded-full"
+                            onClick={isReversed ? slideLeft : slideRight}
+                        >
+                            {isReversed ? (
+                                <GoArrowLeft color="white" size={25} />
+                            ) : (
+                                <GoArrowRight color="white" size={25} />
+                            )}
+                        </button>
+                    )}
+
                 </div>
             </div>
         </section>
