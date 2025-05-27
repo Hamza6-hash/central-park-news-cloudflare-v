@@ -224,7 +224,7 @@ export default function NewsArticleCollection() {
     return (
         <section className="w-full">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6 max-w-7xl mx-auto w-full pl-0 pr-4 sm:pr-6 md:pr-8 lg:pr-10 xl:pr-12">
-                <h1 className='heading text-center sm:text-left'>{pageTitle}</h1>
+                <h1 className='heading text-center sm:text-left sm:px-6 md:px-8 lg:px-10 xl:px-12'>{pageTitle}</h1>
             </div>
 
             {/* Loading State */}
