@@ -1,7 +1,8 @@
 "use client";
 import TopStories from "@/components/topStories/TopStories";
 import Image, { StaticImageData } from "next/image";
-import DummyImage from "@/assets/Rectangle-2.png";
+// import DummyImage from "@/assets/Rectangle-2.png";
+import DummyImage from "@/assets/Blockchain-Default.jpg";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebookSquare } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
@@ -38,7 +39,8 @@ interface Article {
   };
   date?: string;
   titleSlug?: string;
-  createdAt: string
+  createdAt: string,
+  type: string
 }
 
 interface SocialMedia {
@@ -73,78 +75,6 @@ export default function Home() {
   const params = useParams();
 
 
-  // const fetchArticle = async () => {
-  //   try {
-  //     setLoading(true);
-  //     setError(null);
-
-  //     if (!db) {
-  //       throw new Error("Database connection is not available");
-  //     }
-
-  //     const articlesRef = collection(db, "blog/blockchainBriefing/articles");
-  //     const articlesQuery = query(
-  //       articlesRef,
-  //       where("status", "==", "published")
-  //     );
-  //     const articlesSnapshot = await getDocs(articlesQuery);
-
-  //     if (articlesSnapshot.empty) {
-  //       setError("No articles available at the moment.");
-  //       setLoading(false);
-  //       return;
-  //     }
-
-  //     // Sort articles by publish date
-  //     const articles = articlesSnapshot.docs.map((doc) => ({
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     })) as Article[];
-
-  //     articles.sort((a, b) => {
-  //       const dateA = new Date(a.createdAt).getTime();
-  //       const dateB = new Date(b.createdAt).getTime();
-  //       return dateB - dateA;
-  //     });
-
-  //     const firstArticle = articles[0];
-
-  //     const authorDoc = await getDoc(
-  //       doc(db, "blog/blockchainBriefing/authors", firstArticle.authorId)
-  //     );
-  //     const authorName = authorDoc.exists()
-  //       ? authorDoc.data().author_name
-  //       : "Unknown Author";
-
-  //     let formattedDate = "Unknown Date";
-
-  //     if (firstArticle.createdAt) {
-  //       try {
-  //         const date = new Date(firstArticle.createdAt);
-
-  //         formattedDate = date.toLocaleDateString("en-US", {
-  //           year: "numeric",
-  //           month: "long",
-  //           day: "numeric",
-  //         });
-  //       } catch (error) {
-  //         console.error("Error formatting date:", error);
-  //       }
-  //     }
-
-
-  //     setArticle({
-  //       ...firstArticle,
-  //       authorName: authorName,
-  //       date: formattedDate,
-  //     });
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error("Error fetching article:", error);
-  //     setError("Failed to load article. Please try again later.");
-  //     setLoading(false);
-  //   }
-  // };
 
   useEffect(() => {
     const fetchCombinedFeaturedItem = async () => {
@@ -228,13 +158,13 @@ export default function Home() {
         const combined = [...articles, ...newsletters];
 
         combined.sort((a, b) => {
-          const dateA = new Date(a.updatedAt).getTime();
-          const dateB = new Date(b.updatedAt).getTime();
+          const dateA = new Date(a.createdAt).getTime();
+          const dateB = new Date(b.createdAt).getTime();
           return dateB - dateA;
         });
 
         // Find the latest featured item
-        const latestFeatured = combined.find(item => item.isFeatured === true);
+        const latestFeatured = combined[0]
         setArticle(latestFeatured || null);
       } catch (error) {
         console.error("Error fetching combined featured item:", error);
@@ -248,12 +178,6 @@ export default function Home() {
   }, []);
 
 
-
-
-  useEffect(() => {
-
-    // fetchArticle();
-  }, []);
 
   if (loading) {
     return (
@@ -311,7 +235,7 @@ export default function Home() {
       <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
         <div className="space-y-3 mb-4 px-4">
           <Link
-            href={`/articles/${article.titleSlug
+            href={`/${article.type === 'newsletter' ? 'news' : 'article'}/${article.titleSlug
               }`}
           >
             <h1 className="font-century-schoolbook sm:text-[12px] text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-2">
