@@ -37,7 +37,7 @@ const HorizontalCard = ({
 
     return (
         <Link href={getLinkPath()}>
-            <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 hover:shadow-top-news hover:p-3 rounded-lg cursor-pointer">
+            <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 rounded-lg cursor-pointer">
                 <div className="md:w-[204px]">
                     <Image
                         src={imageURL}
@@ -52,7 +52,7 @@ const HorizontalCard = ({
 
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">
-                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px]">
+                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-2">
                             {title || "-"}
                         </h4>
                         <div className="flex items-center gap-2  text-[12px] sm:text-[12px]">

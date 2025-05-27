@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     if (querySnapshot.empty) {
       // console.warn(`No article found for slug: ${slug}`);
       return {
-        title: "Article Not Found | Blockchain Briefing",
+        title: `${slug}| Blockchain Briefing`,
         description: "The requested article could not be found.",
       };
     }

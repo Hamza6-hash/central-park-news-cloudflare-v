@@ -55,6 +55,43 @@ export default function NewsArticleCollection() {
 
     const pageTitle = activeTab === "news" ? "News" : "Articles";
 
+    const fetchedCombienItems = async() =>{
+        try {
+            setLoading(true)
+            setError(null);
+
+             if (!db) {
+                throw new Error("Database connection is not available");
+            }
+
+            const articlePath = "blog/blockchainBriefing/articles";
+            const newsPath = "blog/blockchainBriefing/newsletter";
+
+            const articleRef = collection(db, articlePath);
+            const newsRef = collection(db, newsPath);
+
+            // Build base queries for both
+            const articleQuery = query(
+                articleRef,
+                where("status", "==", "published"),
+                orderBy("createdAt", "desc")
+            );
+            const newsQuery = query(
+                newsRef,
+                where("status", "==", "published"),
+                orderBy("createdAt", "desc")
+            );
+            
+             const [articleSnap, newsSnap] = await Promise.all([
+                getDocs(articleQuery),
+                getDocs(newsQuery)
+            ]);
+
+        } catch (error) {
+            
+        }
+    }
+
      useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -149,109 +186,7 @@ export default function NewsArticleCollection() {
     }, [activeTab, currentPage]);
 
 
-    // useEffect(() => {
-    //     const fetchItems = async () => {
-    //         try {
-    //             setLoading(true);
-    //             setError(null);
-        
-    //             if (!db) {
-    //                 throw new Error("Database connection is not available");
-    //             }
-        
-    //             const collectionPath = activeTab === "article" 
-    //                 ? "blog/blockchainBriefing/articles"
-    //                 : "blog/blockchainBriefing/newsletter";
-    //             const itemsRef = collection(db, collectionPath);
-    //             const orderByField = activeTab === "article" ? "publishDate" : "date";
-        
-    //             let q = query(
-    //                 itemsRef,
-    //                 where("status", "==", "published"),
-    //                 orderBy(orderByField, "desc"),
-    //                 limit(ITEMS_PER_PAGE)
-    //             );
-        
-    //             // Get total count for pagination
-    //             const totalSnapshot = await getDocs(itemsRef);
-    //             const totalItems = totalSnapshot.size;
-    //             setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE));
-        
-    //             // If not on first page, apply startAfter
-    //             if (currentPage > 1) {
-    //                 const previousItems = await getDocs(q);
-    //                 const lastVisible = previousItems.docs[(currentPage - 1) * ITEMS_PER_PAGE - 1];
-    //                 q = query(
-    //                     itemsRef,
-    //                     orderBy(orderByField, "desc"),
-    //                     startAfter(lastVisible),
-    //                     limit(ITEMS_PER_PAGE)
-    //                 );
-    //             }
-        
-    //             const snapshot = await getDocs(q);
-                
-    //             if (snapshot.empty) {
-    //                 setItems([]);
-    //                 setLoading(false);
-    //                 return;
-    //             }
-        
-    //             // Process each article
-    //             const itemsData = await Promise.all(
-    //                 snapshot.docs.map(async (docSnapshot) => {
-    //                     const data = docSnapshot.data();
-    //                     let authorName = "Docket Digest News Room";
-                        
-    //                     if (data.authorId) {
-    //                         try {
-    //                             const authorRef = doc(db, "blog/blockchainBriefing/authors", data.authorId);
-    //                             const authorSnap = await getDoc(authorRef);
-    //                             if (authorSnap.exists()) {
-    //                                 const authorData = authorSnap.data() as Author;
-    //                                 authorName = authorData.author_name;
-    //                             }
-    //                         } catch (error) {
-    //                             console.error("Error fetching author:", error);
-    //                         }
-    //                     }
-        
-    //                     return {
-    //                         id: docSnapshot.id,
-    //                         title: data.title || "",
-    //                         content: data.content || "",
-    //                         imageURL: data.imageURL || DummyImg,
-    //                         authorId: data.authorId || "",
-    //                         authorName: authorName,
-    //                         titleSlug: data.titleSlug || "", // Use the slug provided by the backend
-    //                         type: activeTab,
-    //                         publishDate: activeTab === "news" 
-    //                             ? {
-    //                                 seconds: data.date?.seconds || new Date().getTime() / 1000,
-    //                                 nanoseconds: data.date?.nanoseconds || 0
-    //                             }
-    //                             : data.publishDate || {
-    //                                 seconds: new Date().getTime() / 1000,
-    //                                 nanoseconds: 0
-    //                             }
-    //                     };
-    //                 })
-    //             );
-        
-    //             setItems(itemsData);
-    //         } catch (error) {
-    //             console.error("Error fetching items:", error);
-    //             setError("Failed to load items. Please try again later.");
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchItems();
-    // }, [activeTab, currentPage]);
-
-    // Update active tab when pathname changes
-   
+    
     useEffect(() => {
         const newTab = pathname.includes("/articles") ? "article" : "news";
         if (newTab !== activeTab) {
