@@ -12,7 +12,8 @@ import {
     where,
     DocumentData,
 } from "firebase/firestore";
-import DummyImg from "@/assets/Rectangle-4.png";
+// import DummyImg from "@/assets/Rectangle-4.png";
+import DummyImg from "@/assets/Blockchain-Default.jpg";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface Article {

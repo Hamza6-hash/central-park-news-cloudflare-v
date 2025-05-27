@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import BlogsCard from "../common/BlogsCard";
 
 import { db } from "@/lib/firebaseConfig";
-import DummyImg from "@/assets/Rectangle-4.png";
+// import DummyImg from "@/assets/Rectangle-4.png";
+import DummyImg from "@/assets/Blockchain-Default.jpg";
 
 import {
   collection,

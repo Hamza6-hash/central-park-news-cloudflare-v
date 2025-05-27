@@ -14,7 +14,7 @@ interface HorizontalCard {
     publishDate?: any;
     content?: string;
     titleSlug?: string;
-    type?: "article" | "news";
+     type?:string;
 }
 
 const HorizontalCard = ({
@@ -24,9 +24,11 @@ const HorizontalCard = ({
     publishDate,
     content,
     titleSlug = "",
-    type = "article"
+    type
 }: HorizontalCard) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
+
+    console.log(type)
 
     const getLinkPath = () => {
         if (type === "news") {
@@ -52,7 +54,7 @@ const HorizontalCard = ({
 
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">
-                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-2">
+                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-2 hover:text-blue-700 ">
                             {title || "-"}
                         </h4>
                         <div className="flex items-center gap-2  text-[12px] sm:text-[12px]">

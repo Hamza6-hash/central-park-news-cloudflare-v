@@ -9,7 +9,8 @@ import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StaticImageData } from "next/image";
 import user from '/assets/user.png'
-import DummyImage from "@/assets/Rectangle-2.png";
+// import DummyImage from "@/assets/Rectangle-2.png";
+import DummyImage from "@/assets/Blockchain-Default.jpg";
 
 
 interface Article {

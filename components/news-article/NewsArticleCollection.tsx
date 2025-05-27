@@ -7,7 +7,8 @@ import { collection, getDocs, doc, getDoc, query, where, orderBy, DocumentData, 
 import { Skeleton } from "@/components/ui/skeleton";
 import BlogsCard from "../common/BlogsCard";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import DummyImg from "@/assets/Rectangle-4.png";
+// import DummyImg from "@/assets/Rectangle-4.png";
+import DummyImg from "@/assets/Blockchain-Default.jpg";
 import { StaticImageData } from "next/image";
 import Link from "next/link";
 

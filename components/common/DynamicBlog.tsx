@@ -13,7 +13,8 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import user from '/assets/user.png'
 import ReactMarkdown from 'react-markdown';
-import DummyImage from "@/assets/Rectangle-2.png";
+// import DummyImage from "@/assets/Rectangle-2.png";
+import DummyImage from "@/assets/Blockchain-Default.jpg";
 
 interface DynamicBlogProps {
   title: string;

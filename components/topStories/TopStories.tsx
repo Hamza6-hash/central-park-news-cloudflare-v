@@ -4,7 +4,8 @@ import { usePathname } from "next/navigation";
 import { routes } from "@/constants";
 import { Button } from "../button/Button";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import DummyImg from "@/assets/Rectangle-4.png";
+// import DummyImg from "@/assets/Rectangle-4.png";
+import DummyImg from "@/assets/Blockchain-Default.jpg";
 import {
   collection,
   getDocs,
@@ -12,6 +13,8 @@ import {
   getDoc,
   DocumentData,
   Timestamp,
+  where,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -29,11 +32,105 @@ interface Newsletter {
   titleSlug?: string;
   status: string,
   createdAt?: string,
+  isFeatured: boolean,
+  updatedAt: string,
+  type?:string;
 }
 
 const TopStories = () => {
   const pathName = usePathname();
   const isContactPage = pathName === routes.contact;
+
+  // const {
+  //   data: newsletters,
+  //   error,
+  //   isLoading,
+  // } = useQuery<Newsletter[]>({
+  //   queryKey: ["getAllNewsletters"],
+  //   queryFn: async (): Promise<Newsletter[]> => {
+
+  //     if (!db) {
+  //       throw new Error("Database connection is not available");
+  //     }
+
+  //     try {
+  //       const newslettersRef = collection(
+  //         db,
+  //         "blog/blockchainBriefing/newsletter"
+  //       );
+  //       const snapshot = await getDocs(newslettersRef);
+
+  //       if (snapshot.empty) {
+  //         console.log("No newsletters found");
+  //         return [];
+  //       }
+
+  //       // Process newsletters and fetch author names
+  //       const newslettersWithData = await Promise.all(
+  //         snapshot.docs.map(async (newsletterDoc) => {
+  //           const data = newsletterDoc.data();
+
+  //           try {
+  //             // Get author name from authors collection if authorId exists
+  //             let authorName = "Docket Digest New Room";
+  //             if (data.authorId) {
+  //               const authorRef = doc(
+  //                 db,
+  //                 "blog/blockchainBriefing/authors",
+  //                 data.authorId
+  //               );
+  //               const authorDoc = await getDoc(authorRef);
+  //               if (authorDoc.exists()) {
+  //                 const authorData = authorDoc.data() as DocumentData;
+  //                 authorName =
+  //                   authorData.author_name || "Docket Digest New Room";
+  //               }
+  //             }
+
+  //             // Use the titleSlug directly from the backend
+  //             return {
+  //               ...data,
+  //               id: newsletterDoc.id,
+  //               authorName,
+  //               titleSlug: data.titleSlug || "", // Directly from backend
+  //               date: data.date as Timestamp,
+  //             } as Newsletter;
+  //           } catch (error) {
+  //             console.error(
+  //               "Error processing newsletter:",
+  //               newsletterDoc.id,
+  //               error
+  //             );
+  //             return {
+  //               ...data,
+  //               id: newsletterDoc.id,
+  //               authorName: "Docket Digest New Room",
+  //               titleSlug: data.titleSlug || "", // Directly from backend
+  //             } as Newsletter;
+  //           }
+  //         })
+  //       );
+
+  //       const publishedNewsletters = newslettersWithData.filter(
+  //         (newsletter) => newsletter?.status === "published"
+  //       );
+
+  //       // Sort by publish date (newest first)
+  //        const sortedNewsletters = publishedNewsletters.sort((a, b) => {
+  //         if (!a.createdAt || !b.createdAt) return 0;
+  //         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  //       });
+
+  //       return sortedNewsletters;
+  //     } catch (error) {
+  //       console.error("Error fetching newsletters:", error);
+  //       throw new Error("Failed to fetch newsletters. Please try again later.");
+  //     }
+  //   },
+  //   placeholderData: keepPreviousData,
+  //   retry: 2,
+  //   staleTime: 1000 * 60 * 5,
+  // });
 
   const {
     data: newsletters,
@@ -47,77 +144,90 @@ const TopStories = () => {
       }
 
       try {
-        const newslettersRef = collection(
-          db,
-          "blog/blockchainBriefing/newsletter"
-        );
-        const snapshot = await getDocs(newslettersRef);
+        const fetchItems = async (collectionPath: string, type: string) => {
+          const ref = collection(db, collectionPath);
+          const snapshot = await getDocs(ref);
 
-        if (snapshot.empty) {
-          console.log("No newsletters found");
-          return [];
-        }
+          if (snapshot.empty) {
+            console.log(`No ${type}s found`);
+            return [];
+          }
 
-        // Process newsletters and fetch author names
-        const newslettersWithData = await Promise.all(
-          snapshot.docs.map(async (newsletterDoc) => {
-            const data = newsletterDoc.data();
+          return await Promise.all(
+            snapshot.docs.map(async (docSnap) => {
+              const data = docSnap.data();
 
-            try {
-              // Get author name from authors collection if authorId exists
-              let authorName = "Docket Digest New Room";
-              if (data.authorId) {
-                const authorRef = doc(
-                  db,
-                  "blog/blockchainBriefing/authors",
-                  data.authorId
-                );
-                const authorDoc = await getDoc(authorRef);
-                if (authorDoc.exists()) {
-                  const authorData = authorDoc.data() as DocumentData;
-                  authorName =
-                    authorData.author_name || "Docket Digest New Room";
+              try {
+                let authorName = "Docket Digest New Room";
+                if (data.authorId) {
+                  const authorRef = doc(
+                    db,
+                    "blog/blockchainBriefing/authors",
+                    data.authorId
+                  );
+                  const authorDoc = await getDoc(authorRef);
+                  if (authorDoc.exists()) {
+                    const authorData = authorDoc.data() as DocumentData;
+                    authorName =
+                      authorData.author_name || "Docket Digest New Room";
+                  }
                 }
+
+                return {
+                  ...data,
+                  id: docSnap.id,
+                  authorName,
+                  titleSlug: data.titleSlug || "",
+                  date: data.date as Timestamp,
+                  createdAt: data.createdAt,
+                  status: data.status, // ✅ make sure this is included
+                  type: data.type,
+                  isFeatured: data.isFeatured || false,
+                  updatedAt: data.updatedAt,
+                } as Newsletter;
+              } catch (error) {
+                console.error(`Error processing ${type}:`, docSnap.id, error);
+                return {
+                  ...data,
+                  id: docSnap.id,
+                  authorName: "Docket Digest New Room",
+                  titleSlug: data.titleSlug || "",
+                  status: data.status, // ✅ make sure this is included
+                  type: data.type,
+                  isFeatured: data.isFeatured || false,
+                  updatedAt: data.updatedAt,
+                } as Newsletter;
               }
+            })
+          );
+        };
 
-              // Use the titleSlug directly from the backend
-              return {
-                ...data,
-                id: newsletterDoc.id,
-                authorName,
-                titleSlug: data.titleSlug || "", // Directly from backend
-                date: data.date as Timestamp,
-              } as Newsletter;
-            } catch (error) {
-              console.error(
-                "Error processing newsletter:",
-                newsletterDoc.id,
-                error
-              );
-              return {
-                ...data,
-                id: newsletterDoc.id,
-                authorName: "Docket Digest New Room",
-                titleSlug: data.titleSlug || "", // Directly from backend
-              } as Newsletter;
-            }
-          })
+        // Fetch both newsletters and articles
+        const [newslettersData, articlesData] = await Promise.all([
+          fetchItems("blog/blockchainBriefing/newsletter", "newsletter"),
+          fetchItems("blog/blockchainBriefing/articles", "article"),
+        ]);
+
+        const combined = [...newslettersData, ...articlesData];
+
+        const publishedItems = combined.filter(
+          (item) => item?.status === "published"
         );
 
-        const publishedNewsletters = newslettersWithData.filter(
-          (newsletter) => newsletter?.status === "published"
-        );
-
-        // Sort by publish date (newest first)
-         const sortedNewsletters = publishedNewsletters.sort((a, b) => {
+        const sortedItems = publishedItems.sort((a, b) => {
           if (!a.createdAt || !b.createdAt) return 0;
-          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
         });
 
-        return sortedNewsletters;
+        const latestItems = sortedItems.filter(
+          (item) => item.isFeatured === true
+        );
+
+        // Return top 12 items
+        return latestItems.slice(0, 12);
       } catch (error) {
-        console.error("Error fetching newsletters:", error);
-        throw new Error("Failed to fetch newsletters. Please try again later.");
+        console.error("Error fetching newsletters and articles:", error);
+        throw new Error("Failed to fetch content. Please try again later.");
       }
     },
     placeholderData: keepPreviousData,
@@ -125,7 +235,8 @@ const TopStories = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  
+
+
 
   if (error) {
     return (
@@ -176,7 +287,7 @@ const TopStories = () => {
       <div className="flex flex-col xl:gap-5 sm:gap-7 gap-8">
         {displayedNewsletters?.map((newsletter: Newsletter) => {
           // Format the date here
-           const formattedDate = newsletter.createdAt
+          const formattedDate = newsletter.createdAt
             ? format(new Date(newsletter.createdAt), "MMM d, yyyy")
             : "";
 
@@ -189,7 +300,7 @@ const TopStories = () => {
                 publishDate={formattedDate}
                 content={newsletter.content || "-"}
                 titleSlug={newsletter.titleSlug}
-                type="news"
+                type={newsletter.type}
               />
             </React.Fragment>
           );

@@ -50,7 +50,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-
 export default function NewsPage({ params }: { params: { slug: string } }) {
   return (
     <div>
