@@ -33,40 +33,36 @@ const VerticalCard = ({
     };
 
     return (
-        <div className="bg-primary-300 py-3 px-4 flex flex-col gap-3 min-w-[214px] max-w-[214px] relative rounded text-white">
-            <div className="flex justify-center items-center">
-                <Image
-                    src={imageURL}
-                    width={200}
-                    height={121}
-                    alt={"new image"}
-                    className="w-[200px] h-[121px] gap-0 custom-rounded"
-                    quality={100}
-                    style={{ objectFit: "cover" }}
-                />
-            </div>
-            <div className="flex flex-col h-full">
-                <div className="h-[48px]">
-                    <h4 className="font-century-schoolbook capitalize font-normal leading-5 line-clamp-2">
-                        {title || "-"}
-                    </h4>
+        <Link href={getLinkPath()}>
+            <div className="bg-primary-300 min-w-[252px] max-w-[214px] h-[272px] relative rounded text-white overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        src={imageURL}
+                        alt={title || "Article image"}
+                        fill
+                        className="object-cover"
+                        quality={85}
+                    />
                 </div>
+                {/* <div className="absolute  z-10"></div> */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 z-20 bg-[#1E3D5AEB]">
+                    <div className="mb-3">
+                        <h4 className="font-century-schoolbook capitalize font-normal leading-5 line-clamp-2">
+                            {title || "-"}
+                        </h4>
+                    </div>
 
-                <div className="flex items-center gap-2">
-                    <hr className="w-6 h-0.5 bg-white" />
-                    <div className="flex flex-col">
-                        <h6 className="text-sm capitalize font-montserrat font-wider font-normal tracking-sm">{authorName || "-"}</h6>
-                        <p className="text-xs text-gray-300 italic">{formatedPublishDate && formatedPublishDate}</p>
+                    <div className="flex items-center gap-2">
+                        <hr className="w-6 h-0.5 bg-white" />
+                        <div className="flex flex-col">
+                            <h6 className="text-sm capitalize font-montserrat font-wider font-normal tracking-sm">{authorName || "-"}</h6>
+                            <p className="text-xs text-gray-300 italic">{formatedPublishDate && formatedPublishDate}</p>
+                        </div>
                     </div>
                 </div>
-                <div className="flex justify-end mt-3">
-                    <Link href={getLinkPath()} className="uppercase font-century-gothic text-yellow-500 transition-colors duration-300 hover:text-white font-bold text-xs">
-                        VIEW MORE
-                    </Link>
-                </div>
             </div>
-        </div>
+        </Link>
     );
 };
 
-export default VerticalCard;
+export default VerticalCard; 

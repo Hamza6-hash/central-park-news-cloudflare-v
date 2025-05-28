@@ -156,7 +156,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           {showWritter === true && (
             <div className="flex gap-2 flex-col max-sm:justify-center max-sm:items-center">
               <h4 className="text-lg">Written By:</h4>
-              <div className="w-12 h-12 relative rounded-full">
+              {/* <div className="w-12 h-12 relative rounded-full">
                 <Image
                   src={authorImg || user}
                   alt="new image"
@@ -164,7 +164,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
                   className="rounded-full"
                   style={{ objectFit: "cover" }}
                 />
-              </div>
+              </div> */}
               <div className="font-century-gothic max-sm:text-center text-lg">
                 <p>{authorName ? authorName.charAt(0).toUpperCase() + authorName.slice(1) : 'Unknown Author'}</p>
                 <p className="text-gray-500">
@@ -173,12 +173,6 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               </div>
             </div>
           )}
-
-          <div className="flex items-center gap-3">
-            {socialMediaArray.map((item, index) => (
-              <SocialMediaTag key={index} {...item} />
-            ))}
-          </div>
         </div>
       </div>
     </section>
