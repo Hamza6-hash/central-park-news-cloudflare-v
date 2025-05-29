@@ -56,12 +56,12 @@ export default function NewsArticleCollection() {
 
     const pageTitle = activeTab === "news" ? "News" : "Articles";
 
-    const fetchedCombienItems = async() =>{
+    const fetchedCombienItems = async () => {
         try {
             setLoading(true)
             setError(null);
 
-             if (!db) {
+            if (!db) {
                 throw new Error("Database connection is not available");
             }
 
@@ -82,18 +82,18 @@ export default function NewsArticleCollection() {
                 where("status", "==", "published"),
                 orderBy("createdAt", "desc")
             );
-            
-             const [articleSnap, newsSnap] = await Promise.all([
+
+            const [articleSnap, newsSnap] = await Promise.all([
                 getDocs(articleQuery),
                 getDocs(newsQuery)
             ]);
 
         } catch (error) {
-            
+
         }
     }
 
-     useEffect(() => {
+    useEffect(() => {
         const fetchItems = async () => {
             try {
                 setLoading(true);
@@ -187,7 +187,7 @@ export default function NewsArticleCollection() {
     }, [activeTab, currentPage]);
 
 
-    
+
     useEffect(() => {
         const newTab = pathname.includes("/articles") ? "article" : "news";
         if (newTab !== activeTab) {
@@ -206,25 +206,25 @@ export default function NewsArticleCollection() {
     const getPageNumbers = () => {
         const pageNumbers = [];
         const maxVisiblePages = 5;
-        
+
         let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
         let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-        
+
         if (endPage - startPage + 1 < maxVisiblePages) {
             startPage = Math.max(1, endPage - maxVisiblePages + 1);
         }
-        
+
         for (let i = startPage; i <= endPage; i++) {
             pageNumbers.push(i);
         }
-        
+
         return pageNumbers;
     };
 
     return (
         <section className="w-full">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6 max-w-7xl mx-auto w-full pl-0 pr-4 sm:pr-6 md:pr-8 lg:pr-10 xl:pr-12">
-                <h1 className='heading text-center sm:text-left sm:px-6 md:px-8 lg:px-10 xl:px-12'>{pageTitle}</h1>
+            <div className="max-w-7xl mx-auto w-full ">
+                <h1 className="heading text-center md:text-left">{pageTitle}</h1>
             </div>
 
             {/* Loading State */}
@@ -270,15 +270,15 @@ export default function NewsArticleCollection() {
                             </div>
                         ))}
                     </div>
-                    
+
                     {/* Updated Pagination */}
                     {totalPages > 1 && (
                         <div className='mt-8 flex justify-center'>
                             <Pagination>
                                 <PaginationContent>
                                     <PaginationItem>
-                                        <PaginationPrevious 
-                                            href="#" 
+                                        <PaginationPrevious
+                                            href="#"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 if (currentPage > 1) handlePageChange(currentPage - 1);
@@ -303,8 +303,8 @@ export default function NewsArticleCollection() {
                                     ))}
 
                                     <PaginationItem>
-                                        <PaginationNext 
-                                            href="#" 
+                                        <PaginationNext
+                                            href="#"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 if (currentPage < totalPages) handlePageChange(currentPage + 1);

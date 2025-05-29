@@ -265,7 +265,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="markdown-content ">
+        <div className="markdown-content px-3">
           <ReactMarkdown>{article?.content}</ReactMarkdown>
         </div>
 
@@ -274,13 +274,13 @@ export default function Home() {
           {/* Share Section */}
           <div className="flex flex-col items-start md:items-start">
             <p className="font-bold mb-2">Share This:</p>
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               {socialMediaArray.map((item) => (
                 <React.Fragment key={item.link}>
                   <SocialMediaTag icon={item.icon} link={item.link} />
                 </React.Fragment>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* 300x300 Ad */}

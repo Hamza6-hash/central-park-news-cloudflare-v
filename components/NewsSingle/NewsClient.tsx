@@ -18,6 +18,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { StaticImageData } from "next/image";
 import user from '/assets/user.png'
 
+import DummyImage from "@/assets/Blockchain-Default.jpg";
 import ReactMarkdown from 'react-markdown';
 
 interface News {
@@ -212,7 +213,7 @@ const NewsClient = ({ slug }: { slug: string }) => {
     <div className="container mx-auto px-4 py-8">
       <DynamicBlog
         title={news.title}
-        imageURL={news.imageURL || "/images/default-news.jpg"}
+       imageURL={news.imageURL || DummyImage}
         authorName={news.authorName || "Unknown Author"}
         authorPosition={news.position || "Unknown Position"}
         authorImg={news.authorImage || user}
