@@ -41,97 +41,6 @@ const TopStories = () => {
   const pathName = usePathname();
   const isContactPage = pathName === routes.contact;
 
-  // const {
-  //   data: newsletters,
-  //   error,
-  //   isLoading,
-  // } = useQuery<Newsletter[]>({
-  //   queryKey: ["getAllNewsletters"],
-  //   queryFn: async (): Promise<Newsletter[]> => {
-
-  //     if (!db) {
-  //       throw new Error("Database connection is not available");
-  //     }
-
-  //     try {
-  //       const newslettersRef = collection(
-  //         db,
-  //         "blog/blockchainBriefing/newsletter"
-  //       );
-  //       const snapshot = await getDocs(newslettersRef);
-
-  //       if (snapshot.empty) {
-  //         console.log("No newsletters found");
-  //         return [];
-  //       }
-
-  //       // Process newsletters and fetch author names
-  //       const newslettersWithData = await Promise.all(
-  //         snapshot.docs.map(async (newsletterDoc) => {
-  //           const data = newsletterDoc.data();
-
-  //           try {
-  //             // Get author name from authors collection if authorId exists
-  //             let authorName = "Docket Digest New Room";
-  //             if (data.authorId) {
-  //               const authorRef = doc(
-  //                 db,
-  //                 "blog/blockchainBriefing/authors",
-  //                 data.authorId
-  //               );
-  //               const authorDoc = await getDoc(authorRef);
-  //               if (authorDoc.exists()) {
-  //                 const authorData = authorDoc.data() as DocumentData;
-  //                 authorName =
-  //                   authorData.author_name || "Docket Digest New Room";
-  //               }
-  //             }
-
-  //             // Use the titleSlug directly from the backend
-  //             return {
-  //               ...data,
-  //               id: newsletterDoc.id,
-  //               authorName,
-  //               titleSlug: data.titleSlug || "", // Directly from backend
-  //               date: data.date as Timestamp,
-  //             } as Newsletter;
-  //           } catch (error) {
-  //             console.error(
-  //               "Error processing newsletter:",
-  //               newsletterDoc.id,
-  //               error
-  //             );
-  //             return {
-  //               ...data,
-  //               id: newsletterDoc.id,
-  //               authorName: "Docket Digest New Room",
-  //               titleSlug: data.titleSlug || "", // Directly from backend
-  //             } as Newsletter;
-  //           }
-  //         })
-  //       );
-
-  //       const publishedNewsletters = newslettersWithData.filter(
-  //         (newsletter) => newsletter?.status === "published"
-  //       );
-
-  //       // Sort by publish date (newest first)
-  //        const sortedNewsletters = publishedNewsletters.sort((a, b) => {
-  //         if (!a.createdAt || !b.createdAt) return 0;
-  //         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  //       });
-
-  //       return sortedNewsletters;
-  //     } catch (error) {
-  //       console.error("Error fetching newsletters:", error);
-  //       throw new Error("Failed to fetch newsletters. Please try again later.");
-  //     }
-  //   },
-  //   placeholderData: keepPreviousData,
-  //   retry: 2,
-  //   staleTime: 1000 * 60 * 5,
-  // });
-
   const {
     data: newsletters,
     error,
@@ -223,8 +132,7 @@ const TopStories = () => {
           (item) => item.isFeatured === true
         );
 
-        // Return top 12 items
-        return latestItems.slice(0, 12);
+        return latestItems.slice(0, 7);
       } catch (error) {
         console.error("Error fetching newsletters and articles:", error);
         throw new Error("Failed to fetch content. Please try again later.");

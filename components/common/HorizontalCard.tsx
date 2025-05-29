@@ -14,7 +14,7 @@ interface HorizontalCard {
     publishDate?: any;
     content?: string;
     titleSlug?: string;
-     type?:string;
+    type?: string;
 }
 
 const HorizontalCard = ({
@@ -40,12 +40,12 @@ const HorizontalCard = ({
     return (
         <Link href={getLinkPath()}>
             <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 rounded-lg cursor-pointer">
-                <div className="md:w-[204px]">
+                <div className="md:w-[210px]">
                     <Image
                         src={imageURL}
                         height={800}
                         alt={"new image"}
-                        className="md:max-w-[204px] md:h-[183px]"
+                        className="md:max-w-[204px] md:h-[208px] rounded-md"
                         width={800}
                         quality={100}
                         style={{ objectFit: "cover" }}
@@ -54,7 +54,8 @@ const HorizontalCard = ({
 
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">
-                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-2 hover:text-blue-700 ">
+                        <h1 className="bg-[#FFEB84] text-black text-xs capitalize font-montserrat py-1 px-2 w-fit rounded-full">{type}</h1>
+                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-3 hover:text-blue-700 ">
                             {title || "-"}
                         </h4>
                         <div className="flex items-center gap-2  text-[12px] sm:text-[12px]">
@@ -69,10 +70,11 @@ const HorizontalCard = ({
                     </div>
                     {/* <div className="text-gray-600 capitalize  text-[15px]"> */}
                     <div className="text-gray-600 capitalize font-montserrat font-normal text-[12px] sm:text-[15px]">
-                        <TruncateText lines={4} content={content || "-"} />
+                        <TruncateText lines={2} content={content || "-"} />
                     </div>
                 </div>
             </div>
+            <hr className="w-full bg-gray-400  h-[1px] border-none mt-5" />
         </Link>
     );
 };

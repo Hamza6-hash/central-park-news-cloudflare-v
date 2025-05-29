@@ -8,7 +8,7 @@ const Header = () => {
         <header>
             <Navbar />
             <Banner />
-            <Searchbar />
+            <Searchbar />   
         </header>
     )
 }

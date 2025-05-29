@@ -18,7 +18,7 @@ const Footer = () => {
         <footer className="">
             {showSuggestedBlogs && <SuggestedBlogs />}
             <LastestNews />
-            <PopularLinks />
+            {/* <PopularLinks /> */}
 
             <section className="w-full flex flex-col justify-center items-center gap-10 bg-gray-100 p-4 py-6">
 
