@@ -189,7 +189,7 @@ const ArticleClient = ({ slug }: { slug: string }) => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="w-full">
       <DynamicBlog
         title={article.title}
         imageURL={article.imageURL || DummyImage}

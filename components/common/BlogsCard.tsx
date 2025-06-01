@@ -54,7 +54,7 @@ const BlogsCard = ({
   return (
     <div
       className={` ${suggestedBlog ? "bg-transparent py-3 px-3" : "bg-[#67B6DF24] "
-        } relative w-full sm:max-w-[337px] h-[465px] rounded-[6px] p-6 flex flex-col`}
+        } relative w-full sm:max-w-[337px] h-[465px] rounded-[6px] p-6 flex flex-col `}
     >
       {/* Image Container - Fixed position */}
       <div className="relative w-full h-[189px]  overflow-hidden">
@@ -109,14 +109,30 @@ const BlogsCard = ({
       </div>
 
       {/* View More Link - Fixed position */}
-      <div className="absolute bottom-[36px] right-6">
-        <Link href={getLinkPath()}>
-          {/* <p className="text-primary-900 font-century-gothic font-bold text-[14px] leading-[14px] tracking-[0.06em] uppercase transition-colors duration-300 hover:text-yellow-500"> */}
-          <p className="text-[#2B4864] text-right font-century-gothic text-[14px] font-bold text-sm leading-[100%] tracking-[0%] capitalize">
-            VIEW MORE
-          </p>
-        </Link>
+      <div className="absolute bottom-[24px] right-0 w-full px-6">
+        {!suggestedBlog ? (
+          <div className="flex justify-between items-center">
+            <h1 className="bg-[#FFEB84] text-black text-xs capitalize font-montserrat py-1 px-2 rounded-full">
+              {type}
+            </h1>
+
+            <Link href={getLinkPath()}>
+              <p className="text-[#2B4864] font-century-gothic text-[14px] font-bold leading-[100%] capitalize transition-colors duration-300 hover:text-yellow-500">
+                VIEW MORE
+              </p>
+            </Link>
+          </div>
+        ) : (
+          <div className="flex justify-end">
+            <Link href={getLinkPath()}>
+              <p className="text-[#2B4864] font-century-gothic text-[14px] font-bold leading-[100%] capitalize transition-colors duration-300 hover:text-yellow-500">
+                VIEW MORE
+              </p>
+            </Link>
+          </div>
+        )}
       </div>
+
     </div>
   );
 };

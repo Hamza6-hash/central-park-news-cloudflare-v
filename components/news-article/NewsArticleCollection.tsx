@@ -224,7 +224,7 @@ export default function NewsArticleCollection() {
     return (
         <section className="w-full">
             <div className="max-w-7xl mx-auto w-full ">
-                <h1 className="heading text-center md:text-left">{pageTitle}</h1>
+                <h1 className="heading md:text-left ">{pageTitle}</h1>
             </div>
 
             {/* Loading State */}

@@ -11,8 +11,8 @@ export const metadata: Metadata ={
 
 export default function ArticlesPage() {
     return (
-        <section className="min-h-screen">
+        // <section className="min-h-screen">
             <NewsArticleCollection />
-        </section>
+        // </section>
     );
 }

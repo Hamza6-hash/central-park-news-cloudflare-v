@@ -49,51 +49,56 @@ const ContactClient = () => {
 
   return (
     <>
-      <section className="flex justify-center items-center">
-        <div className="xl:w-[658px] max-w-full">
-          <h1 className="heading max-md:text-center font-century-schoolbook">
+      <section className="w-full">
+        <div className="w-full">
+          <h1 className="text-4xl font-bold  font-century-schoolbook">
             Contact Us
           </h1>
+
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-4 w-full mt-10 px-sm-generic"
+              className="flex flex-col gap-6 mt-10 md:px-[10rem]"
             >
               <CustomInput
                 control={form.control}
                 name="name"
                 label="Name"
-                fieldClassName={`${fieldClass}`}
-                placeholder="Name Here.."
+                fieldClassName={fieldClass}
+                placeholder="Name Here..."
                 schema={formSchema}
               />
               <CustomInput
                 control={form.control}
                 name="email"
                 label="Email"
-                fieldClassName={`${fieldClass}`}
-                placeholder="Email Here.."
+                fieldClassName={fieldClass}
+                placeholder="Email Here..."
                 schema={formSchema}
               />
               <CustomTextArea
                 control={form.control}
                 name="message"
                 label="Message"
-                fieldClassName={`${fieldClass}`}
-                placeholder="Message Here.."
+                fieldClassName={fieldClass}
+                placeholder="Message Here..."
                 schema={formSchema}
               />
+
               <div className="flex justify-end">
-                <Button variant="primary" type="submit" className="">
+                <Button variant="primary" type="submit">
                   SUBMIT
                 </Button>
               </div>
             </form>
           </Form>
+
+          <ThankYouDialog openDialog={openDialog} setOpenDialog={setOpenDialog} />
         </div>
-        <ThankYouDialog openDialog={openDialog} setOpenDialog={setOpenDialog} />
       </section>
-    
+
+
+
     </>
   );
 };

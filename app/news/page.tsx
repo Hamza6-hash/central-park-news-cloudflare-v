@@ -13,9 +13,9 @@ export default function NewsPage() {
   return (
     <>
    
-      <section className="min-h-screen">
+      {/* <section className="w-full p-0"> */}
         <NewsArticleCollection />
-      </section>
+      {/* </section> */}
     </>
   );
 }

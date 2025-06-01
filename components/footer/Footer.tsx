@@ -11,20 +11,17 @@ import { routes } from "@/constants";
 
 const Footer = () => {
     const pathName = usePathname();
-    const showSuggestedBlogs = 
-    pathName.startsWith(`${routes.articles}/`) || pathName === routes.articles || pathName.startsWith(`${routes.articles}/`);
-
-    return (
-        <footer className="">
-            {showSuggestedBlogs && <SuggestedBlogs />}
+    const showSuggestedBlogs =
+        pathName === routes.articles;
+      return (
+        <footer className="w-full">
+            {!showSuggestedBlogs && <SuggestedBlogs />}
             <LastestNews />
             {/* <PopularLinks /> */}
 
             <section className="w-full flex flex-col justify-center items-center gap-10 bg-gray-100 p-4 py-6">
 
                 <FooterLinks />
-
-
                 {/* <div className="space-y-3">
                     <p className="font-bold text-primary-900">Follow Blockchain Briefing:</p>
                     <div className="w-full flex items-center justify-center">

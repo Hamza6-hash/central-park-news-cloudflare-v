@@ -34,9 +34,9 @@ export default function RootLayout({
       <body>
         <QueryProviders>
           <Header />
-          <main className="flex items-center justify-center md:px-generic pageTopBottonMargin overflow-hidden">
+          <main className="flex items-center justify-center px-generic pageTopBottonMargin overflow-hidden">
             <div className="max-width">
-              <div className="max-md:flex max-md:justify-center max-md:items-center">
+              <div className="">
                 <hr className="w-64 h-0.5 mb-2 bg-gray-200" />
               </div>
               {children}

@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 // import SuggestedBlogs from "@/components/suggestedBlogs/SuggestedBlogs";
 import Image from "next/image";
@@ -15,6 +17,8 @@ import user from '/assets/user.png'
 import ReactMarkdown from 'react-markdown';
 // import DummyImage from "@/assets/Rectangle-2.png";
 import DummyImage from "@/assets/Blockchain-Default.jpg";
+import Searchbar from "@/components/search/SearchComp";
+import { Search, Slash } from "lucide-react";
 
 interface DynamicBlogProps {
   title: string;
@@ -81,31 +85,47 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
   authorImg
 }) => {
   const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
     <section>
-      <div className="flex items-center max-md:justify-center max-md:flex-col gap-2">
-        <Link
-          href={mainHeading === "News" ? "/news" : `/articles`}
-          className="flex items-center gap-2"
-        >
-          <h1 className="heading">{mainHeading}</h1>
-        </Link>
-        <div className="flex items-center gap-2">
-          <MdOutlineKeyboardArrowRight color="#A3A0A0" size={35} />
-          <h6 className="font-century-schoolbook capitalize">{title}</h6>
+      <div className="flex flex-col md:flex-row max-md:justify-center  gap-2">
+        <div className="flex gap-4 items-center ">
+          <Link
+            href={mainHeading === "News" ? "/news" : `/articles`}
+            className="flex items-center gap-2"
+          >
+            <h1 className="heading">{mainHeading}</h1>
+          </Link>
+          <button onClick={(e) => setIsSearchOpen(true)
+          }><Search /></button>
+
+          <Searchbar
+            isOpen={isSearchOpen}
+            onClose={() => setIsSearchOpen(false)}
+          />
+
         </div>
+        <div className="flex items-center gap-1">
+          <span className="shrink-0">
+            <Slash size={17} />
+          </span>
+          <h6 className="font-century-schoolbook text-primary-200 capitalize">
+            {title}
+          </h6>
+        </div>
+
       </div>
 
       <div className="mt-14">
         <div className="space-y-3 mb-4">
-          <div className="px-sm-generic">
+          <div className="sm:x-sm-generic ">
             {isArticlePage ? (
-              <h1 className="font-century-schoolbook text-3xl max-md:text-center capitalize">
+              <h1 className="font-century-schoolbook text-3xl capitalize">
                 {title}
               </h1>
             ) : (
-              <h1 className="font-century-schoolbook text-3xl max-md:text-center capitalize">
+              <h1 className="font-century-schoolbook text-3xl capitalize">
                 {title}
               </h1>
             )}
@@ -120,18 +140,6 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
-
-          {/* old card  */}
-          {/* <div className="flex items-center sm:text-lg text-sm px-sm-generic gap-2 max-[400px]:flex-col max-[400px]:justify-start max-[400px]:items-start">
-            <hr className="w-6 h-1 max-[400px]:hidden" />
-            <h6 className="capitalize text-nowrap font-montserrat">
-              {authorName}
-            </h6>
-            <span className="text-primary-500 max-[400px]:hidden">|</span>
-            <p className="text-primary-500 text-nowrap ">
-              {formatedPublishDate && formatedPublishDate}
-            </p>
-          </div> */}
 
           {/* extra div added to ensure the lines stays with the author name and maintain consistency */}
           <div className="flex items-center sm:text-lg text-sm px-sm-generic gap-2 max-[400px]:flex-col max-[400px]:justify-start max-[400px]:items-start">
@@ -148,24 +156,15 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           </div>
         </div>
 
-           <div className="markdown-content">
-            <ReactMarkdown>{content}</ReactMarkdown>
-          </div>
+        <div className="markdown-content">
+          <ReactMarkdown>{content}</ReactMarkdown>
+        </div>
 
-        <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between sm:items-center justify-center max-sm:items-center px-sm-generic">
+        <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
           {showWritter === true && (
-            <div className="flex gap-2 flex-col max-sm:justify-center max-sm:items-center">
+            <div className="flex gap-2 flex-col max-sm:justify-center ">
               <h4 className="text-lg">Written By:</h4>
-              {/* <div className="w-12 h-12 relative rounded-full">
-                <Image
-                  src={authorImg || user}
-                  alt="new image"
-                  fill
-                  className="rounded-full"
-                  style={{ objectFit: "cover" }}
-                />
-              </div> */}
-              <div className="font-century-gothic max-sm:text-center text-lg">
+              <div className="font-century-gothic text-lg">
                 <p>{authorName ? authorName.charAt(0).toUpperCase() + authorName.slice(1) : 'Unknown Author'}</p>
                 <p className="text-gray-500">
                   {authorPosition ? authorPosition?.charAt(0).toUpperCase() + authorPosition?.slice(1) : "Author"}

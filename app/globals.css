@@ -39,17 +39,14 @@
 
 @font-face {
   font-family: "century-gothic";
-  src: url("/fonts/century-gothic/century-gothic.ttf")
-    format("truetype");
+  src: url("/fonts/century-gothic/century-gothic.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
-
 @font-face {
   font-family: "century-gothic";
-  src: url("/fonts/century-gothic/centurygothic.ttf")
-    format("truetype");
+  src: url("/fonts/century-gothic/centurygothic.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -87,7 +84,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 :root {
-  --font-montserrat: 'Montserrat', sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -123,7 +120,7 @@
   .px-sm-generic {
     @apply md:px-0 px-6;
   }
-
+  
   .pageTopBottonMargin {
     @apply py-14;
   }
@@ -211,14 +208,47 @@
   --tw-ring-color: white;
 }
 
-
-.markdown-content h1 { font-size: 2em; font-weight: bold; margin: 1em 0; }
-.markdown-content h2 { font-size: 1.5em; font-weight: bold; margin: 1em 0; }
-.markdown-content ul { list-style: disc; margin-left: 2em; }
-.markdown-content p { margin: 1em 0; }
-.markdown-content a { color: #007bff; text-decoration: underline; }
-.markdown-content code { background-color: #f8f9fa; padding: 0.2em 0.4em; border-radius: 0.2em; }
-.markdown-content blockquote { background-color: #f8f9fa; padding: 1em; border-left: 4px solid #007bff; }
-.markdown-content img { max-width: 100%; height: auto; }
-.markdown-content table { width: 100%; border-collapse: collapse; }
-.markdown-content th, .markdown-content td { border: 1px solid #dee0e3; padding: 0.5em; }
+.markdown-content h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 1em 0;
+}
+.markdown-content h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 1em 0;
+}
+.markdown-content ul {
+  list-style: disc;
+  margin-left: 2em;
+}
+.markdown-content p {
+  margin: 1em 0;
+}
+.markdown-content a {
+  color: #007bff;
+  text-decoration: underline;
+}
+.markdown-content code {
+  background-color: #f8f9fa;
+  padding: 0.2em 0.4em;
+  border-radius: 0.2em;
+}
+.markdown-content blockquote {
+  background-color: #f8f9fa;
+  padding: 1em;
+  border-left: 4px solid #007bff;
+}
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+}
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid #dee0e3;
+  padding: 0.5em;
+}
