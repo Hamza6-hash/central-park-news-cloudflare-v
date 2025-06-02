@@ -71,7 +71,7 @@ const Banner = () => {
                                 schema={formSchema}
                                 onChange={onChangeField}
                             />
-                            <Button variant="gradient" className="py-3 px-6 w-full">SUBSCRIBE</Button>
+                            <Button variant="gradient" className="py-3 px-6 w-full ">SUBSCRIBE</Button>
                         </div>
                     </form>
                 </Form>
@@ -115,10 +115,10 @@ const Banner = () => {
                                 />
                             }
                         /> */}
-                    {/* </div> */}
+                {/* </div> */}
 
-                    {/* <SocialMedia /> */}
-                {/* </div> */} 
+                {/* <SocialMedia /> */}
+                {/* </div> */}
             </div>
         </section>
     );

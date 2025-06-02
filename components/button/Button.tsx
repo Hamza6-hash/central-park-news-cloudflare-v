@@ -10,10 +10,10 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-                gradient:
-                    'rounded bg-blue-gradient text-white hover:bg-blue-gradient-hover flex items-center justify-center',
-                primary: 'text-white bg-primary-900 xl:rounded-full rounded-md xl:h-[40px] xl:w-36 w-full flex items-center justify-center'
+                // gradient:'rounded bg-blue-gradient text-white transition-all duration-300 hover:bg-blue-gradient-hover flex items-center justify-center',
+              gradient: 'btn-gradient flex items-center justify-center rounded text-white',
 
+                primary: 'text-white bg-primary-900 xl:rounded-full rounded-md xl:h-[40px] xl:w-36 w-full flex items-center justify-center'
             },
             size: {
                 default: 'h-10 ',

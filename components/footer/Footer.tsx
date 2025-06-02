@@ -12,8 +12,9 @@ import { routes } from "@/constants";
 const Footer = () => {
     const pathName = usePathname();
     const showSuggestedBlogs =
-        pathName === routes.articles;
-      return (
+        pathName === routes.articles || pathName === routes.contact || pathName === routes.home || pathName === routes.news || pathName.startsWith('/news');
+
+    return (
         <footer className="w-full">
             {!showSuggestedBlogs && <SuggestedBlogs />}
             <LastestNews />

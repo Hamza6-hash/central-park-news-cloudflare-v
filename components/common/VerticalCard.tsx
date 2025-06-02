@@ -45,7 +45,7 @@ const VerticalCard = ({
                     />
                 </div>
                 {/* <div className="absolute  z-10"></div> */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 z-20 bg-[#1E3D5AEB]">
+                <div className="absolute bottom-0 left-0 right-0 p-4 z-20 bg-[#1E3D5AEB] transition-all duration-300 ease-in-out hover:bg-[#193753] hover:pb-6">
                     <div className="mb-3">
                         <h4 className="font-century-schoolbook capitalize font-normal leading-5 line-clamp-2">
                             {title || "-"}
@@ -60,6 +60,21 @@ const VerticalCard = ({
                         </div>
                     </div>
                 </div>
+                {/* <div className="absolute bottom-0 left-0 right-0 p-4 z-20 bg-[#1E3D5AEB]">
+                    <div className="mb-3">
+                        <h4 className="font-century-schoolbook capitalize font-normal leading-5 line-clamp-2">
+                            {title || "-"}
+                        </h4>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <hr className="w-6 h-0.5 bg-white" />
+                        <div className="flex flex-col">
+                            <h6 className="text-sm capitalize font-montserrat font-wider font-normal tracking-sm">{authorName || "-"}</h6>
+                            <p className="text-xs text-gray-300 italic">{formatedPublishDate && formatedPublishDate}</p>
+                        </div>
+                    </div>
+                </div> */}
             </div>
         </Link>
     );
