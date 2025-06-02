@@ -11,6 +11,8 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import DummyImg from "@/assets/Blockchain-Default.jpg";
 import { StaticImageData } from "next/image";
 import Link from "next/link";
+import { Search } from "lucide-react";
+import Searchbar from "../search/SearchComp";
 
 interface Article {
     id: string;
@@ -53,6 +55,8 @@ export default function NewsArticleCollection() {
     const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+
 
     const pageTitle = activeTab === "news" ? "News" : "Articles";
 
@@ -223,8 +227,15 @@ export default function NewsArticleCollection() {
 
     return (
         <section className="w-full">
-            <div className="max-w-7xl mx-auto w-full ">
+            <div className="flex gap-2 items-center max-w-7xl mx-auto w-full ">
                 <h1 className="heading md:text-left ">{pageTitle}</h1>
+                <button onClick={(e) => setIsSearchOpen(true)
+                }><Search /></button>
+
+                <Searchbar
+                    isOpen={isSearchOpen}
+                    onClose={() => setIsSearchOpen(false)}
+                />
             </div>
 
             {/* Loading State */}

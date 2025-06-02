@@ -212,6 +212,7 @@
   font-size: 2em;
   font-weight: bold;
   margin: 1em 0;
+  line-height: 1.2;
 }
 .markdown-content h2 {
   font-size: 1.5em;
@@ -251,4 +252,28 @@
 .markdown-content td {
   border: 1px solid #dee0e3;
   padding: 0.5em;
+}
+
+
+/* ---------------- */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/* =================== */
+.btn-gradient {
+  background: linear-gradient(to right, #2B4864, #6DBEE5, #2B4864);
+  background-size: 200% 100%;
+  background-position: left center;
+  transition: background-position 0.5s ease-in-out;
+  color: white;
+}
+
+.btn-gradient:hover {
+  background-position: right center;
 }

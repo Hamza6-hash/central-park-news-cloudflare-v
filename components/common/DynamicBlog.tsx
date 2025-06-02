@@ -1,7 +1,6 @@
 'use client';
 
 import React from "react";
-// import SuggestedBlogs from "@/components/suggestedBlogs/SuggestedBlogs";
 import Image from "next/image";
 import { StaticImageData } from "next/image";
 import avatar from "@/assets/avatar@2x.png";
@@ -15,7 +14,6 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import user from '/assets/user.png'
 import ReactMarkdown from 'react-markdown';
-// import DummyImage from "@/assets/Rectangle-2.png";
 import DummyImage from "@/assets/Blockchain-Default.jpg";
 import Searchbar from "@/components/search/SearchComp";
 import { Search, Slash } from "lucide-react";
@@ -90,7 +88,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
   return (
     <section>
       <div className="flex flex-col md:flex-row max-md:justify-center  gap-2">
-        <div className="flex gap-4 items-center ">
+        <div className="flex gap-2 items-center ">
           <Link
             href={mainHeading === "News" ? "/news" : `/articles`}
             className="flex items-center gap-2"
@@ -106,8 +104,8 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           />
 
         </div>
-        <div className="flex items-center gap-1">
-          <span className="shrink-0">
+        <div className="flex max-[770px]:items-start items-center gap-1">
+          <span className="shrink-0 mt-1">
             <Slash size={17} />
           </span>
           <h6 className="font-century-schoolbook text-primary-200 capitalize">
@@ -140,8 +138,6 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
-
-          {/* extra div added to ensure the lines stays with the author name and maintain consistency */}
           <div className="flex items-center sm:text-lg text-sm px-sm-generic gap-2 max-[400px]:flex-col max-[400px]:justify-start max-[400px]:items-start">
             <div className="flex items-center gap-2">
               <hr className="w-6 h-1 " />
