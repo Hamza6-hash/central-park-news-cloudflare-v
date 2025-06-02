@@ -119,9 +119,9 @@ const SuggestedBlogs: React.FC = () => {
 
   return (
     // <div className="bg-[#67B6DF24]  md:py-14 py-10 flex items-center justify-center">
-    <div className="bg-[#67B6DF24] py-10 flex items-center justify-center">
+    <div className="bg-[#67B6DF24] py-10 flex items-center justify-center px-3">
       <div className="max-width">
-        <h1 className="font-century-gothic font-bold text-[32px] mb-7 uppercase">
+        <h1 className="font-century-gothic px-3 sm:px-0 font-bold text-[32px] mb-4 uppercase">
           Articles
         </h1>
         {/* <div className="grid grid-cols-4 md:gap-4 gap-8 max-xl:grid-cols-2 max-md:grid-cols-1"> */}

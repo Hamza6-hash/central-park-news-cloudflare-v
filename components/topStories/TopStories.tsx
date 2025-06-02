@@ -161,7 +161,7 @@ const TopStories = () => {
 
   if (isLoading) {
     return (
-      <div className="px-sm-generic">
+      <div className="px-generic sm:px-sm-generic">
         <h2 className="font-bold text-2xl mb-4 font-century-gothic">
           TOP <span className="text-primary-500">STORIES</span>
         </h2>
@@ -188,7 +188,7 @@ const TopStories = () => {
     isContactPage && newsletters && newsletters.length > 1;
 
   return (
-    <div className="px-sm-generic">
+    <div className="">
       <h2 className="font-bold text-2xl mb-4 font-century-gothic">
         TOP <span className="text-primary-500">STORIES</span>
       </h2>

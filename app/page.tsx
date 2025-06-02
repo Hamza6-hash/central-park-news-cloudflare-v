@@ -231,9 +231,9 @@ export default function Home() {
   }
 
   return (
-    <section className="flex gap-9 max-xl:flex-col w-full px-0 max-w-[1200px] mx-auto text-[12px] sm:text-base">
+    <section className="flex gap-9 max-xl:flex-col w-full max-w-[1200px] mx-auto text-[12px] sm:text-base">
       <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
-        <div className="space-y-3 mb-4 px-4">
+        <div className="space-y-3 mb-4">
           <Link
             href={`/${article.type === 'newsletter' ? 'news' : 'article'}/${article.titleSlug
               }`}
@@ -248,7 +248,7 @@ export default function Home() {
               src={article.imageURL || DummyImage}
               alt="Description of image"
               fill
-              className="object-cover rounded-lg"
+              className="object-cover rounded-sm"
               sizes="(max-width: 320px) 100vw, (max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
@@ -265,36 +265,27 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="markdown-content px-3">
+        <div className="markdown-content  ">
           <ReactMarkdown>{article?.content}</ReactMarkdown>
         </div>
 
         {/* -------------- 600x600 ad bar -------------------- */}
-        <div className="mb-6 mt-10 p-3 md:p-0 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-          {/* Share Section */}
-          <div className="flex flex-col items-start md:items-start">
-            <p className="font-bold mb-2">Share This:</p>
-            {/* <div className="flex gap-4">
-              {socialMediaArray.map((item) => (
-                <React.Fragment key={item.link}>
-                  <SocialMediaTag icon={item.icon} link={item.link} />
-                </React.Fragment>
-              ))}
-            </div> */}
+        <div className="flex flex-col w-full mb-6 mt-10 sm:px-3 md:p-4 gap-4 items-end justify-end">
+          {/* Top Row: Share Title + Square Ad */}
+          <div className="flex w-full flex-col max-[360px]:items-start sm:flex-row sm:items-end justify-between gap-4">
+            <div className="flex flex-col">
+              <p className="font-bold mb-2">Share This:</p>
+            </div>
+            {/* Responsive Square Ad Box (maintains 1:1 aspect ratio) */}
+            <div className="w-full max-w-[300px] aspect-square bg-primary-100 flex items-center justify-center shrink-0 min-w-[150px]">
+              <span className="text-center px-2">Ad Space (300x300)</span>
+            </div>
           </div>
-
-          {/* 300x300 Ad */}
-          <div className="w-full max-w-[300px] aspect-square bg-primary-100 flex items-center justify-center">
-            <span>Ad Space (300x300)</span>
+          {/* Responsive Wide Ad Box (maintains ~1.91:1 aspect ratio like 600x314) */}
+          <div className="bg-primary-100 flex justify-center items-center w-full max-w-[600px] aspect-[600/314] ml-auto min-h-[120px]">
+            <span className="text-center px-2">Ad Space (600x314)</span>
           </div>
-
         </div>
-
-        {/* Responsive 600x314 Ad */}
-        <div className="w-full aspect-[1.91] bg-primary-100 flex justify-center items-center">
-          <span>Ad Space 600x314</span>
-        </div>
-
 
       </div>
 

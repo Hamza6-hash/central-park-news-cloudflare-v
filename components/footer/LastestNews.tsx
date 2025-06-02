@@ -301,7 +301,7 @@ const LastestNews = () => {
     if (!articles?.length) return null;
 
     return (
-        <section className="lastestNews py-[58px] px-generic">
+        <section className="lastestNews py-[58px] px-8">
             <div className="max-width w-full">
                 <h1 className="uppercase text-3xl font-bold text-white mb-4">
                     {getTitle()}

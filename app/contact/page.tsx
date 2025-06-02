@@ -11,11 +11,10 @@ export const metadata: Metadata = {
 
 const Contacts = () => {
   return (
-    <>
-      {/* <section className="min-h-screen"> */}
-        <ContactClient />
-      {/* </section> */}
-    </>
+    <main className="w-[90vw] ">
+      <ContactClient />
+
+    </main>
   );
 };
 
