@@ -117,7 +117,7 @@ const BlogsCard = ({
             </h1>
 
             <Link href={getLinkPath()}>
-              <p className="text-[#2B4864] font-century-gothic text-[14px] font-bold leading-[100%] capitalize transition-colors duration-300 hover:text-yellow-500">
+              <p className="text-[#2B4864] font-century-gothic text-[14px] font-bold leading-[100%] capitalize transition-colors duration-300 hover:text-white">
                 VIEW MORE
               </p>
             </Link>
@@ -125,7 +125,7 @@ const BlogsCard = ({
         ) : (
           <div className="flex justify-end">
             <Link href={getLinkPath()}>
-              <p className="text-[#2B4864] font-century-gothic text-[14px] font-bold leading-[100%] capitalize transition-colors duration-300 hover:text-yellow-500">
+              <p className="text-[#2B4864] font-century-gothic text-[14px] font-bold leading-[100%] capitalize transition-colors duration-300 hover:text-white">
                 VIEW MORE
               </p>
             </Link>
