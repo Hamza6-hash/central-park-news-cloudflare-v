@@ -99,7 +99,9 @@ const Searchbar = () => {
               <Search />
             </button>
           </div>
+          
         )}
+        {/* <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} /> */}
 
         {/* Modal */}
         {isModalOpen && (

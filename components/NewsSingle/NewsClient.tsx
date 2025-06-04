@@ -210,7 +210,7 @@ const NewsClient = ({ slug }: { slug: string }) => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <DynamicBlog
         title={news.title}
        imageURL={news.imageURL || DummyImage}

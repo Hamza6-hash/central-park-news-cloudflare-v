@@ -1,8 +1,8 @@
+
 "use client";
 
 import React from "react";
-import { navbarLinks, routes } from "@/constants";
-import { cn } from "@/lib/utils";
+import { routes } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -14,15 +14,16 @@ const Navbar = () => {
 
   return (
     <section className="navbar">
-      <div className="justify-between w-full  flex lg:hidden items-center">
+      {/* Mobile Navbar - untouched */}
+      <div className="flex justify-between items-center w-full lg:hidden">
         <Link href={routes.home}>
           <Image
             src={Logo}
-            quality={100}
-            style={{ objectFit: "cover" }}
-            height={60}
-            width={120}
             alt="Horizon logo"
+            quality={100}
+            width={120}
+            height={60}
+            style={{ objectFit: "cover" }}
             className="block lg:hidden"
           />
         </Link>
@@ -31,40 +32,17 @@ const Navbar = () => {
         </div>
       </div>
 
-      <nav className="justify-center lg:flex hidden items-center gap-28">
-        {navbarLinks.map((item, index) => {
-          const isActive =
-            pathName === item.route || pathName.startsWith(`${item.route}/`);
-
-          return (
-            <React.Fragment key={index}>
-              {item.imgURL !== "" ? (
-                <Link
-                  href={item.route}
-                  className="relative  lg:block hidden xl:px-10 px-0"
-                >
-                  <Image
-                    src={item.imgURL}
-                    alt={item.label}
-                    quality={100}
-                    height={60}
-                    width={120}
-                  />
-                </Link>
-              ) : (
-                <Link href={item.route} className="lg:block hidden">
-                  <p
-                    className={cn("navbar-label", {
-                      "!font-bold": isActive,
-                    })}
-                  >
-                    {item.label}
-                  </p>
-                </Link>
-              )}
-            </React.Fragment>
-          );
-        })}
+      {/* Desktop Navbar - show only logo */}
+      <nav className="hidden lg:flex justify-center items-center gap-28">
+        <Link href={routes.home} className="relative lg:block hidden xl:px-10 px-0">
+          <Image
+            src={Logo}
+            alt="Horizon logo"
+            quality={100}
+            width={120}
+            height={80}
+          />
+        </Link>
       </nav>
     </section>
   );

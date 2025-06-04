@@ -15,7 +15,6 @@ import ThankYouDialog from "@/components/dialogs/ThankYouDialog";
 const fieldClass = "!border-gray-100";
 
 const ContactClient = () => {
-
   const formSchema = contactFormSchema();
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -33,7 +32,6 @@ const ContactClient = () => {
       setOpenDialog(true);
     } catch (error) {
       console.error(error);
-    } finally {
     }
   };
 
@@ -49,22 +47,23 @@ const ContactClient = () => {
 
   return (
     <>
-      <section className="w-full">
-        <div className="w-full">
-          <h1 className="text-4xl font-bold  font-century-schoolbook">
-            Contact Us
-          </h1>
+      <section className="w-full ">
+        <div className="">
+          <div className="w-full mx-3 ">
+          <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
+          <h1 className="text-4xl font-bold font-century-schoolbook">Contact Us</h1>
+          </div>
 
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-6 mt-10 md:px-[10rem]"
+              className="flex flex-col gap-6 mt-10 w-[100vw] max-w-[1200px] px-4 md:px-8 lg:px-16 xl:px-24 mx-auto"
             >
               <CustomInput
                 control={form.control}
                 name="name"
                 label="Name"
-                fieldClassName={fieldClass}
+                fieldClassName={`${fieldClass} w-full`}
                 placeholder="Name Here..."
                 schema={formSchema}
               />
@@ -72,7 +71,7 @@ const ContactClient = () => {
                 control={form.control}
                 name="email"
                 label="Email"
-                fieldClassName={fieldClass}
+                fieldClassName={`${fieldClass} w-full`}
                 placeholder="Email Here..."
                 schema={formSchema}
               />
@@ -80,7 +79,7 @@ const ContactClient = () => {
                 control={form.control}
                 name="message"
                 label="Message"
-                fieldClassName={fieldClass}
+                fieldClassName={`${fieldClass} w-full`}
                 placeholder="Message Here..."
                 schema={formSchema}
               />
@@ -96,11 +95,8 @@ const ContactClient = () => {
           <ThankYouDialog openDialog={openDialog} setOpenDialog={setOpenDialog} />
         </div>
       </section>
-
-
-
     </>
   );
 };
 
-export default ContactClient
+export default ContactClient;

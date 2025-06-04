@@ -8,9 +8,10 @@ const FooterLinks = () => {
     const pathName = usePathname();
 
     return (
-        <div className="flex flex-col justify-center items-center gap-4 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        // <div className="flex flex-row border border-black justify-between items-center gap-4 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <div className="flex flex-row max-[718px]:flex-col justify-between items-center gap-4 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
             {/* <h4 className="font-bold text-primary-900 uppercase text-lg sm:text-xl">LINKS</h4> */}
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 w-full">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8">
                 {navbarLinks.map((item, index) => {
                     const isActive =
                         pathName === item.route || pathName.startsWith(`${item.route}/`);
@@ -27,6 +28,15 @@ const FooterLinks = () => {
                         </React.Fragment>
                     );
                 })}
+            </div>
+            <div className='flex gap-3 max-[398px]:flex-col max-[398px]:items-center font-normal font-montserrat text-[14px] text-[#1E3D5A]'>
+                <Link href={'/privacy'} >
+                    <p className='cursor-pointer'>PRIVACY POLICY</p>
+                </Link>
+                <Link href={'/terms-and-conditions'} >
+                    <p>TERMS AND CONDITIONS</p>
+                </Link>
+
             </div>
         </div>
     )

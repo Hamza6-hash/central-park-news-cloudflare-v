@@ -8,16 +8,24 @@ import FooterLinks from "./FooterLinks";
 import SuggestedBlogs from "../suggestedBlogs/SuggestedBlogs";
 import { usePathname } from "next/navigation";
 import { routes } from "@/constants";
+import path from "path";
 
 const Footer = () => {
     const pathName = usePathname();
     const showSuggestedBlogs =
-        pathName === routes.articles || pathName === routes.contact || pathName === routes.home || pathName === routes.news || pathName.startsWith('/news');
+        pathName === routes.articles || pathName === routes.contact
+        || pathName === routes.home || pathName === routes.news || pathName.startsWith('/news') || pathName.startsWith('/privacy')
+        || pathName.startsWith('/terms-and-conditions') || pathName.startsWith('/about-us') || pathName.startsWith('/careers') ||
+        pathName.startsWith('/advertise-with-us') || pathName.startsWith('/sitemap');
+
+    const hideNews = pathName.startsWith('/terms-and-conditions') || pathName.startsWith('/privacy')
 
     return (
         <footer className="w-full">
             {!showSuggestedBlogs && <SuggestedBlogs />}
-            <LastestNews />
+            {!hideNews && <LastestNews />}
+            {/* <PopularLinks /> */}
+            {/* <LastestNews /> */}
             {/* <PopularLinks /> */}
 
             <section className="w-full flex flex-col justify-center items-center gap-10 bg-gray-100 p-4 py-6">

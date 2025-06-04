@@ -227,6 +227,7 @@ export default function NewsArticleCollection() {
 
     return (
         <section className="w-full">
+                <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
             <div className="flex gap-2 items-center max-w-7xl mx-auto w-full ">
                 <h1 className="heading md:text-left ">{pageTitle}</h1>
                 <button onClick={(e) => setIsSearchOpen(true)
