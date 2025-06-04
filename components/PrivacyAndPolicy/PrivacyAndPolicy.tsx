@@ -79,43 +79,55 @@ const SideTabbedPolicy = () => {
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     return (
-        <main className="w-full h-full bg-white text-black">
+        <main className="w-full min-h-screen bg-white text-black">
+            <div className="max-w-[1200px] mx-auto px-4 py-6">
+                <hr className="w-64 h-0.5 mb-2 bg-gray-200" />
+                <h1 className="text-3xl font-century-schoolbook font-bold text-[#2B4864] mb-2">
+                    Privacy Policy
+                </h1>
+                <p className="text-sm text-gray-500 mb-6">Effective Date: June 4, 2025</p>
 
-            <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
-            <h1 className="text-3xl font-bold text-primary-300 font-century-schoolbook mb-2">
-                Privacy Policy
-            </h1>
-            <p className="text-sm text-gray-500 mb-6">Effective Date: June 4, 2025</p>
-            <div className="max-w-[1200px] px-5 mx-auto ">
                 {/* Desktop Tabs */}
-                <div className="hidden md:flex flex-row gap-6">
+                <div className="hidden md:flex flex-row gap-6 min-h-[500px]">
                     {/* Sidebar Options */}
-                    <aside className="md:w-1/3 border-r border-gray-300 pr-4">
-                        {policySections.map((section, index) => (
-                            <button
-                                key={index}
-                                onClick={() => setSelectedIndex(index)}
-                                className={`w-full text-left py-2 px-3 rounded-md mb-2 text-sm font-medium ${index === selectedIndex ? "bg-primary-100 text-primary-600" : "hover:bg-gray-100"
-                                    }`}
-                            >
-                                {section.title}
-                            </button>
-                        ))}
+                    <aside className="md:w-1/3 border-r border-[#2B4864] pr-4">
+                        <div className="sticky top-6">
+                            {policySections.map((section, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setSelectedIndex(index)}
+                                    className={`w-full text-left py-3 px-4 rounded-md mb-2 text-sm font-medium transition-colors ${index === selectedIndex
+                                            ? "bg-blue-100 text-black border-l-4 border-gray-200"
+                                            : "hover:bg-gray-100 text-[#2B4864]"
+                                        }`}
+                                >
+                                    {section.title}
+                                </button>
+                            ))}
+                        </div>
                     </aside>
 
-                    {/* Paragraph Content */}
-                    <article className="md:w-2/3 whitespace-pre-line text-sm leading-relaxed text-black">
-                        <h2 className="text-xl font-semibold mb-2">{policySections[selectedIndex].title}</h2>
-                        <div>{policySections[selectedIndex].content}</div>
+                    {/* Content */}
+                    <article className="md:w-2/3 text-sm leading-relaxed text-black">
+                        <h2 className="text-xl font-semibold mb-4 text-[#2B4864]">
+                            {policySections[selectedIndex].title}
+                        </h2>
+                        <div className="prose prose-sm max-w-none">
+                            {policySections[selectedIndex].content}
+                        </div>
                     </article>
                 </div>
 
                 {/* Mobile Full List */}
                 <div className="md:hidden flex flex-col gap-6">
                     {policySections.map((section, index) => (
-                        <section key={index} className="border-b border-gray-300 pb-4">
-                            <h2 className="text-xl font-semibold mb-2">{section.title}</h2>
-                            <div className="text-sm leading-relaxed">{section.content}</div>
+                        <section key={index} className="border-b border-gray-200 pb-6 last:border-b-0">
+                            <h2 className="text-lg font-semibold mb-3 text-[#2B4864">
+                                {section.title}
+                            </h2>
+                            <div className="text-sm leading-relaxed text-black prose prose-sm max-w-none">
+                                {section.content}
+                            </div>
                         </section>
                     ))}
                 </div>

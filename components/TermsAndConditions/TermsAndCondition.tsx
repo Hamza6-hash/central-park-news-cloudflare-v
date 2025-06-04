@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const termsSections = [
     {
@@ -77,73 +77,63 @@ const termsSections = [
     },
 ];
 
-function useIsMobile(breakpoint = 768) {
-    const [isMobile, setIsMobile] = React.useState(false);
-
-    React.useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < breakpoint);
-        };
-
-        checkMobile();
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
-    }, [breakpoint]);
-
-    return isMobile;
-}
-
 const TermsConditions = () => {
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const isMobile = useIsMobile();
 
     return (
-        <main className="w-full  bg-white text-black px-3">
-            <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
-            <h1 className="text-3xl font-bold text-primary-300 font-century-schoolbook mb-2">
-                Terms & Conditions
-            </h1>
-            <p className="text-sm text-gray-500 mb-6">Effective Date: June 4, 2025</p>
+        <main className="w-full min-h-screen bg-white text-black">
+            <div className="max-w-[1200px] mx-auto px-4 py-6">
+                <hr className="w-64 h-0.5 mb-2 bg-gray-200" />
+                <h1 className="text-3xl font-century-schoolbook font-normal text-[#2B4864] mb-2">
+                    Terms & Conditions
+                </h1>
+                <p className="text-sm text-gray-400 mb-6">Effective Date: June 4, 2025</p>
 
-            <div className="max-w-[1200px] mx-auto flex  flex-col md:flex-row gap-6">
-                {/* Sidebar tabs for desktop */}
-                {!isMobile && (
+                {/* Desktop Tabs */}
+                <div className="hidden md:flex flex-row gap-6 min-h-[500px]">
+                    {/* Sidebar Options */}
                     <aside className="md:w-1/3 border-r border-gray-300 pr-4">
-                        {termsSections.map((section, index) => (
-                            <button
-                                key={index}
-                                onClick={() => setSelectedIndex(index)}
-                                className={`w-full text-left py-2 px-3 rounded-md mb-2 text-sm font-medium ${index === selectedIndex
-                                        ? "bg-primary-100 text-primary-600"
-                                        : "hover:bg-gray-100"
+                        <div className="sticky top-6">
+                            {termsSections.map((section, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setSelectedIndex(index)}
+                                    className={`w-full text-left py-3 px-4 rounded-md mb-2 text-sm font-medium transition-colors ${
+                                        index === selectedIndex 
+                                            ? "bg-blue-100 text-black border-l-4 border-blue-600" 
+                                            : "hover:bg-gray-100 text-[#2B4864]"
                                     }`}
-                            >
-                                {section.title}
-                            </button>
-                        ))}
+                                >
+                                    {section.title}
+                                </button>
+                            ))}
+                        </div>
                     </aside>
-                )}
 
-                {/* Content */}
-                <article className="md:w-2/3 w-full whitespace-pre-line text-sm leading-relaxed text-black">
-                    {isMobile ? (
-                        // On mobile show all sections vertically
-                        termsSections.map((section, index) => (
-                            <section key={index} className="mb-8">
-                                <h2 className="text-xl font-semibold mb-2">{section.title}</h2>
-                                <div>{section.content}</div>
-                            </section>
-                        ))
-                    ) : (
-                        // On desktop show only selected section
-                        <>
-                            <h2 className="text-xl font-semibold mb-2">
-                                {termsSections[selectedIndex].title}
+                    {/* Content */}
+                    <article className="md:w-2/3 text-sm leading-relaxed text-black">
+                        <h2 className="text-xl font-semibold mb-4 text-[#2B4864]">
+                            {termsSections[selectedIndex].title}
+                        </h2>
+                        <div className="prose prose-sm max-w-none text-black">
+                            {termsSections[selectedIndex].content}
+                        </div>
+                    </article>
+                </div>
+
+                {/* Mobile Full List */}
+                <div className="md:hidden flex flex-col gap-6">
+                    {termsSections.map((section, index) => (
+                        <section key={index} className="border-b border-gray-200 pb-6 last:border-b-0">
+                            <h2 className="text-lg font-semibold mb-3 text-[#2B4864]">
+                                {section.title}
                             </h2>
-                            <div>{termsSections[selectedIndex].content}</div>
-                        </>
-                    )}
-                </article>
+                            <div className="text-sm leading-relaxed text-black prose prose-sm max-w-none">
+                                {section.content}
+                            </div>
+                        </section>
+                    ))}
+                </div>
             </div>
         </main>
     );
