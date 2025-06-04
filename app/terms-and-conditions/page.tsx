@@ -14,9 +14,10 @@ export const metadata: Metadata = {
 
 const Terms = () => {
   return (
-    <div className='h-[90vh]'>
-      <TermsAndCondition />
+    <div className="h-screen">
+        <TermsAndCondition />
     </div>
+
   )
 }
 

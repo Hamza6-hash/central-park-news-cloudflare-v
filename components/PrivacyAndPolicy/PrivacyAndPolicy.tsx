@@ -79,7 +79,7 @@ const SideTabbedPolicy = () => {
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     return (
-        <main className="w-full bg-white text-black">
+        <main className="w-full h-full bg-white text-black">
 
             <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
             <h1 className="text-3xl font-bold text-primary-300 font-century-schoolbook mb-2">
