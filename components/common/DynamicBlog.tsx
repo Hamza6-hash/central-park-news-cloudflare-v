@@ -87,17 +87,14 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
 
   return (
     <section>
-      <div className="flex flex-col md:flex-row max-md:justify-center  gap-2">
-        <div className="flex gap-2 items-center ">
+      <div className="flex flex-col md:flex-row max-md:justify-center gap-2 ">
+        <div className="flex gap-2 items-start  ">
           <Link
             href={mainHeading === "News" ? "/news" : `/articles`}
             className="flex items-center gap-2"
           >
-            <h1 className="heading">{mainHeading}</h1>
+            <h1 className="heading ">{mainHeading}</h1>
           </Link>
-          <button onClick={(e) => setIsSearchOpen(true)
-          }><Search /></button>
-
           <Searchbar
             isOpen={isSearchOpen}
             onClose={() => setIsSearchOpen(false)}
@@ -108,10 +105,24 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           <span className="shrink-0 mt-1">
             <Slash size={17} />
           </span>
-          <h6 className="font-century-schoolbook text-primary-200 capitalize">
-            {title}
-          </h6>
+          <div>
+            <h6 className="font-century-schoolbook   text-primary-200 capitalize ">
+              {/* Use inline elements, no flex here */}
+              <span >
+                {title}
+                <button
+                  onClick={() => setIsSearchOpen(true)}
+                  className="inline ml-2 align-text-bottom"
+                  aria-label="Search"
+                >
+                  <Search size={19}/>
+                </button>
+              </span>
+            </h6>
+          </div>
         </div>
+
+
 
       </div>
 
