@@ -188,7 +188,7 @@ const TopStories = () => {
     isContactPage && newsletters && newsletters.length > 1;
 
   return (
-    <div className="">
+    <div className="md:mt-4">
       <h2 className="font-bold text-2xl mb-4 font-century-gothic">
         TOP <span className="text-primary-500">STORIES</span>
       </h2>

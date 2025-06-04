@@ -86,8 +86,8 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
-    <section>
-      <div className="flex flex-col md:flex-row max-md:justify-center gap-2 ">
+    <section className="pt-0">
+      {/* <div className="flex flex-col md:flex-row max-md:justify-center gap-2 ">
         <div className="flex gap-2 items-start  ">
           <Link
             href={mainHeading === "News" ? "/news" : `/articles`}
@@ -107,7 +107,6 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           </span>
           <div>
             <h6 className="font-century-schoolbook   text-primary-200 capitalize ">
-              {/* Use inline elements, no flex here */}
               <span >
                 {title}
                 <button
@@ -124,9 +123,9 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
 
 
 
-      </div>
+      </div> */}
 
-      <div className="mt-14">
+      <div className="mt-1">
         <div className="space-y-3 mb-4">
           <div className="sm:x-sm-generic ">
             {isArticlePage ? (

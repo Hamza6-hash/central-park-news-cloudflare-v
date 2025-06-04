@@ -4,6 +4,8 @@ import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
 import QueryProviders from '@/ReatQuery/provider';
 import { Montserrat, Gothic_A1 } from 'next/font/google';
+import { usePathname } from "next/navigation";
+import { routes } from "@/constants";
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -29,16 +31,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
-    <html lang="en" className={`${montserrat.variable}` }>
+    <html lang="en" className={`${montserrat.variable}`}>
       <body>
         <QueryProviders>
           <Header />
           <main className="flex items-center justify-center px-generic pageTopBottonMargin overflow-hidden">
             <div className="max-width">
-              <div className="">
-                <hr className="w-64 h-0.5 mb-2 bg-gray-200" />
-              </div>
+              {/* <div>
+                <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
+              </div> */}
               {children}
             </div>
           </main>
