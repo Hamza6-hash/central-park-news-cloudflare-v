@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 const Privacy = () => {
   return (
-    <div className='h-screen'>
-     <PrivacyAndPolicy/>
+    <div>
+      <PrivacyAndPolicy />
     </div>
   )
 }
