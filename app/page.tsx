@@ -236,7 +236,7 @@ export default function Home() {
         <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
         <div className="space-y-3 mb-4">
           <Link
-            href={`/${article.type === 'newsletter' ? 'news' : 'article'}/${article.titleSlug
+            href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug
               }`}
           >
             <h1 className="font-century-schoolbook sm:text-[12px] text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-2">
