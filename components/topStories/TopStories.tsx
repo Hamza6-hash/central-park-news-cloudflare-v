@@ -58,7 +58,7 @@ const TopStories = () => {
           const snapshot = await getDocs(ref);
 
           if (snapshot.empty) {
-            console.log(`No ${type}s found`);
+            // console.log(`No ${type}s found`);
             return [];
           }
 

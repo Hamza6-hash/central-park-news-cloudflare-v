@@ -47,7 +47,6 @@ const NewsClient = ({ slug }: { slug: string }) => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  // console.log(slug, "slug");
 
    const fetchNews = useCallback(async () => {
     try {
@@ -134,6 +133,7 @@ const NewsClient = ({ slug }: { slug: string }) => {
   useEffect(() => {
     fetchNews();
   }, [slug, fetchNews]);
+  console.log(news)
 
   if (loading) {
     return (

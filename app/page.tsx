@@ -69,7 +69,6 @@ const socialMediaArray = [
 
 export default function Home() {
   const [article, setArticle] = useState<Article | null>(null);
-  console.log(article)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const params = useParams();

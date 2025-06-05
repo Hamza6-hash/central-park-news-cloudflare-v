@@ -106,11 +106,11 @@ const Searchbar = () => {
         {/* Modal */}
         {isModalOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50"
+            className="fixed mx-4 sm:mx-0 inset-0 flex justify-center items-center z-50 animate-fadeIn"
             onClick={() => setIsModalOpen(false)} // Close on clicking backdrop
           >
             <div
-              className="bg-white rounded-lg p-6 w-[600px] max-w-full"
+              className="bg-white rounded-lg p-6 w-[600px] shadow-2xl max-w-full animate-slideUp"
               onClick={(e) => e.stopPropagation()} // Prevent modal close on clicking inside
             >
               <div className="flex justify-between items-center mb-4">
@@ -192,6 +192,38 @@ const Searchbar = () => {
           </div>
         )}
       </div>
+      
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+          }
+        }
+        
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out forwards;
+        }
+        
+        .animate-slideUp {
+          animation: slideUp 0.3s ease-out forwards;
+        }
+      `}</style>
     </section>
   );
 };

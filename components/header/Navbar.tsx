@@ -28,7 +28,7 @@ const Navbar = () => {
           />
         </Link>
         <div className="ml-auto">
-          <MobileNav />
+          {/* <MobileNav /> */}
         </div>
       </div>
 

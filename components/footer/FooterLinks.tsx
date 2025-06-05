@@ -1,11 +1,15 @@
+'use client'
+
 import React from 'react'
 import Link from "next/link";
 import { navbarLinks } from "@/constants";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import path from 'path';
 
 const FooterLinks = () => {
     const pathName = usePathname();
+    const isActive = pathName === '/privacy' || pathName === '/terms-and-conditions';
 
     return (
         // <div className="flex flex-row border border-black justify-between items-center gap-4 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
@@ -19,7 +23,7 @@ const FooterLinks = () => {
                     return (
                         <React.Fragment key={index}>
                             {!item.imgURL && <Link href={item.route} key={item.label}>
-                                <p className={cn("footer-label h-[20px] flex items-center text-sm sm:text-base", {
+                                <p className={cn("footer-label h-[20px] flex items-center text-[14px]  font-montserrat", {
                                     "font-bold": isActive,
                                 })} >
                                     {item.label}
@@ -31,10 +35,13 @@ const FooterLinks = () => {
             </div>
             <div className='flex gap-3 max-[398px]:flex-col max-[398px]:items-center font-normal font-montserrat text-[14px] text-[#1E3D5A]'>
                 <Link href={'/privacy'} >
-                    <p className='cursor-pointer'>PRIVACY POLICY</p>
+                    <p
+                        className={`cursor-pointer hover:font-bold hover:text-primary-900 ${pathName === '/privacy' ? 'font-bold' : ''
+                            }`}>PRIVACY POLICY</p>
                 </Link>
                 <Link href={'/terms-and-conditions'} >
-                    <p>TERMS AND CONDITIONS</p>
+                    <p  className={`cursor-pointer hover:font-bold hover:text-primary-900 ${pathName === '/terms-and-conditions' ? 'font-bold' : ''
+                            }`}>TERMS AND CONDITIONS</p>
                 </Link>
 
             </div>

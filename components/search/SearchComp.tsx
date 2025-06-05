@@ -99,15 +99,16 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null; // Don't render if modal closed
 
   return (
-    <section className="pt-[10px] w-full flex justify-center items-center">
+    <section className="pt-[10px] px-generic w-full flex justify-center items-center">
       <div className="">
+        {/* Modal */}
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50"
-          onClick={onClose} // Close on backdrop click
+          className="fixed mx-4 sm:mx-0 inset-0 flex justify-center items-center z-50 animate-fadeIn"
+          onClick={onClose} // Close on clicking backdrop
         >
           <div
-            className="bg-white rounded-lg p-6 w-[600px] max-w-full"
-            onClick={(e) => e.stopPropagation()} // Prevent modal close on inner click
+            className="bg-white rounded-lg p-6 w-[600px] shadow-2xl max-w-full animate-slideUp"
+            onClick={(e) => e.stopPropagation()} // Prevent modal close on clicking inside
           >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">Search Articles</h2>
@@ -184,6 +185,38 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+          }
+        }
+
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease forwards;
+        }
+
+        .animate-slideUp {
+          animation: slideUp 0.3s ease forwards;
+        }
+      `}</style>
     </section>
   );
 };
