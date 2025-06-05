@@ -84,6 +84,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
 }) => {
   const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  console.log(formatedPublishDate)
 
   return (
     <section className="pt-0">
@@ -144,6 +145,9 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               src={imageURL || DummyImage}
               alt={title}
               fill
+              quality={100}
+              priority
+              // unoptimized={false}
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />

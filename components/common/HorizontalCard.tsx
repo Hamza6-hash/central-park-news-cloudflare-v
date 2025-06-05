@@ -28,8 +28,6 @@ const HorizontalCard = ({
 }: HorizontalCard) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
 
-    console.log(type)
-
     const getLinkPath = () => {
         if (type === "news") {
             return `${routes.news}/${titleSlug}`;
