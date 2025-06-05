@@ -84,7 +84,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
 }) => {
   const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  console.log(formatedPublishDate)
+  // console.log(formatedPublishDate)
 
   return (
     <section className="pt-0">
