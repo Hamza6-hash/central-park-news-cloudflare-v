@@ -133,7 +133,7 @@ const NewsClient = ({ slug }: { slug: string }) => {
   useEffect(() => {
     fetchNews();
   }, [slug, fetchNews]);
-  console.log(news)
+  // console.log(news)
 
   if (loading) {
     return (
