@@ -1,16 +1,12 @@
 "use client";
 import DynamicBlog from "@/components/common/DynamicBlog";
-import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import user from '/assets/user.png'
-
-// import DummyImage from "@/assets/Blockchain-Default.jpg";
-import ReactMarkdown from 'react-markdown';
 import { StaticImageData } from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNewsBySlug } from "@/lib/query";
 
-interface News {
+export interface News {
   id: string;
   title: string;
   content: string;
@@ -30,13 +26,15 @@ interface News {
   position: string,
 }
 
-const NewsClient = ({ slug }: { slug: string }) => {
+const NewsClient = ({ slug, data }: { slug: string, data: News }) => {
 
   const { data: news, isLoading } = useQuery({
     queryKey: ['fetchSingleNews', slug],
     queryFn: () => fetchNewsBySlug(slug),
     retry: 2,
     staleTime: 1000 * 60 * 7,
+    initialData: data,
+    enabled: !!slug,
   })
 
   if (isLoading) {

@@ -36,3 +36,4 @@ export const navbarLinks = [
   },
 ];
 
+export const defultImage = "/Blockchain-Default.jpg";

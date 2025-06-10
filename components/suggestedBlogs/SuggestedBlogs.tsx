@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react";
 import BlogsCard from "../common/BlogsCard";
 
 import { db } from "@/lib/firebaseConfig";
-// import DummyImg from "@/assets/Rectangle-4.png";
-// import DummyImg from "@/assets/Blockchain-Default.jpg";
 
 import {
   collection,
@@ -15,12 +13,11 @@ import {
   query,
   where,
   orderBy,
-  DocumentData,
   limit,
-  startAfter,
 } from "firebase/firestore";
 import { Skeleton } from "@/components/ui/skeleton";
 import SuggestedBlogCard from "../common/SuggestedBlog";
+import { defultImage } from "@/constants";
 
 // Define the type for a blog
 interface Blog {
@@ -93,7 +90,7 @@ const SuggestedBlogs: React.FC = () => {
             id: docSnapshot.id,
             title: data.title || "Untitled",
             content: data.content || "No content available.",
-            imageURL: data.imageURL || "/Blockchain-Default.jpg",
+            imageURL: data.imageURL || defultImage,
             authorName: authorName,
             publishDate: data.publishDate || {
               seconds: new Date().getTime() / 1000,

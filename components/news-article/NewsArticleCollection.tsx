@@ -1,22 +1,20 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { db } from "@/lib/firebaseConfig";
-import { collection, getDocs, doc, getDoc, query, where, orderBy, DocumentData, limit, startAfter } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where, orderBy, limit, startAfter } from "firebase/firestore";
 import { Skeleton } from "@/components/ui/skeleton";
 import BlogsCard from "../common/BlogsCard";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-// import DummyImg from "@/assets/Rectangle-4.png";
-// import DummyImg from "@/assets/Blockchain-Default.jpg";
 import { StaticImageData } from "next/image";
-import Link from "next/link";
 import { Search } from "lucide-react";
 import Searchbar from "../search/SearchComp";
+import { defultImage } from "@/constants";
 
 interface Article {
     id: string;
-    title: string;
+    title: string;  
     content: string;
     imageURL?: string | StaticImageData;
     authorId: string;
@@ -47,7 +45,6 @@ const ITEMS_PER_PAGE = 9;
 
 export default function NewsArticleCollection() {
     const pathname = usePathname();
-    const router = useRouter();
     const isArticlePage = pathname.includes("/articles");
     const [activeTab, setActiveTab] = useState<"news" | "article">(isArticlePage ? "article" : "news");
     const [items, setItems] = useState<Article[]>([]);
@@ -164,7 +161,7 @@ export default function NewsArticleCollection() {
                             id: docSnapshot.id,
                             title: data.title || "",
                             content: data.content || "",
-                            imageURL: data.imageURL || "/Blockchain-Default.jpg",
+                            imageURL: data.imageURL || defultImage,
                             authorId: data.authorId || "",
                             authorName: authorName,
                             titleSlug: data.titleSlug || "",
