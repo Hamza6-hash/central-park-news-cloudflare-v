@@ -57,45 +57,7 @@ export default function NewsArticleCollection() {
     const [totalPages, setTotalPages] = useState(1);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-
     const pageTitle = activeTab === "news" ? "News" : "Articles";
-
-    const fetchedCombienItems = async () => {
-        try {
-            setLoading(true)
-            setError(null);
-
-            if (!db) {
-                throw new Error("Database connection is not available");
-            }
-
-            const articlePath = "blog/blockchainBriefing/articles";
-            const newsPath = "blog/blockchainBriefing/newsletter";
-
-            const articleRef = collection(db, articlePath);
-            const newsRef = collection(db, newsPath);
-
-            // Build base queries for both
-            const articleQuery = query(
-                articleRef,
-                where("status", "==", "published"),
-                orderBy("createdAt", "desc")
-            );
-            const newsQuery = query(
-                newsRef,
-                where("status", "==", "published"),
-                orderBy("createdAt", "desc")
-            );
-
-            const [articleSnap, newsSnap] = await Promise.all([
-                getDocs(articleQuery),
-                getDocs(newsQuery)
-            ]);
-
-        } catch (error) {
-
-        }
-    }
 
     useEffect(() => {
         const fetchItems = async () => {
@@ -119,16 +81,13 @@ export default function NewsArticleCollection() {
                     orderBy("createdAt", "desc")
                 );
 
-                // Get total count
                 const totalSnapshot = await getDocs(baseQuery);
                 const totalItems = totalSnapshot.docs.length;
                 setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE));
 
-                // Calculate start position
                 const startAt = (currentPage - 1) * ITEMS_PER_PAGE;
                 const startDoc = startAt > 0 ? totalSnapshot.docs[startAt - 1] : null;
 
-                // Final query with pagination
                 const q = startDoc
                     ? query(baseQuery, startAfter(startDoc), limit(ITEMS_PER_PAGE))
                     : query(baseQuery, limit(ITEMS_PER_PAGE));
@@ -141,7 +100,6 @@ export default function NewsArticleCollection() {
                     return;
                 }
 
-                // Process each article - keeping your exact processing logic
                 const itemsData = await Promise.all(
                     snapshot.docs.map(async (docSnapshot) => {
                         const data = docSnapshot.data();
@@ -199,7 +157,7 @@ export default function NewsArticleCollection() {
             setCurrentPage(1);
             setItems([]);
         }
-    }, [pathname]);
+    }, [activeTab, pathname]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);

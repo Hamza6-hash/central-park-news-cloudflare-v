@@ -13,13 +13,6 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
-// const ghotic = Gothic_A1({
-//   subsets: ['latin'],
-//   variable: '--font-century-gothic',
-//   weight: ['100', '200', '300', '400', '500', '600', '700'],
-//   display: 'swap',
-// });
-
 export const metadata: Metadata = {
   title: "Crypto & Blockchain Briefing | Real-Time News & Insights",
   description: "Stay ahead tiwht  with Blockchain Briefing — your source for real-time crypto news, blockchain trends, and market insights. Curated updates from trusted sources.",

@@ -19,10 +19,12 @@ interface Article {
   imageURL?: string;
   authorId: string;
   authorName?: string;
-  publishDate: {
-    seconds: number;
-    nanoseconds: number;
-  };
+  publishDate:
+    | string
+    | {
+        seconds: number;
+        nanoseconds: number;
+      };
   date?: string;
   titleSlug?: string;
   status?: string;
@@ -31,6 +33,7 @@ interface Article {
   createdAt: string;
   position: string;
   authorImage: string | StaticImageData;
+  type?: "article" | "news";
 }
 interface News {
   id: string;
@@ -68,7 +71,9 @@ interface Newsletter {
   type?: string;
 }
 
-export const fetchArticleBySlug = async (slug: string): Promise<Article | null> => {
+export const fetchArticleBySlug = async (
+  slug: string
+): Promise<Article | null> => {
   try {
     const articlesRef = collection(db, "blog/blockchainBriefing/articles");
     const q = query(articlesRef, where("titleSlug", "==", slug));
@@ -362,3 +367,89 @@ export const FetchTopStories = async (): Promise<Newsletter[]> => {
 
   return latestItems.slice(0, 7);
 };
+
+export const FetchLatestNews = async (
+  pathname: string
+): Promise<Article[] | undefined> => {
+  try {
+    if (!db) throw new Error("Database connection is not available");
+
+    const collectionPath = pathname.includes("/news")
+      ? "blog/blockchainBriefing/articles"
+      : pathname.includes("/articles")
+      ? "blog/blockchainBriefing/newsletter"
+      : "blog/blockchainBriefing/articles";
+
+    const articlesRef = collection(db, collectionPath);
+    const articlesQuery = query(
+      articlesRef,
+      where("status", "==", "published")
+    );
+    const articlesSnapshot = await getDocs(articlesQuery);
+
+    if (articlesSnapshot.empty) return [];
+
+    const articlesData = await Promise.all(
+      articlesSnapshot.docs.map(async (articleDoc) => {
+        const articleData = articleDoc.data() as Article;
+
+        let authorName = "Unknown Author";
+        if (articleData.authorId) {
+          try {
+            const authorDocRef = doc(
+              db,
+              "blog/blockchainBriefing/authors",
+              articleData.authorId
+            );
+            const authorDoc = await getDoc(authorDocRef);
+            if (authorDoc.exists()) {
+              const authorData = authorDoc.data() as DocumentData;
+              authorName = authorData.author_name || "Unknown Author";
+            }
+          } catch (error) {
+            console.error("Error fetching author:", error);
+          }
+        }
+
+        let formattedDate = "Unknown Date";
+        if (articleData.createdAt) {
+          try {
+            const date = new Date(articleData.createdAt);
+            formattedDate = date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            });
+          } catch (error) {
+            console.error("Error formatting date:", error);
+          }
+        }
+
+        return {
+          ...articleData,
+          id: articleDoc.id,
+          authorName,
+          formattedDate,
+          createdAt: articleData?.createdAt || formattedDate,
+          publishDate: formattedDate,
+          titleSlug: articleData.titleSlug,
+          type: collectionPath.includes("newsletter")
+            ? ("news" as const)
+            : ("article" as const),
+        };
+      })
+    );
+
+    articlesData.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    return articlesData;
+  } catch (error) {
+    console.error("Error fetching articles:", error);
+    return [];
+  }
+};
+
+

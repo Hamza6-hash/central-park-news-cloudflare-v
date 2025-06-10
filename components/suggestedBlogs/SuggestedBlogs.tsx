@@ -5,7 +5,7 @@ import BlogsCard from "../common/BlogsCard";
 
 import { db } from "@/lib/firebaseConfig";
 // import DummyImg from "@/assets/Rectangle-4.png";
-// import DummyImg from "@/assets/Blockchain-Default.jpg";
+import DummyImg from "@/assets/Blockchain-Default.jpg";
 
 import {
   collection,
@@ -57,7 +57,7 @@ const SuggestedBlogs: React.FC = () => {
       const q = query(articlesRef,
         where("status", "==", "published"),
         orderBy("publishDate", "desc"),
-        limit(6));
+        limit(4));
 
       const snapshot = await getDocs(q);
 
