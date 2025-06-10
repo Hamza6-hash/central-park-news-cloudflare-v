@@ -84,47 +84,9 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
 }) => {
   const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  // console.log(formatedPublishDate)
 
   return (
     <section className="pt-0">
-      {/* <div className="flex flex-col md:flex-row max-md:justify-center gap-2 ">
-        <div className="flex gap-2 items-start  ">
-          <Link
-            href={mainHeading === "News" ? "/news" : `/articles`}
-            className="flex items-center gap-2"
-          >
-            <h1 className="heading ">{mainHeading}</h1>
-          </Link>
-          <Searchbar
-            isOpen={isSearchOpen}
-            onClose={() => setIsSearchOpen(false)}
-          />
-
-        </div>
-        <div className="flex max-[770px]:items-start items-center gap-1">
-          <span className="shrink-0 mt-1">
-            <Slash size={17} />
-          </span>
-          <div>
-            <h6 className="font-century-schoolbook   text-primary-200 capitalize ">
-              <span >
-                {title}
-                <button
-                  onClick={() => setIsSearchOpen(true)}
-                  className="inline ml-2 align-text-bottom"
-                  aria-label="Search"
-                >
-                  <Search size={19}/>
-                </button>
-              </span>
-            </h6>
-          </div>
-        </div>
-
-
-
-      </div> */}
 
       <div className="mt-1">
         <div className="space-y-3 mb-4">
@@ -140,18 +102,20 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
             )}
           </div>
 
-          <div className="relative w-full h-[514px]">
+          <div className="relative w-full max-w-[1200px] h-[514px]">
             <Image
               src={imageURL || DummyImage}
               alt={title}
-              fill
+              width={1200}
+              height={514}
               quality={100}
+              loading="eager"
               priority
-              // unoptimized={false}
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover w-full h-full"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
             />
           </div>
+
           <div className="flex items-center sm:text-lg text-sm px-sm-generic gap-2 max-[400px]:flex-col max-[400px]:justify-start max-[400px]:items-start">
             <div className="flex items-center gap-2">
               <hr className="w-6 h-1 " />

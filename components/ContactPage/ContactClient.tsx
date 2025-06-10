@@ -85,7 +85,7 @@ const ContactClient = () => {
               />
 
               <div className="flex justify-end">
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" className="hover:bg-white hover:text-black">
                   SUBMIT
                 </Button>
               </div>

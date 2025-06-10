@@ -1,118 +1,22 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
-import { db } from "@/lib/firebaseConfig";
-import { collection, doc, getDoc, getDocs, updateDoc, query, where } from "firebase/firestore";
-import { generateSlug } from "@/lib/utils";
 import DynamicBlog from "@/components/common/DynamicBlog";
-import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import { StaticImageData } from "next/image";
 import user from '/assets/user.png'
 import DummyImage from "@/assets/Blockchain-Default.jpg";
+import { useQuery } from "@tanstack/react-query";
+import { fetchArticleBySlug } from "@/lib/query";
 
-
-interface Article {
-  id: string;
-  title: string;
-  content: string;
-  imageURL?: string;
-  authorId: string;
-  authorName?: string;
-  publishDate: {
-    seconds: number;
-    nanoseconds: number;
-  };
-  date?: string;
-  titleSlug?: string;
-  status?: string;
-  Position?: string;
-  authorImg: string | StaticImageData;
-  createdAt: string,
-  position: string,
-  authorImage: string | StaticImageData;
-}
 
 const ArticleClient = ({ slug }: { slug: string }) => {
-  const [article, setArticle] = useState<Article | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
-  const fetchArticle = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      if (!db) {
-        throw new Error("Database connection is not available");
-      }
-
-      const articlesRef = collection(db, "blog/blockchainBriefing/articles");
-      const q = query(articlesRef, where("titleSlug", "==", slug));
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        // console.warn(`No article found for slug: ${slug}`);
-        router.push("/404");
-        return;
-      }
-      const articleDoc = querySnapshot.docs[0];
-      const articleData = articleDoc.data() as Article;
-
-      if (!articleData) {
-        throw new Error("Article data is missing");
-      }
-      if (articleData?.status !== "published") {
-        // console.warn(`Article with slug '${slug}' is not published`);
-        router.push("/404");
-        return;
-      }
-
-      const authorDoc = await getDoc(doc(db, "blog/blockchainBriefing/authors", articleData.authorId));
-      const authorName = authorDoc.exists() ? authorDoc.data().author_name : "Unknown Author";
-      const authorPosition = authorDoc.exists() ? authorDoc.data().position : "Unknown Position";
-      const authorImg = authorDoc.exists() ? authorDoc.data().imageURL : "Unknown Image";
-
-      // Format the publish date
-      let formattedDate = "Unknown Date";
-      if (articleData.createdAt) {
-        try {
-          const date = new Date(articleData?.createdAt);
-          formattedDate = date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          });
-        } catch (error) {
-          console.error("Error formatting date:", error);
-        }
-      }
+  const { data: article, isLoading } = useQuery({
+    queryKey: ['fetchSinglArticle', slug],
+    queryFn: () => fetchArticleBySlug(slug as string),
+  })
 
 
-      const article: Article = {
-        ...articleData,
-        id: articleDoc.id,
-        authorName: authorName,
-        position: authorPosition,
-        authorImage: authorImg,
-        createdAt: formattedDate,
-      };
-
-      setArticle(article);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching article:", error);
-      setError("Failed to fetch article");
-      setLoading(false);
-    }
-  }, [slug, router]);
-
-  useEffect(() => {
-    fetchArticle();
-  }, [slug, fetchArticle]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <section className="container mx-auto px-4 py-8">
         {/* Main Heading */}
