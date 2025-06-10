@@ -14,7 +14,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import user from '/assets/user.png'
 import ReactMarkdown from 'react-markdown';
-import DummyImage from "@/assets/Blockchain-Default.jpg";
+// import DummyImage from "@/assets/Blockchain-Default.jpg";
 import Searchbar from "@/components/search/SearchComp";
 import { Search, Slash } from "lucide-react";
 
@@ -104,7 +104,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
 
           <div className="relative w-full max-w-[1200px] h-[514px]">
             <Image
-              src={imageURL || DummyImage}
+              src={imageURL || "/Blockchain-Default.jpg"}
               alt={title}
               width={1200}
               height={514}

@@ -3,11 +3,32 @@ import DynamicBlog from "@/components/common/DynamicBlog";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import user from '/assets/user.png'
-import DummyImage from "@/assets/Blockchain-Default.jpg";
+
+// import DummyImage from "@/assets/Blockchain-Default.jpg";
+import ReactMarkdown from 'react-markdown';
+import { StaticImageData } from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNewsBySlug } from "@/lib/query";
 
-
+interface News {
+  id: string;
+  title: string;
+  content: string;
+  imageURL?: string;
+  authorId: string;
+  authorName?: string;
+  date: {
+    seconds: number;
+    nanoseconds: number;
+  };
+  formattedDate?: string;
+  titleSlug?: string;
+  authorPosition?: string;
+  authorImage: string | StaticImageData;
+  createdAt: string,
+  status: string,
+  position: string,
+}
 
 const NewsClient = ({ slug }: { slug: string }) => {
 
@@ -88,7 +109,7 @@ const NewsClient = ({ slug }: { slug: string }) => {
     <div className="w-full ">
       <DynamicBlog
         title={news.title}
-        imageURL={news.imageURL || DummyImage}
+       imageURL={news.imageURL || "/Blockchain-Default.jpg"}
         authorName={news.authorName || "Unknown Author"}
         authorPosition={news.position || "Unknown Position"}
         authorImg={news.authorImage || user}

@@ -3,7 +3,7 @@
 import Image, { StaticImageData } from "next/image";
 import React from "react";
 // import DummyImg from "@/assets/Rectangle-4.png";
-import DummyImg from "@/assets/Blockchain-Default.jpg";
+// import DummyImg from "@/assets/Blockchain-Default.jpg";
 import Link from "next/link";
 import { routes } from "@/constants";
 import TruncateText from "./TruncateProps";
@@ -28,7 +28,7 @@ const BlogsCard = ({
   showDateTimeInRow = false,
   title,
   content,
-  imageURL = DummyImg,
+  imageURL = "/Blockchain-Default.jpg",
   authorName = "Docket Digest New Room",
   publishDate,
   titleSlug = "",

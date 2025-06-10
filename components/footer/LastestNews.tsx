@@ -13,7 +13,7 @@ import {
     DocumentData,
 } from "firebase/firestore";
 // import DummyImg from "@/assets/Rectangle-4.png";
-import DummyImg from "@/assets/Blockchain-Default.jpg";
+// import DummyImg from "@/assets/Blockchain-Default.jpg";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface Article {
@@ -315,7 +315,7 @@ const LastestNews = () => {
                             <React.Fragment key={index}>
                                 <VerticalCard
                                     title={article.title}
-                                    imageURL={article.imageURL || DummyImg.src}
+                                    imageURL={article.imageURL || "/Blockchain-Default.jpg"}
                                     authorName={article.authorName || "Unknown Author"}
                                     publishDate={article.publishDate}
                                     titleSlug={article.titleSlug}

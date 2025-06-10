@@ -3,10 +3,29 @@
 import DynamicBlog from "@/components/common/DynamicBlog";
 import { Skeleton } from "@/components/ui/skeleton";
 import user from '/assets/user.png'
-import DummyImage from "@/assets/Blockchain-Default.jpg";
-import { useQuery } from "@tanstack/react-query";
-import { fetchArticleBySlug } from "@/lib/query";
+// import DummyImage from "@/assets/Blockchain-Default.jpg";
 
+
+interface Article {
+  id: string;
+  title: string;
+  content: string;
+  imageURL?: string;
+  authorId: string;
+  authorName?: string;
+  publishDate: {
+    seconds: number;
+    nanoseconds: number;
+  };
+  date?: string;
+  titleSlug?: string;
+  status?: string;
+  Position?: string;
+  authorImg: string | StaticImageData;
+  createdAt: string,
+  position: string,
+  authorImage: string | StaticImageData;
+}
 
 const ArticleClient = ({ slug }: { slug: string }) => {
 
@@ -96,7 +115,7 @@ const ArticleClient = ({ slug }: { slug: string }) => {
     <div className="w-full">
       <DynamicBlog
         title={article.title}
-        imageURL={article.imageURL || DummyImage}
+        imageURL={article.imageURL || "/Blockchain-Default.jpg"}
         authorName={article.authorName || "Unknown Author"}
         authorPosition={article?.position || "Unknown positon"}
         authorImg={article?.authorImg || user}

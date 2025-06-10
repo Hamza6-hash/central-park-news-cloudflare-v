@@ -5,7 +5,7 @@ import BlogsCard from "../common/BlogsCard";
 
 import { db } from "@/lib/firebaseConfig";
 // import DummyImg from "@/assets/Rectangle-4.png";
-import DummyImg from "@/assets/Blockchain-Default.jpg";
+// import DummyImg from "@/assets/Blockchain-Default.jpg";
 
 import {
   collection,
@@ -93,7 +93,7 @@ const SuggestedBlogs: React.FC = () => {
             id: docSnapshot.id,
             title: data.title || "Untitled",
             content: data.content || "No content available.",
-            imageURL: data.imageURL || DummyImg,
+            imageURL: data.imageURL || "/Blockchain-Default.jpg",
             authorName: authorName,
             publishDate: data.publishDate || {
               seconds: new Date().getTime() / 1000,
