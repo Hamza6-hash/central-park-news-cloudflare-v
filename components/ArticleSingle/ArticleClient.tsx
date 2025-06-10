@@ -13,6 +13,8 @@ const ArticleClient = ({ slug }: { slug: string }) => {
   const { data: article, isLoading } = useQuery({
     queryKey: ['fetchSinglArticle', slug],
     queryFn: () => fetchArticleBySlug(slug as string),
+    retry: 2,
+    staleTime: 1000 * 60 * 7,
   })
 
 

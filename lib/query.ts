@@ -68,9 +68,7 @@ interface Newsletter {
   type?: string;
 }
 
-export const fetchArticleBySlug = async (
-  slug: string
-): Promise<Article | null> => {
+export const fetchArticleBySlug = async (slug: string): Promise<Article | null> => {
   try {
     const articlesRef = collection(db, "blog/blockchainBriefing/articles");
     const q = query(articlesRef, where("titleSlug", "==", slug));

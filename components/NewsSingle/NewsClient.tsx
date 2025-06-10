@@ -13,7 +13,9 @@ const NewsClient = ({ slug }: { slug: string }) => {
 
   const { data: news, isLoading } = useQuery({
     queryKey: ['fetchSingleNews', slug],
-    queryFn: () => fetchNewsBySlug(slug)
+    queryFn: () => fetchNewsBySlug(slug),
+    retry: 2,
+    staleTime: 1000 * 60 * 7,
   })
 
   if (isLoading) {
