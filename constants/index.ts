@@ -24,11 +24,11 @@ export const navbarLinks = [
     route: routes.home,
     label: "logo",
   },
-  {
-    imgURL: "",
-    route: routes.articles,
-    label: "Article",
-  },
+  // {
+  //   imgURL: "",
+  //   route: routes.articles,
+  //   label: "Article",
+  // },
   {
     imgURL: "",
     route: routes.contact,

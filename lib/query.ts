@@ -342,12 +342,11 @@ export const FetchTopStories = async (): Promise<Newsletter[]> => {
     );
   };
 
-  const [newslettersData, articlesData] = await Promise.all([
+  const [newslettersData] = await Promise.all([
     fetchItems("blog/blockchainBriefing/newsletter", "newsletter"),
-    fetchItems("blog/blockchainBriefing/articles", "article"),
   ]);
 
-  const combined = [...newslettersData, ...articlesData];
+  const combined = [...newslettersData];
 
   const publishedItems = combined.filter(
     (item) => item?.status === "published"

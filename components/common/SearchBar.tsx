@@ -5,7 +5,7 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search articles..." }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search newsletter..." }) => {
   const [searchValue, setSearchValue] = useState('');
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
