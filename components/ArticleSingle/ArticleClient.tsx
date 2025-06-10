@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StaticImageData } from "next/image";
 import user from '/assets/user.png'
-import DummyImage from "@/assets/Blockchain-Default.jpg";
+// import DummyImage from "@/assets/Blockchain-Default.jpg";
 
 
 interface Article {
@@ -190,7 +190,7 @@ const ArticleClient = ({ slug }: { slug: string }) => {
     <div className="w-full">
       <DynamicBlog
         title={article.title}
-        imageURL={article.imageURL || DummyImage}
+        imageURL={article.imageURL || "/Blockchain-Default.jpg"}
         authorName={article.authorName || "Unknown Author"}
         authorPosition={article?.position || "Unknown positon"}
         authorImg={article?.authorImg || user}

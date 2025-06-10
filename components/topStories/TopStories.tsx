@@ -5,7 +5,7 @@ import { routes } from "@/constants";
 import { Button } from "../button/Button";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 // import DummyImg from "@/assets/Rectangle-4.png";
-import DummyImg from "@/assets/Blockchain-Default.jpg";
+// import DummyImg from "@/assets/Blockchain-Default.jpg";
 import {
   collection,
   getDocs,
@@ -203,7 +203,7 @@ const TopStories = () => {
             <React.Fragment key={newsletter.id}>
               <HorizontalCard
                 title={newsletter.title || "-"}
-                imageURL={newsletter.imageURL || DummyImg}
+                imageURL={newsletter.imageURL || "/Blockchain-Default.jpg"}
                 authorName={newsletter.authorName || "Docket Digest New Room"}
                 publishDate={formattedDate}
                 content={newsletter.content || "-"}

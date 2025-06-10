@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import BlogsCard from "../common/BlogsCard";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 // import DummyImg from "@/assets/Rectangle-4.png";
-import DummyImg from "@/assets/Blockchain-Default.jpg";
+// import DummyImg from "@/assets/Blockchain-Default.jpg";
 import { StaticImageData } from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";
@@ -164,7 +164,7 @@ export default function NewsArticleCollection() {
                             id: docSnapshot.id,
                             title: data.title || "",
                             content: data.content || "",
-                            imageURL: data.imageURL || DummyImg,
+                            imageURL: data.imageURL || "/Blockchain-Default.jpg",
                             authorId: data.authorId || "",
                             authorName: authorName,
                             titleSlug: data.titleSlug || "",
