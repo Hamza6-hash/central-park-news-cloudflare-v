@@ -53,38 +53,43 @@ const BlogsCard = ({
 
   return (
     <div
-      className={` ${suggestedBlog ? "bg-transparent py-3 px-3" : "bg-[#67B6DF24] "
-        } relative w-full sm:max-w-[337px] h-[465px] rounded-[6px] p-6 flex flex-col `}
+      className="bg-[#67B6DF24] relative w-full sm:max-w-[337px] h-[465px] rounded-[6px] p-6 flex flex-col"
     >
-      {/* Image Container - Fixed position */}
-      <div className="relative w-full h-[189px]  overflow-hidden">
-        <Image src={imageURL} alt={title} fill className="object-cover" />
+      {/* Image */}
+      <div className="relative w-full h-[189px] overflow-hidden">
+        <Image
+          src={imageURL}
+          alt={title}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
       </div>
 
-      {/* Title - Fixed position */}
+      {/* Title */}
       <div className="mt-3 h-[52px]">
         <h1 className="font-century-schoolbook font-bold text-[24px] leading-[29px] line-clamp-2">
           {title}
         </h1>
       </div>
 
-      {/* Author and Date - Fixed position */}
+      {/* Author and Date */}
       <div className="mt-3 h-[14px]">
         {showDateTimeInRow ? (
           <div className="flex items-center gap-1.5">
             <hr className="min-w-[16px] sm:min-w-[20px] h-1 shrink-0" />
             <div className="flex items-center gap-2 min-w-0 flex-1 flex-wrap">
-              <h6 className="text-dark-400 capitalize font-font-century-725-cn font-normal text-[12px] leading-[14px] ">
+              <h6 className="text-dark-400 capitalize font-font-century-725-cn font-normal text-[12px] leading-[14px]">
                 {authorName}
               </h6>
               <span className="shrink-0 text-[12px] leading-[14px]">|</span>
-              <h6 className="text-[12px] leading-[14px] text-dark-400 capitalize  font-font-century-725-cn font-normal">
+              <h6 className="text-[12px] leading-[14px] text-dark-400 capitalize font-font-century-725-cn font-normal">
                 {formattedDate}
               </h6>
             </div>
           </div>
         ) : (
-          <div className="flex items-center gap-2 ">
+          <div className="flex items-center gap-2">
             <hr className="w-6 h-0.5 text-dark-900" />
             <div>
               <h6 className="text-dark-400 capitalize font-montserrat font-normal text-[16px] leading-[14px] mb-1">
@@ -98,42 +103,29 @@ const BlogsCard = ({
         )}
       </div>
 
-      {/* Content - Fixed position */}
-      <div className={`${suggestedBlog ? "mt-8 h-[60px]" : "mt-4 h-[60px]"}`}>
-        <div
-          className={`text-[#000] text-ellipsis line-clamp-3 text-[15px] font-normal capitalize ${suggestedBlog ? "font-montserrat" : "font-century-gothic"
-            }`}
-        >
+      {/* Content */}
+      <div className="mt-4 h-[60px]">
+        <div className="text-[#000] text-ellipsis line-clamp-3 text-[15px] font-normal capitalize font-century-gothic">
           <TruncateText lines={3} content={content} />
         </div>
       </div>
 
-      {/* View More Link - Fixed position */}
+      {/* View More */}
       <div className="absolute bottom-[24px] right-0 w-full px-6">
-        {!suggestedBlog ? (
-          <div className="flex justify-between items-center">
-            <h1 className="bg-[#FFEB84] text-black text-xs capitalize font-montserrat py-1 px-2 rounded-full">
-              {type}
-            </h1>
+        <div className="flex justify-between items-center">
+          <h1 className="bg-[#FFEB84] text-black text-xs capitalize font-montserrat py-1 px-2 rounded-full">
+            {type}
+          </h1>
 
-            <Link href={getLinkPath()}>
-              <p className="text-[#2B4864] font-century-gothic text-[14px] font-bold leading-[100%] capitalize transition-colors duration-300 hover:text-white">
-                VIEW MORE
-              </p>
-            </Link>
-          </div>
-        ) : (
-          <div className="flex justify-end">
-            <Link href={getLinkPath()}>
-              <p className="text-[#2B4864] font-century-gothic text-[14px] font-bold leading-[100%] capitalize transition-colors duration-300 hover:text-white">
-                VIEW MORE
-              </p>
-            </Link>
-          </div>
-        )}
+          <Link href={getLinkPath()}>
+            <p className="text-[#2B4864] font-century-gothic text-[14px] font-bold leading-[100%] capitalize transition-colors duration-300 hover:text-white">
+              VIEW MORE
+            </p>
+          </Link>
+        </div>
       </div>
-
     </div>
+
   );
 };
 

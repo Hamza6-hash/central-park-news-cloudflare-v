@@ -20,6 +20,7 @@ import {
   startAfter,
 } from "firebase/firestore";
 import { Skeleton } from "@/components/ui/skeleton";
+import SuggestedBlogCard from "../common/SuggestedBlog";
 
 // Define the type for a blog
 interface Blog {
@@ -56,7 +57,7 @@ const SuggestedBlogs: React.FC = () => {
       const q = query(articlesRef,
         where("status", "==", "published"),
         orderBy("publishDate", "desc"),
-        limit(4));
+        limit(6));
 
       const snapshot = await getDocs(q);
 
@@ -118,36 +119,37 @@ const SuggestedBlogs: React.FC = () => {
   }, []);
 
   return (
-    // <div className="bg-[#67B6DF24]  md:py-14 py-10 flex items-center justify-center">
-    <div className="bg-[#67B6DF24] py-10 flex items-center justify-center px-3">
-      <div className="max-width">
-        <h1 className="font-century-gothic px-3 sm:px-0 font-bold text-[32px] mb-4 uppercase">
-          Articles
+    <div className="bg-[#67B6DF24] md:py-14 py-10 ">
+      <div className="max-w-7xl mx-auto px-10">
+        <h1 className="font-century-gothic font-bold text-[32px] mb-4 uppercase ">
+          More Articles
         </h1>
-        {/* <div className="grid grid-cols-4 md:gap-4 gap-8 max-xl:grid-cols-2 max-md:grid-cols-1"> */}
-        <div className="grid grid-cols-4 md:gap-1 gap-8 max-xl:grid-cols-2 max-md:grid-cols-1 ">
-          {loading
-            ? [1, 2, 3, 4].map((item) => (
-              <div
-                key={item}
-                className="bg-transparent h-40 w-full rounded-md"
-              />
-            ))
-            : articles.map((blog) => (
-              <React.Fragment key={blog.id}>
-                <BlogsCard
-                  suggestedBlog={true}
-                  showDateTimeInRow={false}
-                  title={blog.title}
-                  content={blog.content}
-                  imageURL={blog.imageURL}
-                  authorName={blog.authorName}
-                  // publishDate={blog.publishDate}
-                  createdAt={blog.createdAt}
-                  titleSlug={blog.titleSlug}
-                />
-              </React.Fragment>
-            ))}
+
+        <div className="w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 ">
+            {loading
+              ? [1, 2, 3, 4].map((item) => (
+                <div
+                  key={item}
+                  className="bg-gray-300 h-[320px] w-full rounded-md border-2 border-blue-500"
+                >
+                  <p className="p-4">Loading skeleton {item}</p>
+                </div>
+              ))
+              : articles.map((blog) => (
+                <div key={blog.id} className="w-full min-w-0">
+                  <SuggestedBlogCard
+                    title={blog.title}
+                    content={blog.content}
+                    imageURL={blog.imageURL}
+                    authorName={blog.authorName}
+                    publishDate={blog.publishDate}
+                    createdAt={blog.createdAt}
+                    titleSlug={blog.titleSlug}
+                  />
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </div>

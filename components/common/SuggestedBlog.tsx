@@ -1,0 +1,84 @@
+// components/SuggestedBlogCard.tsx
+import Image, { StaticImageData } from "next/image";
+import Link from "next/link";
+import DummyImg from "@/assets/Blockchain-Default.jpg";
+import { routes } from "@/constants";
+
+interface SuggestedBlogCardProps {
+    showDateTimeInRow?: boolean;
+    title: string;
+    content: string;
+    imageURL?: string | StaticImageData;
+    authorName?: string;
+    publishDate?: {
+        seconds: number;
+        nanoseconds: number;
+    };
+    titleSlug?: string;
+    type?: "article" | "news";
+    suggestedBlog?: boolean;
+    createdAt?: string;
+}
+
+const SuggestedBlogCard: React.FC<SuggestedBlogCardProps> = ({
+    showDateTimeInRow = false,
+    title,
+    content,
+    imageURL = DummyImg,
+    authorName = "Docket Digest New Room",
+    publishDate,
+    titleSlug = "",
+    type = "article",
+    createdAt,
+}) => {
+    const formattedDate = createdAt
+        ? new Date(createdAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        })
+        : "";
+
+    const getLinkPath = () => {
+        if (type === "news") {
+            return `${routes.news}/${titleSlug}`;
+        }
+        return `${routes.articles}/${titleSlug}`;
+    };
+
+    return (
+        <Link href={getLinkPath()}>
+            <div className="bg-primary-300 w-full h-[320px] relative rounded text-white overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        src={imageURL}
+                        alt={title || "Article image"}
+                        fill
+                        className="object-cover"
+                        quality={85}
+                    />
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-4 z-20 bg-[#1E3D5AEB] transition-all duration-300 ease-in-out hover:bg-[#193753] hover:pb-6">
+                    <div className="mb-3">
+                        <h4 className="font-century-schoolbook capitalize font-normal leading-5 line-clamp-3">
+                            {title || "-"}
+                        </h4>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <hr className="w-6 h-0.5 bg-white" />
+                        <div className="flex flex-col">
+                            <h6 className="text-sm capitalize font-montserrat font-wider font-normal tracking-sm">
+                                {authorName || "-"}
+                            </h6>
+                            <p className="text-xs text-gray-300 italic">
+                                {formattedDate || "-"}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Link>
+    );
+};
+
+export default SuggestedBlogCard;

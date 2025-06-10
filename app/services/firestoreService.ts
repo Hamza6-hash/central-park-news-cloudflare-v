@@ -64,6 +64,8 @@ const AUTHORS_ORDER_BY_FIELD = "author_name";
 const CATEGORIES_ORDER_BY_FIELD = "name";
 
 export const fireServices = {
+
+  
   getDocuments: async (
     collectionPath: string[],
     orderByField: string,
@@ -356,13 +358,12 @@ export const fireServices = {
 
       const articlesQuery = query(
         articlesRef,
-        where("status", "==", "published") // Assuming "status" field exists in articles
+        where("status", "==", "published") 
       );
       const newsQuery = query(
         newsRef,
-        where("status", "==", "published") // Assuming "status" field exists in newsletter
+        where("status", "==", "published")
       );
-  
   
       const [articlesSnapshot, newsSnapshot] = await Promise.all([
         getDocs(articlesQuery),
