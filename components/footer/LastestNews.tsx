@@ -1,22 +1,33 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import VerticalCard from "../common/VerticalCard";
 import { GoArrowRight, GoArrowLeft } from "react-icons/go";
-import { db } from "@/lib/firebaseConfig";
 import { usePathname } from "next/navigation";
-import {
-    collection,
-    getDocs,
-    doc,
-    getDoc,
-    query,
-    where,
-    DocumentData,
-} from "firebase/firestore";
-// import DummyImg from "@/assets/Rectangle-4.png";
-// import DummyImg from "@/assets/Blockchain-Default.jpg";
+
 import { Skeleton } from "@/components/ui/skeleton";
-import { useQuery } from "@tanstack/react-query";
+import { defultImage } from "@/constants";
 import { FetchLatestNews } from "@/lib/query";
+import { useQuery } from "@tanstack/react-query";
+
+interface Article {
+    id: string;
+    title: string;
+    content: string;
+    imageURL?: string;
+    authorId: string;
+    authorName?: string;
+    publishDate: string;
+    date?: {
+        seconds: number;
+        nanoseconds: number;
+    };
+    formattedDate?: string;
+    categoryId?: string;
+    featuredArticle?: boolean;
+    tags?: string;
+    titleSlug?: string;
+    type?: "article" | "news";
+    createdAt?: string;
+}
 
 const LastestNews = () => {
     const [isReversed, setIsReversed] = useState(false);
@@ -33,7 +44,7 @@ const LastestNews = () => {
             return "Latest Articles";
         }
     };
-    
+
     const { data: articles, isLoading, error } = useQuery({
         queryKey: ['latestNews', pathname],
         queryFn: () => FetchLatestNews(pathname)
@@ -44,21 +55,20 @@ const LastestNews = () => {
     const slideRight = () => {
         if (productContainerRef.current) {
             const container = productContainerRef.current;
-            const cardWidth = 214; // Width of each card (214px from VerticalCard)
-            const gap = 16; // Gap between cards (gap-4 = 16px)
+            const cardWidth = 214;
+            const gap = 16;
             const scrollAmount = cardWidth + gap;
             const maxScroll = container.scrollWidth - container.clientWidth;
             const currentScroll = container.scrollLeft;
 
             if (currentScroll >= maxScroll - 10) {
-                // If we're at the end, automatically start scrolling left
                 setIsReversed(true);
                 container.scrollTo({
                     left: Math.max(0, currentScroll - scrollAmount),
                     behavior: 'smooth'
                 });
             } else {
-                // Normal forward scroll
+
                 container.scrollTo({
                     left: Math.min(maxScroll, currentScroll + scrollAmount),
                     behavior: 'smooth'
@@ -71,20 +81,19 @@ const LastestNews = () => {
     const slideLeft = () => {
         if (productContainerRef.current) {
             const container = productContainerRef.current;
-            const cardWidth = 214; // Width of each card
-            const gap = 16; // Gap between cards
+            const cardWidth = 214;
+            const gap = 16;
             const scrollAmount = cardWidth + gap;
             const currentScroll = container.scrollLeft;
 
             if (currentScroll <= 10) {
-                // If we're at the start, automatically start scrolling right
+
                 setIsReversed(false);
                 container.scrollTo({
                     left: Math.min(container.scrollWidth - container.clientWidth, currentScroll + scrollAmount),
                     behavior: 'smooth'
                 });
             } else {
-                // Normal backward scroll
                 container.scrollTo({
                     left: Math.max(0, currentScroll - scrollAmount),
                     behavior: 'smooth'
@@ -100,7 +109,6 @@ const LastestNews = () => {
             const maxScroll = container.scrollWidth - container.clientWidth;
             const currentScroll = container.scrollLeft;
 
-            // Check if we're at the beginning or end
             if (currentScroll <= 10) {
                 setIsReversed(false);
             } else if (currentScroll >= maxScroll - 10) {
@@ -109,7 +117,7 @@ const LastestNews = () => {
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         const container = productContainerRef.current;
         if (container) {
             container.addEventListener('scroll', handleScroll);
@@ -117,7 +125,7 @@ const LastestNews = () => {
         }
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const container = productContainerRef.current;
         if (container) {
             const updateScrollButtonVisibility = () => {
@@ -194,7 +202,7 @@ const LastestNews = () => {
                             <React.Fragment key={index}>
                                 <VerticalCard
                                     title={article.title}
-                                    imageURL={article.imageURL || "/Blockchain-Default.jpg"}
+                                    imageURL={article.imageURL || defultImage}
                                     authorName={article.authorName || "Unknown Author"}
                                     publishDate={article.publishDate}
                                     titleSlug={article.titleSlug}

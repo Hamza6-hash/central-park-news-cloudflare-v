@@ -3,11 +3,9 @@
 import DynamicBlog from "@/components/common/DynamicBlog";
 import { Skeleton } from "@/components/ui/skeleton";
 import user from '/assets/user.png'
+import { fetchArticleBySlug } from "@/lib/query";
 import { StaticImageData } from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import { fetchArticleBySlug } from "@/lib/query";
-// import DummyImage from "@/assets/Blockchain-Default.jpg";
-
 
 interface Article {
   id: string;

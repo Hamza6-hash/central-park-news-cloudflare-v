@@ -3,20 +3,12 @@
 import React from "react";
 import Image from "next/image";
 import { StaticImageData } from "next/image";
-import avatar from "@/assets/avatar@2x.png";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebookSquare } from "react-icons/fa";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { format } from "date-fns";
 import { formatedDate } from "@/lib/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
-import user from '/assets/user.png'
 import ReactMarkdown from 'react-markdown';
-// import DummyImage from "@/assets/Blockchain-Default.jpg";
-import Searchbar from "@/components/search/SearchComp";
-import { Search, Slash } from "lucide-react";
+import { defultImage } from "@/constants";
 
 interface DynamicBlogProps {
   title: string;
@@ -104,7 +96,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
 
           <div className="relative w-full max-w-[1200px] h-[514px]">
             <Image
-              src={imageURL || "/Blockchain-Default.jpg"}
+              src={imageURL || defultImage}
               alt={title}
               width={1200}
               height={514}

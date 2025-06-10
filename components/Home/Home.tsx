@@ -1,8 +1,6 @@
 "use client";
 import TopStories from "@/components/topStories/TopStories";
 import Image, { StaticImageData } from "next/image";
-// import DummyImage from "@/assets/Rectangle-2.png";
-// import DummyImage from "@/assets/Blockchain-Default.jpg";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebookSquare } from "react-icons/fa";
 import React from "react";
@@ -25,6 +23,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 // import { fireServices } from "./services/firestoreService";
 import ReactMarkdown from 'react-markdown';
 import { useQuery } from '@tanstack/react-query';
+import { defultImage } from "@/constants";
 
 
 interface Article {
@@ -240,7 +239,7 @@ export default function Home() {
 
           <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
             <Image
-              src={article.imageURL || "/Blockchain-Default.jpg"}
+              src={article.imageURL || defultImage}
               alt="Description of image"
               fill
               className="object-cover rounded-sm"
