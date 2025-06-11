@@ -36,7 +36,6 @@ interface Blog {
 }
 
 const SuggestedBlogs: React.FC = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
   const [articles, setArticles] = useState<Blog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -126,15 +125,12 @@ const SuggestedBlogs: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 ">
             {loading
               ? [1, 2, 3, 4].map((item) => (
-                <div
-                  key={item}
-                  className="bg-gray-300 h-[320px] w-full rounded-md border-2 border-blue-500"
-                >
-                  <p className="p-4">Loading skeleton {item}</p>
+                <div key={item} className="h-[320px] min-w-[217px] w-full bg-gray-100">
+                  <Skeleton className="h-full w-full bg-gray-100" />
                 </div>
               ))
-              : articles.map((blog) => (
-                <div key={blog.id} className="w-full min-w-0">
+              : articles.map((blog, index) => (
+                <div key={blog.titleSlug || index} className="w-full min-w-0">
                   <SuggestedBlogCard
                     title={blog.title}
                     content={blog.content}

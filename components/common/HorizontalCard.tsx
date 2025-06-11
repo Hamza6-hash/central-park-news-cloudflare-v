@@ -27,7 +27,6 @@ const HorizontalCard = ({
     type
 }: HorizontalCard) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
-
     const getLinkPath = () => {
         if (type === "news") {
             return `${routes.news}/${titleSlug}`;
@@ -53,7 +52,7 @@ const HorizontalCard = ({
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">
                         <h1 className="bg-[#FFEB84] text-black text-xs capitalize font-montserrat py-1 px-2 w-fit rounded-full">{type}</h1>
-                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-3  hover:text-primary-500 transition-colors ">
+                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-3 hover:text-blue-700 ">
                             {title || "-"}
                         </h4>
                         <div className="flex items-center gap-2  text-[12px] sm:text-[12px]">

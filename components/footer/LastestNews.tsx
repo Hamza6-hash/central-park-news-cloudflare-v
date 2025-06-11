@@ -35,19 +35,21 @@ const LastestNews = () => {
     const [showScrollButton, setShowScrollButton] = useState(false);
     const pathname = usePathname();
 
-    const getTitle = () => {
-        if (pathname.includes("/news")) {
-            return "Latest Articles";
-        } else if (pathname.includes("/articles")) {
-            return "Latest News";
-        } else {
-            return "Latest Articles";
-        }
-    };
+    // const getTitle = () => {
+    //     if (pathname.includes("/news")) {
+    //         return "Latest Articles";
+    //     } else if (pathname.includes("/articles")) {
+    //         return "Latest News";
+    //     } else {
+    //         return "Latest Articles";
+    //     }
+    // };
 
     const { data: articles, isLoading, error } = useQuery({
         queryKey: ['latestNews', pathname],
-        queryFn: () => FetchLatestNews(pathname)
+        queryFn: () => FetchLatestNews(pathname),
+        retry: 2,
+        staleTime: 1000 * 60 * 7,
     })
 
 
@@ -150,7 +152,7 @@ const LastestNews = () => {
             <section className="lastestNews py-[58px] px-generic">
                 <div className="max-width w-full">
                     <h1 className="uppercase text-3xl font-bold text-white mb-4">
-                        {getTitle()}
+                        LATEST NEWS
                     </h1>
                     <div className="flex gap-6 items-center justify-between relative w-full mx-auto">
                         <div className="w-full flex gap-4 overflow-x-scroll hide-scrollbar mx-auto py-1">
@@ -191,7 +193,7 @@ const LastestNews = () => {
         <section className="lastestNews py-[58px] px-8">
             <div className="max-width w-full">
                 <h1 className="uppercase text-3xl font-bold text-white mb-4">
-                    {getTitle()}
+                    LATEST NEWS
                 </h1>
                 <div className="flex gap-6 items-center justify-between relative w-full mx-auto">
                     <div

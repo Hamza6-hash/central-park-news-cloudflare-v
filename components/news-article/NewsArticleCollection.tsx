@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { db } from "@/lib/firebaseConfig";
 import { collection, getDocs, doc, getDoc, query, where, orderBy, limit, startAfter } from "firebase/firestore";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,10 +11,12 @@ import { StaticImageData } from "next/image";
 import { Search } from "lucide-react";
 import Searchbar from "../search/SearchComp";
 import { defultImage } from "@/constants";
+import { useQuery } from "@tanstack/react-query";
+import { FetchArticleNewsData } from "@/lib/query";
 
 interface Article {
     id: string;
-    title: string;  
+    title: string;
     content: string;
     imageURL?: string | StaticImageData;
     authorId: string;
@@ -25,6 +27,11 @@ interface Article {
     };
     titleSlug: string;
     createdAt: string;
+    category_name?: string,
+}
+
+interface Category {
+    full_name: string
 }
 
 interface Author {
@@ -47,112 +54,44 @@ export default function NewsArticleCollection() {
     const pathname = usePathname();
     const isArticlePage = pathname.includes("/articles");
     const [activeTab, setActiveTab] = useState<"news" | "article">(isArticlePage ? "article" : "news");
-    const [items, setItems] = useState<Article[]>([]);
-    const [loading, setLoading] = useState(true);
+    // const [items, setItems] = useState<Article[]>([]);
+    // const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
+    // const [totalPages, setTotalPages] = useState(1);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const router = useRouter()
+
+    const {
+        data:item,
+        isLoading,
+        refetch
+    } = useQuery({
+        queryKey: ['articles', activeTab, currentPage],
+        queryFn: () => FetchArticleNewsData({
+            activeTab,
+            currentPage,
+            itemsPerPage: ITEMS_PER_PAGE
+        }),
+        staleTime: 5 * 60 * 1000, // 5 minutes
+        // cacheTime: 10 * 60 * 1000, // 10 minutes
+    });
+
+    // Extract data from useQuery result
+    const items = item?.items || [];
+    const totalPages = item?.totalPages || 1;
+    const loading = isLoading;
+    // @ts-ignore
+    const errorMessage = error?.message || null;
 
     const pageTitle = activeTab === "news" ? "News" : "Articles";
-
-    useEffect(() => {
-        const fetchItems = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-
-                if (!db) {
-                    throw new Error("Database connection is not available");
-                }
-
-                const collectionPath = activeTab === "article"
-                    ? "blog/blockchainBriefing/articles"
-                    : "blog/blockchainBriefing/newsletter";
-                const itemsRef = collection(db, collectionPath);
-
-                // Base query for total count
-                const baseQuery = query(
-                    itemsRef,
-                    where("status", "==", "published"),
-                    orderBy("createdAt", "desc")
-                );
-
-                const totalSnapshot = await getDocs(baseQuery);
-                const totalItems = totalSnapshot.docs.length;
-                setTotalPages(Math.ceil(totalItems / ITEMS_PER_PAGE));
-
-                const startAt = (currentPage - 1) * ITEMS_PER_PAGE;
-                const startDoc = startAt > 0 ? totalSnapshot.docs[startAt - 1] : null;
-
-                const q = startDoc
-                    ? query(baseQuery, startAfter(startDoc), limit(ITEMS_PER_PAGE))
-                    : query(baseQuery, limit(ITEMS_PER_PAGE));
-
-                const snapshot = await getDocs(q);
-
-                if (snapshot.empty) {
-                    setItems([]);
-                    setLoading(false);
-                    return;
-                }
-
-                const itemsData = await Promise.all(
-                    snapshot.docs.map(async (docSnapshot) => {
-                        const data = docSnapshot.data();
-                        let authorName = "Docket Digest News Room";
-
-                        if (data.authorId) {
-                            try {
-                                const authorRef = doc(db, "blog/blockchainBriefing/authors", data.authorId);
-                                const authorSnap = await getDoc(authorRef);
-                                if (authorSnap.exists()) {
-                                    const authorData = authorSnap.data() as Author;
-                                    authorName = authorData.author_name;
-                                }
-                            } catch (error) {
-                                console.error("Error fetching author:", error);
-                            }
-                        }
-
-                        return {
-                            id: docSnapshot.id,
-                            title: data.title || "",
-                            content: data.content || "",
-                            imageURL: data.imageURL || defultImage,
-                            authorId: data.authorId || "",
-                            authorName: authorName,
-                            titleSlug: data.titleSlug || "",
-                            type: activeTab,
-                            createdAt: data.createdAt,
-                            publishDate: {
-                                seconds: data.date?.seconds || new Date().getTime() / 1000,
-                                nanoseconds: data.date?.nanoseconds || 0
-                            }
-                        };
-                    })
-                );
-
-                setItems(itemsData);
-            } catch (error) {
-                console.error("Error fetching items:", error);
-                setError("Failed to load items. Please try again later.");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchItems();
-    }, [activeTab, currentPage]);
-
-
 
     useEffect(() => {
         const newTab = pathname.includes("/articles") ? "article" : "news";
         if (newTab !== activeTab) {
             setActiveTab(newTab);
             setCurrentPage(1);
-            setItems([]);
+            // setItems([]);
         }
     }, [activeTab, pathname]);
 
@@ -180,9 +119,10 @@ export default function NewsArticleCollection() {
         return pageNumbers;
     };
 
+
     return (
         <section className="w-full">
-                <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
+            <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
             <div className="flex gap-2 items-center max-w-7xl mx-auto w-full ">
                 <h1 className="heading md:text-left ">{pageTitle}</h1>
                 <button onClick={(e) => setIsSearchOpen(true)
@@ -228,11 +168,12 @@ export default function NewsArticleCollection() {
                                     content={item.content}
                                     imageURL={item.imageURL}
                                     authorName={item.authorName}
-                                    publishDate={item.publishDate}
+                                    // publishDate={item.publishDate}
                                     createdAt={item.createdAt}
                                     showDateTimeInRow={true}
                                     titleSlug={item.titleSlug}
                                     type={activeTab}
+                                    category_name={item.category_name}
                                 />
                             </div>
                         ))}

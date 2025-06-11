@@ -1,13 +1,41 @@
 import React from "react";
 import HorizontalCard from "../common/HorizontalCard";
 import { usePathname } from "next/navigation";
-import { defultImage, routes } from "@/constants";
+import { routes } from "@/constants";
 import { Button } from "../button/Button";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+// import DummyImg from "@/assets/Rectangle-4.png";
+import DummyImg from "@/assets/Blockchain-Default.jpg";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  DocumentData,
+  Timestamp,
+  where,
+  orderBy,
+} from "firebase/firestore";
+import { db } from "@/lib/firebaseConfig";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import Link from "next/link";
-import { FetchTopStories } from "@/lib/query";
+
+interface Newsletter {
+  id: string;
+  title?: string;
+  content?: string;
+  authorId?: string;
+  authorName?: string;
+  date?: Timestamp;
+  imageURL?: string;
+  titleSlug?: string;
+  status: string,
+  createdAt?: string,
+  isFeatured: boolean,
+  updatedAt: string,
+  type?:string;
+}
 
 const TopStories = () => {
   const pathName = usePathname();
@@ -17,13 +45,105 @@ const TopStories = () => {
     data: newsletters,
     error,
     isLoading,
-  } = useQuery({
+  } = useQuery<Newsletter[]>({
     queryKey: ["getAllNewsletters"],
-    queryFn: FetchTopStories,
+    queryFn: async (): Promise<Newsletter[]> => {
+      if (!db) {
+        throw new Error("Database connection is not available");
+      }
+
+      try {
+        const fetchItems = async (collectionPath: string, type: string) => {
+          const ref = collection(db, collectionPath);
+          const snapshot = await getDocs(ref);
+
+          if (snapshot.empty) {
+            console.log(`No ${type}s found`);
+            return [];
+          }
+
+          return await Promise.all(
+            snapshot.docs.map(async (docSnap) => {
+              const data = docSnap.data();
+
+              try {
+                let authorName = "Docket Digest New Room";
+                if (data.authorId) {
+                  const authorRef = doc(
+                    db,
+                    "blog/blockchainBriefing/authors",
+                    data.authorId
+                  );
+                  const authorDoc = await getDoc(authorRef);
+                  if (authorDoc.exists()) {
+                    const authorData = authorDoc.data() as DocumentData;
+                    authorName =
+                      authorData.author_name || "Docket Digest New Room";
+                  }
+                }
+
+                return {
+                  ...data,
+                  id: docSnap.id,
+                  authorName,
+                  titleSlug: data.titleSlug || "",
+                  date: data.date as Timestamp,
+                  createdAt: data.createdAt,
+                  status: data.status, // ✅ make sure this is included
+                  type: data.type,
+                  isFeatured: data.isFeatured || false,
+                  updatedAt: data.updatedAt,
+                } as Newsletter;
+              } catch (error) {
+                console.error(`Error processing ${type}:`, docSnap.id, error);
+                return {
+                  ...data,
+                  id: docSnap.id,
+                  authorName: "Docket Digest New Room",
+                  titleSlug: data.titleSlug || "",
+                  status: data.status, // ✅ make sure this is included
+                  type: data.type,
+                  isFeatured: data.isFeatured || false,
+                  updatedAt: data.updatedAt,
+                } as Newsletter;
+              }
+            })
+          );
+        };
+
+        // Fetch both newsletters and articles
+        const [newslettersData, articlesData] = await Promise.all([
+          fetchItems("blog/blockchainBriefing/newsletter", "newsletter"),
+          fetchItems("blog/blockchainBriefing/articles", "article"),
+        ]);
+
+        const combined = [...newslettersData, ...articlesData];
+
+        const publishedItems = combined.filter(
+          (item) => item?.status === "published"
+        );
+
+        const sortedItems = publishedItems.sort((a, b) => {
+          if (!a.createdAt || !b.createdAt) return 0;
+          return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+        });
+
+        const latestItems = sortedItems.filter(
+          (item) => item.isFeatured === true
+        );
+
+        return latestItems.slice(0, 7);
+      } catch (error) {
+        console.error("Error fetching newsletters and articles:", error);
+        throw new Error("Failed to fetch content. Please try again later.");
+      }
+    },
     placeholderData: keepPreviousData,
     retry: 2,
     staleTime: 1000 * 60 * 5,
   });
+
+
 
 
   if (error) {
@@ -41,7 +161,7 @@ const TopStories = () => {
 
   if (isLoading) {
     return (
-      <div className="px-generic sm:px-sm-generic">
+      <div className="px-sm-generic">
         <h2 className="font-bold text-2xl mb-4 font-century-gothic">
           TOP <span className="text-primary-500">STORIES</span>
         </h2>
@@ -68,12 +188,12 @@ const TopStories = () => {
     isContactPage && newsletters && newsletters.length > 1;
 
   return (
-    <div className="md:mt-4">
+    <div className="px-sm-generic">
       <h2 className="font-bold text-2xl mb-4 font-century-gothic">
         TOP <span className="text-primary-500">STORIES</span>
       </h2>
       <div className="flex flex-col xl:gap-5 sm:gap-7 gap-8">
-        {displayedNewsletters?.map((newsletter) => {
+        {displayedNewsletters?.map((newsletter: Newsletter) => {
           // Format the date here
           const formattedDate = newsletter.createdAt
             ? format(new Date(newsletter.createdAt), "MMM d, yyyy")
@@ -83,7 +203,7 @@ const TopStories = () => {
             <React.Fragment key={newsletter.id}>
               <HorizontalCard
                 title={newsletter.title || "-"}
-                imageURL={newsletter.imageURL || defultImage}
+                imageURL={newsletter.imageURL || DummyImg}
                 authorName={newsletter.authorName || "Docket Digest New Room"}
                 publishDate={formattedDate}
                 content={newsletter.content || "-"}
@@ -97,12 +217,12 @@ const TopStories = () => {
 
       {showViewMoreButton && (
         <div className="flex justify-end items-end mt-6">
-          <button className="uppercase text-primary-900 transition-colors duration-300 hover:text-primary-900 font-bold text-sm xl:block hidden font-century-gothic">
+          <button className="uppercase text-primary-900 transition-colors duration-300 hover:text-yellow-500 font-bold text-sm xl:block hidden font-century-gothic">
             VIEW MORE
           </button>
           <Button
             variant="primary"
-            className="transition-colors duration-300 hover:text-primary-900 font-century-gothic xl:hidden block"
+            className="transition-colors duration-300 hover:text-yellow-500 font-century-gothic xl:hidden block"
           >
             <Link href={"/news"}>VIEW MORE</Link>
           </Button>

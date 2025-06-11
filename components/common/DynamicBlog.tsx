@@ -98,12 +98,11 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
             <Image
               src={imageURL || defultImage}
               alt={title}
-              width={1200}
-              height={514}
-              quality={100}
+              fill
+              quality={80}
               loading="eager"
-              priority
-              className="object-cover w-full h-full"
+              priority={false}
+              className="object-cover "
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
             />
           </div>

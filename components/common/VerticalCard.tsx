@@ -41,7 +41,9 @@ const VerticalCard = ({
                         alt={title || "Article image"}
                         fill
                         className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                         quality={85}
+                        priority={false}
                     />
                 </div>
                 {/* <div className="absolute  z-10"></div> */}

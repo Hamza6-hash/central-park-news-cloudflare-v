@@ -168,7 +168,7 @@ export default function Home() {
     queryKey: ["featuredArticle"],
     queryFn: fetchCombinedFeaturedItem,
     retry: 2,
-    staleTime: 1000 * 60 * 7, // 7 minutes
+    staleTime: 1000 * 60 * 7,
   });
 
   if (loading) {
@@ -237,13 +237,16 @@ export default function Home() {
             </h1>
           </Link>
 
-          <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
+          <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full">
             <Image
               src={article.imageURL || defultImage}
-              alt="Description of image"
+              alt={article.title}
               fill
-              className="object-cover rounded-sm"
-              sizes="(max-width: 320px) 100vw, (max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              quality={75}
+              loading="eager"
+              priority={true}
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 644px, 644px"
             />
           </div>
           <div className="flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
