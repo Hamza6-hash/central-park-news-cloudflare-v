@@ -12,6 +12,12 @@ export interface News {
   content: string;
   imageURL?: string;
   authorId: string;
+  excerpt: string;
+  socialImageUrls: any;
+  tags: string[];
+  category: string;
+  publishDate: string;
+  updatedAt: string;
   authorName?: string;
   date: {
     seconds: number;
@@ -24,9 +30,10 @@ export interface News {
   createdAt: string,
   status: string,
   position: string,
+  citation?: string,
 }
 
-const NewsClient = ({ slug, data }: { slug: string, data: News }) => {
+const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, relatedNews: News[] }) => {
 
   const { data: news, isLoading } = useQuery({
     queryKey: ['fetchSingleNews', slug],
@@ -36,6 +43,8 @@ const NewsClient = ({ slug, data }: { slug: string, data: News }) => {
     initialData: data,
     enabled: !!slug,
   })
+
+  console.log(data)
 
   if (isLoading) {
     return (
@@ -107,7 +116,7 @@ const NewsClient = ({ slug, data }: { slug: string, data: News }) => {
     <div className="w-full ">
       <DynamicBlog
         title={news.title}
-       imageURL={news.imageURL || "/Blockchain-Default.jpg"}
+        imageURL={news.imageURL || "/Blockchain-Default.jpg"}
         authorName={news.authorName || "Unknown Author"}
         authorPosition={news.position || "Unknown Position"}
         authorImg={news.authorImage || user}
@@ -116,6 +125,7 @@ const NewsClient = ({ slug, data }: { slug: string, data: News }) => {
         titleSlug={news.titleSlug}
         isArticlePage={false}
         mainHeading="News"
+        relatedNews={relatedNews}
       />
     </div>
   );

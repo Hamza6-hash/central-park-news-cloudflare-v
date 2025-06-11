@@ -165,6 +165,7 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
     const authorName = authorDoc.exists()
       ? authorDoc.data().author_name
       : "Unknown Author";
+      console.log('printing author')
     const authorPosition = authorDoc.exists()
       ? authorDoc.data().position
       : "Unknown Position";
@@ -350,12 +351,11 @@ export const FetchTopStories = async (): Promise<Newsletter[]> => {
     );
   };
 
-  const [newslettersData, articlesData] = await Promise.all([
+  const [newslettersData] = await Promise.all([
     fetchItems("blog/blockchainBriefing/newsletter", "newsletter"),
-    fetchItems("blog/blockchainBriefing/articles", "article"),
   ]);
 
-  const combined = [...newslettersData, ...articlesData];
+  const combined = [...newslettersData];
 
   const publishedItems = combined.filter(
     (item) => item?.status === "published"

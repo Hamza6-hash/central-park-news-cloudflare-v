@@ -21,10 +21,7 @@ interface Article {
     imageURL?: string | StaticImageData;
     authorId: string;
     authorName?: string;
-    publishDate: {
-        seconds: number;
-        nanoseconds: number;
-    };
+    publishDate: string;
     titleSlug: string;
     createdAt: string;
     category_name?: string,
@@ -54,11 +51,8 @@ export default function NewsArticleCollection() {
     const pathname = usePathname();
     const isArticlePage = pathname.includes("/articles");
     const [activeTab, setActiveTab] = useState<"news" | "article">(isArticlePage ? "article" : "news");
-    // const [items, setItems] = useState<Article[]>([]);
-    // const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
-    // const [totalPages, setTotalPages] = useState(1);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const router = useRouter()
 
@@ -73,9 +67,11 @@ export default function NewsArticleCollection() {
             currentPage,
             itemsPerPage: ITEMS_PER_PAGE
         }),
-        staleTime: 5 * 60 * 1000, // 5 minutes
-        // cacheTime: 10 * 60 * 1000, // 10 minutes
+        staleTime: 5 * 60 * 1000, 
+        retry:2
     });
+
+
 
     // Extract data from useQuery result
     const items = item?.items || [];
@@ -85,6 +81,8 @@ export default function NewsArticleCollection() {
     const errorMessage = error?.message || null;
 
     const pageTitle = activeTab === "news" ? "News" : "Articles";
+
+ 
 
     useEffect(() => {
         const newTab = pathname.includes("/articles") ? "article" : "news";
