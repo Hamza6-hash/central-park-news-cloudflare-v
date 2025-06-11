@@ -12,10 +12,7 @@ interface BlogsCard {
   content: string;
   imageURL?: string | StaticImageData;
   authorName?: string;
-  publishDate?: {
-    seconds: number;
-    nanoseconds: number;
-  };
+  publishDate?: string;
   titleSlug?: string;
   type?: "article" | "news";
   suggestedBlog?: boolean;

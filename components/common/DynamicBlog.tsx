@@ -1,16 +1,15 @@
-'use client';
-
 import React from "react";
 import Image from "next/image";
 import { StaticImageData } from "next/image";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebookSquare } from "react-icons/fa";
 import { formatedDate } from "@/lib/utils";
-import { useState } from "react";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from "react-markdown";
 import { defultImage } from "@/constants";
+import { News } from "../NewsSingle/NewsClient";
+import BlogsCard from "../common/BlogsCard";
 
-interface DynamicBlogProps {
+export interface DynamicBlogProps {
   title: string;
   imageURL: string | StaticImageData;
   authorName: string;
@@ -24,6 +23,7 @@ interface DynamicBlogProps {
   authorPosition?: string;
   // @ts-ignore
   authorImg?: string | StaticImageData;
+  relatedNews?: News[];
 }
 
 interface SocialMedia {
@@ -72,14 +72,14 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
   titleSlug,
   isArticlePage = false,
   authorPosition,
-  authorImg
+  authorImg,
+  relatedNews,
 }) => {
+  console.log(relatedNews);
   const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
     <section className="pt-0">
-
       <div className="mt-1">
         <div className="space-y-3 mb-4">
           <div className="sm:x-sm-generic ">
@@ -126,14 +126,42 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           <ReactMarkdown>{content}</ReactMarkdown>
         </div>
 
+        {/* multiply by 5 */}
+        <p className="text-2xl text-primary-900 font-bold">Related News</p>
+        <div className="flex flex-wrap w-full gap-4 mt-3">
+        {Array.from({ length: 5 }).map((_, index) => (
+        relatedNews &&
+          relatedNews.map((item) => (
+            <BlogsCard
+              key={item.id}
+              title={item.title}
+              content={item.content}
+              imageURL={item.imageURL}
+              authorName={item.authorName}
+              publishDate={item.publishDate}
+              createdAt={item.createdAt}
+              showDateTimeInRow={true}
+              titleSlug={item.titleSlug}
+              type={"news"}
+            />
+          ))
+        ))}
+        </div>
         <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
           {showWritter === true && (
             <div className="flex gap-2 flex-col max-sm:justify-center ">
               <h4 className="text-lg">Written By:</h4>
               <div className="font-century-gothic text-lg">
-                <p>{authorName ? authorName.charAt(0).toUpperCase() + authorName.slice(1) : 'Unknown Author'}</p>
+                <p>
+                  {authorName
+                    ? authorName.charAt(0).toUpperCase() + authorName.slice(1)
+                    : "Unknown Author"}
+                </p>
                 <p className="text-gray-500">
-                  {authorPosition ? authorPosition?.charAt(0).toUpperCase() + authorPosition?.slice(1) : "Author"}
+                  {authorPosition
+                    ? authorPosition?.charAt(0).toUpperCase() +
+                      authorPosition?.slice(1)
+                    : "Author"}
                 </p>
               </div>
             </div>

@@ -12,6 +12,12 @@ export interface News {
   content: string;
   imageURL?: string;
   authorId: string;
+  excerpt: string;
+  socialImageUrls: any;
+  tags: string[];
+  category: string;
+  publishDate: string;
+  updatedAt: string;
   authorName?: string;
   date: {
     seconds: number;
@@ -24,9 +30,10 @@ export interface News {
   createdAt: string,
   status: string,
   position: string,
+  citation?: string,
 }
 
-const NewsClient = ({ slug, data }: { slug: string, data: News }) => {
+const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, relatedNews: News[] }) => {
 
   const { data: news, isLoading } = useQuery({
     queryKey: ['fetchSingleNews', slug],
@@ -116,6 +123,7 @@ const NewsClient = ({ slug, data }: { slug: string, data: News }) => {
         titleSlug={news.titleSlug}
         isArticlePage={false}
         mainHeading="News"
+        relatedNews={relatedNews}
       />
     </div>
   );

@@ -19,10 +19,7 @@ interface Article {
     imageURL?: string | StaticImageData;
     authorId: string;
     authorName?: string;
-    publishDate: {
-        seconds: number;
-        nanoseconds: number;
-    };
+    publishDate: string;
     titleSlug: string;
     createdAt: string;
 }
@@ -167,10 +164,7 @@ export default function NewsArticleCollection() {
                             titleSlug: data.titleSlug || "",
                             type: activeTab,
                             createdAt: data.createdAt,
-                            publishDate: {
-                                seconds: data.date?.seconds || new Date().getTime() / 1000,
-                                nanoseconds: data.date?.nanoseconds || 0
-                            }
+                            publishDate: data.publishDate || ""
                         };
                     })
                 );

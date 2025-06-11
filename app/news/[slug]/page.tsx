@@ -5,6 +5,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { Metadata } from "next";
 import SchemaOrg from "@/components/Schema";
 import { News } from "@/components/NewsSingle/NewsClient";
+import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 
 async function getNewsData(slug: string) {
   try {
@@ -22,7 +23,13 @@ async function getNewsData(slug: string) {
       return null;
     }
 
-    return querySnapshot.docs[0].data();
+    // remove citation field
+    const data = {
+      ...querySnapshot.docs[0].data(),
+      citation: undefined,
+    };
+
+    return data as News;
   } catch (error) {
     console.error(`Error fetching article data for slug ${slug}:`, error);
     return null;
@@ -120,6 +127,8 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     return <div>Newsletter not found.</div>;
   }
 
+  const relatedNews = await getFiveRelatedNewsByCategory(newsData.category, slug);
+
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.blockchainbriefing.com";
   const pageUrl = `${siteUrl}/news/${slug}`;
@@ -155,7 +164,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     <>
       <SchemaOrg schemas={[jsonLd]} />
       <div>
-        <NewsClient slug={params.slug} data={newsData as News} />
+        <NewsClient slug={params.slug} data={newsData as News} relatedNews={relatedNews as News[]} />
       </div>
     </>
   );
