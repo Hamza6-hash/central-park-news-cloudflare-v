@@ -128,9 +128,8 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
 
         {/* multiply by 5 */}
         <p className="text-2xl text-primary-900 font-bold">Related News</p>
-        <div className="flex flex-wrap w-full gap-4 mt-3">
-        {Array.from({ length: 5 }).map((_, index) => (
-        relatedNews &&
+        <div className="flex flex-wrap w-full gap-4 mt-3">       
+        {relatedNews &&
           relatedNews.map((item) => (
             <BlogsCard
               key={item.id}
@@ -144,8 +143,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               titleSlug={item.titleSlug}
               type={"news"}
             />
-          ))
-        ))}
+          ))}
         </div>
         <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
           {showWritter === true && (
