@@ -52,7 +52,7 @@ const Banner = () => {
                     <p className="text-primary-900  text-2xl font-medium">
                         Newsletter
                     </p>
-                    <p className="text-gray-500 text-base">
+                    <p className="text-primary-500 text-base">
                         Stay up to date with our latest news.
                     </p>
                 </div>
