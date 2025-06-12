@@ -217,6 +217,7 @@ const LastestNews = () => {
                         <button
                             className="bg-primary-300 p-2 rounded-full"
                             onClick={isReversed ? slideLeft : slideRight}
+                            aria-label={isReversed ? "Scroll left" : "Scroll right"}
                         >
                             {isReversed ? (
                                 <GoArrowLeft color="white" size={25} />

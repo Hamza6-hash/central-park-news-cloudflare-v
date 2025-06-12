@@ -156,7 +156,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
                     ? authorName.charAt(0).toUpperCase() + authorName.slice(1)
                     : "Unknown Author"}
                 </p>
-                <p className="text-gray-500">
+                <p className="text-primary-500">
                   {authorPosition
                     ? authorPosition?.charAt(0).toUpperCase() +
                     authorPosition?.slice(1)
