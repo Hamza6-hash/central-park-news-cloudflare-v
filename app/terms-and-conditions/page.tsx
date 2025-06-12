@@ -1,6 +1,4 @@
 import TermsAndCondition from '@/components/TermsAndConditions/TermsAndCondition'
-import React from 'react'
-
 
 import { Metadata } from "next";
 

@@ -7,34 +7,6 @@ import SchemaOrg from "@/components/Schema";
 import { News } from "@/components/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 
-// async function getNewsData(slug: string) {
-//   try {
-//     if (!db) {
-//       console.error("Firestore is not initialized.");
-//       return null;
-//     }
-
-//     const newsCollection = collection(db, "blog/blockchainBriefing/newsletter");
-//     const q = query(newsCollection, where("titleSlug", "==", slug));
-//     const querySnapshot = await getDocs(q);
-
-//     if (querySnapshot.empty) {
-//       console.warn(`No article found for slug: ${slug}`);
-//       return null;
-//     }
-
-//     // remove citation field
-//     const data = {
-//       ...querySnapshot.docs[0].data(),
-//       citation: undefined,
-//     };
-
-//     return data as News;
-//   } catch (error) {
-//     console.error(`Error fetching article data for slug ${slug}:`, error);
-//     return null;
-//   }
-// }
 
 async function getNewsData(slug: string) {
   try {
@@ -55,13 +27,12 @@ async function getNewsData(slug: string) {
     const docSnap = querySnapshot.docs[0];
     const rawData = docSnap.data();
 
-    // Remove citation
+    
     const data = {
       ...rawData,
       citation: undefined,
     };
 
-    // 🔄 Add author details
     let authorName = "Docket Digest News Room";
     let authorImage = "/default-avatar.png";
     let authorPosition = "Unknown Position";

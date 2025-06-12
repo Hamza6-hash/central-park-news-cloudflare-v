@@ -1,7 +1,6 @@
 "use client";
 
 import Image, { StaticImageData } from "next/image";
-import React from "react";
 import Link from "next/link";
 import { defultImage, routes } from "@/constants";
 import TruncateText from "./TruncateProps";
@@ -26,10 +25,8 @@ const BlogsCard = ({
   content,
   imageURL = defultImage,
   authorName = "Docket Digest New Room",
-  publishDate,
   titleSlug = "",
   type = "article",
-  suggestedBlog = false,
   category_name,
   createdAt
 }: BlogsCard) => {
@@ -58,7 +55,8 @@ const BlogsCard = ({
           src={imageURL}
           alt={title}
           fill
-          priority={false}
+          loading="eager"
+          priority={true}
           className="object-cover pointer-events-none select-none"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />

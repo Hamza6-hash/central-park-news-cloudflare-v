@@ -119,7 +119,6 @@ export const fetchArticleBySlug = async (
           day: "numeric",
         });
       } catch (err) {
-        console.error("Date formatting failed:", err);
       }
     }
 
@@ -187,7 +186,6 @@ export const fetchCombinedFeaturedItem = async () => {
                 authorName = authorData.author_name;
               }
             } catch (error) {
-              console.error("Error fetching author:", error);
             }
           }
 
@@ -350,7 +348,6 @@ export const FetchLatestNews = async (
               authorName = authorData.author_name || "Unknown Author";
             }
           } catch (error) {
-            console.error("Error fetching author:", error);
           }
         }
 
@@ -364,7 +361,6 @@ export const FetchLatestNews = async (
               day: "numeric",
             });
           } catch (error) {
-            console.error("Error formatting date:", error);
           }
         }
 
@@ -477,7 +473,6 @@ export const FetchArticleNewsData = async ({
             authorName = authorData.author_name;
           }
         } catch (error) {
-          console.error("Error fetching author:", error);
         }
       }
 
@@ -498,7 +493,6 @@ export const FetchArticleNewsData = async ({
             const categoryData = categoryDoc.data() as Category;
             category_name = categoryData.full_name;
           } else {
-            // console.log("No category found with id:", data.categoryId);
           }
         } catch (error) {
           console.error("Error fetching category:", error);
@@ -542,7 +536,6 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      // console.warn(`No news found for slug: ${slug}`);
       return null;
     }
 
@@ -550,7 +543,7 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
     const newsData = newsDoc.data() as News;
 
     if (!newsData || newsData.status !== "published") {
-      // console.warn(`News not found or unpublished for slug: ${slug}`);
+     
       return null;
     }
 
@@ -577,7 +570,6 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
         day: "numeric",
       });
     } catch (err) {
-      console.error("Date formatting failed:", err);
     }
 
     return {
@@ -589,7 +581,6 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
       formattedDate,
     };
   } catch (error) {
-    console.error("Failed to fetch news:", error);
     return null;
   }
 };
