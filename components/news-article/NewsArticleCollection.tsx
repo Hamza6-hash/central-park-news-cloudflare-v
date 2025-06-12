@@ -1,49 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { db } from "@/lib/firebaseConfig";
-import { collection, getDocs, doc, getDoc, query, where, orderBy, limit, startAfter } from "firebase/firestore";
 import { Skeleton } from "@/components/ui/skeleton";
 import BlogsCard from "../common/BlogsCard";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import { StaticImageData } from "next/image";
-import { Search } from "lucide-react";
+const Search = dynamic(() => import("lucide-react").then(mod => mod.Search), {
+    ssr: false,
+});
+
 import Searchbar from "../search/SearchComp";
-import { defultImage } from "@/constants";
 import { useQuery } from "@tanstack/react-query";
 import { FetchArticleNewsData } from "@/lib/query";
+import dynamic from "next/dynamic";
 
-interface Article {
-    id: string;
-    title: string;
-    content: string;
-    imageURL?: string | StaticImageData;
-    authorId: string;
-    authorName?: string;
-    publishDate: string;
-    titleSlug: string;
-    createdAt: string;
-    category_name?: string,
-}
-
-interface Category {
-    full_name: string
-}
-
-interface Author {
-    author_name: string;
-}
-
-interface DummyArticle extends Omit<Article, 'imageURL'> {
-    imageURL: StaticImageData;
-}
-
-interface FirestoreArticle extends Omit<Article, 'imageURL'> {
-    imageURL?: string;
-}
-
-const dummyContent = "Derek Chauvin was found guilty on the three charges he faced — second-degree murder, third-degree murder, and second-degree manslaughter.";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -51,15 +21,14 @@ export default function NewsArticleCollection() {
     const pathname = usePathname();
     const isArticlePage = pathname.includes("/articles");
     const [activeTab, setActiveTab] = useState<"news" | "article">(isArticlePage ? "article" : "news");
-    const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const router = useRouter()
 
     const {
-        data:item,
+        data: item,
         isLoading,
-        refetch
+        refetch,
+        error
     } = useQuery({
         queryKey: ['articles', activeTab, currentPage],
         queryFn: () => FetchArticleNewsData({
@@ -67,8 +36,8 @@ export default function NewsArticleCollection() {
             currentPage,
             itemsPerPage: ITEMS_PER_PAGE
         }),
-        staleTime: 5 * 60 * 1000, 
-        retry:2
+        staleTime: 5 * 60 * 1000,
+        retry: 2
     });
 
 
@@ -82,16 +51,15 @@ export default function NewsArticleCollection() {
 
     const pageTitle = activeTab === "news" ? "News" : "Articles";
 
- 
+
 
     useEffect(() => {
         const newTab = pathname.includes("/articles") ? "article" : "news";
         if (newTab !== activeTab) {
             setActiveTab(newTab);
             setCurrentPage(1);
-            // setItems([]);
         }
-    }, [activeTab, pathname]);
+    }, [pathname]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -99,7 +67,7 @@ export default function NewsArticleCollection() {
     };
 
     // Function to generate page numbers array
-    const getPageNumbers = () => {
+    const pageNumbers = useMemo(() => {
         const pageNumbers = [];
         const maxVisiblePages = 5;
 
@@ -115,7 +83,8 @@ export default function NewsArticleCollection() {
         }
 
         return pageNumbers;
-    };
+    }, [currentPage, totalPages]);
+
 
 
     return (
@@ -154,7 +123,7 @@ export default function NewsArticleCollection() {
                 </div>
             ) : error ? (
                 <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mt-4 text-sm sm:text-base">
-                    {error}
+                    No News Found
                 </div>
             ) : (
                 <>
@@ -193,7 +162,7 @@ export default function NewsArticleCollection() {
                                         />
                                     </PaginationItem>
 
-                                    {getPageNumbers().map((pageNumber) => (
+                                    {pageNumbers.map((pageNumber) => (
                                         <PaginationItem key={pageNumber}>
                                             <PaginationLink
                                                 href="#"

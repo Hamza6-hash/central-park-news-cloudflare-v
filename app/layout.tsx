@@ -1,16 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import QueryProviders from '@/ReatQuery/provider';
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
-import QueryProviders from '@/ReatQuery/provider';
-import { Montserrat } from 'next/font/google';
-import DisableDevTools from "@/components/ProtectImages/DisableDivTools";
 
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  variable: '--font-montserrat',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: "Crypto & Blockchain Briefing | Real-Time News & Insights",
@@ -25,16 +18,12 @@ export default function RootLayout({
 }>) {
 
   return (
-    <html lang="en" className={`${montserrat.variable}`}>
+    <html lang="en" >
       <body className="select-none">
         <QueryProviders>
           <Header />
           <main className="flex items-center justify-center px-generic pageTopBottonMargin overflow-hidden ">
             <div className="max-width">
-              {/* <div>
-                <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
-              </div> */}
-              {/* <DisableDevTools/> */}
               {children}
             </div>
           </main>
