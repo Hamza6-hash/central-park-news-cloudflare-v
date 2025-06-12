@@ -1,29 +1,13 @@
 "use client";
 import TopStories from "@/components/topStories/TopStories";
 import Image, { StaticImageData } from "next/image";
-import { FaTwitter } from "react-icons/fa";
-import { FaFacebookSquare } from "react-icons/fa";
-import React from "react";
-import { db } from "@/lib/firebaseConfig";
-import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  // updateDoc,
-  query,
-  where,
-  orderBy
-} from "firebase/firestore";
 import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
-// import { generateSlug } from "@/lib/utils";
-import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-// import { fireServices } from "./services/firestoreService";
 import ReactMarkdown from 'react-markdown';
 import { useQuery } from '@tanstack/react-query';
 import { defultImage } from "@/constants";
+import { fetchCombinedFeaturedItem } from "@/lib/query";
 
 
 interface Article {
@@ -43,122 +27,7 @@ interface Article {
   type: string
 }
 
-interface SocialMedia {
-  icon: React.ReactNode;
-  link: string;
-}
-
-const SocialMediaTag = ({ icon, link }: SocialMedia) => {
-  return (
-    <div className="rounded-full border border-primary-500 p-2 cursor-pointer">
-      {icon}
-    </div>
-  );
-};
-
-const socialMediaArray = [
-  {
-    icon: <FaTwitter className="text-primary-500" size={20} />,
-    link: "",
-  },
-  {
-    icon: <FaFacebookSquare className="text-primary-500" size={20} />,
-    link: "",
-  },
-];
-
 export default function Home() {
-  const params = useParams();
-
-  const fetchCombinedFeaturedItem = async (): Promise<Article> => {
-    if (!db) {
-      throw new Error("Database connection is not available");
-    }
-
-    const articlePath = "blog/blockchainBriefing/articles";
-    const newsPath = "blog/blockchainBriefing/newsletter";
-
-    const articleRef = collection(db, articlePath);
-    const newsRef = collection(db, newsPath);
-
-    // Build base queries for both
-    const articleQuery = query(
-      articleRef,
-      where("status", "==", "published"),
-      orderBy("createdAt", "desc")
-    );
-    const newsQuery = query(
-      newsRef,
-      where("status", "==", "published"),
-      orderBy("createdAt", "desc")
-    );
-
-    // Fetch both sets
-    const [articleSnap, newsSnap] = await Promise.all([
-      getDocs(articleQuery),
-      getDocs(newsQuery)
-    ]);
-
-    const mergeAndProcess = async (snap: any, type: string) => {
-      return Promise.all(
-        snap.docs.map(async (docSnapshot: any) => {
-          const data = docSnapshot.data();
-          let authorName = "Docket Digest News Room";
-
-          if (data.authorId) {
-            try {
-              const authorRef = doc(db, "blog/blockchainBriefing/authors", data.authorId);
-              const authorSnap = await getDoc(authorRef);
-              if (authorSnap.exists()) {
-                // @ts-ignore
-                const authorData = authorSnap.data() as Author;
-                authorName = authorData.author_name;
-              }
-            } catch (error) {
-              console.error("Error fetching author:", error);
-            }
-          }
-
-          return {
-            id: docSnapshot.id,
-            title: data.title || "",
-            content: data.content || "",
-            imageURL: data.imageURL,
-            authorId: data.authorId || "",
-            authorName,
-            titleSlug: data.titleSlug || "",
-            type,
-            createdAt: data.createdAt,
-            isFeatured: data.isFeatured || false,
-            publishDate: {
-              seconds: data.date?.seconds || new Date().getTime() / 1000,
-              nanoseconds: data.date?.nanoseconds || 0
-            }
-          };
-        })
-      );
-    };
-
-    const [articles, newsletters] = await Promise.all([
-      mergeAndProcess(articleSnap, "article"),
-      mergeAndProcess(newsSnap, "newsletter")
-    ]);
-
-    const combined = [...articles, ...newsletters];
-
-    combined.sort((a, b) => {
-      const dateA = new Date(a.createdAt).getTime();
-      const dateB = new Date(b.createdAt).getTime();
-      return dateB - dateA;
-    });
-
-    // Find the latest featured item
-    const latestFeatured = combined[0];
-    if (!latestFeatured) {
-      throw new Error("No articles found");
-    }
-    return latestFeatured;
-  };
 
   const {
     data: article,
@@ -168,7 +37,7 @@ export default function Home() {
     queryKey: ["featuredArticle"],
     queryFn: fetchCombinedFeaturedItem,
     retry: 2,
-    staleTime: 1000 * 60 * 7, // 7 minutes
+    staleTime: 1000 * 60 * 7,
   });
 
   if (loading) {
@@ -205,7 +74,6 @@ export default function Home() {
       <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
         <p className="text-red-500 text-lg mb-4">{error.message}</p>
         <button
-          // onClick={"fetchArticle"}
           className="bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600 transition-colors"
         >
           Try Again
@@ -237,13 +105,18 @@ export default function Home() {
             </h1>
           </Link>
 
-          <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
+          <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
             <Image
               src={article.imageURL || defultImage}
-              alt="Description of image"
+              alt={article.title}
               fill
-              className="object-cover rounded-sm"
-              sizes="(max-width: 320px) 100vw, (max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              quality={75}
+              loading="eager"
+              priority={true}
+              className="object-cover protected-image"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 644px, 644px"
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
             />
           </div>
           <div className="flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">

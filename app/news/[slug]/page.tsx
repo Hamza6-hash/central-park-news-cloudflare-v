@@ -1,11 +1,40 @@
 import React from "react";
 import NewsClient from "@/components/NewsSingle/NewsClient";
 import { db } from "@/lib/firebaseConfig";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDocs, query, where, getDoc } from "firebase/firestore";
 import { Metadata } from "next";
 import SchemaOrg from "@/components/Schema";
 import { News } from "@/components/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
+
+// async function getNewsData(slug: string) {
+//   try {
+//     if (!db) {
+//       console.error("Firestore is not initialized.");
+//       return null;
+//     }
+
+//     const newsCollection = collection(db, "blog/blockchainBriefing/newsletter");
+//     const q = query(newsCollection, where("titleSlug", "==", slug));
+//     const querySnapshot = await getDocs(q);
+
+//     if (querySnapshot.empty) {
+//       console.warn(`No article found for slug: ${slug}`);
+//       return null;
+//     }
+
+//     // remove citation field
+//     const data = {
+//       ...querySnapshot.docs[0].data(),
+//       citation: undefined,
+//     };
+
+//     return data as News;
+//   } catch (error) {
+//     console.error(`Error fetching article data for slug ${slug}:`, error);
+//     return null;
+//   }
+// }
 
 async function getNewsData(slug: string) {
   try {
@@ -23,18 +52,51 @@ async function getNewsData(slug: string) {
       return null;
     }
 
-    // remove citation field
+    const docSnap = querySnapshot.docs[0];
+    const rawData = docSnap.data();
+
+    // Remove citation
     const data = {
-      ...querySnapshot.docs[0].data(),
+      ...rawData,
       citation: undefined,
     };
 
-    return data as News;
+    // 🔄 Add author details
+    let authorName = "Docket Digest News Room";
+    let authorImage = "/default-avatar.png";
+    let authorPosition = "Unknown Position";
+
+    // @ts-ignore
+    if (data.authorId) {
+      try {
+        // @ts-ignore
+        const authorRef = doc(db, "blog/blockchainBriefing/authors", data.authorId);
+        const authorDoc = await getDoc(authorRef);
+
+        if (authorDoc.exists()) {
+          const authorData = authorDoc.data();
+          authorName = authorData.author_name || authorName;
+          authorImage = authorData.imageURL || authorImage;
+          authorPosition = authorData.position || authorPosition;
+        }
+      } catch (err) {
+        console.error("Error fetching author details:", err);
+      }
+    }
+
+    return {
+      ...data,
+      id: docSnap.id,
+      authorName,
+      authorImage,
+      authorPosition,
+    } as News;
   } catch (error) {
     console.error(`Error fetching article data for slug ${slug}:`, error);
     return null;
   }
 }
+
 
 export async function generateMetadata({
   params,
@@ -87,13 +149,13 @@ export async function generateMetadata({
         siteName: "Blockchain Briefing",
         images: ogImageUrl
           ? [
-              {
-                url: ogImageUrl,
-                width: 1200,
-                height: 630,
-                alt: newsData.title,
-              },
-            ]
+            {
+              url: ogImageUrl,
+              width: 1200,
+              height: 630,
+              alt: newsData.title,
+            },
+          ]
           : [],
         locale: "en_US",
         type: "article",

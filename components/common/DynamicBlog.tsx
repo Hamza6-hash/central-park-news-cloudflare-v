@@ -24,6 +24,7 @@ export interface DynamicBlogProps {
   // @ts-ignore
   authorImg?: string | StaticImageData;
   relatedNews?: News[];
+  createdAt?: string,
 }
 
 interface SocialMedia {
@@ -74,9 +75,10 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
   authorPosition,
   authorImg,
   relatedNews,
+  createdAt
 }) => {
-  console.log(relatedNews);
   const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
+
 
   return (
     <section className="pt-0">
@@ -98,12 +100,11 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
             <Image
               src={imageURL || defultImage}
               alt={title}
-              width={1200}
-              height={514}
-              quality={100}
+              fill
+              quality={80}
               loading="eager"
-              priority
-              className="object-cover w-full h-full"
+              priority={true}
+              className="object-cover pointer-events-none select-none"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
             />
           </div>
@@ -128,22 +129,22 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
 
         {/* multiply by 5 */}
         <p className="text-2xl text-primary-900 font-bold">Related News</p>
-        <div className="flex flex-wrap w-full gap-4 mt-3">       
-        {relatedNews &&
-          relatedNews.map((item) => (
-            <BlogsCard
-              key={item.id}
-              title={item.title}
-              content={item.content}
-              imageURL={item.imageURL}
-              authorName={item.authorName}
-              publishDate={item.publishDate}
-              createdAt={item.createdAt}
-              showDateTimeInRow={true}
-              titleSlug={item.titleSlug}
-              type={"news"}
-            />
-          ))}
+        <div className="flex flex-wrap w-full gap-4 mt-3">
+          {relatedNews &&
+            relatedNews.map((item) => (
+              <BlogsCard
+                key={item.id}
+                title={item.title}
+                content={item.content}
+                imageURL={item.imageURL || defultImage}
+                authorName={item.authorName}
+                publishDate={item.publishDate}
+                createdAt={item.createdAt}
+                showDateTimeInRow={true}
+                titleSlug={item.titleSlug}
+                type={"news"}
+              />
+            ))}
         </div>
         <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
           {showWritter === true && (
@@ -158,7 +159,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
                 <p className="text-gray-500">
                   {authorPosition
                     ? authorPosition?.charAt(0).toUpperCase() +
-                      authorPosition?.slice(1)
+                    authorPosition?.slice(1)
                     : "Author"}
                 </p>
               </div>

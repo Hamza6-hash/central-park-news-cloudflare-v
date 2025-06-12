@@ -44,6 +44,7 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
     enabled: !!slug,
   })
 
+
   if (isLoading) {
     return (
       <section className="container mx-auto px-4 py-8">
@@ -114,11 +115,11 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
     <div className="w-full ">
       <DynamicBlog
         title={news.title}
-       imageURL={news.imageURL || "/Blockchain-Default.jpg"}
+        imageURL={news.imageURL || "/Blockchain-Default.jpg"}
         authorName={news.authorName || "Unknown Author"}
-        authorPosition={news.position || "Unknown Position"}
+        authorPosition={news.authorPosition || "Unknown Position"}
         authorImg={news.authorImage || user}
-        publishDate={news.formattedDate}
+        publishDate={news.createdAt}
         content={news.content}
         titleSlug={news.titleSlug}
         isArticlePage={false}

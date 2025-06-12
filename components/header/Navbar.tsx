@@ -14,16 +14,17 @@ const Navbar = () => {
 
   return (
     <section className="navbar">
-      {/* Mobile Navbar - untouched */}
       <div className="flex justify-between items-center w-full lg:hidden">
         <Link href={routes.home}>
           <Image
             src={Logo}
             alt="Horizon logo"
-            quality={100}
+            quality={80}
             width={120}
             height={60}
-            style={{ objectFit: "cover" }}
+            priority={true}
+            loading="eager"
+            style={{ objectFit: "cover", width: "auto", height: "auto" }}
             className="block lg:hidden"
           />
         </Link>
@@ -32,7 +33,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Desktop Navbar - show only logo */}
       <nav className="hidden lg:flex justify-center items-center gap-28">
         <Link href={routes.home} className="relative lg:block hidden xl:px-10 px-0">
           <Image
@@ -41,6 +41,7 @@ const Navbar = () => {
             quality={100}
             width={120}
             height={80}
+            style={{ width: "auto", height: "auto" }}
           />
         </Link>
       </nav>

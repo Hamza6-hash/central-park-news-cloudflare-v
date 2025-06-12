@@ -17,6 +17,7 @@ interface BlogsCard {
   type?: "article" | "news";
   suggestedBlog?: boolean;
   createdAt?: string;
+  category_name?: string,
 }
 
 const BlogsCard = ({
@@ -29,6 +30,7 @@ const BlogsCard = ({
   titleSlug = "",
   type = "article",
   suggestedBlog = false,
+  category_name,
   createdAt
 }: BlogsCard) => {
   const formattedDate = createdAt
@@ -56,7 +58,8 @@ const BlogsCard = ({
           src={imageURL}
           alt={title}
           fill
-          className="object-cover"
+          priority={false}
+          className="object-cover pointer-events-none select-none"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
@@ -108,8 +111,8 @@ const BlogsCard = ({
       {/* View More */}
       <div className="absolute bottom-[24px] right-0 w-full px-6">
         <div className="flex justify-between items-center">
-          <h1 className="bg-[#FFEB84] text-black text-xs capitalize font-montserrat py-1 px-2 rounded-full">
-            {type}
+          <h1 className="bg-[#FFEB84] text-black text-xs truncate w-fit max-w-[60%]  capitalize font-montserrat py-1 px-2 rounded-full">
+            {category_name}
           </h1>
 
           <Link href={getLinkPath()}>

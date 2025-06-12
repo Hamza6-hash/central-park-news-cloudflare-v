@@ -284,3 +284,28 @@
 .btn-gradient:hover {
   background-position: right center;
 }
+
+
+/* --------------------------- protecting image */
+/* Add this to your CSS file */
+.protected-image-container {
+  position: relative;
+}
+
+.protected-image-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.protected-image {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
