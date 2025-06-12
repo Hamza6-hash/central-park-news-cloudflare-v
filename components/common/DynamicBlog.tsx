@@ -77,9 +77,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
   relatedNews,
   createdAt
 }) => {
-  console.log(createdAt);
-  console.log(authorName)
-  const formatedPublishDate = formatedDate(createdAt, "MMMM dd, yyyy");
+  const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
 
 
   return (
@@ -105,8 +103,8 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               fill
               quality={80}
               loading="eager"
-              priority={false}
-              className="object-cover "
+              priority={true}
+              className="object-cover pointer-events-none select-none"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
             />
           </div>
@@ -138,7 +136,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
                 key={item.id}
                 title={item.title}
                 content={item.content}
-                imageURL={item.imageURL}
+                imageURL={item.imageURL || defultImage}
                 authorName={item.authorName}
                 publishDate={item.publishDate}
                 createdAt={item.createdAt}

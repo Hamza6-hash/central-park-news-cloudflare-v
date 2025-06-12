@@ -44,7 +44,6 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
     enabled: !!slug,
   })
 
-  console.log(data)
 
   if (isLoading) {
     return (
@@ -118,9 +117,9 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
         title={news.title}
         imageURL={news.imageURL || "/Blockchain-Default.jpg"}
         authorName={news.authorName || "Unknown Author"}
-        authorPosition={news.position || "Unknown Position"}
+        authorPosition={news.authorPosition || "Unknown Position"}
         authorImg={news.authorImage || user}
-        publishDate={news.formattedDate}
+        publishDate={news.createdAt}
         content={news.content}
         titleSlug={news.titleSlug}
         isArticlePage={false}

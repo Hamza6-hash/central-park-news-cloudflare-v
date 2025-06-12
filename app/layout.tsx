@@ -3,9 +3,8 @@ import "./globals.css";
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
 import QueryProviders from '@/ReatQuery/provider';
-import { Montserrat, Gothic_A1 } from 'next/font/google';
-import { usePathname } from "next/navigation";
-import { routes } from "@/constants";
+import { Montserrat } from 'next/font/google';
+import DisableDevTools from "@/components/ProtectImages/DisableDivTools";
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -27,14 +26,15 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${montserrat.variable}`}>
-      <body>
+      <body className="select-none">
         <QueryProviders>
           <Header />
-          <main className="flex items-center justify-center px-generic pageTopBottonMargin overflow-hidden">
+          <main className="flex items-center justify-center px-generic pageTopBottonMargin overflow-hidden ">
             <div className="max-width">
               {/* <div>
                 <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
               </div> */}
+              {/* <DisableDevTools/> */}
               {children}
             </div>
           </main>

@@ -15,6 +15,7 @@ import {
   Timestamp,
   where,
   orderBy,
+  query,
 } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -34,8 +35,14 @@ interface Newsletter {
   createdAt?: string,
   isFeatured: boolean,
   updatedAt: string,
-  type?:string;
+  type?: string;
+  category_name?: string,
 }
+
+interface Category {
+  full_name: string;
+}
+
 
 const TopStories = () => {
   const pathName = usePathname();
@@ -68,6 +75,7 @@ const TopStories = () => {
 
               try {
                 let authorName = "Docket Digest New Room";
+                let category_name = 'CryptoCurrency';
                 if (data.authorId) {
                   const authorRef = doc(
                     db,
@@ -81,6 +89,24 @@ const TopStories = () => {
                       authorData.author_name || "Docket Digest New Room";
                   }
                 }
+                if (data.categoryId) {
+                  try {
+                    const categoriesRef = collection(db, "blog/blockchainBriefing/categories");
+                    const categoryQuery = query(categoriesRef, where("id", "==", data.categoryId));
+                    const categorySnapshot = await getDocs(categoryQuery);
+
+                    if (!categorySnapshot.empty) {
+                      const categoryDoc = categorySnapshot.docs[0];
+                      const categoryData = categoryDoc.data() as Category;
+                      category_name = categoryData.full_name;
+                    } else {
+                      console.log("No category found with id:", data.categoryId);
+                    }
+                  } catch (error) {
+                    console.error("Error fetching category:", error);
+                  }
+                }
+
 
                 return {
                   ...data,
@@ -93,15 +119,17 @@ const TopStories = () => {
                   type: data.type,
                   isFeatured: data.isFeatured || false,
                   updatedAt: data.updatedAt,
+                  categoryId: data.categoryId,
+                  category_name: category_name,
                 } as Newsletter;
               } catch (error) {
-                console.error(`Error processing ${type}:`, docSnap.id, error);
+                // console.error(`Error processing ${type}:`, docSnap.id, error);
                 return {
                   ...data,
                   id: docSnap.id,
                   authorName: "Docket Digest New Room",
                   titleSlug: data.titleSlug || "",
-                  status: data.status, // ✅ make sure this is included
+                  status: data.status,
                   type: data.type,
                   isFeatured: data.isFeatured || false,
                   updatedAt: data.updatedAt,
@@ -144,8 +172,6 @@ const TopStories = () => {
   });
 
 
-
-
   if (error) {
     return (
       <div className="px-sm-generic">
@@ -184,6 +210,7 @@ const TopStories = () => {
   const displayedNewsletters =
     isContactPage && newsletters ? newsletters.slice(0, 2) : newsletters;
 
+
   const showViewMoreButton =
     isContactPage && newsletters && newsletters.length > 1;
 
@@ -209,6 +236,7 @@ const TopStories = () => {
                 content={newsletter.content || "-"}
                 titleSlug={newsletter.titleSlug}
                 type={newsletter.type}
+                category_name={newsletter.category_name}
               />
             </React.Fragment>
           );

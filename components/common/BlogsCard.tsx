@@ -59,7 +59,7 @@ const BlogsCard = ({
           alt={title}
           fill
           priority={false}
-          className="object-cover"
+          className="object-cover pointer-events-none select-none"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>

@@ -15,6 +15,7 @@ interface HorizontalCard {
     content?: string;
     titleSlug?: string;
     type?: string;
+    category_name?:string,
 }
 
 const HorizontalCard = ({
@@ -24,7 +25,8 @@ const HorizontalCard = ({
     publishDate,
     content,
     titleSlug = "",
-    type
+    type,
+    category_name
 }: HorizontalCard) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
     const getLinkPath = () => {
@@ -42,7 +44,7 @@ const HorizontalCard = ({
                         src={imageURL}
                         height={800}
                         alt={"new image"}
-                        className="md:max-w-[204px] md:h-[208px] rounded-md"
+                        className="md:max-w-[204px] md:h-[208px] rounded-md pointer-events-none select-none"
                         width={800}
                         quality={100}
                         style={{ objectFit: "cover" }}
@@ -51,8 +53,8 @@ const HorizontalCard = ({
 
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">
-                        <h1 className="bg-[#FFEB84] text-black text-xs capitalize font-montserrat py-1 px-2 w-fit rounded-full">{type}</h1>
-                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-3 hover:text-blue-700 ">
+                        <h1 className="bg-[#FFEB84] text-black text-xs capitalize font-montserrat truncate w-fit max-w-[60%] py-1 px-2  rounded-full">{category_name}</h1>
+                        <h4 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-3 hover:text-primary-800 ">
                             {title || "-"}
                         </h4>
                         <div className="flex items-center gap-2  text-[12px] sm:text-[12px]">
