@@ -14,7 +14,6 @@ import {
   DocumentData,
   Timestamp,
   where,
-  orderBy,
   query,
 } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
@@ -65,7 +64,7 @@ const TopStories = () => {
           const snapshot = await getDocs(ref);
 
           if (snapshot.empty) {
-            console.log(`No ${type}s found`);
+            // console.log(`No ${type}s found`);
             return [];
           }
 
@@ -100,10 +99,10 @@ const TopStories = () => {
                       const categoryData = categoryDoc.data() as Category;
                       category_name = categoryData.full_name;
                     } else {
-                      console.log("No category found with id:", data.categoryId);
+                      // console.log("No category found with id:", data.categoryId);
                     }
                   } catch (error) {
-                    console.error("Error fetching category:", error);
+                    // console.error("Error fetching category:", error);
                   }
                 }
 
@@ -162,7 +161,7 @@ const TopStories = () => {
 
         return latestItems.slice(0, 7);
       } catch (error) {
-        console.error("Error fetching newsletters and articles:", error);
+        // console.error("Error fetching newsletters and articles:", error);
         throw new Error("Failed to fetch content. Please try again later.");
       }
     },

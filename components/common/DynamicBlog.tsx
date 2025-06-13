@@ -1,8 +1,6 @@
-import React from "react";
+
 import Image from "next/image";
 import { StaticImageData } from "next/image";
-import { FaTwitter } from "react-icons/fa";
-import { FaFacebookSquare } from "react-icons/fa";
 import { formatedDate } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import { defultImage } from "@/constants";
@@ -25,41 +23,10 @@ export interface DynamicBlogProps {
   authorImg?: string | StaticImageData;
   relatedNews?: News[];
   createdAt?: string,
+  category?: string,
 }
 
-interface SocialMedia {
-  icon: React.ReactNode;
-  link: string;
-}
 
-const SocialMediaTag = ({ icon, link }: SocialMedia) => {
-  return (
-    <div className="rounded-full border border-primary-900 w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-primary-900 hover:border-primary-900 transition-colors group">
-      {icon}
-    </div>
-  );
-};
-
-const socialMediaArray = [
-  {
-    icon: (
-      <FaTwitter
-        className="text-primary-900 group-hover:text-white transition-colors"
-        size={15}
-      />
-    ),
-    link: "",
-  },
-  {
-    icon: (
-      <FaFacebookSquare
-        className="text-primary-900 group-hover:text-white transition-colors"
-        size={15}
-      />
-    ),
-    link: "",
-  },
-];
 
 const DynamicBlog: React.FC<DynamicBlogProps> = ({
   title,
@@ -75,7 +42,8 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
   authorPosition,
   authorImg,
   relatedNews,
-  createdAt
+  createdAt,
+  category
 }) => {
   const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
 
@@ -143,6 +111,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
                 showDateTimeInRow={true}
                 titleSlug={item.titleSlug}
                 type={"news"}
+                category_name={item.category}
               />
             ))}
         </div>

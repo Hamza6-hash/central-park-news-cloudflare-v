@@ -1,53 +1,55 @@
-"use client"
+"use client";
 
 import React from "react";
-import LastestNews from "./LastestNews";
-import PopularLinks from "./PopularLinks";
-import SocialMedia from "../common/SocialMedia";
 import FooterLinks from "./FooterLinks";
-import SuggestedBlogs from "../suggestedBlogs/SuggestedBlogs";
 import { usePathname } from "next/navigation";
 import { routes } from "@/constants";
-import path from "path";
+import dynamic from "next/dynamic";
+
+// Dynamically import heavy components
+const SuggestedBlogs = dynamic(() => import("../suggestedBlogs/SuggestedBlogs"), {
+  ssr: false,
+});
+const LastestNews = dynamic(() => import("./LastestNews"), {
+  ssr: false,
+});
 
 const Footer = () => {
-    const pathName = usePathname();
-    const showSuggestedBlogs =
-        pathName === routes.articles || pathName === routes.contact
-        || pathName === routes.home || pathName === routes.news || pathName.startsWith('/news') || pathName.startsWith('/privacy')
-        || pathName.startsWith('/terms-and-conditions') || pathName.startsWith('/about-us') || pathName.startsWith('/careers') ||
-        pathName.startsWith('/advertise-with-us') || pathName.startsWith('/sitemap');
+  const pathName = usePathname();
 
-    const hideNews = pathName.startsWith('/terms-and-conditions') || pathName.startsWith('/privacy')
+  const showSuggestedBlogs =
+    pathName === routes.articles ||
+    pathName === routes.contact ||
+    pathName === routes.home ||
+    pathName === routes.news ||
+    pathName.startsWith("/news") ||
+    pathName.startsWith("/privacy") ||
+    pathName.startsWith("/terms-and-conditions") ||
+    pathName.startsWith("/about-us") ||
+    pathName.startsWith("/careers") ||
+    pathName.startsWith("/advertise-with-us") ||
+    pathName.startsWith("/sitemap");
 
-    return (
-        <footer className="w-full">
-            {!showSuggestedBlogs && <SuggestedBlogs />}
-            {!hideNews && <LastestNews />}
-            {/* <PopularLinks /> */}
-            {/* <LastestNews /> */}
-            {/* <PopularLinks /> */}
+  const hideNews =
+    pathName.startsWith("/terms-and-conditions") ||
+    pathName.startsWith("/privacy");
 
-            <section className="w-full flex flex-col justify-center items-center gap-10 bg-gray-100 p-4 py-6">
+  return (
+    <footer className="w-full">
+      {!showSuggestedBlogs && <SuggestedBlogs />}
+      {!hideNews && <LastestNews />}
 
-                <FooterLinks />
-                {/* <div className="space-y-3">
-                    <p className="font-bold text-primary-900">Follow Blockchain Briefing:</p>
-                    <div className="w-full flex items-center justify-center">
-                        <SocialMedia />
-                    </div>
+      <section className="w-full flex flex-col justify-center items-center gap-10 bg-gray-100 p-4 py-6">
+        <FooterLinks />
+      </section>
 
-                </div> */}
-            </section>
-
-            <div className="bg-primary-900 w-full text-white py-3 px-1">
-                <p className="text-center sm:text-xs text-[10px]">
-                    COPYRIGHT 2024 © <strong>BLOCKCHAIN BRIEFING</strong>. ALL RIGHTS
-                    RESERVED
-                </p>
-            </div>
-        </footer>
-    );
+      <div className="bg-primary-900 w-full text-white py-3 px-1">
+        <p className="text-center sm:text-xs text-[10px]">
+          COPYRIGHT 2024 © <strong>BLOCKCHAIN BRIEFING</strong>. ALL RIGHTS RESERVED
+        </p>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;

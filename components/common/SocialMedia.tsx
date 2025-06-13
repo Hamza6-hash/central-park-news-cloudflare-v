@@ -1,8 +1,10 @@
+import dynamic from "next/dynamic";
 import React from "react";
-import { IoLogoLinkedin } from "react-icons/io5";
-import { FaInstagram } from "react-icons/fa6";
-import { FaTwitter } from "react-icons/fa";
-import { FaFacebookSquare } from "react-icons/fa";
+
+const IoLogoLinkedin = dynamic(() => import("react-icons/io5").then(mod => mod.IoLogoLinkedin));
+const FaInstagram = dynamic(() => import("react-icons/fa6").then(mod => mod.FaInstagram));
+const FaTwitter = dynamic(() => import("react-icons/fa").then(mod => mod.FaTwitter));
+const FaFacebookSquare = dynamic(() => import("react-icons/fa").then(mod => mod.FaFacebookSquare));
 
 const SocialMediaTag = ({ icon, link }: SocialMedia) => {
     return (

@@ -15,7 +15,7 @@ const Navbar = () => {
   return (
     <section className="navbar">
       <div className="flex justify-between items-center w-full lg:hidden">
-        <Link href={routes.home}>
+        <Link href={routes.home} rel="preload">
           <Image
             src={Logo}
             alt="Horizon logo"
@@ -24,7 +24,7 @@ const Navbar = () => {
             height={60}
             priority={true}
             loading="eager"
-            style={{ objectFit: "cover", width: "auto", height: "auto" }}
+            style={{ objectFit: "cover", }}
             className="block lg:hidden"
           />
         </Link>
