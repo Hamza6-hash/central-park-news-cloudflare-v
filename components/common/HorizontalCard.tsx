@@ -14,7 +14,7 @@ interface HorizontalCard {
     content?: string;
     titleSlug?: string;
     type?: string;
-    category_name?: string,
+    category_name?:string,
 }
 
 const HorizontalCard = ({
@@ -38,7 +38,6 @@ const HorizontalCard = ({
     return (
         <Link href={getLinkPath()}>
             <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 rounded-lg cursor-pointer">
-
                 <div className="md:w-[210px]">
                     <Image
                         src={imageURL}
@@ -46,7 +45,6 @@ const HorizontalCard = ({
                         loading="eager"
                         height={800}
                         alt={"new image"}
-                        sizes="(min-width: 768px) 204px, 100vw"
                         className="md:max-w-[204px] md:h-[208px] rounded-md pointer-events-none select-none"
                         width={800}
                         quality={100}
