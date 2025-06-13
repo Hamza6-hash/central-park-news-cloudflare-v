@@ -1,7 +1,6 @@
 // components/SuggestedBlogCard.tsx
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
-// import DummyImg from "@/assets/Blockchain-Default.jpg";
 import { defultImage, routes } from "@/constants";
 
 interface SuggestedBlogCardProps {

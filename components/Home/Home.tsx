@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import { useQuery } from '@tanstack/react-query';
 import { defultImage } from "@/constants";
 import { fetchCombinedFeaturedItem } from "@/lib/query";
+import { usePathname } from "next/navigation";
 
 
 interface Article {
@@ -28,6 +29,9 @@ interface Article {
 }
 
 export default function Home() {
+
+  const pathname = usePathname()
+  const isHomePage = pathname === '/'
 
   const {
     data: article,
@@ -92,73 +96,166 @@ export default function Home() {
 
   return (
     <section className="flex gap-9 max-xl:flex-col w-full max-w-[1200px] mx-auto text-[12px] sm:text-base">
-      <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
+  <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
+    <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
+    <div className="space-y-3 mb-4">
+      <Link
+        href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug}`}
+      >
+        <h1 className="font-century-schoolbook sm:text-[12px] text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-2">
+          {article.title}
+        </h1>
+      </Link>
 
-        <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
-        <div className="space-y-3 mb-4">
-          <Link
-            href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug
-              }`}
-          >
-            <h1 className="font-century-schoolbook sm:text-[12px] text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-2">
-              {article.title}
-            </h1>
-          </Link>
-
-          <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
-            <Image
-              src={article.imageURL || defultImage}
-              alt={article.title}
-              fill
-              quality={75}
-              loading="eager"
-              priority={true}
-              className="object-cover protected-image"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 644px, 644px"
-              onContextMenu={(e) => e.preventDefault()}
-              onDragStart={(e) => e.preventDefault()}
-            />
-          </div>
-          <div className="flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
-            <hr className="w-4 sm:w-6 h-1" />
-            <h6 className="capitalize font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">
-              {article.authorName}
-            </h6>
-            <span className="text-primary-500">|</span>
-            <p className="text-primary-500 italic font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">
-              {article.createdAt
-                ? formatedDate(article.createdAt) : "N/A"}
-            </p>
-          </div>
-        </div>
-
-        <div className="markdown-content  ">
-          <ReactMarkdown>{article?.content}</ReactMarkdown>
-        </div>
-
-        {/* -------------- 600x600 ad bar -------------------- */}
-        <div className="flex flex-col w-full mb-6 mt-10 sm:px-3 md:p-4 gap-4 items-end justify-end">
-          {/* Top Row: Share Title + Square Ad */}
-          <div className="flex w-full flex-col max-[360px]:items-start sm:flex-row sm:items-end justify-between gap-4">
-            <div className="flex flex-col">
-              <p className="font-bold mb-2">Share This:</p>
-            </div>
-            {/* Responsive Square Ad Box (maintains 1:1 aspect ratio) */}
-            <div className="w-full max-w-[300px] aspect-square bg-primary-100 flex items-center justify-center shrink-0 min-w-[150px]">
-              <span className="text-center px-2">Ad Space (300x300)</span>
-            </div>
-          </div>
-          {/* Responsive Wide Ad Box (maintains ~1.91:1 aspect ratio like 600x314) */}
-          <div className="bg-primary-100 flex justify-center items-center w-full max-w-[600px] aspect-[600/314] ml-auto min-h-[120px]">
-            <span className="text-center px-2">Ad Space (600x314)</span>
-          </div>
-        </div>
-
+      {/* OPTIMIZED IMAGE FOR LCP */}
+      <div className="w-full max-w-[651px] protected-image-container aspect-[651/514] relative">
+        <Image
+          src={article.imageURL || defultImage}
+          alt={article.title}
+          fill
+          quality={85}
+          loading="eager"
+          priority={true}
+          fetchPriority="high"
+          className="object-cover protected-image"
+          sizes="(max-width: 480px) 100vw, (max-width: 768px) 95vw, (max-width: 1024px) 80vw, 651px"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
+        />
       </div>
 
-      <div className="xl:w-[520px] w-full">
-        <TopStories />
+      <div className="flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
+        <hr className="w-4 sm:w-6 h-1" />
+        <h6 className="capitalize font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">
+          {article.authorName}
+        </h6>
+        <span className="text-primary-500">|</span>
+        <p className="text-primary-500 italic font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">
+          {article.createdAt ? formatedDate(article.createdAt) : "N/A"}
+        </p>
       </div>
-    </section>
+    </div>
+
+    <div className="markdown-content">
+      <ReactMarkdown>{article?.content}</ReactMarkdown>
+    </div>
+
+    {/* -------------- 600x600 ad bar -------------------- */}
+    <div className="flex flex-col w-full mb-6 mt-10 sm:px-3 md:p-4 gap-4 items-end justify-end">
+      {/* Top Row: Share Title + Square Ad */}
+      <div className="flex w-full flex-col max-[360px]:items-start sm:flex-row sm:items-end justify-between gap-4">
+        <div className="flex flex-col">
+          <p className="font-bold mb-2">Share This:</p>
+        </div>
+        {/* Responsive Square Ad Box (maintains 1:1 aspect ratio) */}
+        <div className="w-full max-w-[300px] aspect-square bg-primary-100 flex items-center justify-center shrink-0 min-w-[150px]">
+          <span className="text-center px-2">Ad Space (300x300)</span>
+        </div>
+      </div>
+      {/* Responsive Wide Ad Box (maintains ~1.91:1 aspect ratio like 600x314) */}
+      <div className="bg-primary-100 flex justify-center items-center w-full max-w-[600px] aspect-[600/314] ml-auto min-h-[120px]">
+        <span className="text-center px-2">Ad Space (600x314)</span>
+      </div>
+    </div>
+  </div>
+  
+  <div className="xl:w-[520px] w-full">
+    <TopStories />
+  </div>
+</section>
+//     <section className="flex gap-9 max-xl:flex-col w-full max-w-[1200px] mx-auto text-[12px] sm:text-base">
+//       <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
+
+//         <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
+//         <div className="space-y-3 mb-4">
+//           <Link
+//             href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug
+//               }`}
+//           >
+//             <h1 className="font-century-schoolbook sm:text-[12px] text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-2">
+//               {article.title}
+//             </h1>
+//           </Link>
+
+//           <div className="w-full max-w-[651px] protected-image-container">
+//   <Image
+//     src={article.imageURL || defultImage}
+//     alt={article.title}
+//     width={651}
+//     height={514}
+//     quality={75}
+//     loading="eager"
+//     priority
+//     fetchPriority="high"
+//     className="object-cover protected-image w-full h-auto"
+//     sizes="(max-width: 768px) 100vw, 651px"
+//     onContextMenu={(e) => e.preventDefault()}
+//     onDragStart={(e) => e.preventDefault()}
+//   />
+// </div>
+
+
+
+
+//           {/* <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
+//             <Image
+//               src={article.imageURL || defultImage}
+//               alt={article.title}
+//               fill
+//               quality={75}
+//               loading="eager"
+//               priority={true}
+//               className="object-cover protected-image"
+//               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 644px, 644px"
+//               onContextMenu={(e) => e.preventDefault()}
+//               onDragStart={(e) => e.preventDefault()}
+//             />
+//           </div> */}
+
+
+
+//           <div className="flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
+//             <hr className="w-4 sm:w-6 h-1" />
+//             <h6 className="capitalize font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">
+//               {article.authorName}
+//             </h6>
+//             <span className="text-primary-500">|</span>
+//             <p className="text-primary-500 italic font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">
+//               {article.createdAt
+//                 ? formatedDate(article.createdAt) : "N/A"}
+//             </p>
+//           </div>
+//         </div>
+
+//         <div className="markdown-content  ">
+//           <ReactMarkdown>{article?.content}</ReactMarkdown>
+//         </div>
+
+//         {/* -------------- 600x600 ad bar -------------------- */}
+//         <div className="flex flex-col w-full mb-6 mt-10 sm:px-3 md:p-4 gap-4 items-end justify-end">
+//           {/* Top Row: Share Title + Square Ad */}
+//           <div className="flex w-full flex-col max-[360px]:items-start sm:flex-row sm:items-end justify-between gap-4">
+//             <div className="flex flex-col">
+//               <p className="font-bold mb-2">Share This:</p>
+//             </div>
+//             {/* Responsive Square Ad Box (maintains 1:1 aspect ratio) */}
+//             <div className="w-full max-w-[300px] aspect-square bg-primary-100 flex items-center justify-center shrink-0 min-w-[150px]">
+//               <span className="text-center px-2">Ad Space (300x300)</span>
+//             </div>
+//           </div>
+//           {/* Responsive Wide Ad Box (maintains ~1.91:1 aspect ratio like 600x314) */}
+//           <div className="bg-primary-100 flex justify-center items-center w-full max-w-[600px] aspect-[600/314] ml-auto min-h-[120px]">
+//             <span className="text-center px-2">Ad Space (600x314)</span>
+//           </div>
+//         </div>
+
+//       </div>
+
+//       <div className="xl:w-[520px] w-full">
+//         <TopStories />
+//       </div>
+//     </section>
   );
 }

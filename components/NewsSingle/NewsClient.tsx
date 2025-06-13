@@ -115,6 +115,7 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
     <div className="w-full ">
       <DynamicBlog
         title={news.title}
+        category={news?.category}
         imageURL={news.imageURL || "/Blockchain-Default.jpg"}
         authorName={news.authorName || "Unknown Author"}
         authorPosition={news.authorPosition || "Unknown Position"}

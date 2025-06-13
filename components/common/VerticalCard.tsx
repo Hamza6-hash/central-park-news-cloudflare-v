@@ -1,7 +1,5 @@
 import Image from "next/image";
 import React from "react";
-import DummyImg from "@/assets/Rectangle-4.png";
-import { format } from "date-fns";
 import Link from "next/link";
 import { formatedDate } from "@/lib/utils";
 import { routes } from "@/constants";

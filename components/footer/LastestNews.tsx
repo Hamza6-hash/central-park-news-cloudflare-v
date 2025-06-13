@@ -8,26 +8,6 @@ import { defultImage } from "@/constants";
 import { FetchLatestNews } from "@/lib/query";
 import { useQuery } from "@tanstack/react-query";
 
-interface Article {
-    id: string;
-    title: string;
-    content: string;
-    imageURL?: string;
-    authorId: string;
-    authorName?: string;
-    publishDate: string;
-    date?: {
-        seconds: number;
-        nanoseconds: number;
-    };
-    formattedDate?: string;
-    categoryId?: string;
-    featuredArticle?: boolean;
-    tags?: string;
-    titleSlug?: string;
-    type?: "article" | "news";
-    createdAt?: string;
-}
 
 const LastestNews = () => {
     const [isReversed, setIsReversed] = useState(false);
@@ -35,21 +15,11 @@ const LastestNews = () => {
     const [showScrollButton, setShowScrollButton] = useState(false);
     const pathname = usePathname();
 
-    // const getTitle = () => {
-    //     if (pathname.includes("/news")) {
-    //         return "Latest Articles";
-    //     } else if (pathname.includes("/articles")) {
-    //         return "Latest News";
-    //     } else {
-    //         return "Latest Articles";
-    //     }
-    // };
-
     const { data: articles, isLoading, error } = useQuery({
         queryKey: ['latestNews', pathname],
-        queryFn: () => FetchLatestNews(pathname),
-        retry: 2,
+        queryFn: FetchLatestNews,
         staleTime: 1000 * 60 * 7,
+        retry: 2,
     })
 
 

@@ -57,6 +57,7 @@ interface News {
   createdAt: string;
   status: string;
   position: string;
+  category?: string;
 }
 
 interface Newsletter {
@@ -118,8 +119,7 @@ export const fetchArticleBySlug = async (
           month: "long",
           day: "numeric",
         });
-      } catch (err) {
-      }
+      } catch (err) {}
     }
 
     return {
@@ -185,8 +185,7 @@ export const fetchCombinedFeaturedItem = async () => {
                 const authorData = authorSnap.data() as Author;
                 authorName = authorData.author_name;
               }
-            } catch (error) {
-            }
+            } catch (error) {}
           }
 
           return {
@@ -307,9 +306,7 @@ export const FetchTopStories = async (): Promise<Newsletter[]> => {
   return latestItems.slice(0, 7);
 };
 
-export const FetchLatestNews = async (
-  pathname: string
-): Promise<Article[] | undefined> => {
+export const FetchLatestNews = async (): Promise<Article[] | undefined> => {
   try {
     if (!db) throw new Error("Database connection is not available");
 
@@ -347,8 +344,7 @@ export const FetchLatestNews = async (
               const authorData = authorDoc.data() as DocumentData;
               authorName = authorData.author_name || "Unknown Author";
             }
-          } catch (error) {
-          }
+          } catch (error) {}
         }
 
         let formattedDate = "Unknown Date";
@@ -360,8 +356,7 @@ export const FetchLatestNews = async (
               month: "long",
               day: "numeric",
             });
-          } catch (error) {
-          }
+          } catch (error) {}
         }
 
         return {
@@ -386,7 +381,6 @@ export const FetchLatestNews = async (
 
     return articlesData;
   } catch (error) {
-    console.error("Error fetching articles:", error);
     return [];
   }
 };
@@ -472,8 +466,7 @@ export const FetchArticleNewsData = async ({
             const authorData = authorSnap.data() as Author;
             authorName = authorData.author_name;
           }
-        } catch (error) {
-        }
+        } catch (error) {}
       }
 
       if (data.categoryId) {
@@ -543,7 +536,6 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
     const newsData = newsDoc.data() as News;
 
     if (!newsData || newsData.status !== "published") {
-     
       return null;
     }
 
@@ -569,8 +561,7 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
         month: "long",
         day: "numeric",
       });
-    } catch (err) {
-    }
+    } catch (err) {}
 
     return {
       ...newsData,

@@ -11,7 +11,6 @@ import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 async function getNewsData(slug: string) {
   try {
     if (!db) {
-      console.error("Firestore is not initialized.");
       return null;
     }
 
@@ -20,7 +19,6 @@ async function getNewsData(slug: string) {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      console.warn(`No article found for slug: ${slug}`);
       return null;
     }
 
@@ -51,7 +49,6 @@ async function getNewsData(slug: string) {
           authorPosition = authorData.position || authorPosition;
         }
       } catch (err) {
-        console.error("Error fetching author details:", err);
       }
     }
 
@@ -63,7 +60,6 @@ async function getNewsData(slug: string) {
       authorPosition,
     } as News;
   } catch (error) {
-    console.error(`Error fetching article data for slug ${slug}:`, error);
     return null;
   }
 }
@@ -144,7 +140,6 @@ export async function generateMetadata({
       },
     };
   } catch (error) {
-    console.error("Error generating metadata:", error);
     return {
       title: "Error | Blockchain Briefing",
       description: "An error occurred while fetching the newsletter metadata.",

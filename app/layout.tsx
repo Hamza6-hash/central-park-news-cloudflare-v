@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import QueryProviders from '@/ReatQuery/provider';
-import Header from "@/components/header/Header";
-import Footer from "@/components/footer/Footer";
+
+import dynamic from "next/dynamic";
+const Header = dynamic(() => import('@/components/header/Header'), { ssr: false });
+const Footer = dynamic(() => import('@/components/footer/Footer'), { ssr: false });
 
 
 export const metadata: Metadata = {
