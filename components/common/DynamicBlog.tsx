@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import { defultImage } from "@/constants";
 import { News } from "../NewsSingle/NewsClient";
 import BlogsCard from "../common/BlogsCard";
+import SafeImage from "@/constants/SafeImage";
 
 export interface DynamicBlogProps {
   title: string;
@@ -65,13 +66,13 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           </div>
 
           <div className="relative w-full max-w-[1200px] h-[514px]">
-            <Image
+            <SafeImage
               src={imageURL || defultImage}
               alt={title}
               fill
               quality={80}
               loading="eager"
-              priority={true}
+              priority
               className="object-cover pointer-events-none select-none"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
             />

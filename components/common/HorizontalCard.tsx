@@ -5,6 +5,7 @@ import { formatedDate } from "@/lib/utils";
 import { StaticImageData } from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
+import SafeImage from "@/constants/SafeImage";
 
 interface HorizontalCard {
     title?: string;
@@ -14,7 +15,7 @@ interface HorizontalCard {
     content?: string;
     titleSlug?: string;
     type?: string;
-    category_name?:string,
+    category_name?: string,
 }
 
 const HorizontalCard = ({
@@ -39,18 +40,19 @@ const HorizontalCard = ({
         <Link href={getLinkPath()}>
             <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 rounded-lg cursor-pointer">
                 <div className="md:w-[210px]">
-                    <Image
+                    <SafeImage
                         src={imageURL}
                         priority={true}
                         loading="eager"
                         height={800}
-                        alt={"new image"}
-                        className="md:max-w-[204px] md:h-[208px] rounded-md pointer-events-none select-none"
+                        alt="new image"
                         width={800}
                         quality={100}
+                        className="md:max-w-[204px] md:h-[208px] rounded-md pointer-events-none select-none"
                         style={{ objectFit: "cover" }}
                     />
                 </div>
+
 
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">

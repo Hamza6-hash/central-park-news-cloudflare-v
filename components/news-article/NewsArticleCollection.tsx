@@ -13,6 +13,7 @@ import Searchbar from "../search/SearchComp";
 import { useQuery } from "@tanstack/react-query";
 import { FetchArticleNewsData } from "@/lib/query";
 import dynamic from "next/dynamic";
+import { defultImage } from "@/constants";
 
 
 const ITEMS_PER_PAGE = 9;
@@ -53,13 +54,13 @@ export default function NewsArticleCollection() {
 
 
 
-    useEffect(() => {
-        const newTab = pathname.includes("/articles") ? "article" : "news";
-        if (newTab !== activeTab) {
-            setActiveTab(newTab);
-            setCurrentPage(1);
-        }
-    }, [pathname]);
+    // useEffect(() => {
+    //     const newTab = pathname.includes("/articles") ? "article" : "news";
+    //     if (newTab !== activeTab) {
+    //         setActiveTab(newTab);
+    //         setCurrentPage(1);
+    //     }
+    // }, [pathname]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -133,7 +134,7 @@ export default function NewsArticleCollection() {
                                 <BlogsCard
                                     title={item.title}
                                     content={item.content}
-                                    imageURL={item.imageURL}
+                                    imageURL={item.imageURL || defultImage}
                                     authorName={item.authorName}
                                     // publishDate={item.publishDate}
                                     createdAt={item.createdAt}
