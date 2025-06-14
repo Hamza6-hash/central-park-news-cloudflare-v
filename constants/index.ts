@@ -1,4 +1,4 @@
-import Logo from '@/assets/logo.png';
+import Logo from '@/assets/logo.webp';
 
 export const routes = {
   home: "/",
@@ -36,4 +36,4 @@ export const navbarLinks = [
   },
 ];
 
-export const defultImage = "/Blockchain-Default.jpg";
+export const defultImage = "/Blockchain-Default.webp";

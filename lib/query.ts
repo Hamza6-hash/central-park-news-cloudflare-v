@@ -229,6 +229,7 @@ export const fetchCombinedFeaturedItem = async () => {
   }
 };
 
+
 export const FetchTopStories = async (): Promise<Newsletter[]> => {
   if (!db) {
     throw new Error("Database connection is not available");

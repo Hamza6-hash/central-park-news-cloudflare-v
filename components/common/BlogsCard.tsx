@@ -4,6 +4,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { defultImage, routes } from "@/constants";
 import TruncateText from "./TruncateProps";
+import SafeImage from "@/constants/SafeImage";
 
 interface BlogsCard {
   showDateTimeInRow?: boolean;
@@ -23,7 +24,7 @@ const BlogsCard = ({
   showDateTimeInRow = false,
   title,
   content,
-  imageURL = defultImage,
+  imageURL,
   authorName = "Docket Digest New Room",
   titleSlug = "",
   type = "article",
@@ -51,12 +52,12 @@ const BlogsCard = ({
     >
       {/* Image */}
       <div className="relative w-full h-[189px] overflow-hidden">
-        <Image
-          src={imageURL}
+        <SafeImage
+          src={imageURL || defultImage}
           alt={title}
           fill
           loading="eager"
-          priority={true}
+          priority
           className="object-cover pointer-events-none select-none"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />

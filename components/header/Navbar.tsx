@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MobileNav from "./MobileNav";
-import Logo from "@/assets/logo.png";
+import Logo from "@/assets/logo.webp";
 
 const Navbar = () => {
   const pathName = usePathname();
@@ -19,11 +19,9 @@ const Navbar = () => {
           <Image
             src={Logo}
             alt="Horizon logo"
-            quality={80}
+            quality={75}
             width={120}
             height={60}
-            priority={true}
-            loading="eager"
             style={{ objectFit: "cover", }}
             className="block lg:hidden"
           />

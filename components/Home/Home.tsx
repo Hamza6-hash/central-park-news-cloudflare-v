@@ -113,9 +113,10 @@ export default function Home() {
               quality={75}
               loading="eager"
               priority={true}
-              unoptimized={!article.imageURL}
               className="object-cover protected-image"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 644px, 644px"
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
             />
           </div>
           <div className="flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">

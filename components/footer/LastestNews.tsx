@@ -18,8 +18,8 @@ const LastestNews = () => {
     const { data: articles, isLoading, error } = useQuery({
         queryKey: ['latestNews', pathname],
         queryFn: FetchLatestNews,
-        staleTime: 1000 * 60 * 7,
         retry: 2,
+        staleTime: 1000 * 60 * 7,
     })
 
 
@@ -170,7 +170,7 @@ const LastestNews = () => {
                         ref={productContainerRef}
                         className="w-full flex gap-4 overflow-x-scroll hide-scrollbar mx-auto py-1"
                     >
-                        {articles.map((article, index) => (
+                        {articles.slice(0,12).map((article, index) => (
                             <React.Fragment key={index}>
                                 <VerticalCard
                                     title={article.title}

@@ -2,7 +2,8 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import { formatedDate } from "@/lib/utils";
-import { routes } from "@/constants";
+import { defultImage, routes } from "@/constants";
+import SafeImage from "@/constants/SafeImage";
 
 interface VerticalCard {
     title: string;
@@ -34,7 +35,7 @@ const VerticalCard = ({
         <Link href={getLinkPath()} aria-label={title || "View article"} >
             <div className="bg-primary-300 min-w-[252px] max-w-[214px] h-[272px] relative rounded text-white overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <Image
+                    <SafeImage
                         src={imageURL}
                         alt={title || "Article image"}
                         fill
@@ -43,6 +44,7 @@ const VerticalCard = ({
                         quality={85}
                         priority={false}
                     />
+
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 p-4 z-20 bg-[#1E3D5AEB] transition-all duration-300 ease-in-out hover:bg-[#193753] hover:pb-6">

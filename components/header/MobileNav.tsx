@@ -52,10 +52,8 @@ const MobileNav = () => {
                         <Image
                             src={Logo}
                             width={220}
-                            priority={true}
-                            loading='eager'
                             height={89}
-                            quality={80}
+                            quality={75}
                             alt='Horizon logo'
                         />
                     </Link>

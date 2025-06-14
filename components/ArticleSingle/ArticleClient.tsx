@@ -7,26 +7,6 @@ import { fetchArticleBySlug } from "@/lib/query";
 import { StaticImageData } from "next/image";
 import { useQuery } from "@tanstack/react-query";
 
-interface Article {
-  id: string;
-  title: string;
-  content: string;
-  imageURL?: string;
-  authorId: string;
-  authorName?: string;
-  publishDate: {
-    seconds: number;
-    nanoseconds: number;
-  };
-  date?: string;
-  titleSlug?: string;
-  status?: string;
-  Position?: string;
-  authorImg: string | StaticImageData;
-  createdAt: string,
-  position: string,
-  authorImage: string | StaticImageData;
-}
 
 const ArticleClient = ({ slug }: { slug: string }) => {
 
@@ -116,7 +96,7 @@ const ArticleClient = ({ slug }: { slug: string }) => {
     <div className="w-full">
       <DynamicBlog
         title={article.title}
-        imageURL={article.imageURL || "/Blockchain-Default.jpg"}
+        imageURL={article.imageURL || "/Blockchain-Default.webp"}
         authorName={article.authorName || "Unknown Author"}
         authorPosition={article?.position || "Unknown positon"}
         authorImg={article?.authorImg || user}
