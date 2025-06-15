@@ -1,6 +1,6 @@
 "use client";
 
-import Image, { StaticImageData } from "next/image";
+import { StaticImageData } from "next/image";
 import Link from "next/link";
 import { defultImage, routes } from "@/constants";
 import TruncateText from "./TruncateProps";

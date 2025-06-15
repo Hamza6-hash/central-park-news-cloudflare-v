@@ -1,13 +1,10 @@
 "use client";
 import TopStories from "@/components/topStories/TopStories";
-import Image, { StaticImageData } from "next/image";
+import { StaticImageData } from "next/image";
 import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
 import ReactMarkdown from 'react-markdown';
-import { useQuery } from '@tanstack/react-query';
 import { defultImage } from "@/constants";
-import { fetchCombinedFeaturedItem } from "@/lib/query";
 import SafeImage from "@/constants/SafeImage";
 
 
@@ -37,7 +34,7 @@ export default function Home({ article }: HomeProps) {
   if (!article) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
-        <p className="text-gray-500 text-lg">No article found.</p>
+        <p className="text-gray-500 text-lg">No article Available.</p>
       </div>
     );
   }
@@ -49,7 +46,6 @@ export default function Home({ article }: HomeProps) {
         <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
 
         <div className="space-y-3 mb-4">
-          {/* Fixed height title container to prevent CLS */}
           <div className="min-h-[48px] flex items-start">
             <Link
               href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug}`}
@@ -60,9 +56,7 @@ export default function Home({ article }: HomeProps) {
             </Link>
           </div>
 
-          {/* Fixed aspect ratio container with placeholder to prevent CLS */}
           <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
-            {/* Background placeholder */}
             <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-lg"></div>
 
             <SafeImage
@@ -78,8 +72,6 @@ export default function Home({ article }: HomeProps) {
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQ0IiBoZWlnaHQ9IjQzMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIHN0b3AtY29sb3I9IiNmM2Y0ZjYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlNWU3ZWIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PC9zdmc+"
             />
           </div>
-
-          {/* Fixed height meta container to prevent CLS */}
           <div className="min-h-[24px] flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
             <hr className="w-4 sm:w-6 h-1" />
             <h6 className="capitalize font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">

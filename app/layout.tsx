@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import QueryProviders from '@/ReatQuery/provider';
 
-import dynamic from "next/dynamic";
 import Header from "@/components/header/Header";
 import FontLinks from "@/components/fontLinks/FontLinks";
 import Footer from "@/components/footer/Footer";

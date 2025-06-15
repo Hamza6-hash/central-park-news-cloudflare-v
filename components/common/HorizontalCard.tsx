@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import TruncateText from "./TruncateProps";
 import { formatedDate } from "@/lib/utils";
 import { StaticImageData } from "next/image";
