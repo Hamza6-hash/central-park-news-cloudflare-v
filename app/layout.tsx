@@ -5,7 +5,7 @@ import QueryProviders from '@/ReatQuery/provider';
 import dynamic from "next/dynamic";
 import Header from "@/components/header/Header";
 import FontLinks from "@/components/fontLinks/FontLinks";
-const Footer = dynamic(() => import('@/components/footer/Footer'), { ssr: false });
+import Footer from "@/components/footer/Footer";
 
 
 export const metadata: Metadata = {

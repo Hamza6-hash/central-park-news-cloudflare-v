@@ -8,11 +8,6 @@ import React, { useEffect } from "react";
 import { Form } from "@/components/ui/form";
 import CustomInput from "@/components/customInput/CustomInput";
 import { Button } from "@/components/button/Button";
-import AppDownloadButton from "../button/AppDownloadButton ";
-import { BiLogoPlayStore } from "react-icons/bi";
-import { IoLogoApple } from "react-icons/io5";
-import SocialMedia from "../common/SocialMedia";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const Banner = () => {
