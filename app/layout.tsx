@@ -3,7 +3,8 @@ import "./globals.css";
 import QueryProviders from '@/ReatQuery/provider';
 
 import dynamic from "next/dynamic";
-const Header = dynamic(() => import('@/components/header/Header'), { ssr: false });
+import Header from "@/components/header/Header";
+import FontLinks from "@/components/fontLinks/FontLinks";
 const Footer = dynamic(() => import('@/components/footer/Footer'), { ssr: false });
 
 
@@ -21,6 +22,9 @@ export default function RootLayout({
 
   return (
     <html lang="en" >
+    <head>
+      <FontLinks/>
+    </head>
       <body className="select-none">
         <QueryProviders>
           <Header />

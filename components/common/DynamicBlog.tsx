@@ -1,12 +1,17 @@
 
-import Image from "next/image";
 import { StaticImageData } from "next/image";
 import { formatedDate } from "@/lib/utils";
-import ReactMarkdown from "react-markdown";
+
 import { defultImage } from "@/constants";
 import { News } from "../NewsSingle/NewsClient";
-import BlogsCard from "../common/BlogsCard";
 import SafeImage from "@/constants/SafeImage";
+import dynamic from "next/dynamic";
+
+const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
+const BlogsCard = dynamic(() => import("../common/BlogsCard"), {
+  loading: () => <div className="w-full h-36 bg-gray-100 rounded-md" />, // optional placeholder
+  ssr: false, // optional: set to false if SEO isn't critical for related blogs
+});
 
 export interface DynamicBlogProps {
   title: string;
@@ -26,7 +31,6 @@ export interface DynamicBlogProps {
   createdAt?: string,
   category?: string,
 }
-
 
 
 const DynamicBlog: React.FC<DynamicBlogProps> = ({

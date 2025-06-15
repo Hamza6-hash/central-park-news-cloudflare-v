@@ -3,7 +3,7 @@ import HorizontalCard from "../common/HorizontalCard";
 import { usePathname } from "next/navigation";
 import { routes } from "@/constants";
 import { Button } from "../button/Button";
-import {useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import DummyImg from "@/assets/Blockchain-Default.webp";
 
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,7 +24,7 @@ interface Newsletter {
   isFeatured: boolean,
   updatedAt: string,
   type?: string;
-  category?:string,
+  category?: string,
 }
 
 
@@ -45,8 +45,8 @@ const TopStories = () => {
   if (error) {
     return (
       <div className="px-sm-generic">
-        <h2 className="font-bold text-2xl mb-4 font-century-gothic">
-          TOP <span className="text-primary-500">STORIES</span>
+        <h2 className="font-bold text-2xl mb-4 font-monserrat">
+          TOP <span className="text-[#26619C]">STORIES</span>
         </h2>
         <div className="text-red-500">
           Error loading newsletters. Please try again later.
@@ -58,8 +58,9 @@ const TopStories = () => {
   if (isLoading) {
     return (
       <div className="px-sm-generic">
-        <h2 className="font-bold text-2xl mb-4 font-century-gothic">
-          TOP <span className="text-primary-500">STORIES</span>
+        <h2 className="font-bold text-2xl mb-4 flex gap-2">
+          <Skeleton className="h-6 w-[60px] bg-gray-100" />
+          <Skeleton className="h-6 w-[90px] bg-gray-100" />
         </h2>
         <div className="flex flex-col xl:gap-5 sm:gap-7 gap-8">
           {[1, 2, 3].map((index) => (
@@ -87,8 +88,10 @@ const TopStories = () => {
   return (
     <div className="px-sm-generic">
       <h2 className="font-bold text-2xl mb-4 font-century-gothic">
-        TOP <span className="text-primary-500">STORIES</span>
+        <span className="mr-2">TOP</span>
+        <span className="text-[#26619C]">STORIES</span>
       </h2>
+
       <div className="flex flex-col xl:gap-5 sm:gap-7 gap-8">
         {displayedNewsletters?.slice(0, 7).map((newsletter: Newsletter) => {
           const formattedDate = newsletter.createdAt

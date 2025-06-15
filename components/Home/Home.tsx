@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import { useQuery } from '@tanstack/react-query';
 import { defultImage } from "@/constants";
 import { fetchCombinedFeaturedItem } from "@/lib/query";
+import SafeImage from "@/constants/SafeImage";
 
 
 interface Article {
@@ -40,34 +41,81 @@ export default function Home() {
     staleTime: 1000 * 60 * 7,
   });
 
+  // if (loading) {
+  //   return (
+  //     <section className="flex gap-9 max-xl:flex-col w-full px-0 max-w-[1200px] mx-auto">
+  //       <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
+  //         <div className="space-y-3 mb-4 px-4">
+  //           <Skeleton className="h-8 w-3/4 bg-gray-100" />
+  //           <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
+  //             <Skeleton className="h-full w-full rounded-lg bg-gray-100" />
+  //           </div>
+  //           <div className="flex items-center gap-2">
+  //             <Skeleton className="h-4 w-4 bg-gray-100" />
+  //             <Skeleton className="h-4 w-32 bg-gray-100" />
+  //             <Skeleton className="h-4 w-4 bg-gray-100" />
+  //             <Skeleton className="h-4 w-24 bg-gray-100" />
+  //           </div>
+  //         </div>
+  //         <div className="px-4 space-y-4">
+  //           {[1, 2, 3, 4].map((index) => (
+  //             <Skeleton key={index} className="h-4 w-full bg-gray-100" />
+  //           ))}
+  //         </div>
+  //       </div>
+  //       <div className="xl:w-[520px] w-full">
+  //         <TopStories />
+  //       </div>
+  //     </section>
+  //   );
+  // }
+
   if (loading) {
     return (
-      <section className="flex gap-9 max-xl:flex-col w-full px-0 max-w-[1200px] mx-auto">
+      <section className="flex gap-9 max-xl:flex-col w-full px-0 max-w-[1200px] mx-auto text-[12px] sm:text-base">
         <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
-          <div className="space-y-3 mb-4 px-4">
-            <Skeleton className="h-8 w-3/4 bg-gray-100" />
+          <div className="px-4 mb-4 space-y-3">
+            {/* Title skeleton */}
+            <Skeleton className="h-10 w-3/4 bg-gray-100" />
+
+            {/* Image skeleton */}
             <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
               <Skeleton className="h-full w-full rounded-lg bg-gray-100" />
             </div>
-            <div className="flex items-center gap-2">
+
+            {/* Meta (author + date) skeleton */}
+            <div className="flex items-center gap-2 flex-wrap">
               <Skeleton className="h-4 w-4 bg-gray-100" />
               <Skeleton className="h-4 w-32 bg-gray-100" />
               <Skeleton className="h-4 w-4 bg-gray-100" />
               <Skeleton className="h-4 w-24 bg-gray-100" />
             </div>
           </div>
+
+          {/* Body content placeholder */}
           <div className="px-4 space-y-4">
-            {[1, 2, 3, 4].map((index) => (
+            {[...Array(6)].map((_, index) => (
               <Skeleton key={index} className="h-4 w-full bg-gray-100" />
             ))}
           </div>
+
+          {/* Ad section placeholder */}
+          <div className="flex flex-col w-full mb-6 mt-10 sm:px-3 md:p-4 gap-4 items-end justify-end">
+            <div className="flex w-full flex-col max-[360px]:items-start sm:flex-row sm:items-end justify-between gap-4">
+              <Skeleton className="h-5 w-24 bg-gray-100" />
+              <Skeleton className="w-full max-w-[300px] aspect-square bg-gray-100 rounded" />
+            </div>
+            <Skeleton className="w-full max-w-[600px] aspect-[600/314] bg-gray-100 rounded" />
+          </div>
         </div>
+
         <div className="xl:w-[520px] w-full">
           <TopStories />
         </div>
       </section>
     );
   }
+
 
   if (error) {
     return (
@@ -100,13 +148,13 @@ export default function Home() {
             href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug
               }`}
           >
-            <h1 className="font-century-schoolbook sm:text-[12px] text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-2">
+            <h1 className="min-h-[48px] font-century-schoolbook sm:text-[12px] text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-2">
               {article.title}
             </h1>
           </Link>
 
           <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
-            <Image
+            <SafeImage
               src={article.imageURL || defultImage}
               alt={article.title}
               fill
@@ -115,9 +163,8 @@ export default function Home() {
               priority={true}
               className="object-cover protected-image"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 644px, 644px"
-              onContextMenu={(e) => e.preventDefault()}
-              onDragStart={(e) => e.preventDefault()}
             />
+
           </div>
           <div className="flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
             <hr className="w-4 sm:w-6 h-1" />
