@@ -39,18 +39,19 @@ const HorizontalCard = ({
     return (
         <Link href={getLinkPath()}>
             <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 rounded-lg cursor-pointer">
-                <div className="md:w-[210px]">
-                    <SafeImage
-                        src={imageURL}
-                        priority={true}
-                        loading="eager"
-                        height={800}
-                        alt="new image"
-                        width={800}
-                        quality={100}
-                        className="md:max-w-[204px] md:h-[208px] rounded-md pointer-events-none select-none"
-                        style={{ objectFit: "cover" }}
-                    />
+                <div className="md:w-[210px] w-full"> 
+                    <div className="relative w-full md:w-[204px] md:h-[208px] aspect-[204/208]"> 
+                        <SafeImage
+                            src={imageURL}
+                            priority={true}
+                            loading="eager"
+                            fill
+                            alt="new image"
+                            quality={75}
+                            className="rounded-md pointer-events-none select-none object-cover"
+                            sizes="(max-width: 768px) 100vw, 204px"
+                        />
+                    </div>
                 </div>
 
 
