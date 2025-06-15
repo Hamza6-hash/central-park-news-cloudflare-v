@@ -15,17 +15,19 @@ const Navbar = () => {
   return (
     <section className="navbar">
       <div className="flex justify-between items-center w-full lg:hidden">
-        <Link href={routes.home} rel="preload">
+        {/* <Link href={routes.home} rel="preload">
           <Image
             src={Logo}
             alt="Horizon logo"
             quality={75}
             width={120}
+            priority={true}
+            loading="eager"
             height={60}
             style={{ objectFit: "cover", }}
             className="block lg:hidden"
           />
-        </Link>
+        </Link> */}
         <div className="ml-auto">
           {/* <MobileNav /> */}
         </div>
@@ -36,7 +38,9 @@ const Navbar = () => {
           <Image
             src={Logo}
             alt="Horizon logo"
-            quality={100}
+            quality={75}
+            priority={true}
+            loading="eager"
             width={120}
             height={80}
             style={{ width: "auto", height: "auto" }}

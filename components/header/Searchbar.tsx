@@ -94,12 +94,13 @@ const Searchbar = () => {
             <button
               onClick={() => setIsModalOpen(true)}
               aria-label="Open search"
-              className="ml-2"
+              className="ml-2 w-6 h-6 flex items-center justify-center"
             >
-              <Search />
+              <Search className="w-5 h-5 text-black" />
             </button>
+
           </div>
-          
+
         )}
         {/* <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} /> */}
 
@@ -192,7 +193,7 @@ const Searchbar = () => {
           </div>
         )}
       </div>
-      
+
       <style jsx>{`
         @keyframes fadeIn {
           from {

@@ -2,7 +2,7 @@
 // const nextConfig = {
 //   reactStrictMode: true,
 //   swcMinify: true,
- 
+
 //   images: {
 //     remotePatterns: [
 //       {
@@ -29,24 +29,25 @@
 
 // export default nextConfig;
 
-
 // ---------------------------------------------------------------------------------
 
 // next.config.mjs
 
 // Correct ES module import for the bundle analyzer
 // Note: This needs to be at the top-level.
-import bundleAnalyzer from '@next/bundle-analyzer';
+import bundleAnalyzer from "@next/bundle-analyzer";
 
 const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
+  enabled: process.env.ANALYZE === "true",
 });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
- 
+  experimental: {
+    scrollRestoration: true,
+  },
   images: {
     remotePatterns: [
       {

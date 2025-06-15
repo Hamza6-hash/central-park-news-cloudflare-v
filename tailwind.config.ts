@@ -71,7 +71,7 @@ const config = {
       },
       fontFamily: {
         "Century-751-BT": ["Century-BT", "sans-serif"],
-        "century-schoolbook": ["century-schoolbook", "sans-serif"],
+        "century-schoolbook": ["century-schoolbook", "sans-serif", "Arial"],
         "century-gothic": ["century-gothic", "sans-serif"],
         "font-century-725-cn": ["Century-725-CN", "sans-serif"],
         inter: ['Inter', 'sans-serif'],
