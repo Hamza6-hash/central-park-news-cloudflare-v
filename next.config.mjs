@@ -49,6 +49,7 @@ const nextConfig = {
     scrollRestoration: true,
   },
   images: {
+
     remotePatterns: [
       {
         protocol: "https",

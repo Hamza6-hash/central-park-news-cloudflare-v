@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const article = await fetchCombinedFeaturedItem();
-
   return <Home article={article} />;
 }
+
+export const revalidate = false; 

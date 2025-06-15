@@ -7,7 +7,6 @@ import { routes } from "@/constants";
 import dynamic from "next/dynamic";
 import LastestNews from "./LastestNews";
 
-// Dynamically import heavy components
 const SuggestedBlogs = dynamic(() => import("../suggestedBlogs/SuggestedBlogs"), {
   ssr: false,
 });
