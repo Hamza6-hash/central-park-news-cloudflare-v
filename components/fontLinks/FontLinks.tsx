@@ -1,6 +1,12 @@
 export default function FontLinks() {
   return (
     <>
+      <link
+        rel="preload"
+        as="image"
+        href="/Blockchain-Default.webp"
+        fetchPriority="high"
+      />
       {/* Google Fonts */}
       {/* <link rel="preconnect" href="https://fonts.googleapis.com" /> */}
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

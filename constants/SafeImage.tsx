@@ -9,15 +9,22 @@ interface SafeImageProps extends Omit<ImageProps, "src"> {
 
 const SafeImage: React.FC<SafeImageProps> = ({ src, alt, ...rest }) => {
   const [imgSrc, setImgSrc] = useState(src || defultImage);
+  const [hasError, setHasError] = useState(false);
 
   return (
     <Image
       {...rest}
       src={imgSrc}
       alt={alt}
-      onError={() => setImgSrc(defultImage)}
+      onError={() => {
+        if (!hasError) {
+          setHasError(true);
+          setImgSrc(defultImage);
+        }
+      }}
+      onLoad={() => setHasError(false)}
     />
   );
 };
 
-export default SafeImage;
+export default SafeImage; 
