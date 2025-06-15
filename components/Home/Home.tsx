@@ -28,107 +28,11 @@ interface Article {
   type: string
 }
 
-export default function Home() {
+interface HomeProps {
+  article: Article | null;
+}
 
-  const {
-    data: article,
-    isLoading: loading,
-    error
-  } = useQuery<Article>({
-    queryKey: ["featuredArticle"],
-    queryFn: fetchCombinedFeaturedItem,
-    retry: 2,
-    staleTime: 1000 * 60 * 7,
-  });
-
-  // if (loading) {
-  //   return (
-  //     <section className="flex gap-9 max-xl:flex-col w-full px-0 max-w-[1200px] mx-auto">
-  //       <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
-  //         <div className="space-y-3 mb-4 px-4">
-  //           <Skeleton className="h-8 w-3/4 bg-gray-100" />
-  //           <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
-  //             <Skeleton className="h-full w-full rounded-lg bg-gray-100" />
-  //           </div>
-  //           <div className="flex items-center gap-2">
-  //             <Skeleton className="h-4 w-4 bg-gray-100" />
-  //             <Skeleton className="h-4 w-32 bg-gray-100" />
-  //             <Skeleton className="h-4 w-4 bg-gray-100" />
-  //             <Skeleton className="h-4 w-24 bg-gray-100" />
-  //           </div>
-  //         </div>
-  //         <div className="px-4 space-y-4">
-  //           {[1, 2, 3, 4].map((index) => (
-  //             <Skeleton key={index} className="h-4 w-full bg-gray-100" />
-  //           ))}
-  //         </div>
-  //       </div>
-  //       <div className="xl:w-[520px] w-full">
-  //         <TopStories />
-  //       </div>
-  //     </section>
-  //   );
-  // }
-
-  if (loading) {
-    return (
-      <section className="flex gap-9 max-xl:flex-col w-full px-0 max-w-[1200px] mx-auto text-[12px] sm:text-base">
-        <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
-          <div className="px-4 mb-4 space-y-3">
-            {/* Title skeleton */}
-            <Skeleton className="h-10 w-3/4 bg-gray-100" />
-
-            {/* Image skeleton */}
-            <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-full">
-              <Skeleton className="h-full w-full rounded-lg bg-gray-100" />
-            </div>
-
-            {/* Meta (author + date) skeleton */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <Skeleton className="h-4 w-4 bg-gray-100" />
-              <Skeleton className="h-4 w-32 bg-gray-100" />
-              <Skeleton className="h-4 w-4 bg-gray-100" />
-              <Skeleton className="h-4 w-24 bg-gray-100" />
-            </div>
-          </div>
-
-          {/* Body content placeholder */}
-          <div className="px-4 space-y-4">
-            {[...Array(6)].map((_, index) => (
-              <Skeleton key={index} className="h-4 w-full bg-gray-100" />
-            ))}
-          </div>
-
-          {/* Ad section placeholder */}
-          <div className="flex flex-col w-full mb-6 mt-10 sm:px-3 md:p-4 gap-4 items-end justify-end">
-            <div className="flex w-full flex-col max-[360px]:items-start sm:flex-row sm:items-end justify-between gap-4">
-              <Skeleton className="h-5 w-24 bg-gray-100" />
-              <Skeleton className="w-full max-w-[300px] aspect-square bg-gray-100 rounded" />
-            </div>
-            <Skeleton className="w-full max-w-[600px] aspect-[600/314] bg-gray-100 rounded" />
-          </div>
-        </div>
-
-        <div className="xl:w-[520px] w-full">
-          <TopStories />
-        </div>
-      </section>
-    );
-  }
-
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
-        <p className="text-red-500 text-lg mb-4">{error.message}</p>
-        <button
-          className="bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600 transition-colors"
-        >
-          Try Again
-        </button>
-      </div>
-    );
-  }
+export default function Home({ article }: HomeProps) {
 
   if (!article) {
     return (

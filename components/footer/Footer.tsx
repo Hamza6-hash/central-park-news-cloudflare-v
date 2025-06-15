@@ -5,14 +5,13 @@ import FooterLinks from "./FooterLinks";
 import { usePathname } from "next/navigation";
 import { routes } from "@/constants";
 import dynamic from "next/dynamic";
+import LastestNews from "./LastestNews";
 
 // Dynamically import heavy components
 const SuggestedBlogs = dynamic(() => import("../suggestedBlogs/SuggestedBlogs"), {
   ssr: false,
 });
-const LastestNews = dynamic(() => import("./LastestNews"), {
-  ssr: false,
-});
+
 
 const Footer = () => {
   const pathName = usePathname();
