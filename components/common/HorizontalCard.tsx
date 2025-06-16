@@ -15,6 +15,7 @@ interface HorizontalCard {
     titleSlug?: string;
     type?: string;
     category_name?: string,
+    imageName?: string
 }
 
 const HorizontalCard = ({
@@ -25,7 +26,8 @@ const HorizontalCard = ({
     content,
     titleSlug = "",
     type,
-    category_name
+    category_name,
+    imageName,
 }: HorizontalCard) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
     const getLinkPath = () => {
@@ -38,19 +40,21 @@ const HorizontalCard = ({
     return (
         <Link href={getLinkPath()}>
             <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 rounded-lg cursor-pointer">
-                <div className="md:w-[210px] w-full"> 
-                    <div className="relative w-full md:w-[204px] md:h-[208px] aspect-[204/208]"> 
+                <div className="md:w-[210px] w-full">
+                    <div className="relative w-full md:w-[204px] aspect-[204/208]">
                         <SafeImage
                             src={imageURL}
                             priority={true}
                             loading="eager"
                             fill
-                            alt="new image"
+                            alt={imageName || 'No Name'}
                             quality={75}
-                            className="rounded-md pointer-events-none select-none object-cover"
-                            sizes="(max-width: 768px) 100vw, 204px"
+                            className="rounded-md pointer-events-none select-none"
+                            sizes="(max-width: 768px) 100vw, (min-width: 769px) 204px"
+
                         />
                     </div>
+
                 </div>
 
 

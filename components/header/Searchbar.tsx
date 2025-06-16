@@ -115,7 +115,7 @@ const Searchbar = () => {
               onClick={(e) => e.stopPropagation()} // Prevent modal close on clicking inside
             >
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">Search Articles</h2>
+                <h2 className="text-xl font-bold">Search News</h2>
                 <button
                   aria-label="Close search"
                   onClick={() => setIsModalOpen(false)}
@@ -132,7 +132,7 @@ const Searchbar = () => {
                   className="bg-transparent border-none focus:outline-none text-[#BFD3E3] font-century-gothic text-[16px] not-italic font-[400] leading-normal w-full"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search articles..."
+                  placeholder="Search news..."
                   autoFocus
                 />
                 {searchTerm ? (

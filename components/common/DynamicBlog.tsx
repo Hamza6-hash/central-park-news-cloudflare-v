@@ -55,9 +55,9 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
 
   return (
     <section className="pt-0">
-      <div className="mt-1">
+      <div className="mt-1 mb-4">
         <div className="space-y-3 mb-4">
-          <div className="sm:x-sm-generic ">
+          <div className="sm:x-sm-generic mt-4 ">
             {isArticlePage ? (
               <h1 className="font-century-schoolbook text-3xl capitalize">
                 {title}
@@ -68,8 +68,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               </h1>
             )}
           </div>
-
-          <div className="relative w-full max-w-[1200px] h-[514px]">
+          <div className="relative w-full max-w-[1200px] aspect-[1200/514]">
             <SafeImage
               src={imageURL || defultImage}
               alt={title}
@@ -77,10 +76,11 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               quality={80}
               loading="eager"
               priority
-              className="object-cover pointer-events-none select-none"
+              className="pointer-events-none select-none"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
             />
           </div>
+
 
           <div className="flex items-center sm:text-lg text-sm px-sm-generic gap-2 max-[400px]:flex-col max-[400px]:justify-start max-[400px]:items-start">
             <div className="flex items-center gap-2">

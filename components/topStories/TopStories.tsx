@@ -25,6 +25,7 @@ interface Newsletter {
   updatedAt: string,
   type?: string;
   category?: string,
+  imageName?:string,
 }
 
 
@@ -103,6 +104,7 @@ const TopStories = () => {
               <HorizontalCard
                 title={newsletter.title || "-"}
                 imageURL={newsletter.imageURL || DummyImg}
+                imageName={newsletter.imageName || 'No Name'}
                 authorName={newsletter.authorName || "Docket Digest New Room"}
                 publishDate={formattedDate}
                 content={newsletter.content || "-"}
