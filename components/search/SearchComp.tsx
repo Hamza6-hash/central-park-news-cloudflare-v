@@ -96,22 +96,21 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
     setError(null);
   };
 
-  if (!isOpen) return null; // Don't render if modal closed
+  if (!isOpen) return null; 
 
   return (
     <section className="pt-[10px] px-generic w-full flex justify-center items-center">
       <div className="">
-        {/* Modal */}
         <div
           className="fixed mx-4 sm:mx-0 inset-0 flex justify-center items-center z-50 animate-fadeIn"
-          onClick={onClose} // Close on clicking backdrop
+          onClick={onClose} 
         >
           <div
             className="bg-white rounded-lg p-6 w-[600px] shadow-2xl max-w-full animate-slideUp"
-            onClick={(e) => e.stopPropagation()} // Prevent modal close on clicking inside
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Search Articles</h2>
+              <h2 className="text-xl font-bold">Search News</h2>
               <button
                 aria-label="Close search"
                 onClick={onClose}
@@ -128,7 +127,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
                 className="bg-transparent border-none focus:outline-none text-[#BFD3E3] font-century-gothic text-[16px] not-italic font-[400] leading-normal w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search articles..."
+                placeholder="Search news..."
                 autoFocus
               />
               {searchTerm ? (

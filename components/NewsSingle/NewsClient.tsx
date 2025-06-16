@@ -5,6 +5,10 @@ import user from '/assets/user.png'
 import { StaticImageData } from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNewsBySlug } from "@/lib/query";
+import { useState } from "react";
+import { Search } from "lucide-react";
+import Searchbar from "../search/SearchComp";
+import Link from "next/link";
 
 export interface News {
   id: string;
@@ -34,6 +38,7 @@ export interface News {
 }
 
 const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, relatedNews: News[] }) => {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const { data: news, isLoading } = useQuery({
     queryKey: ['fetchSingleNews', slug],
@@ -113,6 +118,39 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
 
   return (
     <div className="w-full ">
+      <div className="w-full">
+        <div className="w-full sm:w-[537px] h-[2px] bg-[#252525]"></div>
+        <div className="flex flex-col gap-4 mt-2 mb-4 ">
+          <h1 className="text-lg sm:text-[18px] font-century-gothic text-black capitalize flex flex-wrap items-center gap-1">
+            <span>Blockchain Briefing</span>
+            <span className="text-[#1E3D5A]">/</span>
+            <span className="cursor-pointer">
+              <Link href={'/news'}>
+              News
+              </Link>
+              </span>
+            <span className="text-[#1E3D5A]">/</span>
+            <span className="font-bold text-[#1E3D5A] flex items-center gap-1 flex-wrap">
+              {news.title}
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="ml-1 mt-[2px]"
+                aria-label="Open Search"
+              >
+                <Search className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </span>
+          </h1>
+
+          {/* Searchbar modal */}
+          <Searchbar
+            isOpen={isSearchOpen}
+            onClose={() => setIsSearchOpen(false)}
+          />
+        </div>
+      </div>
+
+
       <DynamicBlog
         title={news.title}
         category={news?.category}

@@ -90,17 +90,47 @@ export default function NewsArticleCollection() {
 
     return (
         <section className="w-full">
-            <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
-            <div className="flex gap-2 items-center max-w-7xl mx-auto w-full ">
-                <h1 className="heading md:text-left ">{pageTitle}</h1>
-                <button onClick={(e) => setIsSearchOpen(true)
-                }><Search /></button>
+            <div className="max-w-7xl mx-auto w-full px-4 py-3">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                    <div
+                        className="w-20 h-0.5 border-0"
+                        style={{
+                            background: 'linear-gradient(90deg, #408ED7 0%, #224B71 100%)',
+                        }}
+                    ></div>
 
+                    <div className="flex flex-row gap-3 w-full ">
+
+
+                        <h1 className="text-xl md:text-2xl font-century-gothic font-bold text-[#2B4864]">
+                            {pageTitle}
+                        </h1>
+
+                        <button
+                            onClick={() => setIsSearchOpen(true)}
+                            className=" mt-2 sm:mt-0"
+                        >
+                            <Search color="#408ED6" />
+                        </button>
+                    </div>
+                </div>
+
+
+
+                {/* Subtitle Section */}
+                <div className="mt-4">
+                    <h2 className="text-base md:text-lg text-[#2B4864] font-century-gothic">
+                        Blockchain Briefing / <span className="font-semibold">News</span>
+                    </h2>
+
+                </div>
                 <Searchbar
                     isOpen={isSearchOpen}
                     onClose={() => setIsSearchOpen(false)}
                 />
             </div>
+
+
 
             {/* Loading State */}
             {loading ? (

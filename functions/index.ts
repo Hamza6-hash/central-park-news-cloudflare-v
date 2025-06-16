@@ -23,7 +23,6 @@ async function triggerRevalidation(reason) {
   }
 }
 
-// Articles triggers
 exports.onArticleCreated = onDocumentCreated(
     "blog/blockchainBriefing/articles/{articleId}",
     // @ts-ignore
@@ -55,7 +54,6 @@ exports.onArticleUpdated = onDocumentUpdated(
   }
 );
 
-// Newsletter triggers
 exports.onNewsletterCreated = onDocumentCreated(
   "blog/blockchainBriefing/newsletter/{newsletterId}",
   // @ts-ignore

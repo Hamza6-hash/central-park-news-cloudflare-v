@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @font-face {
   font-family: "Century-BT";
   src: url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.eot");
@@ -250,3 +251,7 @@
 }
 
 
+.img {
+  -webkit-user-drag: none;
+  user-select: none;
+}

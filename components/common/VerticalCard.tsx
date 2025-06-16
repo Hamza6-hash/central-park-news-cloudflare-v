@@ -32,7 +32,8 @@ const VerticalCard = ({
 
     return (
         <Link href={getLinkPath()} aria-label={title || "View article"} >
-            <div className="bg-primary-300 min-w-[252px] max-w-[214px] h-[272px] relative rounded text-white overflow-hidden">
+            {/* <div className="bg-primary-300 min-w-[252px] max-w-[214px] h-[272px] relative rounded text-white overflow-hidden"> */}
+            <div className="bg-primary-300 w-[245px] h-[272px] relative rounded text-white overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <SafeImage
                         src={imageURL}
