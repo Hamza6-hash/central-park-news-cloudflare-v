@@ -1,31 +1,37 @@
-const { onDocumentCreated, onDocumentDeleted, onDocumentUpdated } = require("firebase-functions/v2/firestore");
+const {
+  onDocumentCreated,
+  onDocumentDeleted,
+  onDocumentUpdated,
+} = require("firebase-functions/v2/firestore");
 const { logger } = require("firebase-functions");
 
 const REVALIDATION_SECRET = "blockchain-briefing-secret-key-2024";
-const FRONTEND_URL = "https://blockchain-briefing.vercel.app/"; 
+const FRONTEND_URL = "https://blockchain-briefing.vercel.app/";
 
 // @ts-ignore
 async function triggerRevalidation(reason) {
   try {
     logger.info(`Triggering revalidation: ${reason}`);
-    
-    const response = await fetch(`${FRONTEND_URL}/api/revalidate?secret=${REVALIDATION_SECRET}`, {
-      method: 'POST'
+
+    const response = await fetch(`${FRONTEND_URL}/api/revalidate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ secret: REVALIDATION_SECRET }),
     });
 
     if (!response.ok) {
       throw new Error(`Revalidation failed: ${response.status}`);
     }
 
-    logger.info('Homepage revalidated successfully');
+    logger.info("Homepage revalidated successfully");
   } catch (error) {
-    logger.error('Revalidation failed:', error);
+    logger.error("Revalidation failed:", error);
   }
 }
 
 exports.onArticleCreated = onDocumentCreated(
-    "blog/blockchainBriefing/articles/{articleId}",
-    // @ts-ignore
+  "blog/blockchainBriefing/articles/{articleId}",
+  // @ts-ignore
   async (event) => {
     const data = event.data?.data();
     if (data?.status === "published") {
@@ -47,7 +53,7 @@ exports.onArticleUpdated = onDocumentUpdated(
   async (event) => {
     const before = event.data?.before.data();
     const after = event.data?.after.data();
-    
+
     if (before?.status !== after?.status) {
       await triggerRevalidation(`Article status changed`);
     }
@@ -78,7 +84,7 @@ exports.onNewsletterUpdated = onDocumentUpdated(
   async (event) => {
     const before = event.data?.before.data();
     const after = event.data?.after.data();
-    
+
     if (before?.status !== after?.status) {
       await triggerRevalidation(`Newsletter status changed`);
     }

@@ -20,6 +20,7 @@ interface BlogsCard {
   createdAt?: string;
   category_name?: string,
   showTrending?: boolean,
+  isFeatured?:boolean 
 }
 
 const BlogsCard = ({
@@ -32,7 +33,8 @@ const BlogsCard = ({
   type = "article",
   category_name,
   createdAt,
-  showTrending = true
+  showTrending = true,
+  isFeatured =  false,
 }: BlogsCard) => {
   const formattedDate = createdAt
     ? new Date(createdAt).toLocaleDateString("en-US", {
@@ -55,7 +57,7 @@ const BlogsCard = ({
         <div className="bg-[#67B6DF24] rounded-lg overflow-hidden shadow-sm  duration-300 ease-in-out group-hover:shadow-lg group-hover:scale-[1.02]">
 
           <div className="relative w-full h-[200px] overflow-hidden">
-            {showTrending && (
+            {isFeatured && (
               <div className="absolute top-4 right-4 z-10">
                 <span className="bg-[#FFD910] text-[#7D6901] text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
                   <Zap className="w-4 h-4" />

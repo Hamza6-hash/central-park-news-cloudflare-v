@@ -121,9 +121,7 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
       <div className="w-full">
         <div className="w-full sm:w-[537px] h-[2px] bg-[#252525]"></div>
         <div className="flex flex-col gap-4 mt-2 mb-4 ">
-          <h1 className="text-lg sm:text-[18px] font-century-gothic text-black capitalize flex flex-wrap items-center gap-1">
-            <span>Blockchain Briefing</span>
-            <span className="text-[#1E3D5A]">/</span>
+          <h1 className="text-lg sm:text-[18px] font-century-gothic text-black capitalize flex flex-wrap items-center gap-[16px]">
             <span className="cursor-pointer">
               <Link href={'/news'}>
               News
@@ -143,10 +141,7 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
           </h1>
 
           {/* Searchbar modal */}
-          <Searchbar
-            isOpen={isSearchOpen}
-            onClose={() => setIsSearchOpen(false)}
-          />
+        
         </div>
       </div>
 
@@ -165,6 +160,10 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
         mainHeading="News"
         relatedNews={relatedNews}
       />
+        <Searchbar
+            isOpen={isSearchOpen}
+            onClose={() => setIsSearchOpen(false)}
+          />
     </div>
   );
 };
