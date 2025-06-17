@@ -13,4 +13,4 @@ export default async function HomePage() {
   return <Home article={article} />;
 }
 
-export const revalidate = false; 
+export const revalidate = 0; 

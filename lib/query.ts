@@ -38,6 +38,7 @@ interface Article {
   authorImage: string | StaticImageData;
   type?: "article" | "news";
   category_name?: string;
+  isFeatured?:boolean
 }
 interface News {
   id: string;
@@ -58,6 +59,7 @@ interface News {
   status: string;
   position: string;
   category?: string;
+  isFeatured?:boolean
 }
 
 interface Newsletter {
@@ -498,6 +500,7 @@ export const FetchArticleNewsData = async ({
         title: data.title || "",
         content: data.content || "",
         imageURL: data.imageURL || defultImage,
+        isFeatured: data.isFeatured,
         authorId: data.authorId || "",
         authorName: authorName,
         categoryId: data.categoryId,

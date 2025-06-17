@@ -113,19 +113,20 @@ const LastestNews = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-
-            <CarouselPrevious className="absolute text-black border-black -left-10 top-1/2 -translate-y-1/2 z-10" />
-            <CarouselNext className="absolute text-black border-black -right-10 top-1/2 -translate-y-1/2 z-10" />
             
+            <div className="hidden sm:flex">
+              <CarouselPrevious className="absolute text-black border-black -left-10 top-1/2 -translate-y-1/2 z-10" />
+              <CarouselNext className="absolute text-black border-black -right-10 top-1/2 -translate-y-1/2 z-10" />
+            </div>
+
             {/* Active Pagination Dots */}
             <div className="flex justify-center mt-6 gap-2">
-              {articles.slice(0, 12).map((_, index) => (
+              {articles.slice(0, 5).map((_, index) => (
                 <button
                   key={index}
                   onClick={() => api?.scrollTo(index)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    current === index ? "bg-white" : "bg-gray-500"
-                  }`}
+                  className={`w-2 h-2 rounded-full transition-colors ${current === index ? "bg-white" : "bg-gray-500"
+                    }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}

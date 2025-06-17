@@ -42,6 +42,7 @@ export default function NewsArticleCollection() {
     });
 
 
+    console.log(item)
 
     // Extract data from useQuery result
     const items = item?.items || [];
@@ -124,10 +125,7 @@ export default function NewsArticleCollection() {
                     </h2>
 
                 </div>
-                <Searchbar
-                    isOpen={isSearchOpen}
-                    onClose={() => setIsSearchOpen(false)}
-                />
+
             </div>
 
 
@@ -165,6 +163,7 @@ export default function NewsArticleCollection() {
                                     title={item.title}
                                     content={item.content}
                                     imageURL={item.imageURL || defultImage}
+                                    isFeatured={item.isFeatured || false}
                                     authorName={item.authorName}
                                     // publishDate={item.publishDate}
                                     createdAt={item.createdAt}
@@ -175,6 +174,10 @@ export default function NewsArticleCollection() {
                                 />
                             </div>
                         ))}
+                        <Searchbar
+                            isOpen={isSearchOpen}
+                            onClose={() => setIsSearchOpen(false)}
+                        />
                     </div>
 
                     {/* Updated Pagination */}
