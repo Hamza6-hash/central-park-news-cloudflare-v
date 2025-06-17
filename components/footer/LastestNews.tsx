@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import VerticalCard from "../common/VerticalCard";
 import { usePathname } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,11 +15,14 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
+import { useEffect, useState } from "react";
 
 const LastestNews = () => {
   const pathname = usePathname();
-  const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(true);
 
   const {
     data: articles,
@@ -33,12 +35,21 @@ const LastestNews = () => {
     staleTime: 1000 * 60 * 7,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!api) return;
 
-    api.on("select", () => {
+    const updateScrollState = () => {
       setCurrent(api.selectedScrollSnap());
-    });
+      setCanScrollPrev(api.canScrollPrev());
+      setCanScrollNext(api.canScrollNext());
+    };
+
+    api.on("select", updateScrollState);
+    updateScrollState(); 
+
+    return () => {
+      api.off("select", updateScrollState);
+    };
   }, [api]);
 
   if (isLoading) {
@@ -78,6 +89,28 @@ const LastestNews = () => {
 
   if (!articles?.length) return null;
 
+  // Calculate total number of dots (4 dots for 12 articles = 3 articles per dot)
+  const totalDots = 4;
+  const articlesPerDot = 3;
+  
+  // Better dot calculation that handles edge cases
+  const getCurrentDot = () => {
+    if (!api) return 0;
+    
+    const totalSlides = Math.min(articles?.length || 0, 12);
+    const currentSlide = current;
+    
+    // If we're at or near the end, activate the last dot
+    if (currentSlide >= totalSlides - 4) {
+      return totalDots - 1;
+    }
+    
+    // Otherwise use the standard calculation
+    return Math.floor(currentSlide / articlesPerDot);
+  };
+  
+  const currentDot = getCurrentDot();
+
   return (
     <section className="lastestNews py-[58px] px-8">
       <div className="max-width w-full">
@@ -90,6 +123,7 @@ const LastestNews = () => {
             opts={{
               align: "start",
               loop: false,
+              slidesToScroll: 1,
             }}
           >
             <CarouselContent className="-ml-3">
@@ -113,21 +147,26 @@ const LastestNews = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            
+
             <div className="hidden sm:flex">
-              <CarouselPrevious className="absolute text-black border-black -left-10 top-1/2 -translate-y-1/2 z-10" />
-              <CarouselNext className="absolute text-black border-black -right-10 top-1/2 -translate-y-1/2 z-10" />
+              {canScrollPrev && (
+                <CarouselPrevious className="absolute text-black border-black -left-10 top-1/2 -translate-y-1/2 z-10" />
+              )}
+              {canScrollNext && (
+                <CarouselNext className="absolute text-black border-black -right-10 top-1/2 -translate-y-1/2 z-10" />
+              )}
             </div>
 
-            {/* Active Pagination Dots */}
+            {/* Pagination dots - 4 dots for 12 articles (3 articles per dot) */}
             <div className="flex justify-center mt-6 gap-2">
-              {articles.slice(0, 5).map((_, index) => (
+              {Array.from({ length: totalDots }).map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => api?.scrollTo(index)}
-                  className={`w-2 h-2 rounded-full transition-colors ${current === index ? "bg-white" : "bg-gray-500"
-                    }`}
-                  aria-label={`Go to slide ${index + 1}`}
+                  onClick={() => api?.scrollTo(index * articlesPerDot)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    currentDot === index ? "bg-white" : "bg-gray-500"
+                  }`}
+                  aria-label={`Go to articles ${index * articlesPerDot + 1}-${Math.min((index + 1) * articlesPerDot, 12)}`}
                 />
               ))}
             </div>
