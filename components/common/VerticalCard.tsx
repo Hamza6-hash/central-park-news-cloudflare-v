@@ -11,6 +11,7 @@ interface VerticalCard {
     publishDate: any;
     titleSlug?: string;
     type?: "article" | "news";
+    category?: string,
 }
 
 const VerticalCard = ({
@@ -19,7 +20,8 @@ const VerticalCard = ({
     authorName,
     publishDate,
     titleSlug,
-    type = "article"
+    type = "article",
+    category,
 }: VerticalCard) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
 
@@ -57,9 +59,9 @@ const VerticalCard = ({
                     <div className="flex items-center gap-2">
                         <hr className="w-6 h-0.5 bg-white" />
                         <div className="flex flex-col">
-                            <p className="text-sm capitalize font-montserrat font-normal tracking-sm">
-                                {authorName || "-"}
-                            </p>
+                            <span className="bg-[#FFEB84] font-montserrat text-[#7D6901] text-xs font-medium px-2 text-center py-1 rounded-md">
+                                {category}
+                            </span>
                             <p className="text-xs text-gray-300 italic">
                                 {formatedPublishDate && formatedPublishDate}
                             </p>

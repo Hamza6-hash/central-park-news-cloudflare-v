@@ -1,53 +1,92 @@
-
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { routes } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MobileNav from "./MobileNav";
 import Logo from "@/assets/logo.webp";
+import { Search } from "lucide-react";
+import Searchbar from "../search/SearchComp";
 
 const Navbar = () => {
   const pathName = usePathname();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
 
   return (
-    <section className="navbar">
-      <div className="flex justify-between items-center w-full lg:hidden">
-        <Link href={routes.home} rel="preload">
-          <Image
-            src={Logo}
-            alt="Horizon logo"
-            quality={75}
-            width={120}
-            priority={true}
-            loading="eager"
-            height={60}
-            style={{ objectFit: "cover", }}
-            className="block lg:hidden"
-          />
-        </Link>
-        <div className="ml-auto">
-          {/* <MobileNav /> */}
-        </div>
-      </div>
+    <>
+      <Searchbar
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
+      <section className="navbar w-full px-4 py-3 flex items-center justify-between">
+        {/* Mobile view */}
+        <div className="flex justify-between items-center w-full lg:hidden">
+          <Link href={routes.home}>
+            <Image
+              src={Logo}
+              alt="Horizon logo"
+              quality={75}
+              width={120}
+              height={60}
+              priority
+              loading="eager"
+              className="block"
+              style={{ objectFit: "cover" }}
+            />
+          </Link>
 
-      <nav className="hidden lg:flex justify-center items-center gap-28">
-        <Link href={routes.home} className="relative lg:block hidden xl:px-10 px-0">
-          <Image
-            src={Logo}
-            alt="Horizon logo"
-            quality={75}
-            priority={true}
-            loading="eager"
-            width={120}
-            height={80}
-            style={{ width: "auto", height: "auto" }}
-          />
-        </Link>
-      </nav>
-    </section>
+          <div className="flex items-center gap-4 ml-auto">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              aria-label="Open search"
+              className="flex gap-1 text-[#dbdad7] items-center hover:opacity-70 transition-opacity"
+            >
+              Search
+              <Search size={20} className=" text-[#dbdad7]" />
+            </button>
+
+
+            {/* MobileNav */}
+            {/* <MobileNav /> */}
+          </div>
+        </div>
+
+        {/* Desktop view */}
+        <nav className="hidden lg:flex items-center justify-between w-full relative">
+          {/* Centered logo */}
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+            <Link href={routes.home}>
+              <Image
+                src={Logo}
+                alt="Horizon logo"
+                quality={75}
+                width={120}
+                height={80}
+                priority
+                loading="eager"
+                style={{ width: "auto", height: "auto" }}
+              />
+            </Link>
+          </div>
+
+          {/* Search icon aligned right */}
+          <div className="ml-auto">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="mt-2 flex gap-1 items-center text-[#dbdad7] sm:mt-0 hover:opacity-70 transition-opacity"
+              aria-label="Open search"
+            >
+              Search
+              <Search size={20} color="#dbdad7" />
+            </button>
+          </div>
+        </nav>
+
+      </section>
+    </>
   );
 };
 

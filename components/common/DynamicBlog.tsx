@@ -99,6 +99,26 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
         <div className="markdown-content">
           <ReactMarkdown>{content}</ReactMarkdown>
         </div>
+         <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
+          {showWritter === true && (
+            <div className="flex gap-2 flex-col max-sm:justify-center ">
+              <h4 className="text-lg">Written By:</h4>
+              <div className="font-century-gothic text-lg">
+                <p>
+                  {authorName
+                    ? authorName.charAt(0).toUpperCase() + authorName.slice(1)
+                    : "Unknown Author"}
+                </p>
+                <p className="text-[#747474]">
+                  {authorPosition
+                    ? authorPosition?.charAt(0).toUpperCase() +
+                    authorPosition?.slice(1)
+                    : "Author"}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* multiply by 5 */}
         <p className="text-2xl text-primary-900 font-bold">Related News</p>
@@ -119,26 +139,6 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
                 category_name={item.category}
               />
             ))}
-        </div>
-        <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
-          {showWritter === true && (
-            <div className="flex gap-2 flex-col max-sm:justify-center ">
-              <h4 className="text-lg">Written By:</h4>
-              <div className="font-century-gothic text-lg">
-                <p>
-                  {authorName
-                    ? authorName.charAt(0).toUpperCase() + authorName.slice(1)
-                    : "Unknown Author"}
-                </p>
-                <p className="text-primary-500">
-                  {authorPosition
-                    ? authorPosition?.charAt(0).toUpperCase() +
-                    authorPosition?.slice(1)
-                    : "Author"}
-                </p>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </section>

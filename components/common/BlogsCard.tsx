@@ -97,10 +97,10 @@ const BlogsCard = ({
                 <Calendar size={12} color="#020617" />
                 <span className="text-[#808080] transition-colors duration-300 ease-in-out ">{formattedDate}</span>
               </div>
-              <div className="flex gap-2 items-center">
+              {/* <div className="flex gap-2 items-center">
                 <Clock2 size={12} color="#020617" />
                 <span className="text-[#808080] ">5 Min Read</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ import {
   DocumentData,
   startAfter,
   limit,
+  getCountFromServer,
 } from "firebase/firestore";
 import { defultImage } from "@/constants";
 
@@ -38,7 +39,8 @@ interface Article {
   authorImage: string | StaticImageData;
   type?: "article" | "news";
   category_name?: string;
-  isFeatured?:boolean
+  category?: string;
+  isFeatured?: boolean;
 }
 interface News {
   id: string;
@@ -59,7 +61,7 @@ interface News {
   status: string;
   position: string;
   category?: string;
-  isFeatured?:boolean
+  isFeatured?: boolean;
 }
 
 interface Newsletter {
@@ -231,7 +233,6 @@ export const fetchCombinedFeaturedItem = async () => {
   }
 };
 
-
 export const FetchTopStories = async (): Promise<Newsletter[]> => {
   if (!db) {
     throw new Error("Database connection is not available");
@@ -324,7 +325,9 @@ export const FetchLatestNews = async (): Promise<Article[] | undefined> => {
     const articlesRef = collection(db, collectionPath);
     const articlesQuery = query(
       articlesRef,
-      where("status", "==", "published")
+      where("status", "==", "published"),
+      orderBy("createdAt", "desc"),
+      limit(12)
     );
     const articlesSnapshot = await getDocs(articlesQuery);
 
@@ -408,121 +411,121 @@ interface FetchArticlesResult {
   totalItems: number;
 }
 
-export const FetchArticleNewsData = async ({
-  activeTab,
-  currentPage,
-  itemsPerPage = 9,
-}: FetchArticlesParams): Promise<FetchArticlesResult> => {
-  if (!db) {
-    throw new Error("Database connection is not available");
-  }
+// export const FetchArticleNewsData = async ({
+//   activeTab,
+//   currentPage,
+//   itemsPerPage = 9,
+// }: FetchArticlesParams): Promise<FetchArticlesResult> => {
+//   if (!db) {
+//     throw new Error("Database connection is not available");
+//   }
 
-  const collectionPath =
-    activeTab === "article"
-      ? "blog/blockchainBriefing/articles"
-      : "blog/blockchainBriefing/newsletter";
+//   const collectionPath =
+//     activeTab === "article"
+//       ? "blog/blockchainBriefing/articles"
+//       : "blog/blockchainBriefing/newsletter";
 
-  const itemsRef = collection(db, collectionPath);
+//   const itemsRef = collection(db, collectionPath);
 
-  const baseQuery = query(
-    itemsRef,
-    where("status", "==", "published"),
-    orderBy("createdAt", "desc")
-  );
+//   const baseQuery = query(
+//     itemsRef,
+//     where("status", "==", "published"),
+//     orderBy("createdAt", "desc")
+//   );
 
-  const totalSnapshot = await getDocs(baseQuery);
-  const totalItems = totalSnapshot.docs.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+//   const totalSnapshot = await getDocs(baseQuery);
+//   const totalItems = totalSnapshot.docs.length;
+//   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const startAt = (currentPage - 1) * itemsPerPage;
-  const startDoc = startAt > 0 ? totalSnapshot.docs[startAt - 1] : null;
+//   const startAt = (currentPage - 1) * itemsPerPage;
+//   const startDoc = startAt > 0 ? totalSnapshot.docs[startAt - 1] : null;
 
-  const q = startDoc
-    ? query(baseQuery, startAfter(startDoc), limit(itemsPerPage))
-    : query(baseQuery, limit(itemsPerPage));
+//   const q = startDoc
+//     ? query(baseQuery, startAfter(startDoc), limit(itemsPerPage))
+//     : query(baseQuery, limit(itemsPerPage));
 
-  const snapshot = await getDocs(q);
+//   const snapshot = await getDocs(q);
 
-  if (snapshot.empty) {
-    return {
-      items: [],
-      totalPages,
-      totalItems,
-    };
-  }
+//   if (snapshot.empty) {
+//     return {
+//       items: [],
+//       totalPages,
+//       totalItems,
+//     };
+//   }
 
-  const itemsData = await Promise.all(
-    snapshot.docs.map(async (docSnapshot) => {
-      const data = docSnapshot.data();
-      let authorName = "Docket Digest News Room";
-      let category_name = "CryptoCurrency";
+//   const itemsData = await Promise.all(
+//     snapshot.docs.map(async (docSnapshot) => {
+//       const data = docSnapshot.data();
+//       let authorName = "Docket Digest News Room";
+//       let category_name = "CryptoCurrency";
 
-      if (data.authorId) {
-        try {
-          const authorRef = doc(
-            db,
-            "blog/blockchainBriefing/authors",
-            data.authorId
-          );
-          const authorSnap = await getDoc(authorRef);
-          if (authorSnap.exists()) {
-            const authorData = authorSnap.data() as Author;
-            authorName = authorData.author_name;
-          }
-        } catch (error) {}
-      }
+//       if (data.authorId) {
+//         try {
+//           const authorRef = doc(
+//             db,
+//             "blog/blockchainBriefing/authors",
+//             data.authorId
+//           );
+//           const authorSnap = await getDoc(authorRef);
+//           if (authorSnap.exists()) {
+//             const authorData = authorSnap.data() as Author;
+//             authorName = authorData.author_name;
+//           }
+//         } catch (error) {}
+//       }
 
-      if (data.categoryId) {
-        try {
-          const categoriesRef = collection(
-            db,
-            "blog/blockchainBriefing/categories"
-          );
-          const categoryQuery = query(
-            categoriesRef,
-            where("id", "==", data.categoryId)
-          );
-          const categorySnapshot = await getDocs(categoryQuery);
+//       if (data.categoryId) {
+//         try {
+//           const categoriesRef = collection(
+//             db,
+//             "blog/blockchainBriefing/categories"
+//           );
+//           const categoryQuery = query(
+//             categoriesRef,
+//             where("id", "==", data.categoryId)
+//           );
+//           const categorySnapshot = await getDocs(categoryQuery);
 
-          if (!categorySnapshot.empty) {
-            const categoryDoc = categorySnapshot.docs[0];
-            const categoryData = categoryDoc.data() as Category;
-            category_name = categoryData.full_name;
-          } else {
-          }
-        } catch (error) {
-          console.error("Error fetching category:", error);
-        }
-      }
+//           if (!categorySnapshot.empty) {
+//             const categoryDoc = categorySnapshot.docs[0];
+//             const categoryData = categoryDoc.data() as Category;
+//             category_name = categoryData.full_name;
+//           } else {
+//           }
+//         } catch (error) {
+//           console.error("Error fetching category:", error);
+//         }
+//       }
 
-      return {
-        id: docSnapshot.id,
-        title: data.title || "",
-        content: data.content || "",
-        imageURL: data.imageURL || defultImage,
-        isFeatured: data.isFeatured,
-        authorId: data.authorId || "",
-        authorName: authorName,
-        categoryId: data.categoryId,
-        category_name: category_name,
-        titleSlug: data.titleSlug || "",
-        type: activeTab,
-        createdAt: data.createdAt,
-        publishDate: {
-          seconds: data.date?.seconds || new Date().getTime() / 1000,
-          nanoseconds: data.date?.nanoseconds || 0,
-        },
-      };
-    })
-  );
+//       return {
+//         id: docSnapshot.id,
+//         title: data.title || "",
+//         content: data.content || "",
+//         imageURL: data.imageURL || defultImage,
+//         isFeatured: data.isFeatured,
+//         authorId: data.authorId || "",
+//         authorName: authorName,
+//         categoryId: data.categoryId,
+//         category_name: category_name,
+//         titleSlug: data.titleSlug || "",
+//         type: activeTab,
+//         createdAt: data.createdAt,
+//         publishDate: {
+//           seconds: data.date?.seconds || new Date().getTime() / 1000,
+//           nanoseconds: data.date?.nanoseconds || 0,
+//         },
+//       };
+//     })
+//   );
 
-  return {
-    // @ts-ignore
-    items: itemsData,
-    totalPages,
-    totalItems,
-  };
-};
+//   return {
+//     // @ts-ignore
+//     items: itemsData,
+//     totalPages,
+//     totalItems,
+//   };
+// };
 
 export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
   try {
@@ -579,3 +582,370 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
     return null;
   }
 };
+
+interface FetchArticlesParams {
+  activeTab: "article" | "news";
+  currentPage: number;
+  itemsPerPage?: number;
+}
+
+interface FetchArticlesResult {
+  items: Article[];
+  totalPages: number;
+  totalItems: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
+// Cache for total counts to avoid repeated expensive count queries
+const totalCountCache = new Map<string, { count: number; timestamp: number }>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+export const FetchArticleNewsData = async ({
+  activeTab,
+  currentPage,
+  itemsPerPage = 9,
+}: FetchArticlesParams): Promise<FetchArticlesResult> => {
+  if (!db) {
+    throw new Error("Database connection is not available");
+  }
+
+  const collectionPath =
+    activeTab === "article"
+      ? "blog/blockchainBriefing/articles"
+      : "blog/blockchainBriefing/newsletter";
+
+  const itemsRef = collection(db, collectionPath);
+  const baseQuery = query(
+    itemsRef,
+    where("status", "==", "published"),
+    orderBy("createdAt", "desc")
+  );
+
+  // Get total count with caching to avoid expensive repeated queries
+  const cacheKey = `${collectionPath}_count`;
+  let totalItems = 0;
+
+  const cachedCount = totalCountCache.get(cacheKey);
+  const now = Date.now();
+
+  if (cachedCount && now - cachedCount.timestamp < CACHE_DURATION) {
+    totalItems = cachedCount.count;
+  } else {
+    // Use getCountFromServer for better performance (Firestore v9+)
+    try {
+      const countSnapshot = await getCountFromServer(baseQuery);
+      totalItems = countSnapshot.data().count;
+    } catch (error) {
+      // Fallback to getDocs if getCountFromServer is not available
+      console.warn(
+        "getCountFromServer failed, falling back to getDocs:",
+        error
+      );
+      const totalSnapshot = await getDocs(baseQuery);
+      totalItems = totalSnapshot.docs.length;
+    }
+
+    // Cache the result
+    totalCountCache.set(cacheKey, { count: totalItems, timestamp: now });
+  }
+
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  // Validate page bounds
+  if (currentPage < 1 || currentPage > totalPages) {
+    return {
+      items: [],
+      totalPages,
+      totalItems,
+      hasNextPage: false,
+      hasPrevPage: false,
+    };
+  }
+
+  // Create efficient paginated query using startAfter for better performance
+  let paginatedQuery = query(baseQuery, limit(itemsPerPage));
+
+  // For pages beyond the first, we need to skip to the correct position
+  if (currentPage > 1) {
+    const skipCount = (currentPage - 1) * itemsPerPage;
+
+    // Get the document to start after (this is still not ideal for very large skip counts)
+    // For better performance with large datasets, consider using cursor-based pagination
+    const skipQuery = query(baseQuery, limit(skipCount));
+    const skipSnapshot = await getDocs(skipQuery);
+
+    if (!skipSnapshot.empty && skipSnapshot.docs.length === skipCount) {
+      const lastDoc = skipSnapshot.docs[skipSnapshot.docs.length - 1];
+      paginatedQuery = query(
+        baseQuery,
+        startAfter(lastDoc),
+        limit(itemsPerPage)
+      );
+    } else {
+      // Fallback: this should not happen in normal circumstances
+      paginatedQuery = query(baseQuery, limit(itemsPerPage));
+    }
+  }
+
+  const snapshot = await getDocs(paginatedQuery);
+
+  if (snapshot.empty) {
+    return {
+      items: [],
+      totalPages,
+      totalItems,
+      hasNextPage: false,
+      hasPrevPage: currentPage > 1,
+    };
+  }
+
+  // Batch fetch authors and categories to reduce database calls
+  const authorIds = new Set<string>();
+  const categoryIds = new Set<string>();
+
+  snapshot.docs.forEach((doc) => {
+    const data = doc.data();
+    if (data.authorId) authorIds.add(data.authorId);
+    if (data.categoryId) categoryIds.add(data.categoryId);
+  });
+
+  // Fetch all authors in batch
+  const authorsMap = new Map<string, Author>();
+  if (authorIds.size > 0) {
+    try {
+      const authorsRef = collection(db, "blog/blockchainBriefing/authors");
+      const authorQuery = query(
+        authorsRef,
+        where("__name__", "in", Array.from(authorIds))
+      );
+      const authorSnapshot = await getDocs(authorQuery);
+
+      authorSnapshot.docs.forEach((doc) => {
+        authorsMap.set(doc.id, doc.data() as Author);
+      });
+    } catch (error) {
+      console.error("Error fetching authors in batch:", error);
+    }
+  }
+
+  // Fetch all categories in batch
+  const categoriesMap = new Map<string, Category>();
+  if (categoryIds.size > 0) {
+    try {
+      const categoriesRef = collection(
+        db,
+        "blog/blockchainBriefing/categories"
+      );
+      const categoryQuery = query(
+        categoriesRef,
+        where("id", "in", Array.from(categoryIds))
+      );
+      const categorySnapshot = await getDocs(categoryQuery);
+
+      categorySnapshot.docs.forEach((doc) => {
+        const categoryData = doc.data() as Category;
+        // @ts-ignore
+        categoriesMap.set(categoryData.id, categoryData);
+      });
+    } catch (error) {
+      console.error("Error fetching categories in batch:", error);
+    }
+  }
+
+  // Process items with batched data
+  const itemsData = snapshot.docs.map((docSnapshot) => {
+    const data = docSnapshot.data();
+
+    const authorName =
+      data.authorId && authorsMap.has(data.authorId)
+        ? authorsMap.get(data.authorId)!.author_name
+        : "Docket Digest News Room";
+
+    const category_name =
+      data.categoryId && categoriesMap.has(data.categoryId)
+        ? categoriesMap.get(data.categoryId)!.full_name
+        : "CryptoCurrency";
+
+    return {
+      id: docSnapshot.id,
+      title: data.title || "",
+      content: data.content || "",
+      imageURL: data.imageURL || defultImage,
+      isFeatured: data.isFeatured || false,
+      authorId: data.authorId || "",
+      authorName: authorName,
+      categoryId: data.categoryId || "",
+      category_name: category_name,
+      titleSlug: data.titleSlug || "",
+      type: activeTab,
+      createdAt: data.createdAt || "",
+      publishDate: {
+        seconds: data.date?.seconds || Math.floor(new Date().getTime() / 1000),
+        nanoseconds: data.date?.nanoseconds || 0,
+      },
+      date: data.date || "",
+      status: data.status || "published",
+      Position: data.Position || "",
+      authorImg: data.authorImg || defultImage,
+      position: data.position || "",
+      authorImage: data.authorImage || defultImage,
+    } as Article;
+  });
+
+  return {
+    items: itemsData,
+    totalPages,
+    totalItems,
+    hasNextPage: currentPage < totalPages,
+    hasPrevPage: currentPage > 1,
+  };
+};
+
+// interface FetchArticlesParams {
+//   activeTab: "article" | "news";
+//   currentPage: number;
+//   itemsPerPage?: number;
+// }
+
+// interface FetchArticlesResult {
+//   items: Article[];
+//   totalPages: number;
+//   totalItems: number;
+// }
+
+// export const FetchArticleNewsData = async ({
+//   activeTab,
+//   currentPage,
+//   itemsPerPage = 9,
+// }: FetchArticlesParams): Promise<FetchArticlesResult> => {
+//   if (!db) {
+//     throw new Error("Database connection is not available");
+//   }
+
+//   const collectionPath =
+//     activeTab === "article"
+//       ? "blog/blockchainBriefing/articles"
+//       : "blog/blockchainBriefing/newsletter";
+
+//   const itemsRef = collection(db, collectionPath);
+
+//   const baseQuery = query(
+//     itemsRef,
+//     where("status", "==", "published"),
+//     orderBy("createdAt", "desc")
+//   );
+
+//   // Get total count for pagination
+//   const totalSnapshot = await getDocs(baseQuery);
+//   const totalItems = totalSnapshot.docs.length;
+//   const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+//   // Calculate offset for pagination
+//   const startIndex = (currentPage - 1) * itemsPerPage;
+
+//   // Create paginated query
+//   let paginatedQuery;
+//   if (startIndex > 0 && totalSnapshot.docs[startIndex]) {
+//     // Use the document at startIndex as the starting point
+//     paginatedQuery = query(
+//       baseQuery,
+//       startAfter(totalSnapshot.docs[startIndex - 1]),
+//       limit(itemsPerPage)
+//     );
+//   } else {
+//     // First page or no previous documents
+//     paginatedQuery = query(baseQuery, limit(itemsPerPage));
+//   }
+
+//   const snapshot = await getDocs(paginatedQuery);
+
+//   if (snapshot.empty) {
+//     return {
+//       items: [],
+//       totalPages,
+//       totalItems,
+//     };
+//   }
+
+//   const itemsData = await Promise.all(
+//     snapshot.docs.map(async (docSnapshot) => {
+//       const data = docSnapshot.data();
+//       let authorName = "Docket Digest News Room";
+//       let category_name = "CryptoCurrency";
+
+//       // Fetch author data if authorId exists
+//       if (data.authorId) {
+//         try {
+//           const authorRef = doc(
+//             db,
+//             "blog/blockchainBriefing/authors",
+//             data.authorId
+//           );
+//           const authorSnap = await getDoc(authorRef);
+//           if (authorSnap.exists()) {
+//             const authorData = authorSnap.data() as Author;
+//             authorName = authorData.author_name;
+//           }
+//         } catch (error) {
+//           console.error("Error fetching author:", error);
+//         }
+//       }
+
+//       // Fetch category data if categoryId exists
+//       if (data.categoryId) {
+//         try {
+//           const categoriesRef = collection(
+//             db,
+//             "blog/blockchainBriefing/categories"
+//           );
+//           const categoryQuery = query(
+//             categoriesRef,
+//             where("id", "==", data.categoryId)
+//           );
+//           const categorySnapshot = await getDocs(categoryQuery);
+
+//           if (!categorySnapshot.empty) {
+//             const categoryDoc = categorySnapshot.docs[0];
+//             const categoryData = categoryDoc.data() as Category;
+//             category_name = categoryData.full_name;
+//           }
+//         } catch (error) {
+//           console.error("Error fetching category:", error);
+//         }
+//       }
+
+//       return {
+//         id: docSnapshot.id,
+//         title: data.title || "",
+//         content: data.content || "",
+//         imageURL: data.imageURL || defultImage,
+//         isFeatured: data.isFeatured || false,
+//         authorId: data.authorId || "",
+//         authorName: authorName,
+//         categoryId: data.categoryId || "",
+//         category_name: category_name,
+//         titleSlug: data.titleSlug || "",
+//         type: activeTab,
+//         createdAt: data.createdAt || "",
+//         publishDate: {
+//           seconds: data.date?.seconds || Math.floor(new Date().getTime() / 1000),
+//           nanoseconds: data.date?.nanoseconds || 0,
+//         },
+//         // Adding missing required fields from Article interface
+//         date: data.date || "",
+//         status: data.status || "published",
+//         Position: data.Position || "",
+//         authorImg: data.authorImg || defultImage,
+//         position: data.position || "",
+//         authorImage: data.authorImage || defultImage,
+//       } as Article;
+//     })
+//   );
+
+//   return {
+//     items: itemsData,
+//     totalPages,
+//     totalItems,
+//   };
+// };
