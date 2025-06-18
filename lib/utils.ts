@@ -7,9 +7,59 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// List of popular email service providers
+const VALID_EMAIL_DOMAINS = [
+  // Major global providers
+  'gmail.com',
+  'yahoo.com',
+  'outlook.com',
+  'hotmail.com',
+  'live.com',
+  'msn.com',
+  'aol.com',
+  'icloud.com',
+  'me.com',
+  'mac.com',
+  'protonmail.com',
+  'tutanota.com',
+  'zoho.com',
+  'yandex.com',
+  'mail.ru',
+  'gmx.com',
+  'web.de',
+  'orange.fr',
+  'free.fr',
+  'laposte.net',
+  'rediffmail.com',
+  'indiatimes.com',
+  'hindustantimes.com',
+  'ndtv.com',
+  'zeenews.com',
+  'thehindu.com',
+  'business-standard.com',
+  'bsnl.in',
+  'airtelmail.com',
+  'vodafone-sms.com',
+  'idea.in',
+  'tataindicom.com',
+  'relianceada.com'
+];
+
+// Function to validate email domain
+const isValidEmailDomain = (email: string): boolean => {
+  const domain = email.split('@')[1]?.toLowerCase();
+  return VALID_EMAIL_DOMAINS.includes(domain);
+};
+
 export const subscribtionFormSchema = () => {
   return z.object({
-    email: z.string().email(),
+    email: z
+      .string()
+      .email("Please enter a valid email address")
+      .refine(
+        (email) => isValidEmailDomain(email),
+        "Please use a valid email service provider (Gmail, Yahoo, Outlook, etc.)"
+      ),
   });
 };
 

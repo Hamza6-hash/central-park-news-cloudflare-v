@@ -4,15 +4,17 @@ import { subscribtionFormSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "@/components/ui/form";
 import CustomInput from "@/components/customInput/CustomInput";
 import { Button } from "@/components/button/Button";
 import { usePathname } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 
 const Banner = () => {
     const formSchema = subscribtionFormSchema();
     const pathname = usePathname();
+    const [res, setRes] = useState<string | null>(null);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -23,13 +25,26 @@ const Banner = () => {
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         try {
-
+            const response = await fetch("/api", {
+                method: "POST",
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            if (!response.ok) {
+                setRes(result.message);
+            } else {
+                setRes(null);
+                form.reset();
+            }
         } catch (error) {
             console.error(error);
-        } finally {
-
+            setRes("Something went wrong");
         }
     };
+
+    const { mutate: subscribe, isPending } = useMutation({
+        mutationFn: onSubmit,
+    });
 
     // Reset form on route change
     useEffect(() => {
@@ -38,6 +53,7 @@ const Banner = () => {
 
     const onChangeField = (e: any) => {
         if (!e?.target?.value) form.reset();
+        setRes(null);
     }
 
     return (
@@ -53,20 +69,29 @@ const Banner = () => {
                 </div>
                 <Form {...form}>
                     <form
-                        onSubmit={form.handleSubmit(onSubmit)}
+                        onSubmit={form.handleSubmit((data: any) => subscribe(data))}
                         className="flex gap-4 sm:flex-row flex-col items-center justify-center w-full"
                     >
                         <div className="flex gap-4 sm:flex-row flex-col justify-center sm:w-fit w-full">
-                            <CustomInput
-                                control={form.control}
-                                name="email"
-                                label=""
-                                placeholder="Your email address"
-                                fieldClassName={'sm:w-80 font-century-gothic font-[400] text-[14px] not-italic text-[#A3A0A0]'}
-                                schema={formSchema}
-                                onChange={onChangeField}
-                            />
-                            <Button variant="gradient" className="py-3 px-6 w-full ">SUBSCRIBE</Button>
+                            <div className="flex flex-col w-full">
+                                <CustomInput
+                                    control={form.control}
+                                    name="email"
+                                    label=""
+                                    placeholder="Your email address"
+                                    fieldClassName={'sm:w-80 font-century-gothic font-[400] text-[14px] not-italic text-[#A3A0A0]'}
+                                    schema={formSchema}
+                                    onChange={onChangeField}
+                                />
+                                {res && (
+                                    <p className="text-red-500 text-sm mt-2">
+                                        {res}
+                                    </p>
+                                )}
+                            </div>
+                            <Button variant="gradient" className="py-3 px-6 w-full " disabled={isPending}>
+                                {isPending ? "SUBSCRIBING..." : "SUBSCRIBE"}
+                            </Button>
                         </div>
                     </form>
                 </Form>
