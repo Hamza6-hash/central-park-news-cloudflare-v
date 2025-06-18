@@ -101,7 +101,7 @@ export async function POST(request: Request) {
     <body>
         <div class="email-container">
             <div class="header">
-                <img src="${process.env.NEXT_PUBLIC_SITE_URL}/logo.webp" alt="Blockchain Briefing Logo">
+                <img src="${process.env.NEXT_PUBLIC_SITE_URL}/blockchain-logo.png" alt="Blockchain Briefing Logo">
             </div>
             <div class="content">
                 <p>Hello,</p>
