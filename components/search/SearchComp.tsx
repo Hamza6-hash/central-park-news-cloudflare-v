@@ -96,14 +96,14 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
     setError(null);
   };
 
-  if (!isOpen) return null; 
+  if (!isOpen) return null;
 
   return (
-    <section className="pt-[10px] px-generic w-full flex justify-center items-center">
+    <section className="px-generic w-full flex justify-center items-center z-50">
       <div className="">
         <div
           className="fixed mx-4 sm:mx-0 inset-0 flex justify-center items-center z-50 animate-fadeIn"
-          onClick={onClose} 
+          onClick={onClose}
         >
           <div
             className="bg-white rounded-lg p-6 w-[600px] shadow-2xl max-w-full animate-slideUp"

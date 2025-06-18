@@ -5,9 +5,6 @@ import user from '/assets/user.png'
 import { StaticImageData } from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNewsBySlug } from "@/lib/query";
-import { useState } from "react";
-import { Search } from "lucide-react";
-import Searchbar from "../search/SearchComp";
 import Link from "next/link";
 
 export interface News {
@@ -38,8 +35,6 @@ export interface News {
 }
 
 const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, relatedNews: News[] }) => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-
   const { data: news, isLoading } = useQuery({
     queryKey: ['fetchSingleNews', slug],
     queryFn: () => fetchNewsBySlug(slug),
@@ -124,24 +119,17 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
           <h1 className="text-lg sm:text-[18px] font-century-gothic text-black capitalize flex flex-wrap items-center gap-[16px]">
             <span className="cursor-pointer">
               <Link href={'/news'}>
-              News
+                News
               </Link>
-              </span>
+            </span>
             <span className="text-[#1E3D5A]">/</span>
             <span className="font-bold text-[#1E3D5A] flex items-center gap-1 flex-wrap">
               {news.title}
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                className="ml-1 mt-[2px]"
-                aria-label="Open Search"
-              >
-                <Search className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
             </span>
           </h1>
 
           {/* Searchbar modal */}
-        
+
         </div>
       </div>
 
@@ -160,10 +148,6 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
         mainHeading="News"
         relatedNews={relatedNews}
       />
-        <Searchbar
-            isOpen={isSearchOpen}
-            onClose={() => setIsSearchOpen(false)}
-          />
     </div>
   );
 };

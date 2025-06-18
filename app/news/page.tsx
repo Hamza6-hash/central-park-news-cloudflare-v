@@ -1,5 +1,6 @@
 import NewsArticleCollection from "@/components/news-article/NewsArticleCollection";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 
 export const metadata: Metadata = {
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
 export default function NewsPage() {
   return (
     <>
-      <NewsArticleCollection />
+      <Suspense fallback={<div>Loading...</div>}>
+        <NewsArticleCollection />
+      </Suspense>
     </>
   );
 }

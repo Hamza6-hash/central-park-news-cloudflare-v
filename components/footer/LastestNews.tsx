@@ -35,6 +35,8 @@ const LastestNews = () => {
     staleTime: 1000 * 60 * 7,
   });
 
+  console.log(articles)
+
   useEffect(() => {
     if (!api) return;
 
@@ -89,11 +91,9 @@ const LastestNews = () => {
 
   if (!articles?.length) return null;
 
-  // Calculate total number of dots (4 dots for 12 articles = 3 articles per dot)
   const totalDots = 4;
   const articlesPerDot = 3;
   
-  // Better dot calculation that handles edge cases
   const getCurrentDot = () => {
     if (!api) return 0;
     
@@ -127,7 +127,7 @@ const LastestNews = () => {
             }}
           >
             <CarouselContent className="-ml-3">
-              {articles.slice(0, 12).map((article, index) => (
+              {articles.map((article, index) => (
                 <CarouselItem
                   key={index}
                   className="pl-3 basis-[252px] flex-shrink-0"
@@ -136,6 +136,7 @@ const LastestNews = () => {
                     <CardContent className="p-0">
                       <VerticalCard
                         title={article.title}
+                        category={article.category}
                         imageURL={article.imageURL || defultImage}
                         authorName={article.authorName || "Unknown Author"}
                         publishDate={article.publishDate}

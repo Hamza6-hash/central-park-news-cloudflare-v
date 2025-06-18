@@ -13,7 +13,7 @@ import { navbarLinks } from '@/constants'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { IoMenu } from "react-icons/io5";
-import Logo from '@/assets/logo.png';
+import Logo from '@/assets/logo.webp';
 
 const MobileNav = () => {
     const [isOpen, setIsOpen] = useState(false);
