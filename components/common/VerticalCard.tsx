@@ -46,12 +46,11 @@ const VerticalCard = ({
                         quality={85}
                         priority={false}
                     />
-
                 </div>
 
-                <div className="absolute bottom-0 left-0 right-0 p-4 z-20 bg-[#1E3D5AEB] transition-all duration-300 ease-in-out hover:bg-[#193753] hover:pb-6">
+                <div className="absolute bottom-0 left-0 right-0 p-4 z-20 bg-[#1E3D5AD1] backdrop-blur-sm  transition-all duration-300 ease-in-out hover:bg-[#193753] hover:pb-8">
                     <div className="mb-3">
-                        <h2 className="font-century-schoolbook capitalize font-normal leading-5 line-clamp-2 text-white">
+                        <h2 className="font-century-schoolbook capitalize font-normal leading-5 min-h-[60px] line-clamp-3 text-white">
                             {title || "-"}
                         </h2>
                     </div>
@@ -59,7 +58,7 @@ const VerticalCard = ({
                     <div className="flex items-center gap-2">
                         <hr className="w-6 h-0.5 bg-white" />
                         <div className="flex flex-col">
-                            <span className="bg-[#FFEB84] font-montserrat text-[#7D6901] text-xs font-medium px-2 text-center py-1 rounded-md">
+                            <span className="bg-[#FFEB84] font-montserrat text-[#7D6901] text-xs font-medium px-2 text-center py-1 rounded-md capitalize">
                                 {category}
                             </span>
                             <p className="text-xs text-gray-300 italic">

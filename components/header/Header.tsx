@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import Banner from './Banner';
 import Searchbar from './Searchbar';
 import { usePathname } from 'next/navigation';
+import Adbanner from '../Ads/Adbanner';
 
 const Header = () => {
     const pathName = usePathname()
@@ -13,8 +14,9 @@ const Header = () => {
             <Navbar />
             {
                 hideBanner ? "" :
-                    <Banner />
+                <Banner />
             }
+            <Adbanner/>
             <Searchbar />
         </header>
     )

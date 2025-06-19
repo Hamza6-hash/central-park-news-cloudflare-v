@@ -21,7 +21,7 @@ const Navbar = () => {
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
       />
-      <section className="navbar w-full px-4 py-3 flex items-center justify-between">
+      <section className="navbar w-full px-6 py-8 flex items-center justify-between">
         {/* Mobile view */}
         <div className="flex justify-between items-center w-full lg:hidden">
           <Link href={routes.home}>
@@ -55,7 +55,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop view */}
-        <nav className="hidden lg:flex items-center justify-between w-full relative">
+        <nav className="hidden lg:flex items-center justify-between w-full relative px-5 py-6">
           {/* Centered logo */}
           <div className="absolute left-1/2 transform -translate-x-1/2">
             <Link href={routes.home}>
@@ -63,7 +63,7 @@ const Navbar = () => {
                 src={Logo}
                 alt="Horizon logo"
                 quality={75}
-                width={120}
+                width={190}
                 height={80}
                 priority
                 loading="eager"
@@ -73,7 +73,7 @@ const Navbar = () => {
           </div>
 
           {/* Search icon aligned right */}
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center">
             <button
               onClick={() => setIsSearchOpen(true)}
               className="mt-2 flex gap-1 items-center text-[#dbdad7] sm:mt-0 hover:opacity-70 transition-opacity"

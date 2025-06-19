@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import Link from "next/link";
 import { FetchTopStories } from "@/lib/query";
+import Adbox from "../Ads/Adbox";
 
 interface Newsletter {
   id: string;
@@ -116,6 +117,8 @@ const TopStories = () => {
           );
         })}
       </div>
+
+      <Adbox/>
 
       {showViewMoreButton && (
         <div className="flex justify-end items-end mt-6">
