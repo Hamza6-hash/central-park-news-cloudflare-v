@@ -98,5 +98,5 @@ export default function Home({ article }: HomeProps) {
     </section>
   );
 
-  
+
 }

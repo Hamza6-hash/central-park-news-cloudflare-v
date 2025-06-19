@@ -151,10 +151,10 @@ const LastestNews = () => {
 
             <div className="hidden sm:flex">
               {canScrollPrev && (
-                <CarouselPrevious className="absolute text-black border-black -left-10 top-1/2 -translate-y-1/2 z-10" />
+                <CarouselPrevious className="absolute text-white border-none bg-[#26619C] -left-10 top-1/2 -translate-y-1/2 z-10" />
               )}
               {canScrollNext && (
-                <CarouselNext className="absolute text-black border-black -right-10 top-1/2 -translate-y-1/2 z-10" />
+                <CarouselNext className="absolute text-white  border-none bg-[#26619C] -right-10 top-1/2 -translate-y-1/2 z-10" />
               )}
             </div>
 
@@ -165,7 +165,7 @@ const LastestNews = () => {
                   key={index}
                   onClick={() => api?.scrollTo(index * articlesPerDot)}
                   className={`w-2 h-2 rounded-full transition-colors ${
-                    currentDot === index ? "bg-white" : "bg-gray-500"
+                    currentDot === index ? "bg-[#E2EDF3]" : "bg-[#87A6C1]"
                   }`}
                   aria-label={`Go to articles ${index * articlesPerDot + 1}-${Math.min((index + 1) * articlesPerDot, 12)}`}
                 />

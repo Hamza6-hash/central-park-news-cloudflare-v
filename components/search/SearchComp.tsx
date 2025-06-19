@@ -96,7 +96,21 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
     setError(null);
   };
 
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
+
   if (!isOpen) return null;
+
 
   return (
     <section className="px-generic w-full flex justify-center items-center z-50">
