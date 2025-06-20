@@ -44,7 +44,6 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
     enabled: !!slug,
   })
 
-
   if (isLoading) {
     return (
       <section className="container mx-auto px-4 py-8">

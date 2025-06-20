@@ -1,13 +1,16 @@
-import React from 'react'
+"use client";
 
-const Adbanner = () => {
+import React from "react";
+
+const AdBanner = () => {
   return (
-    <div className='px-generic py-4 w-full flex items-center justify-center'>
-        <div className='w-[96%] h-[20vh] bg-[#E2EDF3] flex justify-center items-center   '>
-            
-        </div>
+    <div className="flex justify-center w-full">
+      <div className="w-[1199px] h-[153px] bg-[#E2EDF3] flex items-center justify-center ">
+        {/* Optional Ad text or placeholder */}
+        <p className="text-gray-600 font-semibold">Ad Space</p>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Adbanner
+export default AdBanner;

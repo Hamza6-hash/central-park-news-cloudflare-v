@@ -13,10 +13,13 @@ const Header = () => {
         <header>
             <Navbar />
             {
-                hideBanner ? "" :
-                <Banner />
+                hideBanner ? "" : <>
+                    <Banner />
+                    <div className='mt-4'>
+                        <Adbanner />
+                    </div>
+                </>
             }
-            <Adbanner/>
             <Searchbar />
         </header>
     )

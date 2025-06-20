@@ -50,20 +50,20 @@ const ContactClient = () => {
       <section className="w-full ">
         <div className="">
           <div className="w-full mx-3 ">
-          <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
-          <h1 className="text-4xl font-bold font-century-schoolbook">Contact Us</h1>
+            <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
+            <h1 className="text-4xl font-bold font-century-schoolbook text-[#2B4864] ">Contact Us</h1>
           </div>
 
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-6 mt-10 w-[100vw] max-w-[1200px] px-4 md:px-8 lg:px-16 xl:px-24 mx-auto"
+              className="flex flex-col gap-6 mt-10 w-[100vw] font-century-gothic max-w-[1200px] px-4 md:px-8 lg:px-16 xl:px-24 mx-auto"
             >
               <CustomInput
                 control={form.control}
                 name="name"
                 label="Name"
-                fieldClassName={`${fieldClass} w-full`}
+                fieldClassName={`${fieldClass} w-full font-century-gothic text-[#64748B]`}
                 placeholder="Name Here..."
                 schema={formSchema}
               />
@@ -71,7 +71,7 @@ const ContactClient = () => {
                 control={form.control}
                 name="email"
                 label="Email"
-                fieldClassName={`${fieldClass} w-full`}
+                fieldClassName={`${fieldClass} w-full font-century-gothic text-[#64748B]`}
                 placeholder="Email Here..."
                 schema={formSchema}
               />
@@ -79,16 +79,19 @@ const ContactClient = () => {
                 control={form.control}
                 name="message"
                 label="Message"
-                fieldClassName={`${fieldClass} w-full`}
+                fieldClassName={`${fieldClass} w-full font-century-gothic text-[#64748B]`}
                 placeholder="Message Here..."
                 schema={formSchema}
               />
 
               <div className="flex justify-end">
-                <Button variant="primary" type="submit" className="hover:bg-white hover:text-black">
-                  SUBMIT
+                <Button variant="gradient" className="py-3 px-6 w-full sm:w-[15%] " >
+                  {"SUBMIT"}
                 </Button>
-              </div>
+                {/* <Button variant="primary" type="submit" className="hover:bg-white hover:text-black">
+                  SUBMIT
+                </Button> */}
+              </div>  
             </form>
           </Form>
 
