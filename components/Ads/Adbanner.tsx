@@ -1,8 +1,9 @@
+
 "use client";
 
 import React from "react";
 
-const AdPlaceholder = () => {
+const AdBanner = () => {
   return (
     <div className=" px-generic flex justify-center w-full">
       <div
@@ -26,4 +27,5 @@ const AdPlaceholder = () => {
   );
 };
 
-export default AdPlaceholder;
+export default AdBanner;
+
