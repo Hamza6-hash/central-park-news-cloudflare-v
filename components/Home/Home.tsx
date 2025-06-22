@@ -50,9 +50,10 @@ export default function Home({ article }: HomeProps) {
             <Link
               href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug}`}
             >
-              <h1 className="font-century-schoolbook sm:text-[12px] text-sm sm:text-base md:text-lg lg:text-2xl xl:text-3xl capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-2">
+              <h1 className="text-3xl line-clamp-4  font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full md:line-clamp-2">
                 {article.title}
               </h1>
+
             </Link>
           </div>
 

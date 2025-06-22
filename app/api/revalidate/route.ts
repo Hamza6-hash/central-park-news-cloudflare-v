@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
       return Response.json({ message: 'Invalid secret' }, { status: 401 });
     }
 
-    revalidatePath('/'); // Homepage
+    revalidatePath('/'); 
 
     return Response.json({ 
       revalidated: true, 

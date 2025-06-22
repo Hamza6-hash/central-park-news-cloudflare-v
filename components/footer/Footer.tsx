@@ -43,7 +43,7 @@ const Footer = () => {
 
       <div className="bg-primary-900 w-full text-white py-3 px-1">
         <p className="text-center sm:text-xs text-[10px]">
-          COPYRIGHT 2024 © <strong>BLOCKCHAIN BRIEFING</strong>. ALL RIGHTS RESERVED
+          COPYRIGHT 2025 © <strong>BLOCKCHAIN BRIEFING</strong>. ALL RIGHTS RESERVED
         </p>
       </div>
     </footer>

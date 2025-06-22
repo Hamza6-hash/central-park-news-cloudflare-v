@@ -35,8 +35,6 @@ const LastestNews = () => {
     staleTime: 1000 * 60 * 7,
   });
 
-  console.log(articles)
-
   useEffect(() => {
     if (!api) return;
 
