@@ -15,9 +15,9 @@ const Header = () => {
             {
                 hideBanner ? "" : <>
                     <Banner />
-                    <div className='mt-4'>
+                    {/* <div className='px-generic mt-4'> */}
                         <Adbanner />
-                    </div>
+                    {/* </div> */}
                 </>
             }
             <Searchbar />

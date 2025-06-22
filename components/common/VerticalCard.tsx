@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { formatedDate } from "@/lib/utils";
-import { defultImage, routes } from "@/constants";
+import {  routes } from "@/constants";
 import SafeImage from "@/constants/SafeImage";
 
 interface VerticalCard {

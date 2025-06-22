@@ -23,7 +23,6 @@ const SafeImage: React.FC<SafeImageProps> = ({ src, alt, ...rest }) => {
         }
       }}
       onLoad={() => setHasError(false)}
-      onContextMenu={(e) => e.preventDefault()}
       draggable={false}
       className="select-none pointer-events-none object-cover"
     />

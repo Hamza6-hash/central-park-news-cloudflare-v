@@ -1,7 +1,5 @@
 import React from "react";
 import HorizontalCard from "../common/HorizontalCard";
-import { usePathname } from "next/navigation";
-import { routes } from "@/constants";
 import { Button } from "../button/Button";
 import { useQuery } from "@tanstack/react-query";
 import DummyImg from "@/assets/Blockchain-Default.webp";
@@ -32,8 +30,6 @@ interface Newsletter {
 
 
 const TopStories = () => {
-  const pathName = usePathname();
-  const isContactPage = pathName === routes.contact;
 
   const {
     data: newsletters,
@@ -80,12 +76,7 @@ const TopStories = () => {
     );
   }
 
-  const displayedNewsletters =
-    isContactPage && newsletters ? newsletters.slice(0, 2) : newsletters;
-
-
-  const showViewMoreButton =
-    isContactPage && newsletters && newsletters.length > 1;
+  const displayedNewsletters = newsletters;
 
   return (
     <div className="px-sm-generic">
@@ -120,7 +111,7 @@ const TopStories = () => {
 
       <Adbox/>
 
-      {showViewMoreButton && (
+      {/* {showViewMoreButton && (
         <div className="flex justify-end items-end mt-6">
           <button className="uppercase text-primary-900 transition-colors duration-300 hover:text-yellow-500 font-bold text-sm xl:block hidden font-century-gothic">
             VIEW MORE
@@ -132,7 +123,7 @@ const TopStories = () => {
             <Link href={"/news"}>VIEW MORE</Link>
           </Button>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
