@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const Adbox = () => {
   return (
-    <div className="flex justify-center items-center mt-3 xl:w-[510px] h-[300px] w-full bg-[#E2EDF3] relative overflow-hidden rounded-lg">
+    <div className="flex justify-center items-center mt-3 xl:w-[510px] h-[300px] w-full relative overflow-hidden rounded-lg">
       <Image 
         src="/image (12).png" 
         alt="adbanner" 
