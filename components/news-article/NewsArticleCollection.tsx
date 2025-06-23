@@ -235,11 +235,11 @@ export default function NewsArticleCollection() {
           </div>
 
           {/* Enhanced Pagination */}
-          {totalPages > 1 && (
+         {totalPages > 1 && (
             <div className="mt-8 flex justify-center">
               <Pagination>
                 <PaginationContent>
-                  <PaginationItem>
+                  <PaginationItem className="hidden md:block">
                     <PaginationPrevious
                       href="#"
                       onClick={(e) => {
@@ -324,11 +324,26 @@ export default function NewsArticleCollection() {
                     })()}
                   </div>
 
-                  {/* Mobile version - simple prev 1,2 next or 1..3 pattern */}
                   <div className="flex md:hidden">
+                    {/* Left Arrow for Mobile */}
+                    <PaginationItem>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (hasPrevPage) handlePageChange(currentPage - 1);
+                        }}
+                        className={`px-3 py-2 ${
+                          !hasPrevPage
+                            ? 'pointer-events-none opacity-50'
+                            : 'cursor-pointer hover:bg-gray-100'
+                        }`}
+                      >
+                        &lt;
+                      </button>
+                    </PaginationItem>
+
                     {(() => {
                       if (totalPages <= 3) {
-                        // Show all pages if 3 or fewer
                         return Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                           <PaginationItem key={page}>
                             <PaginationLink
@@ -345,30 +360,29 @@ export default function NewsArticleCollection() {
                           </PaginationItem>
                         ));
                       } else {
-                        // Show 1 .. current pattern for mobile
                         const pages = [];
 
                         // Always show page 1
                         pages.push(1);
 
-                        // If current page is more than 2, show ellipsis then current
-                        if (currentPage > 2) {
-                          pages.push('ellipsis');
-                          if (currentPage < totalPages) {
-                            pages.push(currentPage);
+                        if (currentPage > 2 && currentPage < totalPages) {
+                          pages.push('ellipsis1');
+                          pages.push(currentPage);
+                          if (currentPage < totalPages - 1) {
+                            pages.push('ellipsis2');
                           }
                         } else if (currentPage === 2) {
-                          // If on page 2, show it
-                          pages.push(2);
+                          pages.push('ellipsis1');
+                        } else if (currentPage === totalPages && totalPages > 3) {
+                          pages.push('ellipsis1');
                         }
 
-                        // Show last page if it's not already shown
-                        if (currentPage < totalPages && totalPages > 2) {
+                        if (totalPages > 1) {
                           pages.push(totalPages);
                         }
 
                         return pages.map((page, index) => {
-                          if (page === 'ellipsis') {
+                          if (page === 'ellipsis1' || page === 'ellipsis2') {
                             return (
                               <PaginationItem key={`ellipsis-${index}`}>
                                 <span className="px-2 py-2 text-sm">..</span>
@@ -394,9 +408,26 @@ export default function NewsArticleCollection() {
                         });
                       }
                     })()}
+
+                    {/* Right Arrow for Mobile */}
+                    <PaginationItem>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (hasNextPage) handlePageChange(currentPage + 1);
+                        }}
+                        className={`px-3 py-2 ${
+                          !hasNextPage
+                            ? 'pointer-events-none opacity-50'
+                            : 'cursor-pointer hover:bg-gray-100'
+                        }`}
+                      >
+                        &gt;
+                      </button>
+                    </PaginationItem>
                   </div>
 
-                  <PaginationItem>
+                  <PaginationItem className="hidden md:block">
                     <PaginationNext
                       href="#"
                       onClick={(e) => {

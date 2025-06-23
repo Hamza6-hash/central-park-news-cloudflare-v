@@ -50,14 +50,14 @@ const Banner = () => {
         }
     };
 
-    useEffect(() => {
-    if (showToast) {
-        const timer = setTimeout(() => {
-            setShowToast(false);
-        }, 3000);
-        return () => clearTimeout(timer);
-    }
-}, [showToast]);
+//     useEffect(() => {
+//     if (showToast) {
+//         const timer = setTimeout(() => {
+//             setShowToast(false);
+//         }, 3000);
+//         return () => clearTimeout(timer);
+//     }
+// }, [showToast]);
 
     const { mutate: subscribe, isPending } = useMutation({
         mutationFn: onSubmit,

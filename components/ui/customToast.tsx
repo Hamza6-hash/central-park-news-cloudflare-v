@@ -22,7 +22,7 @@ const CustomToast: React.FC<ToastProps> = ({
       <div className="bg-[#D1FADF] text-[#047857] rounded-lg p-4 flex items-center gap-3 shadow-md w-full animate-in slide-in-from-top md:slide-in-from-right duration-300">
         {/* Checkmark icon - perfectly centered */}
         <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0">
-          <SquareCheck className="w-5 h-5" />
+          <SquareCheck scale={20} strokeWidth={1.5} />
         </div>
                 
         {/* Content */}
