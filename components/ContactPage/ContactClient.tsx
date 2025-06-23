@@ -49,7 +49,7 @@ const ContactClient = () => {
     <>
       <section className="w-full ">
         <div className="">
-          <div className="w-full mx-auto max-sm:px-6 md:px-8 max-[760px]:px-6 lg:px-0">
+          <div className="w-full mx-auto max-sm:px-6 md:px-8 max-[760px]:px-6 lg:px-10 xl:px-0">
             <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
             <h1 className="text-4xl font-bold font-century-schoolbook text-[#2B4864] ">Contact Us</h1>
           </div>
@@ -88,9 +88,6 @@ const ContactClient = () => {
                 <Button variant="gradient" className="py-3 px-6 w-full sm:w-[15%] " >
                   {"SUBMIT"}
                 </Button>
-                {/* <Button variant="primary" type="submit" className="hover:bg-white hover:text-black">
-                  SUBMIT
-                </Button> */}
               </div>  
             </form>
           </Form>

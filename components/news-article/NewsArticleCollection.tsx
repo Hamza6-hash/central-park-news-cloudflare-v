@@ -235,11 +235,11 @@ export default function NewsArticleCollection() {
           </div>
 
           {/* Enhanced Pagination */}
-          {totalPages > 1 && (
+         {totalPages > 1 && (
             <div className="mt-8 flex justify-center">
               <Pagination>
                 <PaginationContent>
-                  <PaginationItem>
+                  <PaginationItem className="hidden md:block">
                     <PaginationPrevious
                       href="#"
                       onClick={(e) => {
@@ -324,11 +324,26 @@ export default function NewsArticleCollection() {
                     })()}
                   </div>
 
-                  {/* Mobile version - shows pattern like 1...32, 1...3...32, 1..4..31 */}
                   <div className="flex md:hidden">
+                    {/* Left Arrow for Mobile */}
+                    <PaginationItem>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (hasPrevPage) handlePageChange(currentPage - 1);
+                        }}
+                        className={`px-3 py-2 ${
+                          !hasPrevPage
+                            ? 'pointer-events-none opacity-50'
+                            : 'cursor-pointer hover:bg-gray-100'
+                        }`}
+                      >
+                        &lt;
+                      </button>
+                    </PaginationItem>
+
                     {(() => {
                       if (totalPages <= 3) {
-                        // Show all pages if 3 or fewer
                         return Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                           <PaginationItem key={page}>
                             <PaginationLink
@@ -345,13 +360,11 @@ export default function NewsArticleCollection() {
                           </PaginationItem>
                         ));
                       } else {
-                        // Show pattern like 1...32, 1...3...32, 1..4..31
                         const pages = [];
 
                         // Always show page 1
                         pages.push(1);
 
-                        // If current page is not 1, 2, or last page, show it with ellipses
                         if (currentPage > 2 && currentPage < totalPages) {
                           pages.push('ellipsis1');
                           pages.push(currentPage);
@@ -359,14 +372,11 @@ export default function NewsArticleCollection() {
                             pages.push('ellipsis2');
                           }
                         } else if (currentPage === 2) {
-                          // If on page 2, show ellipsis before last page
                           pages.push('ellipsis1');
                         } else if (currentPage === totalPages && totalPages > 3) {
-                          // If on last page and there are more than 3 pages, show ellipsis
                           pages.push('ellipsis1');
                         }
 
-                        // Always show last page if it's not page 1
                         if (totalPages > 1) {
                           pages.push(totalPages);
                         }
@@ -375,7 +385,7 @@ export default function NewsArticleCollection() {
                           if (page === 'ellipsis1' || page === 'ellipsis2') {
                             return (
                               <PaginationItem key={`ellipsis-${index}`}>
-                                <span className="px-2 py-2 text-sm">...</span>
+                                <span className="px-2 py-2 text-sm">..</span>
                               </PaginationItem>
                             );
                           }
@@ -398,9 +408,26 @@ export default function NewsArticleCollection() {
                         });
                       }
                     })()}
+
+                    {/* Right Arrow for Mobile */}
+                    <PaginationItem>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (hasNextPage) handlePageChange(currentPage + 1);
+                        }}
+                        className={`px-3 py-2 ${
+                          !hasNextPage
+                            ? 'pointer-events-none opacity-50'
+                            : 'cursor-pointer hover:bg-gray-100'
+                        }`}
+                      >
+                        &gt;
+                      </button>
+                    </PaginationItem>
                   </div>
 
-                  <PaginationItem>
+                  <PaginationItem className="hidden md:block">
                     <PaginationNext
                       href="#"
                       onClick={(e) => {

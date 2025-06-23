@@ -151,17 +151,17 @@ const LastestNews = () => {
               {canScrollPrev && (
                 <CarouselPrevious
                   className="absolute text-white border-none bg-[#26619C] 
-                  -left-10 top-1/2 -translate-y-1/2 z-10 hover:bg-[#1f4e7b]  hover:scale-125 
-                  transition-all duration-300 ease-in-out hover:backdrop-blur-md"
+                  -left-10 top-1/2 -translate-y-1/2 z-10 hover:bg-[#2e83d8] hover:scale-125 
+                  transition-all duration-300 ease-in-out "
                 />
-
+                
 
               )}
               {canScrollNext && (
                 <CarouselNext
                   className="absolute text-white  border-none bg-[#26619C] 
-                -right-10 top-1/2 -translate-y-1/2 z-10 hover:bg-[#1f4e7b]  hover:scale-125 
-                transition-all duration-300 ease-in-out hover:backdrop-blur-md"
+                -right-10 top-1/2 -translate-y-1/2 z-10 hover:bg-[#2e83d8]  hover:scale-125 
+                transition-all duration-300 ease-in-out "
                 />
               )}
             </div>
