@@ -1,31 +1,40 @@
-
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 const AdBanner = () => {
   return (
-    <div className=" px-generic flex justify-center w-full">
-      <div
-        className="
-          relative
-          w-full
-          max-w-[1199px]
-          h-[153px]
-          mt-3
-          bg-[#E2EDF3]
-          flex
-          items-center
-          justify-center
-          px-4
-          mx-auto
-        "
-      >
-        <span className="text-gray-600 text-sm">Ad </span>
+    <div className="px-generic flex justify-center w-full">
+      <div className="w-full max-w-[1199px] mx-auto mt-3">
+        {/* Desktop Banner */}
+        <div className="relative hidden sm:block w-full aspect-[1199/153] bg-[#F5F5F5]">
+          <Image
+            src="/banner.png"
+            alt="desktop-banner"
+            fill
+            quality={100}
+            className="object-contain"
+            sizes="100vw"
+            priority
+          />
+        </div>
+
+        {/* Mobile Banner */}
+        <div className="relative block sm:hidden w-full aspect-[390/200] bg-[#F5F5F5]">
+          <Image
+            src="/topBanner.png"
+            alt="mobile-banner"
+            fill
+            quality={100}
+            className="object-contain"
+            sizes="100vw"
+            priority
+          />
+        </div>
       </div>
     </div>
   );
 };
 
 export default AdBanner;
-

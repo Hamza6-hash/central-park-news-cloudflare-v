@@ -49,7 +49,7 @@ const ContactClient = () => {
     <>
       <section className="w-full ">
         <div className="">
-          <div className="w-full mx-3 ">
+          <div className="w-full mx-auto max-sm:px-6 md:px-8 max-[760px]:px-6 lg:px-0">
             <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
             <h1 className="text-4xl font-bold font-century-schoolbook text-[#2B4864] ">Contact Us</h1>
           </div>
@@ -57,7 +57,7 @@ const ContactClient = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-6 mt-10 w-[100vw] font-century-gothic max-w-[1200px] px-4 md:px-8 lg:px-16 xl:px-24 mx-auto"
+              className="flex flex-col gap-6 mt-10 w-[100vw] font-century-gothic max-w-[1200px] px-8 md:px-10 lg:px-12 xl:px-24 mx-auto"
             >
               <CustomInput
                 control={form.control}

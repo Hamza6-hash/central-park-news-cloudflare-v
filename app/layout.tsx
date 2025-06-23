@@ -7,6 +7,7 @@ import FontLinks from "@/components/fontLinks/FontLinks";
 import Footer from "@/components/footer/Footer";
 
 
+
 export const metadata: Metadata = {
   title: "Crypto & Blockchain Briefing | Real-Time News & Insights",
   description: "Stay ahead tiwht  with Blockchain Briefing — your source for real-time crypto news, blockchain trends, and market insights. Curated updates from trusted sources.",
@@ -24,7 +25,7 @@ export default function RootLayout({
     <head>
       <FontLinks/>
     </head>
-      <body className="select-none">
+      <body className="select-none ">
         <QueryProviders>
           <Header />
           <main className="flex items-center justify-center px-generic pageTopBottonMargin overflow-hidden ">
@@ -32,6 +33,7 @@ export default function RootLayout({
               {children}
             </div>
           </main>
+        
           <Footer />
         </QueryProviders>
       </body>

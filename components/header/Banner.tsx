@@ -10,11 +10,16 @@ import CustomInput from "@/components/customInput/CustomInput";
 import { Button } from "@/components/button/Button";
 import { usePathname } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import CustomToast from "../ui/customToast";
+
 
 const Banner = () => {
     const formSchema = subscribtionFormSchema();
     const pathname = usePathname();
+    const [showToast, setShowToast] = useState(false);
     const [res, setRes] = useState<string | null>(null);
+    const { toast } = useToast();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -30,17 +35,29 @@ const Banner = () => {
                 body: JSON.stringify(data)
             });
             const result = await response.json();
+
             if (!response.ok) {
                 setRes(result.message);
             } else {
                 setRes(null);
                 form.reset();
+                setShowToast(true);
+
             }
         } catch (error) {
             console.error(error);
             setRes("Something went wrong");
         }
     };
+
+    useEffect(() => {
+    if (showToast) {
+        const timer = setTimeout(() => {
+            setShowToast(false);
+        }, 3000);
+        return () => clearTimeout(timer);
+    }
+}, [showToast]);
 
     const { mutate: subscribe, isPending } = useMutation({
         mutationFn: onSubmit,
@@ -95,6 +112,10 @@ const Banner = () => {
                         </div>
                     </form>
                 </Form>
+                <CustomToast
+                    show={showToast}
+                    onClose={() => setShowToast(false)}
+                />
             </div>
         </section>
     );
