@@ -324,7 +324,7 @@ export default function NewsArticleCollection() {
                     })()}
                   </div>
 
-                  {/* Mobile version - simple prev 1,2 next or 1..3 pattern */}
+                  {/* Mobile version - shows pattern like 1...32, 1...3...32, 1..4..31 */}
                   <div className="flex md:hidden">
                     {(() => {
                       if (totalPages <= 3) {
@@ -345,33 +345,37 @@ export default function NewsArticleCollection() {
                           </PaginationItem>
                         ));
                       } else {
-                        // Show 1 .. current pattern for mobile
+                        // Show pattern like 1...32, 1...3...32, 1..4..31
                         const pages = [];
 
                         // Always show page 1
                         pages.push(1);
 
-                        // If current page is more than 2, show ellipsis then current
-                        if (currentPage > 2) {
-                          pages.push('ellipsis');
-                          if (currentPage < totalPages) {
-                            pages.push(currentPage);
+                        // If current page is not 1, 2, or last page, show it with ellipses
+                        if (currentPage > 2 && currentPage < totalPages) {
+                          pages.push('ellipsis1');
+                          pages.push(currentPage);
+                          if (currentPage < totalPages - 1) {
+                            pages.push('ellipsis2');
                           }
                         } else if (currentPage === 2) {
-                          // If on page 2, show it
-                          pages.push(2);
+                          // If on page 2, show ellipsis before last page
+                          pages.push('ellipsis1');
+                        } else if (currentPage === totalPages && totalPages > 3) {
+                          // If on last page and there are more than 3 pages, show ellipsis
+                          pages.push('ellipsis1');
                         }
 
-                        // Show last page if it's not already shown
-                        if (currentPage < totalPages && totalPages > 2) {
+                        // Always show last page if it's not page 1
+                        if (totalPages > 1) {
                           pages.push(totalPages);
                         }
 
                         return pages.map((page, index) => {
-                          if (page === 'ellipsis') {
+                          if (page === 'ellipsis1' || page === 'ellipsis2') {
                             return (
                               <PaginationItem key={`ellipsis-${index}`}>
-                                <span className="px-2 py-2 text-sm">..</span>
+                                <span className="px-2 py-2 text-sm">...</span>
                               </PaginationItem>
                             );
                           }
