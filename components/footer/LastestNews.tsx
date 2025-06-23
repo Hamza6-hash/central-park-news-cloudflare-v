@@ -45,7 +45,7 @@ const LastestNews = () => {
     };
 
     api.on("select", updateScrollState);
-    updateScrollState(); 
+    updateScrollState();
 
     return () => {
       api.off("select", updateScrollState);
@@ -91,22 +91,22 @@ const LastestNews = () => {
 
   const totalDots = 4;
   const articlesPerDot = 3;
-  
+
   const getCurrentDot = () => {
     if (!api) return 0;
-    
+
     const totalSlides = Math.min(articles?.length || 0, 12);
     const currentSlide = current;
-    
+
     // If we're at or near the end, activate the last dot
     if (currentSlide >= totalSlides - 4) {
       return totalDots - 1;
     }
-    
+
     // Otherwise use the standard calculation
     return Math.floor(currentSlide / articlesPerDot);
   };
-  
+
   const currentDot = getCurrentDot();
 
   return (
@@ -114,7 +114,7 @@ const LastestNews = () => {
       <div className="max-width w-full">
         <h1 className="uppercase text-3xl font-bold text-white mb-4">LATEST NEWS</h1>
 
-        <div className="relative px-4">
+        <div className="relative">
           <Carousel
             setApi={setApi}
             className="w-full"
@@ -149,10 +149,20 @@ const LastestNews = () => {
 
             <div className="hidden sm:flex">
               {canScrollPrev && (
-                <CarouselPrevious className="absolute text-white border-none bg-[#26619C] -left-10 top-1/2 -translate-y-1/2 z-10" />
+                <CarouselPrevious
+                  className="absolute text-white border-none bg-[#26619C] 
+                  -left-10 top-1/2 -translate-y-1/2 z-10 hover:bg-[#1f4e7b]  hover:scale-125 
+                  transition-all duration-300 ease-in-out hover:backdrop-blur-md"
+                />
+
+
               )}
               {canScrollNext && (
-                <CarouselNext className="absolute text-white  border-none bg-[#26619C] -right-10 top-1/2 -translate-y-1/2 z-10" />
+                <CarouselNext
+                  className="absolute text-white  border-none bg-[#26619C] 
+                -right-10 top-1/2 -translate-y-1/2 z-10 hover:bg-[#1f4e7b]  hover:scale-125 
+                transition-all duration-300 ease-in-out hover:backdrop-blur-md"
+                />
               )}
             </div>
 
@@ -162,9 +172,8 @@ const LastestNews = () => {
                 <button
                   key={index}
                   onClick={() => api?.scrollTo(index * articlesPerDot)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    currentDot === index ? "bg-[#E2EDF3]" : "bg-[#87A6C1]"
-                  }`}
+                  className={`w-2 h-2 rounded-full transition-colors ${currentDot === index ? "bg-[#E2EDF3]" : "bg-[#87A6C1]"
+                    }`}
                   aria-label={`Go to articles ${index * articlesPerDot + 1}-${Math.min((index + 1) * articlesPerDot, 12)}`}
                 />
               ))}

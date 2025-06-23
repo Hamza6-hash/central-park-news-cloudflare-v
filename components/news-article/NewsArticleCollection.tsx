@@ -150,7 +150,7 @@ export default function NewsArticleCollection() {
 
   return (
     <section className="w-full">
-      <div className="max-w-7xl mx-auto w-full px-4 py-3">
+      <div className="max-w-7xl mx-auto w-full px-1 py-2">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
           <div
             className="w-20 h-0.5 border-0"
@@ -179,10 +179,10 @@ export default function NewsArticleCollection() {
 
       {/* Content Area */}
       {isLoading && !isPreviousData ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 mt-[53px] w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 mt-[53px] w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-12">
           {Array.from({ length: ITEMS_PER_PAGE }, (_, index) => (
             <div key={index} className="w-full flex justify-center">
-              <div className="bg-white transition-shadow w-full max-w-[337px]">
+              <div className="bg-white transition-shadow w-full max-w-[350px]">
                 <Skeleton className="h-[150px] sm:h-[180px] md:h-[200px] w-full rounded-md bg-gray-100" />
                 <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
                   <Skeleton className="h-4 sm:h-5 md:h-6 w-3/4 bg-gray-100" />
@@ -253,68 +253,148 @@ export default function NewsArticleCollection() {
                       }
                     />
                   </PaginationItem>
+                  <div className="hidden md:flex">
+                    {(() => {
+                      const pages = [];
+                      const maxVisible = 5;
 
-                  {/* Show first page if not in visible range */}
-                  {pageNumbers[0] > 1 && (
-                    <>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handlePageChange(1);
-                          }}
-                          className="cursor-pointer hover:bg-gray-100"
-                        >
-                          1
-                        </PaginationLink>
-                      </PaginationItem>
-                      {pageNumbers[0] > 2 && (
-                        <PaginationItem>
-                          <span className="px-3 py-2">...</span>
-                        </PaginationItem>
-                      )}
-                    </>
-                  )}
+                      if (totalPages <= maxVisible) {
+                        for (let i = 1; i <= totalPages; i++) {
+                          pages.push(i);
+                        }
+                      } else {
+                        pages.push(1);
 
-                  {pageNumbers.map((pageNumber) => (
-                    <PaginationItem key={pageNumber}>
-                      <PaginationLink
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handlePageChange(pageNumber);
-                        }}
-                        isActive={currentPage === pageNumber}
-                        className="cursor-pointer hover:bg-gray-100"
-                      >
-                        {pageNumber}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
+                        let start, end;
+                        if (currentPage <= 3) {
+                          start = 2;
+                          end = 4;
+                        } else if (currentPage >= totalPages - 2) {
+                          start = totalPages - 3;
+                          end = totalPages - 1;
+                        } else {
+                          start = currentPage - 1;
+                          end = currentPage + 1;
+                        }
+                        if (start > 2) {
+                          pages.push('ellipsis1');
+                        }
 
-                  {/* Show last page if not in visible range */}
-                  {pageNumbers[pageNumbers.length - 1] < totalPages && (
-                    <>
-                      {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && (
-                        <PaginationItem>
-                          <span className="px-3 py-2">...</span>
-                        </PaginationItem>
-                      )}
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handlePageChange(totalPages);
-                          }}
-                          className="cursor-pointer hover:bg-gray-100"
-                        >
-                          {totalPages}
-                        </PaginationLink>
-                      </PaginationItem>
-                    </>
-                  )}
+                        // Add middle pages
+                        for (let i = start; i <= end; i++) {
+                          if (i > 1 && i < totalPages) {
+                            pages.push(i);
+                          }
+                        }
+
+                        if (end < totalPages - 1) {
+                          pages.push('ellipsis2');
+                        }
+
+                        if (totalPages > 1) {
+                          pages.push(totalPages);
+                        }
+                      }
+
+                      return pages.map((page, index) => {
+                        if (page === 'ellipsis1' || page === 'ellipsis2') {
+                          return (
+                            <PaginationItem key={`ellipsis-${index}`}>
+                              <span className="px-3 py-2">...</span>
+                            </PaginationItem>
+                          );
+                        }
+
+                        return (
+                          <PaginationItem key={page}>
+                            <PaginationLink
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handlePageChange(page);
+                              }}
+                              isActive={currentPage === page}
+                              className="cursor-pointer hover:bg-gray-100"
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      });
+                    })()}
+                  </div>
+
+                  {/* Mobile version - simple prev 1,2 next or 1..3 pattern */}
+                  <div className="flex md:hidden">
+                    {(() => {
+                      if (totalPages <= 3) {
+                        // Show all pages if 3 or fewer
+                        return Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                          <PaginationItem key={page}>
+                            <PaginationLink
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handlePageChange(page);
+                              }}
+                              isActive={currentPage === page}
+                              className="cursor-pointer hover:bg-gray-100"
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        ));
+                      } else {
+                        // Show 1 .. current pattern for mobile
+                        const pages = [];
+
+                        // Always show page 1
+                        pages.push(1);
+
+                        // If current page is more than 2, show ellipsis then current
+                        if (currentPage > 2) {
+                          pages.push('ellipsis');
+                          if (currentPage < totalPages) {
+                            pages.push(currentPage);
+                          }
+                        } else if (currentPage === 2) {
+                          // If on page 2, show it
+                          pages.push(2);
+                        }
+
+                        // Show last page if it's not already shown
+                        if (currentPage < totalPages && totalPages > 2) {
+                          pages.push(totalPages);
+                        }
+
+                        return pages.map((page, index) => {
+                          if (page === 'ellipsis') {
+                            return (
+                              <PaginationItem key={`ellipsis-${index}`}>
+                                <span className="px-2 py-2 text-sm">..</span>
+                              </PaginationItem>
+                            );
+                          }
+
+                          return (
+                            <PaginationItem key={page}>
+                              <PaginationLink
+                                href="#"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handlePageChange(page);
+                                }}
+                                isActive={currentPage === page}
+                                className="cursor-pointer hover:bg-gray-100"
+                              >
+                                {page}
+                              </PaginationLink>
+                            </PaginationItem>
+                          );
+                        });
+                      }
+                    })()}
+                  </div>
 
                   <PaginationItem>
                     <PaginationNext
