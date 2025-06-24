@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Logo from "@/assets/logo.webp";
 import Image from "next/image";
@@ -15,8 +15,18 @@ const UnsubscribeClient = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const [toatTitle, setToastTitle] = useState("");
+  const [toastTitle, setToastTitle] = useState("");
   const [toastType, setToastType] = useState<'success' | 'error'>('success');
+
+  // Prevent body scroll
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+      document.documentElement.style.overflow = 'unset';
+    };
+  }, []);
 
   const handleUnsubscribe = async () => {
     setIsLoading(true);
@@ -28,18 +38,18 @@ const UnsubscribeClient = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        setShowToast(true)
+        setShowToast(true);
         setToastType('success');
-        setToastTitle("Success")
+        setToastTitle("Success");
       } else {
-        setShowToast(true)
+        setShowToast(true);
         setToastType('error');
-        setToastTitle("Error")
+        setToastTitle("Error");
       }
     } catch {
-      setShowToast(true)
+      setShowToast(true);
       setToastType('error');
-      setToastTitle("Error")
+      setToastTitle("Error");
     } finally {
       setIsLoading(false);
     }
@@ -56,23 +66,24 @@ const UnsubscribeClient = () => {
 
   if (!email || !token) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#25405a] to-[#4186c7]">
+      <div className="h-screen w-screen fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-[#25405a] to-[#4186c7] overflow-hidden">
         <h1 className="text-2xl font-bold text-red-600 mb-4">Invalid Link</h1>
-        <p>This unsubscribe link is invalid or incomplete.</p>
+        <p className="text-white">This unsubscribe link is invalid or incomplete.</p>
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="w-full flex justify-center items-center bg-[#25405a] ">
+    <div className="h-screen w-screen fixed inset-0 flex flex-col overflow-hidden">
+      {/* Header */}
+      <div className="w-full flex justify-center items-center bg-[#25405a] py-2 flex-shrink-0">
         <Link href={routes.home}>
           <Image
             src={Logo}
             alt="Blockchain Briefing logo"
             quality={75}
-            width={200}
-            height={89}
+            width={180}
+            height={80}
             priority
             loading="eager"
             className="block"
@@ -80,22 +91,24 @@ const UnsubscribeClient = () => {
           />
         </Link>
       </div>
-      <div className="flex flex-col max-sm:min-h-[100vh] min-h-[95vh] bg-gradient-to-r from-[#25405a] to-[#4186c7]">
-        <div className="flex flex-col items-center justify-center flex-1">
-          <div className="w-[569px] max-sm:w-[90%] max-w-[569px] flex flex-col text-left " style={{ gap: '40px' }}>
-            <div className="flex flex-col" style={{ gap: '16px' }}>
-              <h1 className="text-[32px] font-montserrat font-bold text-white leading-tight">
+      
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col bg-gradient-to-r from-[#25405a] to-[#4186c7] overflow-hidden">
+        <div className="flex-1 flex flex-col items-center justify-center px-4 py-4">
+          <div className="w-[569px] max-sm:w-[90%] max-w-[569px] flex flex-col text-left" style={{ gap: '32px' }}>
+            <div className="flex flex-col" style={{ gap: '12px' }}>
+              <h1 className="text-[28px] sm:text-[32px] font-montserrat font-bold text-white leading-tight">
                 We're Sorry To See You Go.
               </h1>
-              <p className="text-white text-[16px] font-montserrat leading-relaxed">
+              <p className="text-white text-[14px] sm:text-[16px] font-montserrat leading-relaxed">
                 If you no longer wish to receive emails, notifications, or updates
                 from <b>Blockchain Briefing</b>, you can unsubscribe below.
               </p>
             </div>
             
-            <div className="flex flex-col justify-between md:flex-row items-start gap-8">
+            <div className="flex flex-col justify-between md:flex-row items-center gap-6">
               <button
-                className="underline text-[16px] font-normal font-century-gothic text-[#6DBEE5] hover:text-[#5AADE0] transition-colors"
+                className="underline text-[14px] sm:text-[16px] font-normal font-century-gothic text-[#6DBEE5] hover:text-[#5AADE0] transition-colors text-center"
                 onClick={() => router.push("/")}
                 disabled={isLoading}
               >
@@ -117,14 +130,17 @@ const UnsubscribeClient = () => {
             )}
           </div>
         </div>
-        <footer className="text-center text-white py-4 bg-[#25405a]">
+        
+        {/* Footer */}
+        <footer className="text-center text-white py-2 bg-[#25405a] flex-shrink-0 text-sm">
           COPYRIGHT 2024 © <b>BLOCKCHAIN BRIEFING</b>. ALL RIGHTS RESERVED
         </footer>
       </div>
+      
       <CustomToast
         show={showToast}
         onClose={() => setShowToast(false)}
-        title={toatTitle}
+        title={toastTitle}
         description={"Please Try Again Later"}
         type={toastType}
       />
