@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 
 const Terms = () => {
   return (
-    <div>
+    <div className='bg-primary-100'>
         <TermsAndCondition />
+        
     </div>
 
   )

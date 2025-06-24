@@ -19,7 +19,6 @@ const Banner = () => {
     const pathname = usePathname();
     const [showToast, setShowToast] = useState(false);
     const [res, setRes] = useState<string | null>(null);
-    const { toast } = useToast();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),

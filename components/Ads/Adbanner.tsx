@@ -7,8 +7,8 @@ const AdBanner = () => {
   return (
     <div className="px-generic flex justify-center w-full">
       <div className="w-full max-w-[1199px] mx-auto mt-3">
-        {/* Desktop Banner */}
-        <div className="relative hidden sm:block w-full aspect-[1199/153] ">
+        {/* Desktop ad banner */}
+        <div className="relative hidden sm:block w-full aspect-[1199/153] flash-animation">
           <Image
             src="/banner.png"
             alt="desktop-banner"
@@ -20,8 +20,8 @@ const AdBanner = () => {
           />
         </div>
 
-        {/* Mobile Banner */}
-        <div className="relative block sm:hidden w-full aspect-[390/200] ">
+        {/* Mobile ad banner */}
+        <div className="relative block sm:hidden w-full aspect-[390/200] flash-animation ">
           <Image
             src="/topBanner.png"
             alt="mobile-banner"
