@@ -7,7 +7,7 @@ const Adbox = () => {
   return (
     <div className="flex justify-center items-center mt-3 w-full">
       {/* Desktop Ad */}
-      <div className="relative hidden sm:block w-full max-w-[510px] aspect-[17/10] overflow-hidden rounded-lg">
+      <div className="relative flash-animation hidden sm:block w-full max-w-[510px] aspect-[17/10] overflow-hidden rounded-lg">
         <Image
           src="/image (12).png"
           alt="desktop ad"
@@ -21,7 +21,7 @@ const Adbox = () => {
 
       {/* Mobile Ad */}
       <div className="block sm:hidden w-full">
-        <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden">
+        <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden flash-animation">
           <Image
             src="/bottomBanner.png"
             alt="mobile ad"

@@ -8,16 +8,14 @@ import Adbanner from '../Ads/Adbanner';
 
 const Header = () => {
     const pathName = usePathname()
-    const hideBanner = pathName === '/privacy' || pathName === '/terms-and-conditions';
+    const hideBanner = pathName === '/privacy' || pathName === '/terms-and-conditions' || pathName === '/unsubscribe';
     return (
         <header>
             <Navbar />
             {
                 hideBanner ? "" : <>
                     <Banner />
-                    {/* <div className='px-generic mt-4'> */}
-                        <Adbanner />
-                    {/* </div> */}
+                    <Adbanner />
                 </>
             }
             <Searchbar />
