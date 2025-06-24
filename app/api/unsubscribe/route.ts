@@ -47,7 +47,7 @@ export async function POST(request: Request) {
             console.log(`Email ${email} not found in Firebase subscribers`);
         }
 
-        // Step 2: Remove from SendGrid
+        // Step 2: Remove from SendGrid Marketing Contacts
         const SENDGRID_API_KEY = process.env.SendGridApiKey;
         let removedFromSendGrid = false;
         
@@ -102,30 +102,6 @@ export async function POST(request: Request) {
             }
         } else {
             console.warn('SendGrid API key not configured');
-        }
-
-        // Step 3: Optional - Add to global suppression list (prevents accidental re-adds)
-        if (SENDGRID_API_KEY) {
-            try {
-                const suppressResponse = await fetch('https://api.sendgrid.com/v3/asm/suppressions/global', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${SENDGRID_API_KEY}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        recipient_emails: [email]
-                    }),
-                });
-
-                if (suppressResponse.ok) {
-                    console.log(`Added ${email} to global suppression list`);
-                } else {
-                    console.error('Failed to add to suppression list:', await suppressResponse.text());
-                }
-            } catch (suppressError) {
-                console.error('Suppression list error:', suppressError);
-            }
         }
 
         // Return success response
