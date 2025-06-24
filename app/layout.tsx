@@ -28,12 +28,11 @@ export default function RootLayout({
       <body className="select-none ">
         <QueryProviders>
           <Header />
-          <main className="flex items-center justify-center px-generic pageTopBottonMargin overflow-hidden ">
+          <main className="flex w-full items-center justify-center px-generic pageTopBottonMargin overflow-hidden ">
             <div className="max-width">
               {children}
             </div>
           </main>
-        
           <Footer />
         </QueryProviders>
       </body>

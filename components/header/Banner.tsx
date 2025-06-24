@@ -29,7 +29,7 @@ const Banner = () => {
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         try {
-            const response = await fetch("/api", {
+            const response = await fetch("/api/subscribe", {
                 method: "POST",
                 body: JSON.stringify(data)
             });
@@ -48,15 +48,6 @@ const Banner = () => {
             setRes("Something went wrong");
         }
     };
-
-    useEffect(() => {
-    if (showToast) {
-        const timer = setTimeout(() => {
-            setShowToast(false);
-        }, 3000);
-        return () => clearTimeout(timer);
-    }
-}, [showToast]);
 
     const { mutate: subscribe, isPending } = useMutation({
         mutationFn: onSubmit,

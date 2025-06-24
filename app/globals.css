@@ -258,6 +258,7 @@
 
 /*----------------------- animation for ads */
 
+
 @keyframes flash {
   0%, 100% {
     opacity: 1;
