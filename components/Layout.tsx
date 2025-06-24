@@ -12,14 +12,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }
   return (
     <div>
-        {!isUnsubscribe && <Header />}
-          <main className="flex items-center justify-center px-generic pageTopBottonMargin overflow-hidden ">
-            <div className="max-width">
-              {children}
-            </div>
-          </main>
-        
-          {!isUnsubscribe && <Footer />}
+      {!isUnsubscribe && <Header />}
+      <main className="flex items-center justify-center px-generic pageTopBottonMargin overflow-hidden ">
+        <div className="max-width">
+          {children}
+        </div>
+      </main>
+
+      {!isUnsubscribe && <Footer />}
     </div>
   )
 
