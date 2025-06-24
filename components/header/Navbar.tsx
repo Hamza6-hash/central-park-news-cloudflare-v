@@ -30,7 +30,7 @@ const Navbar = () => {
               alt="Horizon logo"
               quality={75}
               width={120}
-              height={60}
+              height={120}
               priority
               loading="eager"
               className="block"
