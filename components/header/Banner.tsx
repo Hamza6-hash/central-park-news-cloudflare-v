@@ -56,12 +56,26 @@ const Banner = () => {
     // Reset form on route change
     useEffect(() => {
         form.reset();
-    }, [pathname, form]);
+    }, [pathname, form]);;
+
 
     const onChangeField = (e: any) => {
         if (!e?.target?.value) form.reset();
         setRes(null);
     }
+
+
+    useEffect(() => {
+        if (showToast) {
+            const timer = setTimeout(() => {
+                setShowToast(false);
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [showToast]);
+
+
 
     return (
         <section className="banner">
