@@ -13,7 +13,6 @@ const UnsubscribeClient = () => {
   const token = searchParams.get("token");
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleUnsubscribe = async () => {
     setIsLoading(true);
