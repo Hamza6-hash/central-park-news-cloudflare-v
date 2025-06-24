@@ -19,7 +19,6 @@ const Banner = () => {
     const pathname = usePathname();
     const [showToast, setShowToast] = useState(false);
     const [res, setRes] = useState<string | null>(null);
-    const { toast } = useToast();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -50,14 +49,14 @@ const Banner = () => {
         }
     };
 
-//     useEffect(() => {
-//     if (showToast) {
-//         const timer = setTimeout(() => {
-//             setShowToast(false);
-//         }, 3000);
-//         return () => clearTimeout(timer);
-//     }
-// }, [showToast]);
+    useEffect(() => {
+    if (showToast) {
+        const timer = setTimeout(() => {
+            setShowToast(false);
+        }, 3000);
+        return () => clearTimeout(timer);
+    }
+}, [showToast]);
 
     const { mutate: subscribe, isPending } = useMutation({
         mutationFn: onSubmit,

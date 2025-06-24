@@ -63,11 +63,11 @@ const Navbar = () => {
                 src={Logo}
                 alt="Horizon logo"
                 quality={75}
-                width={190}
-                height={80}
+                width={191}
+                height={120}
                 priority
                 loading="eager"
-                style={{ width: "auto", height: "auto" }}
+                // style={{ width: "auto", height: "auto" }}
               />
             </Link>
           </div>
