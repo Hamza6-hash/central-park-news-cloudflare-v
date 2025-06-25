@@ -115,7 +115,7 @@ const UnsubscribeClient = () => {
                 NEVERMIND, I WANT TO STAY SUBSCRIBED
               </button>
               <button
-                className="bg-yellow-300 font-century-gothic hover:bg-yellow-400 text-gray-900 font-bold py-1 px-6 rounded transition-colors duration-200"
+                className="bg-yellow-300 max-sm:w-full font-century-gothic hover:bg-yellow-400 text-gray-900 font-bold py-1 px-6 rounded transition-colors duration-200"
                 onClick={handleUnsubscribe}
                 disabled={isLoading}
               >
@@ -132,7 +132,7 @@ const UnsubscribeClient = () => {
         </div>
         
         {/* Footer */}
-        <footer className="text-center text-white py-2 bg-[#25405a] flex-shrink-0 text-sm">
+        <footer className="text-center text-[12px] text-white py-2 bg-[#25405a] flex-shrink-0 ">
           COPYRIGHT 2024 © <b>BLOCKCHAIN BRIEFING</b>. ALL RIGHTS RESERVED
         </footer>
       </div>

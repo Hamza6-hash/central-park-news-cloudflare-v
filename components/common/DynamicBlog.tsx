@@ -59,11 +59,11 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
         <div className="space-y-3 mb-4">
           <div className="sm:x-sm-generic mt-4 ">
             {isArticlePage ? (
-              <h1 className="font-century-schoolbook text-3xl capitalize">
+              <h1 className="font-century-schoolbook max-sm:text-[22px] text-3xl capitalize">
                 {title}
               </h1>
             ) : (
-              <h1 className="font-century-schoolbook text-3xl capitalize">
+              <h1 className="font-century-schoolbook max-sm:text-[22px] text-3xl capitalize">
                 {title}
               </h1>
             )}
@@ -82,7 +82,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           </div>
 
 
-          <div className="flex items-center sm:text-lg text-sm px-sm-generic gap-2 max-[400px]:flex-col max-[400px]:justify-start max-[400px]:items-start">
+          <div className="flex items-center sm:text-[12px] text-sm px-sm-generic gap-2 max-[400px]:flex-col max-[400px]:justify-start max-[400px]:items-start">
             <div className="flex items-center gap-2">
               <hr className="w-6 h-1 " />
               <h6 className="capitalize text-nowrap font-montserrat">
@@ -96,7 +96,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           </div>
         </div>
 
-        <div className="markdown-content">
+        <div className="markdown-content max-sm:text-[14px]">
           <ReactMarkdown>{content}</ReactMarkdown>
         </div>
          <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
