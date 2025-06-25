@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
 import CustomToast from "@/components/ui/customToast";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebaseConfig";
 
 const UnsubscribeClient = () => {
   const router = useRouter();
@@ -16,7 +18,24 @@ const UnsubscribeClient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toatTitle, setToastTitle] = useState("");
-  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+  const [toastType, setToastType] = useState<"success" | "error" | "alreadyUnsubscribed">("success");
+
+  useEffect(() => {
+    const checkIfUserExists = async () => {
+      if (email) {
+        const userDoc = doc(db, "blog", "blockchainBriefing", "subscribeUsers", email);
+        const userExists = await getDoc(userDoc);
+        if (!userExists.exists()) {
+          router.push("/");
+          setShowToast(true);
+          setToastType("error");
+          setToastTitle("Link Already Used");
+          setToastType("alreadyUnsubscribed");
+        }
+      }
+    };
+    checkIfUserExists();
+  }, [email, router]);
 
   const handleUnsubscribe = async () => {
     setIsLoading(true);
@@ -26,20 +45,20 @@ const UnsubscribeClient = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, token }),
       });
-      const data = await response.json();
       if (response.ok) {
-        setShowToast(true)
-        setToastType('success');
-        setToastTitle("Success")
+        setShowToast(true);
+        setToastType("success");
+        setToastTitle("Success");
+        router.push("/");
       } else {
-        setShowToast(true)
-        setToastType('error');
-        setToastTitle("Error")
+        setShowToast(true);
+        setToastType("error");
+        setToastTitle("Error");
       }
     } catch {
-      setShowToast(true)
-      setToastType('error');
-      setToastTitle("Error")
+      setShowToast(true);
+      setToastType("error");
+      setToastTitle("Error");
     } finally {
       setIsLoading(false);
     }
@@ -82,17 +101,21 @@ const UnsubscribeClient = () => {
       </div>
       <div className="flex flex-col max-sm:min-h-[100vh] min-h-[95vh] bg-gradient-to-r from-[#25405a] to-[#4186c7]">
         <div className="flex flex-col items-center justify-center flex-1">
-          <div className="w-[569px] max-sm:w-[90%] max-w-[569px] flex flex-col text-left " style={{ gap: '40px' }}>
-            <div className="flex flex-col" style={{ gap: '16px' }}>
+          <div
+            className="w-[569px] max-sm:w-[90%] max-w-[569px] flex flex-col text-left "
+            style={{ gap: "40px" }}
+          >
+            <div className="flex flex-col" style={{ gap: "16px" }}>
               <h1 className="text-[32px] font-montserrat font-bold text-white leading-tight">
                 We're Sorry To See You Go.
               </h1>
               <p className="text-white text-[16px] font-montserrat leading-relaxed">
-                If you no longer wish to receive emails, notifications, or updates
-                from <b>Blockchain Briefing</b>, you can unsubscribe below.
+                If you no longer wish to receive emails, notifications, or
+                updates from <b>Blockchain Briefing</b>, you can unsubscribe
+                below.
               </p>
             </div>
-            
+
             <div className="flex flex-col justify-between md:flex-row items-start gap-8">
               <button
                 className="underline text-[16px] font-normal font-century-gothic text-[#6DBEE5] hover:text-[#5AADE0] transition-colors"
@@ -109,11 +132,9 @@ const UnsubscribeClient = () => {
                 {isLoading ? "Processing..." : "UNSUBSCRIBE"}
               </button>
             </div>
-            
+
             {message && (
-              <div className="text-white text-lg font-semibold">
-                {message}
-              </div>
+              <div className="text-white text-lg font-semibold">{message}</div>
             )}
           </div>
         </div>
@@ -125,7 +146,13 @@ const UnsubscribeClient = () => {
         show={showToast}
         onClose={() => setShowToast(false)}
         title={toatTitle}
-        description={"Please Try Again Later"}
+        description={
+          toastType === "error"
+            ? "Please Try Again Later"
+            : toastType === "success"
+              ? "You have been successfully unsubscribed. You will no longer receive these notifications."
+              : "You have already unsubscribed. You will no longer receive these notifications."
+        }
         type={toastType}
       />
     </div>
