@@ -1,13 +1,12 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Logo from "@/assets/logo.webp";
 import Image from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
 import CustomToast from "@/components/ui/customToast";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebaseConfig";
+
 
 const UnsubscribeClient = () => {
   const router = useRouter();
@@ -19,23 +18,6 @@ const UnsubscribeClient = () => {
   const [showToast, setShowToast] = useState(false);
   const [toatTitle, setToastTitle] = useState("");
   const [toastType, setToastType] = useState<"success" | "error" | "alreadyUnsubscribed">("success");
-
-  useEffect(() => {
-    const checkIfUserExists = async () => {
-      if (email) {
-        const userDoc = doc(db, "blog", "blockchainBriefing", "subscribeUsers", email);
-        const userExists = await getDoc(userDoc);
-        if (!userExists.exists()) {
-          router.push("/");
-          setShowToast(true);
-          setToastType("error");
-          setToastTitle("Link Already Used");
-          setToastType("alreadyUnsubscribed");
-        }
-      }
-    };
-    checkIfUserExists();
-  }, [email, router]);
 
   const handleUnsubscribe = async () => {
     setIsLoading(true);
@@ -73,14 +55,6 @@ const UnsubscribeClient = () => {
     }
   }, [showToast]);
 
-  if (!email || !token) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#25405a] to-[#4186c7]">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">Invalid Link</h1>
-        <p>This unsubscribe link is invalid or incomplete.</p>
-      </div>
-    );
-  }
 
   return (
     <div>
