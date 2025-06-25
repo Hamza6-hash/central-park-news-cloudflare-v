@@ -18,14 +18,44 @@ interface SearchResult extends ArticleWithDetails {
 interface SearchbarProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpen?: () => void;
 }
 
-const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
+const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
   const pathName = usePathname();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Add keyboard shortcut logic
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Check for Ctrl+S (Windows) or Cmd+S (Mac)
+      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+        event.preventDefault(); // Prevent default save behavior
+        
+        if (isOpen) {
+          onClose(); // Close if already open
+        } else if (onOpen) {
+          onOpen(); // Open if closed
+        }
+      }
+      
+      // Close search with Escape key
+      if (event.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    // Add event listener
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose, onOpen]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -97,23 +127,9 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
     setError(null);
   };
 
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        onClose();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
-
-
   if (!isOpen) return null;
 
   console.log(searchResults)
-
 
   return (
     <section className="px-generic w-full flex justify-center items-center z-50">
