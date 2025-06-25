@@ -115,14 +115,14 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
       <div className="w-full">
         <div className="w-full sm:w-[537px] h-[2px] bg-[#252525]"></div>
         <div className="flex flex-col gap-4 mt-2 mb-4 ">
-          <h1 className="text-lg sm:text-[18px] font-century-gothic text-black capitalize flex flex-wrap items-center gap-[16px]">
+          <h1 className="text-[12px] sm:text-lg font-century-gothic text-black capitalize flex flex-wrap items-center gap-[16px]">
             <span className="cursor-pointer">
               <Link href={'/news'}>
                 News
               </Link>
             </span>
             <span className="text-[#1E3D5A]">/</span>
-            <span className="font-bold text-[#1E3D5A] flex items-center gap-1 flex-wrap">
+            <span className=" font-bold text-[#1E3D5A] flex items-center gap-1 flex-wrap">
               {news.title}
             </span>
           </h1>

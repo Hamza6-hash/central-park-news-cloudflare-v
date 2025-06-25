@@ -12,6 +12,7 @@ import { Search } from "lucide-react";
 
 interface SearchResult extends ArticleWithDetails {
   categoryName: string;
+  createdAt?: string;
 }
 
 interface SearchbarProps {
@@ -111,6 +112,8 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
+  console.log(searchResults)
+
 
   return (
     <section className="px-generic w-full flex justify-center items-center z-50">
@@ -120,7 +123,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
           onClick={onClose}
         >
           <div
-            className="bg-white rounded-lg p-6 w-[600px] shadow-2xl max-w-full animate-slideUp"
+            className="bg-white rounded-lg p-6 w-[770px] max-[800px]:w-[660px] shadow-2xl max-w-full animate-slideUp"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-4">
@@ -135,10 +138,10 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
             </div>
 
             {/* Search Input */}
-            <div className="bg-blue-gradient rounded-full py-2 w-full px-5 gap-1 flex justify-center items-center">
+            <div className="bg-white rounded-md border border-gray-300 py-2 w-full px-5 gap-1 flex justify-center items-center">
               <input
                 type="text"
-                className="bg-transparent border-none focus:outline-none text-[#BFD3E3] font-century-gothic text-[16px] not-italic font-[400] leading-normal w-full"
+                className="bg-transparent border-none focus:outline-none text-black font-bold font-century-gothic text-[16px] not-italic capitalize  leading-normal w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search news..."
@@ -166,6 +169,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
             )}
             {searchResults.length > 0 && (
               <div className="mt-4 max-h-60 overflow-y-auto">
+                <p className="font-century-gothic text-[#020617]">Search for "{searchTerm}"</p>
                 <ul>
                   {searchResults.map((article) => (
                     <React.Fragment key={article.id}>
@@ -182,11 +186,21 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
                           onClose();
                         }}
                       >
-                        <li className="mb-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
+                        <li className="mb-2 p-2 space-y-2 hover:border-l-[5px] border-[#1E3D5A] hover:bg-[#E2EDF3] rounded cursor-pointer">
                           <h4 className="font-semibold">{article.title}</h4>
-                          <p className="text-sm text-gray-600 capitalize">
-                            Category: {article.categoryName} | Author:{" "}
-                            {article.author?.author_name || "N/A"}
+                          <p className="text-sm text-gray-600 capitalize space-x-2">
+                            <span className="border border-[#1E3D5A] px-2">
+                              Category: {article.categoryName}
+                            </span>
+                            <span className="border border-[#1E3D5A] px-2">
+                              {article?.createdAt
+                                ? new Date(article.createdAt).toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })
+                                : ""}
+                            </span>
                           </p>
                         </li>
                       </Link>
