@@ -19,6 +19,16 @@ const UnsubscribeClient = () => {
   const [toatTitle, setToastTitle] = useState("");
   const [toastType, setToastType] = useState<"success" | "error" | "alreadyUnsubscribed">("success");
 
+  // Prevent body scroll
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+      document.documentElement.style.overflow = 'unset';
+    };
+  }, []);
+
   const handleUnsubscribe = async () => {
     setIsLoading(true);
     try {
@@ -57,15 +67,16 @@ const UnsubscribeClient = () => {
 
 
   return (
-    <div>
-      <div className="w-full flex justify-center items-center bg-[#25405a] ">
+    <div className="h-screen w-screen fixed inset-0 flex flex-col overflow-hidden">
+      {/* Header */}
+      <div className="w-full flex justify-center items-center bg-[#25405a] py-2 flex-shrink-0">
         <Link href={routes.home}>
           <Image
             src={Logo}
             alt="Blockchain Briefing logo"
             quality={75}
-            width={200}
-            height={89}
+            width={180}
+            height={80}
             priority
             loading="eager"
             className="block"
@@ -73,33 +84,31 @@ const UnsubscribeClient = () => {
           />
         </Link>
       </div>
-      <div className="flex flex-col max-sm:min-h-[100vh] min-h-[95vh] bg-gradient-to-r from-[#25405a] to-[#4186c7]">
-        <div className="flex flex-col items-center justify-center flex-1">
-          <div
-            className="w-[569px] max-sm:w-[90%] max-w-[569px] flex flex-col text-left "
-            style={{ gap: "40px" }}
-          >
-            <div className="flex flex-col" style={{ gap: "16px" }}>
-              <h1 className="text-[32px] font-montserrat font-bold text-white leading-tight">
+      
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col bg-gradient-to-r from-[#25405a] to-[#4186c7] overflow-hidden">
+        <div className="flex-1 flex flex-col items-center justify-center px-4 py-4">
+          <div className="w-[569px] max-sm:w-[90%] max-w-[569px] flex flex-col text-left" style={{ gap: '32px' }}>
+            <div className="flex flex-col" style={{ gap: '12px' }}>
+              <h1 className="text-[28px] sm:text-[32px] font-montserrat font-bold text-white leading-tight">
                 We're Sorry To See You Go.
               </h1>
-              <p className="text-white text-[16px] font-montserrat leading-relaxed">
-                If you no longer wish to receive emails, notifications, or
-                updates from <b>Blockchain Briefing</b>, you can unsubscribe
-                below.
+              <p className="text-white text-[14px] sm:text-[16px] font-montserrat leading-relaxed">
+                If you no longer wish to receive emails, notifications, or updates
+                from <b>Blockchain Briefing</b>, you can unsubscribe below.
               </p>
             </div>
-
-            <div className="flex flex-col justify-between md:flex-row items-start gap-8">
+            
+            <div className="flex flex-col justify-between md:flex-row items-center gap-6">
               <button
-                className="underline text-[16px] font-normal font-century-gothic text-[#6DBEE5] hover:text-[#5AADE0] transition-colors"
+                className="underline text-[14px] sm:text-[16px] font-normal font-century-gothic text-[#6DBEE5] hover:text-[#5AADE0] transition-colors text-center"
                 onClick={() => router.push("/")}
                 disabled={isLoading}
               >
                 NEVERMIND, I WANT TO STAY SUBSCRIBED
               </button>
               <button
-                className="bg-yellow-300 font-century-gothic hover:bg-yellow-400 text-gray-900 font-bold py-1 px-6 rounded transition-colors duration-200"
+                className="bg-yellow-300 max-sm:w-full font-century-gothic hover:bg-yellow-400 text-gray-900 font-bold py-1 px-6 rounded transition-colors duration-200"
                 onClick={handleUnsubscribe}
                 disabled={isLoading}
               >
@@ -112,10 +121,13 @@ const UnsubscribeClient = () => {
             )}
           </div>
         </div>
-        <footer className="text-center text-white py-4 bg-[#25405a]">
+        
+        {/* Footer */}
+        <footer className="text-center text-[12px] text-white py-2 bg-[#25405a] flex-shrink-0 ">
           COPYRIGHT 2024 © <b>BLOCKCHAIN BRIEFING</b>. ALL RIGHTS RESERVED
         </footer>
       </div>
+      
       <CustomToast
         show={showToast}
         onClose={() => setShowToast(false)}
