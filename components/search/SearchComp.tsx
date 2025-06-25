@@ -27,31 +27,31 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isMacOS, setIsMacOS] = useState(false);
 
-  // Add keyboard shortcut logic
+  useEffect(() => {
+    const isMac = () => navigator.platform.toUpperCase().includes("MAC");
+    setIsMacOS(isMac());
+  }, []);
+
+  // keyboard shortcut logic
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // Check for Ctrl+S (Windows) or Cmd+S (Mac)
       if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-        event.preventDefault(); // Prevent default save behavior
-        
+        event.preventDefault();
+
         if (isOpen) {
-          onClose(); // Close if already open
+          onClose();
         } else if (onOpen) {
-          onOpen(); // Open if closed
+          onOpen();
         }
       }
-      
-      // Close search with Escape key
+
       if (event.key === 'Escape' && isOpen) {
         onClose();
       }
     };
-
-    // Add event listener
     document.addEventListener('keydown', handleKeyDown);
-
-    // Cleanup
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
@@ -59,7 +59,6 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
 
   useEffect(() => {
     if (!isOpen) {
-      // Clear search when modal is closed
       setSearchTerm("");
       setSearchResults([]);
       setError(null);
@@ -154,28 +153,50 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
             </div>
 
             {/* Search Input */}
-            <div className="bg-white rounded-md border border-gray-300 py-2 w-full px-5 gap-1 flex justify-center items-center">
-              <input
-                type="text"
-                className="bg-transparent border-none focus:outline-none text-black font-bold font-century-gothic text-[16px] not-italic capitalize  leading-normal w-full"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search news..."
-                autoFocus
-              />
-              {searchTerm ? (
-                <button onClick={handleClear} className="text-white hover:text-gray-200">
-                  <IoIosClose color="white" size={25} />
-                </button>
-              ) : (
-                <IoIosSearch color="white" size={25} />
-              )}
+            <div className="bg-white rounded-md border border-gray-300 py-2 w-full px-5 flex justify-between items-center">
+              <div className="flex items-center gap-2 flex-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
+                    />
+                  </svg>
+
+                <input
+                  type="text"
+                  className="bg-transparent border-none focus:outline-none text-black font-century-gothic text-[16px] font-bold w-full placeholder:text-gray-400"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search news..."
+                  autoFocus
+                />
+              </div>
+
+              <span className="text-gray-400 text-xs font-medium whitespace-nowrap ml-4">
+                {isMacOS ? "⌘ + S" : "Ctrl + S"}
+              </span>
             </div>
+
 
             {/* Loading, Error, Results */}
             {isSearching && (
-              <div className="mt-4 text-center">
-                <p className="text-gray-600">Searching...</p>
+              <div className="mt-2 px-2">
+                <p className="font-century-gothic text-[#b2b3b6]">Searching..</p>
+              </div>
+            )}
+            {searchTerm && !isSearching && (
+              <div className="mt-2 px-2">
+                <p className="font-century-gothic text-[#b2b3b6]">
+                  Search for "{searchTerm}"
+                </p>
               </div>
             )}
             {error && (
@@ -183,9 +204,10 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
                 <p className="text-red-500">{error}</p>
               </div>
             )}
+
             {searchResults.length > 0 && (
               <div className="mt-4 max-h-60 overflow-y-auto">
-                <p className="font-century-gothic text-[#020617]">Search for "{searchTerm}"</p>
+
                 <ul>
                   {searchResults.map((article) => (
                     <React.Fragment key={article.id}>
@@ -203,12 +225,12 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
                         }}
                       >
                         <li className="mb-2 p-2 space-y-2 hover:border-l-[5px] border-[#1E3D5A] hover:bg-[#E2EDF3] rounded cursor-pointer">
-                          <h4 className="font-semibold">{article.title}</h4>
-                          <p className="text-sm text-gray-600 capitalize space-x-2">
-                            <span className="border border-[#1E3D5A] px-2">
-                              Category: {article.categoryName}
+                          <h4 className="font-semibold font-century-gothic text-[#224667] text-[14px]">{article.title}</h4>
+                          <p className="text-sm text-[#224667] capitalize space-x-2">
+                            <span className="border border-[#1E3D5A] px-2 text-[#224667] rounded-md">
+                              {article.categoryName}
                             </span>
-                            <span className="border border-[#1E3D5A] px-2">
+                            <span className="border text-[#224667] border-[#1E3D5A] px-2 rounded-md">
                               {article?.createdAt
                                 ? new Date(article.createdAt).toLocaleDateString("en-US", {
                                   year: "numeric",
