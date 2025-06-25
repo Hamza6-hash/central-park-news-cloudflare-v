@@ -187,7 +187,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose }) => {
                         }}
                       >
                         <li className="mb-2 p-2 space-y-2 hover:border-l-[5px] border-[#1E3D5A] hover:bg-[#E2EDF3] rounded cursor-pointer">
-                          <h4 className="font-semibold">{article.title}</h4>
+                          <h4 className="font-semibold font-century-gothic text-[14px]">{article.title}</h4>
                           <p className="text-sm text-gray-600 capitalize space-x-2">
                             <span className="border border-[#1E3D5A] px-2">
                               Category: {article.categoryName}
