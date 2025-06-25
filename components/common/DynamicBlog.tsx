@@ -57,16 +57,10 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
     <section className="pt-0">
       <div className="mt-1 mb-4">
         <div className="space-y-3 mb-4">
-          <div className="sm:x-sm-generic mt-4 ">
-            {isArticlePage ? (
-              <h1 className="font-century-schoolbook max-sm:text-[22px] text-3xl capitalize">
+          <div className="sm:x-sm-generic mt-4">
+              <h1 className="font-century-schoolbook text-[22px] leading-tight sm:text-3xl capitalize">
                 {title}
               </h1>
-            ) : (
-              <h1 className="font-century-schoolbook max-sm:text-[22px] text-3xl capitalize">
-                {title}
-              </h1>
-            )}
           </div>
           <div className="relative w-full max-w-[1200px] aspect-[1200/514]">
             <SafeImage
@@ -82,7 +76,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           </div>
 
 
-          <div className="flex items-center sm:text-[12px] text-sm px-sm-generic gap-2 max-[400px]:flex-col max-[400px]:justify-start max-[400px]:items-start">
+          <div className="flex items-center max-sm:text-[12px] sm:text-lg text-[12px] gap-2 max-[400px]:flex-col max-[400px]:justify-start max-[400px]:items-start">
             <div className="flex items-center gap-2">
               <hr className="w-6 h-1 " />
               <h6 className="capitalize text-nowrap font-montserrat">
@@ -103,7 +97,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           {showWritter === true && (
             <div className="flex gap-2 flex-col max-sm:justify-center ">
               <h4 className="text-lg">Written By:</h4>
-              <div className="font-century-gothic text-lg">
+              <div className="font-century-gothic text-[12px] sm:text-lg">
                 <p>
                   {authorName
                     ? authorName.charAt(0).toUpperCase() + authorName.slice(1)

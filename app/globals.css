@@ -192,6 +192,22 @@
   font-weight: bold;
   margin: 1em 0;
 }
+
+@media (max-width: 640px) {
+
+  .markdown-content h1 {
+  font-size: 22px;
+
+}
+
+
+  .markdown-content h2 {
+  font-size: 16px;
+ 
+}
+
+
+}
 .markdown-content ul {
   list-style: disc;
   margin-left: 2em;
