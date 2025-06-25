@@ -85,11 +85,11 @@ const BlogsCard = ({
               </span>
             </div>
 
-            <h2 className="text-[#1a2332] font-century-schoolbook text-[24px] font-bold leading-7 mb-3 line-clamp-2 ">
+            <h2 className="text-[#1a2332] font-century-schoolbook md:text-[24px] text-[16px] font-bold md:leading-7 leading-5 mb-3 md:line-clamp-2 line-clamp-3">
               {title}
             </h2>
 
-            <div className="text-black font-century-gothic text-[15px] mb-4 line-clamp-3">
+            <div className="text-black font-century-gothic md:text-[15px] text-[12px] mb-4 line-clamp-3">
               <TruncateText lines={3} content={removeMarkdown(content)} />
             </div>
 

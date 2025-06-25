@@ -4,22 +4,27 @@ import React, { useState } from "react";
 import { routes } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import MobileNav from "./MobileNav";
 import Logo from "@/assets/logo.webp";
 import { Search } from "lucide-react";
 import Searchbar from "../search/SearchComp";
 
 const Navbar = () => {
-  const pathName = usePathname();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const handleOpenSearch = () => {
+    setIsSearchOpen(true);
+  };
+  
+  const handleCloseSearch = () => {
+    setIsSearchOpen(false);
+  };
 
 
   return (
     <>
       <Searchbar
         isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
+        onClose={handleCloseSearch}
+        onOpen={handleOpenSearch}
       />
       <section className="navbar w-full px-6 py-8 flex items-center justify-between">
         {/* Mobile view */}
