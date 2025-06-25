@@ -1,11 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Logo from "@/assets/logo.webp";
 import Image from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
 import CustomToast from "@/components/ui/customToast";
+
 
 const UnsubscribeClient = () => {
   const router = useRouter();
@@ -15,8 +16,8 @@ const UnsubscribeClient = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const [toastTitle, setToastTitle] = useState("");
-  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+  const [toatTitle, setToastTitle] = useState("");
+  const [toastType, setToastType] = useState<"success" | "error" | "alreadyUnsubscribed">("success");
 
   // Prevent body scroll
   useEffect(() => {
@@ -36,19 +37,19 @@ const UnsubscribeClient = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, token }),
       });
-      const data = await response.json();
       if (response.ok) {
         setShowToast(true);
-        setToastType('success');
+        setToastType("success");
         setToastTitle("Success");
+        router.push("/");
       } else {
         setShowToast(true);
-        setToastType('error');
+        setToastType("error");
         setToastTitle("Error");
       }
     } catch {
       setShowToast(true);
-      setToastType('error');
+      setToastType("error");
       setToastTitle("Error");
     } finally {
       setIsLoading(false);
@@ -64,14 +65,6 @@ const UnsubscribeClient = () => {
     }
   }, [showToast]);
 
-  if (!email || !token) {
-    return (
-      <div className="h-screen w-screen fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-[#25405a] to-[#4186c7] overflow-hidden">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">Invalid Link</h1>
-        <p className="text-white">This unsubscribe link is invalid or incomplete.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="h-screen w-screen fixed inset-0 flex flex-col overflow-hidden">
@@ -122,11 +115,9 @@ const UnsubscribeClient = () => {
                 {isLoading ? "Processing..." : "UNSUBSCRIBE"}
               </button>
             </div>
-            
+
             {message && (
-              <div className="text-white text-lg font-semibold">
-                {message}
-              </div>
+              <div className="text-white text-lg font-semibold">{message}</div>
             )}
           </div>
         </div>
@@ -140,8 +131,14 @@ const UnsubscribeClient = () => {
       <CustomToast
         show={showToast}
         onClose={() => setShowToast(false)}
-        title={toastTitle}
-        description={"Please Try Again Later"}
+        title={toatTitle}
+        description={
+          toastType === "error"
+            ? "Please Try Again Later"
+            : toastType === "success"
+              ? "You have been successfully unsubscribed. You will no longer receive these notifications."
+              : "You have already unsubscribed. You will no longer receive these notifications."
+        }
         type={toastType}
       />
     </div>
