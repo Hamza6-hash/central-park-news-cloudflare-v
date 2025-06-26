@@ -128,8 +128,6 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
 
   if (!isOpen) return null;
 
-  console.log(searchResults)
-
   return (
     <section className="px-generic w-full flex justify-center items-center z-50">
       <div className="">
@@ -138,22 +136,12 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
           onClick={onClose}
         >
           <div
-            className="bg-white rounded-lg p-6 w-[770px] max-[800px]:w-[660px] shadow-2xl max-w-full animate-slideUp"
+            className="bg-white rounded-xl p-[12px] w-[770px] max-[800px]:w-[660px] shadow-2xl max-w-full animate-slideUp"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Search News</h2>
-              <button
-                aria-label="Close search"
-                onClick={onClose}
-                className="text-gray-600 hover:text-gray-900 text-2xl"
-              >
-                &times;
-              </button>
-            </div>
 
             {/* Search Input */}
-            <div className="bg-white rounded-md border border-gray-300 py-2 w-full px-5 flex justify-between items-center">
+            <div className="bg-white rounded-lg border border-gray-300 py-2 w-full px-5 flex justify-between items-center">
               <div className="flex items-center gap-2 flex-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -175,13 +163,13 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
                   className="bg-transparent border-none focus:outline-none text-black font-century-gothic text-[16px] font-bold w-full placeholder:text-gray-400"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search news..."
+                  placeholder="Search..."
                   autoFocus
                 />
               </div>
 
               <span className="text-gray-400 text-xs font-medium whitespace-nowrap ml-4">
-                {isMacOS ? "⌘ + S" : "Ctrl + S"}
+                {isMacOS ? "⌘ + S" : "CTRL + S"}
               </span>
             </div>
 
@@ -206,7 +194,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
             )}
 
             {searchResults.length > 0 && (
-              <div className="mt-4 max-h-60 overflow-y-auto">
+              <div className="mt-4 max-h-60 overflow-y-auto scrollbar-hide">
 
                 <ul>
                   {searchResults.map((article) => (
