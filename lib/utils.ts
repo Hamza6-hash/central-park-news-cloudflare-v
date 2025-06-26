@@ -65,9 +65,9 @@ export const subscribtionFormSchema = () => {
 
 export const contactFormSchema = () => {
   return z.object({
-    name: z.string().min(3),
+    name: z.string().min(3, "Name must be at least 3 characters long"),
     email: z.string().email(),
-    message: z.string(),
+    message: z.string().min(1, "Message cannot be empty").max(500, "Message cannot exceed 500 characters"),
   });
 };
 
