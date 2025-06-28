@@ -60,7 +60,7 @@ const Banner = () => {
 
 
     const onChangeField = (e: any) => {
-        if (!e?.target?.value) form.reset();
+        if (!e?.target?.value) form.reset() ;
         setRes(null);
     }
 

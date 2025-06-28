@@ -56,10 +56,6 @@ export const subscribtionFormSchema = () => {
     email: z
       .string()
       .email("Please enter a valid email address")
-      .refine(
-        (email) => isValidEmailDomain(email),
-        "Please use a valid email service provider (Gmail, Yahoo, Outlook, etc.)"
-      ),
   });
 };
 
