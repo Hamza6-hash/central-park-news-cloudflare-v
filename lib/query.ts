@@ -146,29 +146,17 @@ export const fetchCombinedFeaturedItem = async () => {
       throw new Error("Database connection is not available");
     }
 
-    const articlePath = "blog/blockchainBriefing/articles";
     const newsPath = "blog/blockchainBriefing/newsletter";
-
-    const articleRef = collection(db, articlePath);
     const newsRef = collection(db, newsPath);
 
-    // Build base queries for both
-    const articleQuery = query(
-      articleRef,
-      where("status", "==", "published"),
-      orderBy("createdAt", "desc")
-    );
     const newsQuery = query(
       newsRef,
       where("status", "==", "published"),
-      orderBy("createdAt", "desc")
+      orderBy("createdAt", "desc"),
+      limit(1) 
     );
 
-    // Fetch both sets
-    const [articleSnap, newsSnap] = await Promise.all([
-      getDocs(articleQuery),
-      getDocs(newsQuery),
-    ]);
+    const newsSnap = await getDocs(newsQuery);
 
     const mergeAndProcess = async (snap: any, type: string) => {
       return Promise.all(
@@ -185,7 +173,6 @@ export const fetchCombinedFeaturedItem = async () => {
               );
               const authorSnap = await getDoc(authorRef);
               if (authorSnap.exists()) {
-                // @ts-ignore
                 const authorData = authorSnap.data() as Author;
                 authorName = authorData.author_name;
               }
@@ -212,24 +199,12 @@ export const fetchCombinedFeaturedItem = async () => {
       );
     };
 
-    const [articles, newsletters] = await Promise.all([
-      mergeAndProcess(articleSnap, "article"),
-      mergeAndProcess(newsSnap, "newsletter"),
-    ]);
-
-    const combined = [...articles, ...newsletters];
-
-    combined.sort((a, b) => {
-      const dateA = new Date(a.createdAt).getTime();
-      const dateB = new Date(b.createdAt).getTime();
-      return dateB - dateA;
-    });
-
-    // Find the latest featured item
-    const latestFeatured = combined[0];
+    const newsletters = await mergeAndProcess(newsSnap, "newsletter");
+    const latestFeatured = newsletters[0];
     return latestFeatured || null;
   } catch (error) {
     console.error("Error fetching combined featured item:", error);
+    return null;
   }
 };
 

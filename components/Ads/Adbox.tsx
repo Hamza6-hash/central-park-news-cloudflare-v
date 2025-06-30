@@ -14,7 +14,7 @@ const Adbox = () => {
           fill
           className="object-contain"
           sizes="(min-width: 640px) 510px, 100vw"
-          quality={90}
+          quality={70}
           priority
         />
       </div>
@@ -26,7 +26,6 @@ const Adbox = () => {
             src="/bottomBanner.png"
             alt="mobile ad"
             fill
-            priority
             loading="eager"
             quality={80}
             className="object-contain pointer-events-none select-none"
