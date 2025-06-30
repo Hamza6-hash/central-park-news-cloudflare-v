@@ -67,7 +67,7 @@ export const contactFormSchema = () => {
   });
 };
 
-export const formatedDate = (date: any, formatString: string = 'MMM dd, yyyy'): string => {
+export const formatedDate = (date: any, formatString: string = 'MMMM dd, yyyy'): string => {
   if (!date) return '';
 
   try {
