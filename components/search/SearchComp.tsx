@@ -2,13 +2,11 @@
 
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { IoIosClose, IoIosSearch } from "react-icons/io";
 import { fireServices } from "@/app/services/firestoreService";
 import { ArticleWithDetails } from "@/app/services/firestoreService";
 import Link from "next/link";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
-import { Search } from "lucide-react";
 
 interface SearchResult extends ArticleWithDetails {
   categoryName: string;

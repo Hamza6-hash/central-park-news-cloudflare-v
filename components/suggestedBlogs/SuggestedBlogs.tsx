@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import BlogsCard from "../common/BlogsCard";
-
 import { db } from "@/lib/firebaseConfig";
 
 import {
