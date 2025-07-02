@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import QueryProviders from "@/ReatQuery/provider";
 import Layout from "@/components/Layout";
+import FontLinks from "@/components/fontLinks/FontLinks";
 
 export const metadata: Metadata = {
   title: "Crypto & Blockchain Briefing | Real-Time News & Insights",
@@ -11,7 +12,6 @@ export const metadata: Metadata = {
     "crypto news, blockchain news, cryptocurrency updates, bitcoin news, ethereum news, defi news, crypto trends, blockchain technology, web3 updates",
 };
 
-{/* <FontLinks /> */ }
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,6 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <FontLinks />
+      </head>
       <body className="select-none ">
         <QueryProviders>
           <Layout>{children}</Layout>
