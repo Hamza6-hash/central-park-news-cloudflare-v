@@ -68,13 +68,12 @@ export default function Home({ article }: HomeProps) {
               loading="eager"
               priority={true}
               className="object-cover protected-image relative z-10 rounded-lg"
-              // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 644px, 644px"
-              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 644px, 644px"
-
+              sizes="(max-width: 768px) 100vw, 245px"
               placeholder="blur"
-              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQ0IiBoZWlnaHQ9IjQzMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIHN0b3AtY29sb3I9IiNmM2Y0ZjYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlNWU3ZWIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PC9zdmc+"
+              blurDataURL="data:image/svg+xml;base64,..."
             />
           </div>
+
           <div className="min-h-[24px] flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
             <hr className="w-4 sm:w-6 h-1" />
             <h6 className="capitalize font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">
