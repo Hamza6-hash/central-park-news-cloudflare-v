@@ -18,7 +18,7 @@ const Header = () => {
                     <Adbanner />
                 </>
             }
-            <Searchbar />
+            {/* <Searchbar /> */}
         </header>
     )
 }
