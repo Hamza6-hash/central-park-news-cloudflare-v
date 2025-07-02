@@ -15,7 +15,8 @@ const Adbox = () => {
           className="object-contain"
           sizes="(min-width: 640px) 510px, 100vw"
           quality={70}
-          priority
+          loading="eager"
+          priority={true}
         />
       </div>
 
