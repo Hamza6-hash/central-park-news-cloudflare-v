@@ -1,12 +1,9 @@
 import React from "react";
 import HorizontalCard from "../common/HorizontalCard";
-import { Button } from "../button/Button";
 import { useQuery } from "@tanstack/react-query";
 import DummyImg from "@/assets/Blockchain-Default.webp";
-
 import { Skeleton } from "@/components/ui/skeleton";
-import { format } from "date-fns";
-import Link from "next/link";
+import { format } from "date-fns/format";
 import { FetchTopStories } from "@/lib/query";
 import Adbox from "../Ads/Adbox";
 
@@ -111,19 +108,6 @@ const TopStories = () => {
 
       <Adbox/>
 
-      {/* {showViewMoreButton && (
-        <div className="flex justify-end items-end mt-6">
-          <button className="uppercase text-primary-900 transition-colors duration-300 hover:text-yellow-500 font-bold text-sm xl:block hidden font-century-gothic">
-            VIEW MORE
-          </button>
-          <Button
-            variant="primary"
-            className="transition-colors duration-300 hover:text-yellow-500 font-century-gothic xl:hidden block"
-          >
-            <Link href={"/news"}>VIEW MORE</Link>
-          </Button>
-        </div>
-      )} */}
     </div>
   );
 };

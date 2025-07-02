@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/pagination";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FetchArticleNewsData } from "@/lib/query";
-import dynamic from "next/dynamic";
 import { defultImage } from "@/constants";
 
 const ITEMS_PER_PAGE = 9;
