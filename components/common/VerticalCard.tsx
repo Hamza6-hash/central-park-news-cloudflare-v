@@ -44,7 +44,6 @@ const VerticalCard = ({
                         className="object-cover pointer-events-none select-none"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                         quality={85}
-                        priority={false}
                     />
                 </div>
 

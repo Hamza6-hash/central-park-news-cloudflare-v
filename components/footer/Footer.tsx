@@ -3,31 +3,10 @@
 import React from "react";
 import FooterLinks from "./FooterLinks";
 import { usePathname } from "next/navigation";
-import { routes } from "@/constants";
-import dynamic from "next/dynamic";
 import LastestNews from "./LastestNews";
-
-const SuggestedBlogs = dynamic(() => import("../suggestedBlogs/SuggestedBlogs"), {
-  ssr: false,
-});
-
 
 const Footer = () => {
   const pathName = usePathname();
-
-  const showSuggestedBlogs =
-    pathName === routes.articles ||
-    pathName === routes.contact ||
-    pathName === routes.home ||
-    pathName === routes.news ||
-    pathName.startsWith("/news") ||
-    pathName.startsWith("/privacy") ||
-    pathName.startsWith("/terms-and-conditions") ||
-    pathName.startsWith("/about-us") ||
-    pathName.startsWith("/careers") ||
-    pathName.startsWith("/advertise-with-us") ||
-    pathName.startsWith("/sitemap") ||
-    pathName.startsWith("/unsubscribe");
 
   const hideNews =
     pathName.startsWith("/terms-and-conditions") ||
@@ -38,7 +17,6 @@ const Footer = () => {
 
   return (
     <footer className="w-full">
-      {!showSuggestedBlogs && <SuggestedBlogs />}
       {!hideNews && <LastestNews />}
 
       {
