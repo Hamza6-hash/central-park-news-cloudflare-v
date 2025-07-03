@@ -40,6 +40,10 @@
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
   },
+  "browserslist": [
+    "defaults and supports es6-module",
+    "maintained node versions"
+  ],
   "devDependencies": {
     "@next/bundle-analyzer": "^15.3.3",
     "@types/node": "^20",
