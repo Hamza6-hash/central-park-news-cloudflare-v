@@ -23,7 +23,7 @@
 
 @font-face {
   font-family: "century-schoolbook";
-  src: url("/fonts/century-schoolbook/SCHLBKB.TTF") format("truetype");
+  src: url("/fonts/century-schoolbook/SCHLBKB.woff") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -42,7 +42,7 @@
 /* Add Montserrat font */
 @font-face {
   font-family: "Montserrat";
-  src: url("/fonts/Montserrat/Montserrat-Regular.ttf") format("truetype");
+  src: url("/fonts/Montserrat/Montserrat-Regular.woff") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -50,7 +50,7 @@
 
 @font-face {
   font-family: "Century-725-CN";
-  src: url("/fonts/century-725/century-725-cn-bt.ttf") format("truetype");
+  src: url("/fonts/century-725/century-725-cn-bt.woff") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;

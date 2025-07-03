@@ -26,7 +26,7 @@ const AdBanner = () => {
               quality={75}
               className="object-contain"
               sizes="(max-width: 640px) 100vw, 390px"
-
+              loading='eager'
               priority={true}
             />
           </div>
@@ -38,6 +38,7 @@ const AdBanner = () => {
               fill
               quality={100}
               className="object-contain"
+              loading='eager'
               sizes="(max-width: 640px) 100vw, (max-width: 1280px) 1000px, 1199px"
               priority={true}
             />

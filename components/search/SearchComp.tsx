@@ -1,9 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { fireServices } from "@/app/services/firestoreService";
-import { ArticleWithDetails } from "@/app/services/firestoreService";
+import { ArticleWithDetails,  } from "@/app/services/firestoreService";
 import Link from "next/link";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
@@ -20,7 +19,6 @@ interface SearchbarProps {
 }
 
 const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
-  const pathName = usePathname();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -118,11 +116,6 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
     }
   };
 
-  const handleClear = () => {
-    setSearchTerm("");
-    setSearchResults([]);
-    setError(null);
-  };
 
   if (!isOpen) return null;
 

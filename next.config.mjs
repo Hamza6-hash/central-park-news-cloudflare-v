@@ -25,6 +25,8 @@ const nextConfig = {
         pathname: "/**", // allow all Firebase Storage paths
       },
     ],
+    deviceSizes: [320, 420, 768, 1024, 1200],
+    imageSizes: [200, 204, 300, 400, 600, 652],
   },
   async rewrites() {
     return [
