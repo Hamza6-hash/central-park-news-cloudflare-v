@@ -55,6 +55,7 @@ const Banner = () => {
     // Reset form on route change
     useEffect(() => {
         form.reset();
+        setRes(null)
     }, [pathname, form]);;
 
 

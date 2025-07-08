@@ -9,8 +9,8 @@ import dynamic from "next/dynamic";
 
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 const BlogsCard = dynamic(() => import("../common/BlogsCard"), {
-  loading: () => <div className="w-full h-36 bg-gray-100 rounded-md" />, // optional placeholder
-  ssr: false, // optional: set to false if SEO isn't critical for related blogs
+  loading: () => <div className="w-full h-36 bg-gray-100 rounded-md" />,
+  ssr: false, 
 });
 
 export interface DynamicBlogProps {

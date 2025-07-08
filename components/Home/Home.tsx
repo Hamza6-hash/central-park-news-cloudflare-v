@@ -6,6 +6,9 @@ import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
 import { defultImage } from "@/constants";
 import SafeImage from "@/constants/SafeImage";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useToast } from "@/context/ToastContext";
+import { useEffect } from "react";
 
 
 interface Article {
@@ -22,7 +25,8 @@ interface Article {
   date?: string;
   titleSlug?: string;
   createdAt: string,
-  type: string
+  type: string,
+  category: string,
 }
 
 interface HomeProps {
@@ -30,6 +34,46 @@ interface HomeProps {
 }
 
 export default function Home({ article }: HomeProps) {
+  const searchParams = useSearchParams()
+  const toastParams = searchParams.get('toast')
+  const router = useRouter()
+  const { showToast } = useToast()
+
+
+  useEffect(() => {
+    if (!toastParams) return;
+
+    const toastMap: Record<string, { title: string; description: string }> = {
+      "expired": {
+        title: "Expired",
+        description: "This unsubscribe link has expired.",
+      },
+      "token-already-used": {
+        title: "Error",
+        description: "This link was already used. You’re already unsubscribed.",
+      },
+      // "no-user-found": {
+      //     title: "User Not Found",
+      //     description: "We couldn’t find a user for this link.",
+      // },
+      "user-check-failed": {
+        title: "Error",
+        description: "Something went wrong. Please try again later.",
+      },
+    };
+
+    const toastData = toastMap[toastParams];
+
+    if (toastData) {
+      showToast({
+        title: toastData.title,
+        description: toastData.description,
+        type: "error",
+      });
+
+      router.replace("/");
+    }
+  }, [toastParams, router, showToast]);
 
   if (!article) {
     return (
@@ -50,7 +94,7 @@ export default function Home({ article }: HomeProps) {
             <Link
               href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug}`}
             >
-              <h1 className="text-3xl line-clamp-4  font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full md:line-clamp-2">
+              <h1 className="text-[30px] font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full ">
                 {article.title}
               </h1>
 
@@ -75,6 +119,7 @@ export default function Home({ article }: HomeProps) {
 
           <div className="min-h-[24px] flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
             <hr className="w-4 sm:w-6 h-1" />
+            <h1 className="bg-[#FFEB84] text-black text-[12px] capitalize font-poppins truncate w-fit max-w-[60%] px-[12px] rounded-xl">{article?.category}</h1>
             <h6 className="capitalize font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">
               {article.authorName}
             </h6>

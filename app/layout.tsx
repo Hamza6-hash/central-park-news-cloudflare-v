@@ -3,6 +3,7 @@ import "./globals.css";
 import QueryProviders from "@/ReatQuery/provider";
 import Layout from "@/components/Layout";
 import FontLinks from "@/components/fontLinks/FontLinks";
+import { ToastProvider } from "@/context/ToastContext";
 
 export const metadata: Metadata = {
   title: "Crypto & Blockchain Briefing | Real-Time News & Insights",
@@ -24,7 +25,9 @@ export default function RootLayout({
       </head>
       <body className="select-none ">
         <QueryProviders>
+          <ToastProvider>
           <Layout>{children}</Layout>
+          </ToastProvider>
         </QueryProviders>
       </body>
     </html>

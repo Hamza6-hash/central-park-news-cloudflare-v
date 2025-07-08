@@ -7,41 +7,37 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { Control, FieldPath } from 'react-hook-form';
-import { z, ZodType } from 'zod';
+import { Control, FieldPath } from "react-hook-form";
+import type { ZodTypeAny, infer as zInfer } from "zod";
 
-// Define the CustomInputProps interface at the file level
-interface CustomInputProps<T extends ZodType<any, any>> {
-    control: Control<z.infer<T>>;
-    name: FieldPath<z.infer<T>>;
+interface CustomInputProps<T extends ZodTypeAny> {
+    control: Control<zInfer<T>>;
+    name: FieldPath<zInfer<T>>;
     label: string;
     placeholder: string;
     type?: string;
     fieldClassName?: string;
-    schema: T; // Pass the schema as a prop
-    onChange?: ChangeEventHandler<HTMLInputElement>
+    schema: T;
+    onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
-// Define the CustomInput component at the file level
-const CustomInput = <T extends ZodType<any, any>>({
+const CustomInput = <T extends ZodTypeAny>({
     control,
     name,
     label,
     placeholder,
-    type = 'text',
+    type = "text",
     fieldClassName,
     schema,
-    onChange
+    onChange,
 }: CustomInputProps<T>) => {
     return (
         <FormField
             control={control}
             name={name}
             render={({ field }) => (
-                <div className='form-item'>
-                    {label !== '' && <FormLabel className='form-label'>
-                        {label}
-                    </FormLabel>}
+                <div className="form-item">
+                    {label && <FormLabel className="form-label">{label}</FormLabel>}
                     <div className="flex w-full flex-col">
                         <FormControl>
                             <Input
@@ -52,12 +48,12 @@ const CustomInput = <T extends ZodType<any, any>>({
                                 {...field}
                             />
                         </FormControl>
-                        <FormMessage className='form-message mt-2' />
+                        <FormMessage className="form-message mt-2" />
                     </div>
                 </div>
             )}
         />
-    )
-}
+    );
+};
 
 export default CustomInput;

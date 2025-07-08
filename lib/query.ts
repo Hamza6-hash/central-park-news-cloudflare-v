@@ -183,6 +183,7 @@ export const fetchCombinedFeaturedItem = async () => {
             id: docSnapshot.id,
             title: data.title || "",
             content: data.content || "",
+            category: data.category || "N/A",
             imageURL: data.imageURL,
             authorId: data.authorId || "",
             authorName,
@@ -782,3 +783,15 @@ export const FetchArticleNewsData = async ({
   };
 };
 
+
+
+// ------------------ markdown remove function --------------
+
+export function stripMarkdown(markdown: string) {
+  return markdown
+    .replace(/!\[.*?\]\(.*?\)/g, "") 
+    .replace(/\[.*?\]\(.*?\)/g, "") 
+    .replace(/[*_~`>#-]/g, "") 
+    .replace(/\n+/g, " ") 
+    .trim();
+}

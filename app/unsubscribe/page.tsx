@@ -11,7 +11,7 @@ async function checkUserAndRedirect(email: string | null) {
   try {
     const userDoc = doc(db, "blog", "blockchainBriefing", "subscribeUsers", email);
     const userExists = await getDoc(userDoc);
-    
+
     if (!userExists.exists()) {
       redirect("/");
     }

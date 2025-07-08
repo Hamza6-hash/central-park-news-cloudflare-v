@@ -1,6 +1,7 @@
 import { fetchCombinedFeaturedItem } from "@/lib/query";
 import Home from "@/components/Home/Home";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Blockchain Briefing | Home",
@@ -10,7 +11,12 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const article = await fetchCombinedFeaturedItem();
-  return <Home article={article} />;
+  return <>
+    <Suspense fallback={<div>Loading home...</div>}>
+      <Home article={article} />
+    </Suspense>
+  </>
+
 }
 
 export const revalidate = 60; 
