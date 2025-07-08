@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { formatedDate } from "@/lib/utils";
-import {  routes } from "@/constants";
+import { routes } from "@/constants";
 import SafeImage from "@/constants/SafeImage";
 
 interface VerticalCard {
@@ -40,9 +40,9 @@ const VerticalCard = ({
                     <SafeImage
                         src={imageURL}
                         alt={title || "Article image"}
-                        fill
+                     fill
                         className="object-cover pointer-events-none select-none"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                        sizes="245px"
                         quality={85}
                     />
                 </div>
@@ -71,4 +71,4 @@ const VerticalCard = ({
     );
 };
 
-export default VerticalCard; 
+export default React.memo(VerticalCard); 

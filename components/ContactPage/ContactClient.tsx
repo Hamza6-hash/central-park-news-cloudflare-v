@@ -36,15 +36,15 @@ const ContactClient = () => {
     }
   };
 
-  useEffect(() => {
-    let timer: number | NodeJS.Timeout;
-    if (openDialog) {
-      timer = setTimeout(() => {
-        setOpenDialog(false);
-      }, 2000);
-    }
-    return () => clearTimeout(timer);
-  }, [openDialog]);
+  // useEffect(() => {
+  //   let timer: number | NodeJS.Timeout;
+  //   if (openDialog) {
+  //     timer = setTimeout(() => {
+  //       setOpenDialog(false);
+  //     }, 2000);
+  //   }
+  //   return () => clearTimeout(timer);
+  // }, [openDialog]);
 
   return (
     <>

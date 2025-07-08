@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import sgMail from "@sendgrid/mail";
-import { getDoc, setDoc, doc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import { HashBasedToken } from "@/lib/unsubscribeToken";
 import { subscribeTemplate } from "./template";

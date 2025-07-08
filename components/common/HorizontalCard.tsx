@@ -5,7 +5,8 @@ import { StaticImageData } from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
 import SafeImage from "@/constants/SafeImage";
-import removeMarkdown from "remove-markdown";
+import { stripMarkdown } from "@/lib/query";
+
 
 interface HorizontalCard {
     title?: string;
@@ -75,7 +76,7 @@ const HorizontalCard = ({
                         </div>
                     </div>
                     <div className="text-gray-600 capitalize font-montserrat font-normal text-[12px] sm:text-[15px]">
-                        <TruncateText lines={2} content={removeMarkdown(content || "-")} />
+                        <TruncateText lines={2} content={stripMarkdown(content || "-").slice(0, 150)} />
                     </div>
                 </div>
             </div>

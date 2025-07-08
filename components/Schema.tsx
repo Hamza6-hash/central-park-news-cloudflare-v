@@ -1,4 +1,3 @@
-'use client';
 
 export default function SchemaOrg({ schemas }: { schemas: any }) {
   return (

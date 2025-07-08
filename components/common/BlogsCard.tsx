@@ -6,7 +6,7 @@ import { defultImage, routes } from "@/constants";
 import TruncateText from "./TruncateProps";
 import SafeImage from "@/constants/SafeImage";
 import { Calendar, Zap } from "lucide-react";
-import removeMarkdown from "remove-markdown";
+import { stripMarkdown } from "@/lib/query";
 
 interface BlogsCard {
   showDateTimeInRow?: boolean;
@@ -88,7 +88,7 @@ const BlogsCard = ({
             </h2>
 
             <div className="text-black font-century-gothic md:text-[15px] text-[12px] mb-4 line-clamp-3">
-              <TruncateText lines={3} content={removeMarkdown(content)} />
+              <TruncateText lines={3} content={stripMarkdown(content).slice(0, 150)} />
             </div>
 
             <div className="flex items-center gap-2 text-xs text-gray-500 mb-1">

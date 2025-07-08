@@ -1,31 +1,58 @@
 import { redirect } from "next/navigation";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import UnsubscribeClient from "./UnsubscribeClient";
 
-async function checkUserAndRedirect(email: string | null) {
+interface UserData {
+  email: string;
+  tokenCreatedAt: Timestamp;
+  tokenExpiresAt: Timestamp;
+  tokenUsed: boolean;
+  unsubscribeToken: string;
+}
+
+async function validateUser(email: string): Promise<void | null | UserData> {
   if (!email) {
-    redirect("/");
+    redirect("/?toast=expired");
   }
 
   try {
-    const userDoc = doc(db, "blog", "blockchainBriefing", "subscribeUsers", email);
-    const userExists = await getDoc(userDoc);
-    
-    if (!userExists.exists()) {
+    const userDocRef = doc(db, "blog", "blockchainBriefing", "subscribeUsers", email);
+    const userSnap = await getDoc(userDocRef);
+
+    if (!userSnap.exists()) {
       redirect("/");
     }
-  } catch (error) {
-    redirect("/");
+
+    const userData = userSnap.data() as UserData;
+    const now = new Date();
+
+    if (userData.tokenUsed === true) {
+      redirect("/?toast=token-already-used");
+    }
+
+    if (userData.tokenExpiresAt.toDate() < now) {
+      redirect("/?toast=expired");
+    }
+  } catch (error: any) {
+    if (error?.digest?.startsWith("NEXT_REDIRECT")) {
+      throw error;
+    }
+    
+    redirect("/?toast=user-check-failed");
   }
 }
+
+
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { email: string; token: string };
+  searchParams: { email?: string; token?: string };
 }) {
-  await checkUserAndRedirect(searchParams.email);
-  
+  const email = searchParams?.email;
+  // @ts-ignore
+  await validateUser(email);
+
   return <UnsubscribeClient />;
 }
