@@ -94,7 +94,7 @@ export default function Home({ article }: HomeProps) {
             <Link
               href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug}`}
             >
-              <h1 className="text-[30px] font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full ">
+              <h1 className="text-[30px] leading-normal font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full ">
                 {article.title}
               </h1>
 
