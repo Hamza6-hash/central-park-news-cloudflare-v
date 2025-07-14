@@ -61,7 +61,6 @@ const Navbar = () => {
 
         {/* Desktop view */}
         <nav className="hidden lg:flex items-center justify-between w-full relative px-5 py-6">
-          {/* Centered logo */}
           <div className="absolute left-1/2 transform -translate-x-1/2">
             <Link href={routes.home}>
               <Image
@@ -77,7 +76,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Search icon aligned right */}
           <div className="ml-auto flex items-center">
             <button
               onClick={() => setIsSearchOpen(true)}

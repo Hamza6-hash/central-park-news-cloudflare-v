@@ -153,7 +153,7 @@ export const fetchCombinedFeaturedItem = async () => {
       newsRef,
       where("status", "==", "published"),
       orderBy("createdAt", "desc"),
-      limit(1) 
+      limit(1)
     );
 
     const newsSnap = await getDocs(newsQuery);
@@ -209,94 +209,101 @@ export const fetchCombinedFeaturedItem = async () => {
   }
 };
 
+// --------------------------
+
 export const FetchTopStories = async (): Promise<Newsletter[]> => {
   if (!db) {
     throw new Error("Database connection is not available");
   }
 
-  const fetchItems = async (collectionPath: string, type: string) => {
-    const ref = collection(db, collectionPath);
-    const snapshot = await getDocs(ref);
+  try {
+    const newslettersRef = collection(db, "blog/blockchainBriefing/newsletter");
 
-    if (snapshot.empty) return [];
-
-    return await Promise.all(
-      snapshot.docs.map(async (docSnap) => {
-        const data = docSnap.data();
-        try {
-          let authorName = "Docket Digest New Room";
-          if (data.authorId) {
-            const authorRef = doc(
-              db,
-              "blog/blockchainBriefing/authors",
-              data.authorId
-            );
-            const authorDoc = await getDoc(authorRef);
-            if (authorDoc.exists()) {
-              const authorData = authorDoc.data() as DocumentData;
-              authorName = authorData.author_name || "Docket Digest New Room";
-            }
-          }
-          return {
-            ...data,
-            id: docSnap.id,
-            authorName,
-            titleSlug: data.titleSlug || "",
-            date: data.date as Timestamp,
-            createdAt: data.createdAt,
-            status: data.status,
-            type: data.type,
-            isFeatured: data.isFeatured || false,
-            updatedAt: data.updatedAt,
-          } as Newsletter;
-        } catch (error) {
-          console.error(`Error processing ${type}:`, docSnap.id, error);
-          return {
-            ...data,
-            id: docSnap.id,
-            authorName: "Docket Digest New Room",
-            titleSlug: data.titleSlug || "",
-            status: data.status,
-            type: data.type,
-            isFeatured: data.isFeatured || false,
-            updatedAt: data.updatedAt,
-          } as Newsletter;
-        }
-      })
+    const q = query(
+      newslettersRef,
+      where("status", "==", "published"),
+      where("isFeatured", "==", true),
+      orderBy("createdAt", "desc"),
+      limit(7)
     );
-  };
 
-  const [newslettersData] = await Promise.all([
-    fetchItems("blog/blockchainBriefing/newsletter", "newsletter"),
-  ]);
+    const querySnapshot = await getDocs(q);
 
-  const combined = [...newslettersData];
+    if (querySnapshot.empty) {
+      return [];
+    }
 
-  const publishedItems = combined.filter(
-    (item) => item?.status === "published"
-  );
+    // Batch author lookups to minimize database calls
+    const authorIds = new Set<string>();
+    const docs = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      if (data.authorId) {
+        authorIds.add(data.authorId);
+      }
+      return { id: doc.id, data };
+    });
 
-  const sortedItems = publishedItems.sort((a, b) => {
-    if (!a.createdAt || !b.createdAt) return 0;
-    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-  });
+    // Fetch all unique authors in parallel
+    const authorPromises = Array.from(authorIds).map(async (authorId) => {
+      try {
+        const authorRef = doc(db, "blog/blockchainBriefing/authors", authorId);
+        const authorDoc = await getDoc(authorRef);
+        return {
+          id: authorId,
+          name: authorDoc.exists()
+            ? authorDoc.data().author_name || "Docket Digest New Room"
+            : "Docket Digest New Room",
+        };
+      } catch (error) {
+        console.error(`Error fetching author ${authorId}:`, error);
+        return { id: authorId, name: "Docket Digest New Room" };
+      }
+    });
 
-  const latestItems = sortedItems.filter((item) => item.isFeatured === true);
+    const authors = await Promise.all(authorPromises);
+    const authorMap = new Map(
+      authors.map((author) => [author.id, author.name])
+    );
 
-  return latestItems.slice(0, 7);
+    // Map documents with author names
+    const newsletters: Newsletter[] = docs.map(
+      ({ id, data }) =>
+        ({
+          ...data,
+          id,
+          authorName: data.authorId
+            ? authorMap.get(data.authorId) || "Docket Digest New Room"
+            : "Docket Digest New Room",
+          titleSlug: data.titleSlug || "",
+          date: data.date as Timestamp,
+          createdAt: data.createdAt,
+          status: data.status,
+          type: data.type || "newsletter",
+          isFeatured: data.isFeatured || false,
+          updatedAt: data.updatedAt,
+        } as Newsletter)
+    );
+
+    return newsletters;
+  } catch (error) {
+    console.error("Error fetching top stories:", error);
+    return [];
+  }
 };
 
-export const FetchLatestNews = async (): Promise<Article[] | undefined> => {
+// --------------------------
+
+export const FetchLatestNews = async (): Promise<Article[]> => {
   try {
     if (!db) throw new Error("Database connection is not available");
 
     const collectionPath = "blog/blockchainBriefing/newsletter";
 
     // const collectionPath = pathname.includes("/news")
-    //   ? "blog/blockchainBriefing/articles"
+    //   ? "blog/broadWayBriefing/articles"
     //   : pathname.includes("/articles")
-    //   ? "blog/blockchainBriefing/newsletter"
-    //   : "blog/blockchainBriefing/articles";
+    //   ? "blog/broadWayBriefing/newsletter"
+    //   : "blog/broadWayBriefing/articles";
 
     const articlesRef = collection(db, collectionPath);
     const articlesQuery = query(
@@ -366,6 +373,8 @@ export const FetchLatestNews = async (): Promise<Article[] | undefined> => {
     return [];
   }
 };
+
+// -----------------------------
 
 interface Category {
   full_name: string;
@@ -547,9 +556,8 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
     } catch (err) {}
 
     const protectedImageURL = newsData.imageURL
-  ? `/api/protected-image?url=${encodeURIComponent(newsData.imageURL)}`
-  : "/default-image.png"; // fallback
-
+      ? `/api/protected-image?url=${encodeURIComponent(newsData.imageURL)}`
+      : "/default-image.png"; // fallback
 
     return {
       ...newsData,
@@ -580,7 +588,7 @@ interface FetchArticlesResult {
 }
 
 const totalCountCache = new Map<string, { count: number; timestamp: number }>();
-const CACHE_DURATION = 5 * 60 * 1000; 
+const CACHE_DURATION = 5 * 60 * 1000;
 
 export const FetchArticleNewsData = async ({
   activeTab,
@@ -783,15 +791,13 @@ export const FetchArticleNewsData = async ({
   };
 };
 
-
-
 // ------------------ markdown remove function --------------
 
 export function stripMarkdown(markdown: string) {
   return markdown
-    .replace(/!\[.*?\]\(.*?\)/g, "") 
-    .replace(/\[.*?\]\(.*?\)/g, "") 
-    .replace(/[*_~`>#-]/g, "") 
-    .replace(/\n+/g, " ") 
+    .replace(/!\[.*?\]\(.*?\)/g, "")
+    .replace(/\[.*?\]\(.*?\)/g, "")
+    .replace(/[*_~`>#-]/g, "")
+    .replace(/\n+/g, " ")
     .trim();
 }
