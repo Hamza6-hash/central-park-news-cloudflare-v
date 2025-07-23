@@ -16,8 +16,9 @@ interface HorizontalCard {
     content?: string;
     titleSlug?: string;
     type?: string;
-    category_name?: string,
+    category?: string,
     imageName?: string
+
 }
 
 const HorizontalCard = ({
@@ -28,7 +29,7 @@ const HorizontalCard = ({
     content,
     titleSlug = "",
     type,
-    category_name,
+    category,
     imageName,
 }: HorizontalCard) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
@@ -61,7 +62,7 @@ const HorizontalCard = ({
 
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">
-                        <h1 className="bg-[#FFEB84] text-black text-xs capitalize font-montserrat truncate w-fit max-w-[60%] py-1 px-2  rounded-full">{category_name}</h1>
+                        <h1 className="bg-[#FFEB84] text-black text-xs capitalize font-montserrat truncate w-fit max-w-[60%] py-1 px-2  rounded-full">{category}</h1>
                         <h2 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-3 hover:text-primary-800 ">
                             {title || "-"}
                         </h2>

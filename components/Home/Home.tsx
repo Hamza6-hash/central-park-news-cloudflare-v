@@ -8,7 +8,8 @@ import { defultImage } from "@/constants";
 import SafeImage from "@/constants/SafeImage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/context/ToastContext";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
+import { ToastHandler } from "./ToastHandler";
 
 
 interface Article {
@@ -85,6 +86,9 @@ export default function Home({ article }: HomeProps) {
 
   return (
     <section className="flex gap-9 max-xl:flex-col w-full max-w-[1200px] mx-auto text-[12px] sm:text-base">
+       <Suspense>
+                <ToastHandler />
+            </Suspense>
       <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
 
         <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
