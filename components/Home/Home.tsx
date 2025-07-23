@@ -6,9 +6,7 @@ import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
 import { defultImage } from "@/constants";
 import SafeImage from "@/constants/SafeImage";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useToast } from "@/context/ToastContext";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { ToastHandler } from "./ToastHandler";
 
 
@@ -35,47 +33,6 @@ interface HomeProps {
 }
 
 export default function Home({ article }: HomeProps) {
-  const searchParams = useSearchParams()
-  const toastParams = searchParams.get('toast')
-  const router = useRouter()
-  const { showToast } = useToast()
-
-
-  useEffect(() => {
-    if (!toastParams) return;
-
-    const toastMap: Record<string, { title: string; description: string }> = {
-      "expired": {
-        title: "Expired",
-        description: "This unsubscribe link has expired.",
-      },
-      "token-already-used": {
-        title: "Error",
-        description: "This link was already used. You’re already unsubscribed.",
-      },
-      // "no-user-found": {
-      //     title: "User Not Found",
-      //     description: "We couldn’t find a user for this link.",
-      // },
-      "user-check-failed": {
-        title: "Error",
-        description: "Something went wrong. Please try again later.",
-      },
-    };
-
-    const toastData = toastMap[toastParams];
-
-    if (toastData) {
-      showToast({
-        title: toastData.title,
-        description: toastData.description,
-        type: "error",
-      });
-
-      router.replace("/");
-    }
-  }, [toastParams, router, showToast]);
-
   if (!article) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
