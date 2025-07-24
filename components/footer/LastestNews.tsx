@@ -56,7 +56,7 @@ const LastestNews = () => {
     return (
       <section className="lastestNews py-[58px] px-generic">
         <div className="max-width w-full">
-          <h1 className="uppercase text-3xl font-bold text-white mb-4">LATEST NEWS</h1>
+          <h1 className="uppercase text-3xl font-bold text-[#303130] mb-4">LATEST NEWS</h1>
           <div className="flex gap-6 items-center justify-between relative w-full mx-auto">
             <div className="w-full flex gap-4 overflow-x-scroll hide-scrollbar mx-auto py-1">
               {[1, 2, 3, 4].map((index) => (
@@ -112,7 +112,7 @@ const LastestNews = () => {
   return (
     <section className="lastestNews py-[58px] px-8">
       <div className="max-width w-full">
-        <h1 className="uppercase text-3xl font-bold text-white mb-4">LATEST NEWS</h1>
+        <h1 className="uppercase text-3xl fonyt-poppins font-bold text-[#303130] mb-4">LATEST NEWS</h1>
 
         <div className="relative">
           <Carousel
@@ -130,7 +130,7 @@ const LastestNews = () => {
                   key={index}
                   className="pl-3 basis-[252px] flex-shrink-0"
                 >
-                  <Card className="bg-[#111] text-white border-none shadow-none h-full">
+                  <Card className="bg-[#111] text-white focus:ring-0 border-none shadow-none h-full">
                     <CardContent className="p-0">
                       <VerticalCard
                         title={article.title}
@@ -150,8 +150,8 @@ const LastestNews = () => {
             <div className="hidden sm:flex">
               {canScrollPrev && (
                 <CarouselPrevious
-                  className="absolute text-white border-none bg-[#26619C] 
-                  -left-10 top-1/2 -translate-y-1/2 z-10 hover:bg-[#2e83d8] hover:scale-125 
+                  className="absolute text-[#34148E] border-none bg-[#FFFFFF]  
+                  -left-10 top-1/2 -translate-y-1/2 z-10 hover:bg-[#FFFFFF] hover:scale-125 
                   transition-all duration-300 ease-in-out "
                 />
                 
@@ -159,8 +159,8 @@ const LastestNews = () => {
               )}
               {canScrollNext && (
                 <CarouselNext
-                  className="absolute text-white  border-none bg-[#26619C] 
-                -right-10 top-1/2 -translate-y-1/2 z-10 hover:bg-[#2e83d8]  hover:scale-125 
+                  className="absolute text-[#34148E]  border-none bg-[#FFFFFF] 
+                -right-10 top-1/2 -translate-y-1/2 z-10 hover:bg-[#FFFFFF]  hover:scale-125 
                 transition-all duration-300 ease-in-out "
                 />
               )}
@@ -172,7 +172,7 @@ const LastestNews = () => {
                 <button
                   key={index}
                   onClick={() => api?.scrollTo(index * articlesPerDot)}
-                  className={`w-2 h-2 rounded-full transition-colors ${currentDot === index ? "bg-[#E2EDF3]" : "bg-[#87A6C1]"
+                  className={`w-2 h-2 rounded-full transition-colors ${currentDot === index ? "bg-black" : "bg-[#87A6C1]"
                     }`}
                   aria-label={`Go to articles ${index * articlesPerDot + 1}-${Math.min((index + 1) * articlesPerDot, 12)}`}
                 />

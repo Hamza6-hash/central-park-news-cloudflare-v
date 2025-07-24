@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
   font-family: "Century-BT";
   src: url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.eot");
@@ -52,6 +51,23 @@
   font-family: "Century-725-CN";
   src: url("/fonts/century-725/century-725-cn-bt.woff") format("truetype");
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Poppins Added  */
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins/Poppins-Regular.woff2") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins/Poppins-Bold.woff2") format("truetype");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -115,7 +131,7 @@
   }
 
   .navbar {
-    @apply bg-primary-900 py-4  w-full  px-6  uppercase;
+    @apply bg-[#FFFFFF] py-4  w-full  px-6  uppercase;
   }
 
   .navbar-label {
@@ -132,11 +148,11 @@
   }
 
   .footer-label {
-    @apply text-sm text-primary-900 uppercase hover:font-bold transition-all;
+    @apply text-sm text-[#363636] uppercase hover:font-bold transition-all;
   }
 
   .banner {
-    @apply w-full bg-primary-100 py-8 flex justify-center items-center;
+    @apply w-full bg-[#E1E1E1] py-8 flex justify-center items-center;
   }
 
   .input-class {
@@ -160,7 +176,7 @@
   }
 
   .lastestNews {
-    @apply bg-blue-gradient w-full flex items-center justify-center;
+    @apply bg-[#E1E1E1] w-full flex items-center justify-center;
   }
 
   .title-container {
@@ -194,17 +210,12 @@
 }
 
 @media (max-width: 640px) {
-
   .markdown-content h1 {
-  font-size: 22px;
-
-}
+    font-size: 22px;
+  }
   .markdown-content h2 {
-  font-size: 16px;
- 
-}
-
-
+    font-size: 16px;
+  }
 }
 .markdown-content ul {
   list-style: disc;
@@ -263,7 +274,6 @@
 .btn-gradient:hover {
   background-position: right center;
 }
-
 
 .img {
   -webkit-user-drag: none;

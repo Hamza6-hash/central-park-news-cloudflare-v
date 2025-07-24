@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { routes } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "@/assets/logo.webp";
 import { Search } from "lucide-react";
 import Searchbar from "../search/SearchComp";
 
@@ -31,7 +30,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center w-full lg:hidden">
           <Link href={routes.home}>
             <Image
-              src={Logo}
+              src={'/logo.png'}
               alt="Horizon logo"
               quality={75}
               width={120}
@@ -47,10 +46,10 @@ const Navbar = () => {
             <button
               onClick={() => setIsSearchOpen(true)}
               aria-label="Open search"
-              className="flex gap-1 text-[#dbdad7] items-center hover:opacity-70 transition-opacity"
+              className="flex gap-1 text-[#303130] items-center hover:opacity-70 transition-opacity"
             >
               Search
-              <Search size={20} className=" text-[#dbdad7]" />
+              <Search size={20} className=" text-[#303130]" />
             </button>
 
 
@@ -64,10 +63,10 @@ const Navbar = () => {
           <div className="absolute left-1/2 transform -translate-x-1/2">
             <Link href={routes.home}>
               <Image
-                src={Logo}
+                src={'/logo.png'}
                 alt="Horizon logo"
                 quality={75}
-                width={191}
+                width={151}
                 height={120}
                 priority
                 loading="eager"
@@ -79,11 +78,11 @@ const Navbar = () => {
           <div className="ml-auto flex items-center">
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="mt-2 flex gap-1 items-center text-[#dbdad7] sm:mt-0 hover:opacity-70 transition-opacity"
+              className="mt-2 flex gap-1 items-center text-[#303130] sm:mt-0 hover:opacity-70 transition-opacity"
               aria-label="Open search"
             >
               Search
-              <Search size={20} color="#dbdad7" />
+              <Search size={20} color="#303130" />
             </button>
           </div>
         </nav>

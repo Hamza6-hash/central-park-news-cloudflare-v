@@ -79,20 +79,20 @@ export default function Home({ article }: HomeProps) {
           </div>
 
           <div className="min-h-[24px] flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
-            <hr className="w-4 sm:w-6 h-1" />
-            <h1 className="bg-[#FFEB84] text-black text-[12px] capitalize font-poppins truncate w-fit max-w-[60%] px-[12px] rounded-xl">{article?.category}</h1>
-            <h6 className="capitalize font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">
+            <hr className="w-4 text-[#34148E] sm:w-6 h-1" />
+            <h1 className="bg-[#E4212B] text-white text-[12px] capitalize font-poppins truncate w-fit max-w-[60%] px-[12px] rounded-xl">{article?.category}</h1>
+            <h6 className="capitalize font-poppins text-[12px] sm:text-xs md:text-sm lg:text-base">
               {article.authorName}
             </h6>
             <span className="text-primary-500">|</span>
-            <p className="text-primary-500 italic font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">
+            <p className="text-[#E4212B] italic font-montserrat text-[12px] sm:text-xs md:text-sm lg:text-base">
               {article.createdAt ? formatedDate(article.createdAt) : "N/A"}
             </p>
           </div>
         </div>
 
         {/* Content with reserved space */}
-        <div className="markdown-content min-h-[200px]">
+        <div className="markdown-content min-h-[200px] text-[#000000] font-poppins">
           <ReactMarkdown>{article?.content}</ReactMarkdown>
         </div>
 

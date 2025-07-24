@@ -62,7 +62,7 @@ const HorizontalCard = ({
 
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">
-                        <h1 className="bg-[#FFEB84] text-black text-xs capitalize font-montserrat truncate w-fit max-w-[60%] py-1 px-2  rounded-full">{category}</h1>
+                        <h1 className="bg-[#E4212B] text-white text-xs capitalize font-montserrat truncate w-fit max-w-[60%] py-1 px-2  rounded-full">{category}</h1>
                         <h2 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-3 hover:text-primary-800 ">
                             {title || "-"}
                         </h2>
@@ -71,12 +71,12 @@ const HorizontalCard = ({
 
                             <h3 className="capitalize text-nowrap">{authorName || "-"}</h3>
                             <span className="text-primary-500">|</span>
-                            <p className="font-medium italic text-primary-500 text-nowrap">
+                            <p className="font-medium italic text-[#E4212B] text-nowrap">
                                 {formatedPublishDate && formatedPublishDate}
                             </p>
                         </div>
                     </div>
-                    <div className="text-gray-600 capitalize font-montserrat font-normal text-[12px] sm:text-[15px]">
+                    <div className="text-gray-600 line-clamp-2 capitalize font-montserrat font-normal text-[12px] sm:text-[15px]">
                         <TruncateText lines={2} content={stripMarkdown(content || "-").slice(0, 150)} />
                     </div>
                 </div>

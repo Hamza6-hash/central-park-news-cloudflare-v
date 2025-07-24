@@ -81,10 +81,10 @@ const Banner = () => {
         <section className="banner">
             <div className="space-y-6 px-6 md:px-0 w-[780px]">
                 <div className="w-full flex flex-col items-center gap-0.5">
-                    <p className="text-primary-900  text-2xl font-medium">
+                    <p className="text-[#363636]  text-2xl font-medium">
                         Newsletter
                     </p>
-                    <p className="text-primary-500 text-base">
+                    <p className="text-[#807F7F] text-base">
                         Stay up to date with our latest news.
                     </p>
                 </div>
@@ -110,7 +110,7 @@ const Banner = () => {
                                     </p>
                                 )}
                             </div>
-                            <Button variant="gradient" className="py-3 px-6 w-full " disabled={isPending}>
+                            <Button className="bg-[#303130] hover:bg-white hover:text-black transition-all duration-300 ease-in text-white py-3 px-6 w-full " disabled={isPending}>
                                 {isPending ? "SUBSCRIBING..." : "SUBSCRIBE"}
                             </Button>
                         </div>

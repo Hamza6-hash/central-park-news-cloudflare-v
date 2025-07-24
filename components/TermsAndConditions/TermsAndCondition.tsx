@@ -7,7 +7,7 @@ const termsSections = [
         title: "Acceptance of Terms",
         content: (
             <>
-                By accessing and using Blockchain Briefing, you agree to be bound by these Terms & Conditions. If you do not agree, please do not use the website.
+                By accessing and using Central Park News, you agree to be bound by these Terms & Conditions. If you do not agree, please do not use the website.
             </>
         ),
     },
@@ -23,7 +23,7 @@ const termsSections = [
         title: "Intellectual Property",
         content: (
             <>
-                All content on the website, including text, graphics, and logos, is the property of Blockchain Briefing and is protected by intellectual property laws.
+                All content on the website, including text, graphics, and logos, is the property of Central Park News and is protected by intellectual property laws.
             </>
         ),
     },
@@ -39,7 +39,7 @@ const termsSections = [
         title: "Disclaimers",
         content: (
             <>
-                The content on Blockchain Briefing is for informational purposes only and does not constitute financial or investment advice.
+                The content on Central Park News is for informational purposes only and does not constitute financial or investment advice.
             </>
         ),
     },
@@ -47,7 +47,7 @@ const termsSections = [
         title: "Limitation of Liability",
         content: (
             <>
-                Blockchain Briefing is not liable for any damages arising from your use of the website.
+                Central Park News is not liable for any damages arising from your use of the website.
             </>
         ),
     },

@@ -169,7 +169,7 @@ export default function NewsArticleCollection() {
         {/* Subtitle Section */}
         <div className="mt-4">
           <h2 className="text-base md:text-lg text-[#2B4864] font-century-gothic">
-            Blockchain Briefing / <span className="font-semibold">News</span>
+            Central Park  / <span className="font-semibold">News</span>
           </h2>
 
 

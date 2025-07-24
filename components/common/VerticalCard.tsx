@@ -54,17 +54,17 @@ const VerticalCard = ({
                     />
                 </div>
 
-                <div className="absolute bottom-0 left-0 right-0 z-20 bg-[#1E3D5AD1]/80 backdrop-blur-sm transition-all duration-300 ease-in-out h-[160px] group-hover:h-full overflow-hidden">
+                <div className="absolute bottom-0 left-0 right-0 z-20 bg-[#FFFFFFCC]/80 backdrop-blur-[4.7px] transition-all duration-300 ease-in-out h-[160px] group-hover:h-full overflow-hidden">
                     <div className="relative w-full h-full px-4 py-4 flex flex-col justify-between">
 
                         <div className="mb-2 flex-shrink-0 h-[60px]">
-                            <h2 className="font-century-schoolbook text-[18px] text-[#FFFFFF] capitalize font-normal leading-5 line-clamp-2 overflow-hidden h-full">
+                            <h2 className="font-century-schoolbook text-[18px] text-[#0F042D] capitalize font-normal leading-5 line-clamp-2 overflow-hidden h-full">
                                 {title || "-"}
                             </h2>
                         </div>
 
                         <div className="absolute inset-0 flex items-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
-                            <p className="font-century-gothic text-[14px] text-[#FFFFFF] leading-5 line-clamp-5 overflow-hidden">
+                            <p className="font-century-gothic text-[14px] text-[#0F042D] leading-5 line-clamp-5 overflow-hidden">
                                 {stripMarkdown(content || "-")}
                             </p>
                         </div>
@@ -72,10 +72,10 @@ const VerticalCard = ({
                         <div className="flex items-center gap-2 mb-2 flex-shrink-0 h-[32px]">
                             <hr className="w-6 h-0.5 bg-[#FFFFFF] flex-shrink-0" />
                             <div className="flex flex-col min-w-0 flex-1">
-                                <span className="bg-[#FFEB84] font-montserrat text-[#7D6901] text-xs font-medium px-2 py-1 rounded-md capitalize text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-fit">
+                                <span className="bg-[#303130] font-montserrat text-white text-xs font-medium px-2 py-1 rounded-md capitalize text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-fit">
                                     {category || "News"}
                                 </span>
-                                <p className="text-[12px] font-montserrat  font-bold text-[#A1A1A1] italic mt-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                                <p className="text-[12px] font-montserrat  font-bold text-[#0F042D] italic mt-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
                                     {formatedPublishDate || ""}
                                 </p>
                             </div>

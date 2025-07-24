@@ -21,14 +21,14 @@ const Footer = () => {
 
       {
         hideLinks ? null :
-          <section className="w-full flex flex-col justify-center items-center gap-10 bg-gray-100 p-4 py-6">
+          <section className="w-full flex flex-col justify-center items-center gap-10 bg-white p-4 py-6">
             <FooterLinks />
           </section>
       }
 
-      <div className="bg-primary-900 w-full text-white py-3 px-1">
+      <div className="bg-[#303130] w-full text-white py-3 px-1">
         <p className="text-center sm:text-xs text-[10px]">
-          COPYRIGHT 2025 © <strong>BLOCKCHAIN BRIEFING</strong>. ALL RIGHTS RESERVED
+          COPYRIGHT 2025 © <strong>CENTERAL PARK NEWS</strong>. ALL RIGHTS RESERVED
         </p>
       </div>
     </footer>

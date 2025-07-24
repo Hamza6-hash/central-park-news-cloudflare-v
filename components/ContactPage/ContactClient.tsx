@@ -86,10 +86,10 @@ const ContactClient = () => {
               />
 
               <div className="flex justify-end">
-                <Button variant="gradient" className="py-3 px-6 w-full sm:w-[15%] " >
+                <Button className="bg-[#303130] duration-300 hover:bg-white hover:text-black transition-all  ease-in text-white py-3 px-6 w-full sm:w-[15%]" >
                   {"SUBMIT"}
                 </Button>
-              </div>  
+              </div>
             </form>
           </Form>
 
