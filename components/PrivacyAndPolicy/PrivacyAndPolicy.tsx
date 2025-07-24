@@ -6,7 +6,7 @@ const policySections = [
         title: "Introduction",
         content: (
             <>
-                Welcome to Central Park News. We are committed to protecting your personal
+                Welcome to Central Park News. We are commited to protecting your data and your personal
                 information and your right to privacy. This Privacy Policy outlines how we
                 collect, use, and safeguard your information when you visit our website.
             </>
