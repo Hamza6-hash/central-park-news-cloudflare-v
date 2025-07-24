@@ -60,7 +60,7 @@ const BlogsCard = ({
           <div className="relative w-full h-[200px] overflow-hidden">
             {isFeatured && (
               <div className="absolute top-4 right-4 z-10">
-                <span className="bg-[#FFD910] text-[#7D6901] text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                <span className="bg-[#E4212B] text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
                   <Zap className="w-4 h-4" />
                   Trending
                 </span>
@@ -78,7 +78,7 @@ const BlogsCard = ({
 
           <div className="p-6 transition-colors duration-300 ease-in-out ">
             <div className="mb-3">
-              <span className="bg-[#FFEB84] font-montserrat text-[#7D6901] text-xs font-medium px-3 py-1 rounded-full capitalize">
+              <span className="bg-[#E4212B] font-montserrat text-white text-xs font-medium px-3 py-1 rounded-full capitalize">
                 {category_name}
               </span>
             </div>
