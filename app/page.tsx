@@ -3,9 +3,9 @@ import Home from "@/components/Home/Home";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Howard Beach News | Home",
-  description: "Stay ahead with Blockchain Briefing — your source for real-time crypto news, blockchain trends, and market insights.",
-  keywords: 'crypto news, blockchain news, cryptocurrency updates, bitcoin news, ethereum news, decentralized finance news, crypto trends, blockchain technology, web3 updates, NFTs news, decentralized autonomous organizations, tokenization & real-world assets, defi news, DAOs, RAWs'
+  title: "Central Park News | Home",
+  description: "Covering community events, local news, and stories in and around Central Park, NYC. Fresh coverage, updated daily.",
+  keywords: "Central Park news, NYC park updates, New York local stories, Manhattan news"
 };
 
 

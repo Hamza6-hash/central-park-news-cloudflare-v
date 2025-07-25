@@ -45,17 +45,17 @@ const HorizontalCard = ({
             <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 rounded-lg cursor-pointer">
                 <div className="md:w-[210px] w-full">
                     <div className="relative w-full md:w-[204px] aspect-[204/208]">
-                            <SafeImage
-                                src={imageURL}
-                                priority={true}
-                                loading="eager"
-                                fill
-                                alt={imageName || 'No Name'}
-                                quality={75}
-                                className="rounded-md pointer-events-none select-none"
-                                sizes="(max-width: 768px) 100vw, (min-width: 769px) 204px"
+                        <SafeImage
+                            src={imageURL}
+                            priority={true}
+                            loading="eager"
+                            fill
+                            alt={imageName || 'No Name'}
+                            quality={75}
+                            className="rounded-md pointer-events-none select-none"
+                            sizes="(max-width: 768px) 100vw, (min-width: 769px) 204px"
 
-                            />
+                        />
                     </div>
                 </div>
 
@@ -77,7 +77,7 @@ const HorizontalCard = ({
                         </div>
                     </div>
                     <div className="text-gray-600 line-clamp-2 capitalize font-montserrat font-normal text-[12px] sm:text-[15px]">
-                        <TruncateText lines={2} content={stripMarkdown(content || "-").slice(0, 150)} />
+                        <TruncateText lines={2} content={stripMarkdown(content || "-")} />
                     </div>
                 </div>
             </div>

@@ -1,5 +1,4 @@
 import React from "react";
-import DummyImg from "@/assets/Blockchain-Default.webp";
 import { format } from "date-fns/format";
 import { FetchTopStories } from "@/lib/query";
 import Adbox from "../Ads/Adbox";
@@ -46,7 +45,7 @@ const TopStories = async ({ showViewMore = false, isContactPage = false }: TopSt
   return (
     <div className="">
       <h2 className="font-poppins font-bold text-[32px] mb-4 uppercase tracking-normal">
-        TOP <span className="text-[#26619C]">{newsletters?.length}</span> STORIES
+        TOP <span className="text-[#E4212B]">{newsletters?.length}</span> STORIES
       </h2>
       <div className="flex flex-col xl:gap-5 sm:gap-7 gap-8">
         {displayedNewsletters?.map((newsletter: Newsletter) => {
@@ -60,7 +59,7 @@ const TopStories = async ({ showViewMore = false, isContactPage = false }: TopSt
               <HorizontalCard
                 title={newsletter.title || "-"}
                 category={newsletter.category}
-                imageURL={newsletter.imageURL || DummyImg}
+                imageURL={newsletter.imageURL || "/CN-Default.png"}
                 authorName={newsletter.authorName || "Docket Digest New Room"}
                 publishDate={formattedDate}
                 content={newsletter.content || "-"}

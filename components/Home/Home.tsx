@@ -1,4 +1,3 @@
-"use client";
 import TopStories from "@/components/topStories/TopStories";
 import { StaticImageData } from "next/image";
 import { formatedDate } from "@/lib/utils";
@@ -43,9 +42,9 @@ export default function Home({ article }: HomeProps) {
 
   return (
     <section className="flex gap-9 max-xl:flex-col w-full max-w-[1200px] mx-auto text-[12px] sm:text-base">
-       <Suspense>
-                <ToastHandler />
-            </Suspense>
+      <Suspense>
+        <ToastHandler />
+      </Suspense>
       <div className="xl:w-[644px] w-full max-w-full overflow-hidden">
 
         <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />

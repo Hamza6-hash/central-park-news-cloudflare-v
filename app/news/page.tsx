@@ -4,9 +4,9 @@ import { Suspense } from "react";
 
 
 export const metadata: Metadata = {
-  title: "Blockchain Briefing | News",
-  description: "Explore the latest updates in cryptocurrency and blockchain technology and stay ahead with Blockchain Briefing — your source for real-time crypto news, blockchain trends, and market insights. Get breaking news on Bitcoin, Ethereum, DeFi, NFTs, DAOs, RAWs, and Web3 — all in one place.",
-  keywords: "latest crypto news, bitcoin news, ethereum updates, nft news, blockchain headlines, defi, web3, daily crypto updates, crypto news, blockchain news, cryptocurrency updates, bitcoin news, ethereum news, decentralized finance news, crypto trends, blockchain technology, web3 updates, NFTs news, decentralized autonomous organizations, tokenization & real-world assets, defi news, DAOs, RAWs"
+  title: "News | Central Parks News - Central Park, NYC",
+  description: " Follow up-to-date news, stories, and developments from Central Park and nearby New York areas.",
+  keywords: "Central Park NYC news, local updates, Manhattan current events"
 }
 
 export default function NewsPage() {
