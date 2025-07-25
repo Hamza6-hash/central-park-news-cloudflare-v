@@ -44,7 +44,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
       type: options.type ?? 'success',
     });
     setIsVisible(true);
-    setTimeout(() => setIsVisible(false), 3000); // Auto-close after 3s
+    setTimeout(() => setIsVisible(false), 3000);
   }, []);
 
   return (

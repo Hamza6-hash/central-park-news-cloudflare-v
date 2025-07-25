@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import QueryProviders from "@/ReatQuery/provider";
 import Layout from "@/components/Layout";
 import FontLinks from "@/components/fontLinks/FontLinks";
 import { ToastProvider } from "@/context/ToastContext";
+import { Providers } from "@/context/Providers";
 
 export const metadata: Metadata = {
-  title: "Crypto & Blockchain Briefing | Real-Time News & Insights",
-  description:
-    "Stay ahead tiwht  with Blockchain Briefing — your source for real-time crypto news, blockchain trends, and market insights. Curated updates from trusted sources.",
-  keywords:
-    "crypto news, blockchain news, cryptocurrency updates, bitcoin news, ethereum news, defi news, crypto trends, blockchain technology, web3 updates",
+  title: "Central Parks News | Stories from the Heart of New York City",
+  description: "Covering community events, local news, and stories in and around Central Park, NYC. Fresh coverage, updated daily.",
+  keywords: "Central Park news, NYC park updates, New York local stories, Manhattan news"
 };
 
 export default function RootLayout({
@@ -24,11 +22,11 @@ export default function RootLayout({
         <FontLinks />
       </head>
       <body className="select-none ">
-        <QueryProviders>
+        <Providers>
           <ToastProvider>
-          <Layout>{children}</Layout>
+            <Layout>{children}</Layout>
           </ToastProvider>
-        </QueryProviders>
+        </Providers>
       </body>
     </html>
   );

@@ -36,4 +36,4 @@ export const navbarLinks = [
   },
 ];
 
-export const defultImage = "/Hbn-Default.png";
+export const defultImage = "/CN-Default.png";
