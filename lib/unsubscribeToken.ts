@@ -24,7 +24,7 @@ export class HashBasedToken {
     const expiryTime = new Date(timestamp + 24 * 60 * 60 * 1000); // 24 hours for testing
 
     // Store token info directly in user document
-    await setDoc(doc(db, "blog", "blockchainBriefing", "subscribeUsers", email), {
+    await setDoc(doc(db, "blog", "centralparkNews", "subscribeUsers", email), {
       email,
       createdAt: new Date(),
       unsubscribeToken: token,
@@ -75,7 +75,7 @@ export class HashBasedToken {
       }
 
       // Check token in user document
-      const userDoc = await getDoc(doc(db, "blog", "blockchainBriefing", "subscribeUsers", email));
+      const userDoc = await getDoc(doc(db, "blog", "centralparkNews", "subscribeUsers", email));
 
       if (!userDoc.exists()) {
         return { valid: false, error: 'User not found' };
@@ -108,7 +108,7 @@ export class HashBasedToken {
 
   // Mark token as used (one-time use)
   static async markTokenAsUsed(email: string): Promise<void> {
-    await setDoc(doc(db, "blog", "blockchainBriefing", "subscribeUsers", email), {
+    await setDoc(doc(db, "blog", "centralparkNews", "subscribeUsers", email), {
       tokenUsed: true,
       tokenUsedAt: new Date()
     }, { merge: true });

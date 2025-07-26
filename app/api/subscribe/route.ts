@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     const { email } = await request.json();
 
     // Check if email already exists
-    const subscribeUser = await getDoc(doc(db, "blog", "blockchainBriefing", "subscribeUsers", email));
+    const subscribeUser = await getDoc(doc(db, "blog", "centralparkNews", "subscribeUsers", email));
     if (subscribeUser.exists()) {
         return NextResponse.json({ message: "Email already exists" }, { status: 400 });
     }
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
     const msg = {
         to: email,
         from: "settlement@scottbaronassociates.com",
-        subject: "Welcome to Blockchain Briefing - Stay Informed!",
+        subject: "Welcome to Central Park News - Stay Informed!",
         html: html,
     };
 

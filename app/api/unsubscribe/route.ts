@@ -35,7 +35,7 @@ export async function POST(request: Request) {
         await HashBasedToken.markTokenAsUsed(email);
 
         // Step 1: Remove from Firebase subscriber collection
-        const userDoc = doc(db, "blog", "blockchainBriefing", "subscribeUsers", email);
+        const userDoc = doc(db, "blog", "centralparkNews", "subscribeUsers", email);
         const userExists = await getDoc(userDoc);
         
         let removedFromFirebase = false;
