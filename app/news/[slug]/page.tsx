@@ -8,6 +8,16 @@ import { News } from "@/components/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 
 
+// export async function generateStaticParams() {
+//   const newsCollection = collection(db, "blog/centralparkNews/newsletter");
+//   const q = query(newsCollection, where("status", "==", "published"));
+//   const snapshot = await getDocs(q);
+
+//   return snapshot.docs.map((doc) => ({
+//     slug: doc.data().titleSlug,
+//   }));
+// }
+
 async function getNewsData(slug: string) {
   try {
     if (!db) {
@@ -77,14 +87,14 @@ export async function generateMetadata({
 
     if (!newsData) {
       return {
-        title: `Newsletter Not Found | Blockchain Briefing`,
+        title: `Newsletter Not Found | Central Park News`,
         description: "The requested newsletter could not be found.",
       };
     }
 
     if (!newsData.title || !newsData.excerpt) {
       return {
-        title: "Invalid Newsletter Data | Blockchain Briefing",
+        title: "Invalid Newsletter Data | Central Park News",
         description: "The requested newsletter has invalid data.",
       };
     }
@@ -103,7 +113,7 @@ export async function generateMetadata({
     }
 
     return {
-      title: `${newsData.title} | Blockchain Briefing`,
+      title: `${newsData.title} | Central Park News`,
       description: newsData.excerpt,
       keywords: keywords,
       alternates: {
@@ -113,7 +123,7 @@ export async function generateMetadata({
         title: newsData.title,
         description: newsData.excerpt,
         url: pageUrl,
-        siteName: "Blockchain Briefing",
+        siteName: "Central Park News",
         images: ogImageUrl
           ? [
             {
@@ -128,7 +138,7 @@ export async function generateMetadata({
         type: "article",
         publishedTime: newsData.publishDate,
         modifiedTime: newsData.updatedAt,
-        authors: ["Blockchain Briefing"],
+        authors: ["Central Park News"],
         section: newsData.category,
         tags: newsData.tags,
       },
@@ -141,7 +151,7 @@ export async function generateMetadata({
     };
   } catch (error) {
     return {
-      title: "Error | Blockchain Briefing",
+      title: "Error | Central Park News",
       description: "An error occurred while fetching the newsletter metadata.",
     };
   }
@@ -174,11 +184,11 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     dateModified: newsData.updatedAt,
     author: {
       "@type": "Organization",
-      name: "Blockchain Briefing",
+      name: "Central Park News",
     },
     publisher: {
       "@type": "Organization",
-      name: "Blockchain Briefing",
+      name: "Central Park News",
       logo: {
         "@type": "ImageObject",
         url: `${siteUrl}/logo.png`,
