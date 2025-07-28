@@ -100,7 +100,7 @@ export async function generateMetadata({
     }
 
     const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL || "https://www.blockchainbriefing.com";
+      process.env.NEXT_PUBLIC_SITE_URL || "https://central-park-news.vercel.app/";
     const pageUrl = `${siteUrl}/news/${slug}`;
     const ogImageUrl =
       newsData.socialImageUrls?.facebook?.url || newsData.imageURL;
@@ -168,7 +168,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
   const relatedNews = await getFiveRelatedNewsByCategory(newsData.category, slug);
 
   const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://www.blockchainbriefing.com";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://central-park-news.vercel.app/";
   const pageUrl = `${siteUrl}/news/${slug}`;
 
   const jsonLd = {
