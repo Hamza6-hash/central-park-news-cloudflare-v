@@ -17,7 +17,7 @@ async function validateUser(email: string): Promise<void | null | UserData> {
   }
 
   try {
-    const userDocRef = doc(db, "blog", "blockchainBriefing", "subscribeUsers", email);
+    const userDocRef = doc(db, "blog", "centralparkNews", "subscribeUsers", email);
     const userSnap = await getDoc(userDocRef);
 
     if (!userSnap.exists()) {

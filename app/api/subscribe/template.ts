@@ -5,7 +5,7 @@ export function subscribeTemplate(unsubscribeUrl: string) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Welcome to Blockchain Briefing</title>
+        <title>Welcome to Central Park News</title>
         <style>
             body {
                 background: #f4f4f4;
@@ -85,7 +85,7 @@ export function subscribeTemplate(unsubscribeUrl: string) {
             <div class="content">
                 <p>Hello,</p>
                 <div class="card">
-                    <p>Welcome to Blockchain Briefing! You've just joined a community of crypto enthusiasts, developers, and investors who stay ahead of the curve with our daily/weekly insights on:</p>
+                    <p>Welcome to Central Park! You've just joined a community of crypto enthusiasts, developers, and investors who stay ahead of the curve with our daily/weekly insights on:</p>
                     <p><strong>🔹 Bitcoin & Ethereum trends<br>
                     🔹 DeFi protocols and airdrops<br>
                     🔹 NFTs and metaverse updates<br>
