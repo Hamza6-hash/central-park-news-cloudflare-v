@@ -64,7 +64,7 @@ export async function POST(request: Request) {
     const msg = {
         to: email,
         from: "settlement@scottbaronassociates.com",
-        subject: "Welcome to Central Park News - Stay Informed!",
+        subject: "Welcome to Central Parks News",
         html: html,
     };
 
