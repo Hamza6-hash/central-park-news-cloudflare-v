@@ -3,12 +3,13 @@ import PrivacyAndPolicy from '@/components/PrivacyAndPolicy/PrivacyAndPolicy'
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy And Policy | Blockchain Briefing",
+  title: "Privacy Policy | Central Park News",
   description:
-    "Have questions, tips, or partnership inquiries? Get in touch with the Blockchain Briefing team. We’d love to hear from you!",
+    "Read the Privacy Policy of Central Park News to learn how we handle your data, ensure user privacy, and protect your information.",
   keywords:
-    "contact blockchain news site, crypto media inquiries, blockchain briefing contact, submit crypto news, crypto press contact",
+    "Central Park News privacy policy, data protection NYC news, user privacy Central Park, privacy terms",
 };
+
 
 
 const Privacy = () => {

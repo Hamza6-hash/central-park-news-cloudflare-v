@@ -84,7 +84,7 @@ export const fetchArticleBySlug = async (
   slug: string
 ): Promise<Article | null> => {
   try {
-    const articlesRef = collection(db, "blog/blockchainBriefing/articles");
+    const articlesRef = collection(db, "blog/centralparkNews/articles");
     const q = query(articlesRef, where("titleSlug", "==", slug));
     const querySnapshot = await getDocs(q);
 
@@ -101,7 +101,7 @@ export const fetchArticleBySlug = async (
 
     const authorRef = doc(
       db,
-      "blog/blockchainBriefing/authors",
+      "blog/centralparkNews/authors",
       articleData.authorId
     );
     const authorDoc = await getDoc(authorRef);
@@ -146,7 +146,7 @@ export const fetchCombinedFeaturedItem = async () => {
       throw new Error("Database connection is not available");
     }
 
-    const newsPath = "blog/blockchainBriefing/newsletter";
+    const newsPath = "blog/centralparkNews/newsletter";
     const newsRef = collection(db, newsPath);
 
     const newsQuery = query(
@@ -168,7 +168,7 @@ export const fetchCombinedFeaturedItem = async () => {
             try {
               const authorRef = doc(
                 db,
-                "blog/blockchainBriefing/authors",
+                "blog/centralparkNews/authors",
                 data.authorId
               );
               const authorSnap = await getDoc(authorRef);
@@ -217,7 +217,7 @@ export const FetchTopStories = async (): Promise<Newsletter[]> => {
   }
 
   try {
-    const newslettersRef = collection(db, "blog/blockchainBriefing/newsletter");
+    const newslettersRef = collection(db, "blog/centralparkNews/newsletter");
 
     const q = query(
       newslettersRef,
@@ -246,7 +246,7 @@ export const FetchTopStories = async (): Promise<Newsletter[]> => {
     // Fetch all unique authors in parallel
     const authorPromises = Array.from(authorIds).map(async (authorId) => {
       try {
-        const authorRef = doc(db, "blog/blockchainBriefing/authors", authorId);
+        const authorRef = doc(db, "blog/centralparkNews/authors", authorId);
         const authorDoc = await getDoc(authorRef);
         return {
           id: authorId,
@@ -297,7 +297,7 @@ export const FetchLatestNews = async (): Promise<Article[]> => {
   try {
     if (!db) throw new Error("Database connection is not available");
 
-    const collectionPath = "blog/blockchainBriefing/newsletter";
+    const collectionPath = "blog/centralparkNews/newsletter";
 
     // const collectionPath = pathname.includes("/news")
     //   ? "blog/broadWayBriefing/articles"
@@ -325,7 +325,7 @@ export const FetchLatestNews = async (): Promise<Article[]> => {
           try {
             const authorDocRef = doc(
               db,
-              "blog/blockchainBriefing/authors",
+              "blog/centralparkNews/authors",
               articleData.authorId
             );
             const authorDoc = await getDoc(authorDocRef);
@@ -407,8 +407,8 @@ interface FetchArticlesResult {
 
 //   const collectionPath =
 //     activeTab === "article"
-//       ? "blog/blockchainBriefing/articles"
-//       : "blog/blockchainBriefing/newsletter";
+//       ? "blog/centralparkNews/articles"
+//       : "blog/centralparkNews/newsletter";
 
 //   const itemsRef = collection(db, collectionPath);
 
@@ -449,7 +449,7 @@ interface FetchArticlesResult {
 //         try {
 //           const authorRef = doc(
 //             db,
-//             "blog/blockchainBriefing/authors",
+//             "blog/centralparkNews/authors",
 //             data.authorId
 //           );
 //           const authorSnap = await getDoc(authorRef);
@@ -464,7 +464,7 @@ interface FetchArticlesResult {
 //         try {
 //           const categoriesRef = collection(
 //             db,
-//             "blog/blockchainBriefing/categories"
+//             "blog/centralparkNews/categories"
 //           );
 //           const categoryQuery = query(
 //             categoriesRef,
@@ -516,7 +516,7 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
   try {
     if (!db) throw new Error("Database connection is not available");
 
-    const newsRef = collection(db, "blog/blockchainBriefing/newsletter");
+    const newsRef = collection(db, "blog/centralparkNews/newsletter");
     const q = query(newsRef, where("titleSlug", "==", slug));
     const querySnapshot = await getDocs(q);
 
@@ -532,7 +532,7 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
     }
 
     const authorDoc = await getDoc(
-      doc(db, "blog/blockchainBriefing/authors", newsData.authorId)
+      doc(db, "blog/centralparkNews/authors", newsData.authorId)
     );
 
     const authorName = authorDoc.exists()
@@ -601,8 +601,8 @@ export const FetchArticleNewsData = async ({
 
   const collectionPath =
     activeTab === "article"
-      ? "blog/blockchainBriefing/articles"
-      : "blog/blockchainBriefing/newsletter";
+      ? "blog/centralparkNews/articles"
+      : "blog/centralparkNews/newsletter";
 
   const itemsRef = collection(db, collectionPath);
   const baseQuery = query(
@@ -703,7 +703,7 @@ export const FetchArticleNewsData = async ({
   const authorsMap = new Map<string, Author>();
   if (authorIds.size > 0) {
     try {
-      const authorsRef = collection(db, "blog/blockchainBriefing/authors");
+      const authorsRef = collection(db, "blog/centralparkNews/authors");
       const authorQuery = query(
         authorsRef,
         where("__name__", "in", Array.from(authorIds))
@@ -724,7 +724,7 @@ export const FetchArticleNewsData = async ({
     try {
       const categoriesRef = collection(
         db,
-        "blog/blockchainBriefing/categories"
+        "blog/centralparkNews/categories"
       );
       const categoryQuery = query(
         categoriesRef,

@@ -7,7 +7,7 @@ export const getFiveRelatedNewsByCategory = async (category: string, slug: strin
       throw new Error("Database connection is not available");
     }
   
-    const ref = collection(db, "blog/blockchainBriefing/newsletter");
+    const ref = collection(db, "blog/centralparkNews/newsletter");
     const q = query(ref, where("category", "==", category), where("titleSlug", "!=", slug), orderBy("createdAt", "desc"), limit(6));
     const snapshot = await getDocs(q);
   

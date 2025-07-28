@@ -57,8 +57,8 @@ export const fireServices = {
     limitCount: number = 10
   ): Promise<ArticleWithDetails[]> => {
     try {
-      const articlesRef = collection(db, "blog/blockchainBriefing/articles");
-      const newsRef = collection(db, "blog/blockchainBriefing/newsletter");
+      const articlesRef = collection(db, "blog/centralparkNews/articles");
+      const newsRef = collection(db, "blog/centralparkNews/newsletter");
 
       const articlesQuery = query(
         articlesRef,
@@ -101,7 +101,7 @@ export const fireServices = {
           if (item.categoryId) {
             try {
               const categoryDoc = await getDoc(
-                doc(db, "blog/blockchainBriefing/categories", item.categoryId)
+                doc(db, "blog/centralparkNews/categories", item.categoryId)
               );
               if (categoryDoc.exists()) {
                 category = {
@@ -117,7 +117,7 @@ export const fireServices = {
           if (item.authorId) {
             try {
               const authorDoc = await getDoc(
-                doc(db, "blog/blockchainBriefing/authors", item.authorId)
+                doc(db, "blog/centralparkNews/authors", item.authorId)
               );
               if (authorDoc.exists()) {
                 author = {

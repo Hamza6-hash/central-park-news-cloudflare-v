@@ -32,7 +32,7 @@ const nextConfig = {
       },
       {
         source: "/api/:path*",
-        destination: "https://blockchain-briefing.vercel.app/api/:path*",
+        destination: "https://central-park-news.vercel.app/api/:path*",
       },
     ];
   },

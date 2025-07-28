@@ -8,15 +8,15 @@ import { News } from "@/components/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 
 
-// export async function generateStaticParams() {
-//   const newsCollection = collection(db, "blog/centralparkNews/newsletter");
-//   const q = query(newsCollection, where("status", "==", "published"));
-//   const snapshot = await getDocs(q);
+export async function generateStaticParams() {
+  const newsCollection = collection(db, "blog/centralparkNews/newsletter");
+  const q = query(newsCollection, where("status", "==", "published"));
+  const snapshot = await getDocs(q);
 
-//   return snapshot.docs.map((doc) => ({
-//     slug: doc.data().titleSlug,
-//   }));
-// }
+  return snapshot.docs.map((doc) => ({
+    slug: doc.data().titleSlug,
+  }));
+}
 
 async function getNewsData(slug: string) {
   try {
@@ -24,7 +24,7 @@ async function getNewsData(slug: string) {
       return null;
     }
 
-    const newsCollection = collection(db, "blog/blockchainBriefing/newsletter");
+    const newsCollection = collection(db, "blog/centralparkNews/newsletter");
     const q = query(newsCollection, where("titleSlug", "==", slug));
     const querySnapshot = await getDocs(q);
 
@@ -49,7 +49,7 @@ async function getNewsData(slug: string) {
     if (data.authorId) {
       try {
         // @ts-ignore
-        const authorRef = doc(db, "blog/blockchainBriefing/authors", data.authorId);
+        const authorRef = doc(db, "blog/centralparkNews/authors", data.authorId);
         const authorDoc = await getDoc(authorRef);
 
         if (authorDoc.exists()) {
@@ -100,7 +100,7 @@ export async function generateMetadata({
     }
 
     const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL || "https://www.blockchainbriefing.com";
+      process.env.NEXT_PUBLIC_SITE_URL || "https://central-park-news.com";
     const pageUrl = `${siteUrl}/news/${slug}`;
     const ogImageUrl =
       newsData.socialImageUrls?.facebook?.url || newsData.imageURL;
@@ -168,7 +168,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
   const relatedNews = await getFiveRelatedNewsByCategory(newsData.category, slug);
 
   const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://www.blockchainbriefing.com";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.central-park-news.com";
   const pageUrl = `${siteUrl}/news/${slug}`;
 
   const jsonLd = {

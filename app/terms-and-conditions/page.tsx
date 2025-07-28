@@ -3,18 +3,18 @@ import TermsAndCondition from '@/components/TermsAndConditions/TermsAndCondition
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms And Condition | Blockchain Briefing",
+  title: "Terms and Conditions | Central Park News",
   description:
-    "Welcome to Blockchain Briefing. By accessing our website, you agree to be bound by these Terms and Conditions and our Privacy Policy. If you disagree with any part, please do not use our services.",
+    "Review the Terms and Conditions for using Central Park News. Learn about user guidelines, legal policies, and our commitment to delivering trusted news.",
   keywords:
-    "contact blockchain news site, crypto media inquiries, blockchain briefing contact, submit crypto news, crypto press contact",
+    "Central Park News terms, NYC news site policies, user agreement Central Park News, legal terms",
 };
 
 const Terms = () => {
   return (
     <div className='bg-primary-100'>
-        <TermsAndCondition />
-        
+      <TermsAndCondition />
+
     </div>
 
   )
