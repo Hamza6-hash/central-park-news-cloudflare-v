@@ -2,6 +2,9 @@ export default function FontLinks() {
   return (
     <>
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="preload" as="image" href="/topBanner.webp" media="(max-width: 640px)" />
+      <link rel="preload" as="image" href="/banner.webp" media="(min-width: 641px)" />
+
 
       {/* Preload Custom Fonts */}
       <link

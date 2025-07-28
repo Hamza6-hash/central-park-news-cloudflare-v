@@ -94,7 +94,6 @@ export default function NewsArticleCollection() {
 
   const handlePageChange = useCallback((page: number) => {
     if (page === currentPage) return;
-
     setCurrentPage(page);
     updateUrl(page);
 
@@ -126,26 +125,7 @@ export default function NewsArticleCollection() {
   const hasNextPage = item?.hasNextPage || false;
   // @ts-ignore
   const hasPrevPage = item?.hasPrevPage || false;
-  const pageTitle = activeTab === "news" ? "News" : "Articles";
 
-  // Generate page numbers for pagination
-  const pageNumbers = useMemo(() => {
-    const maxVisiblePages = 5;
-    const pageNumbers = [];
-
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
-
-    return pageNumbers;
-  }, [currentPage, totalPages]);
 
   return (
     <section className="w-full">
@@ -160,7 +140,7 @@ export default function NewsArticleCollection() {
 
           <div className="flex flex-row gap-3 w-full">
             <h1 className="text-xl md:text-2xl font-century-gothic font-bold text-[#2B4864]">
-              {pageTitle}
+              News
             </h1>
 
           </div>
