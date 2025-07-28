@@ -135,6 +135,7 @@ const LastestNews = () => {
                       <VerticalCard
                         title={article.title}
                         content={article.content}
+                        category={article.category}
                         imageURL={article.imageURL || defultImage}
                         authorName={article.authorName || "Unknown Author"}
                         publishDate={article.publishDate}
