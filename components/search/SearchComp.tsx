@@ -82,7 +82,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
       const normalizedSearchTerm = searchTerm.toLowerCase().trim();
       const results = await fireServices.searchArticles(normalizedSearchTerm);
 
-      const categoriesRef = collection(db, "blog/blockchainBriefing/categories");
+      const categoriesRef = collection(db, "blog/centralparkNews/categories");
       const categoriesSnapshot = await getDocs(categoriesRef);
       const categoriesMap = new Map<string, string>();
 
