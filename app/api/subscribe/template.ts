@@ -105,7 +105,7 @@ export function subscribeTemplate(unsubscribeUrl: string) {
             </div>
             <div class="footer">
                 <a href="${process.env.NEXT_PUBLIC_SITE_URL}">Website</a> | 
-                <a href="${process.env.NEXT_PUBLIC_SITE_URL}/contact">Contact Email</a>
+                <a href="${process.env.NEXT_PUBLIC_SITE_URL}contact">Contact Email</a>
             </div>
         </div>
     </body>
