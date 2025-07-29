@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 
@@ -17,6 +15,7 @@ const Adbox = () => {
           quality={70}
           loading="eager"
           priority={true}
+          fetchPriority="high"
         />
       </div>
 
@@ -27,10 +26,12 @@ const Adbox = () => {
             src="/bottomBanner.png"
             alt="mobile ad"
             fill
-            loading="eager"
             quality={80}
             className="object-contain pointer-events-none select-none"
             sizes="(max-width: 639px) 100vw, 390px"
+            loading="eager"
+            priority={true}
+            fetchPriority="high"
           />
         </div>
       </div>
