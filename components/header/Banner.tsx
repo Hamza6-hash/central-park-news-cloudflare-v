@@ -17,6 +17,9 @@ const Banner = () => {
     const formSchema = subscribtionFormSchema();
     const pathname = usePathname();
     const [showToast, setShowToast] = useState(false);
+    const [toastType, setToastType] = useState<'success' | 'error' | 'alreadyUnsubscribed'>('success');
+    const [toastTitle, setToastTitle] = useState<string>('Success');
+    const [toastDescription, setToastDescription] = useState<string>('Thanks For Subscribing.');
     const [res, setRes] = useState<string | null>(null);
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -35,16 +38,26 @@ const Banner = () => {
             const result = await response.json();
 
             if (!response.ok) {
+                setToastType('error');
+                setToastTitle('Subscription Failed');
+                setToastDescription(result.message || 'Failed to subscribe. Try again later');
+                setShowToast(true);
                 setRes(result.message);
             } else {
+                setToastType('success');
+                setToastTitle('Success');
+                setToastDescription('Thanks for subscribing!');
+                setShowToast(true);
                 setRes(null);
                 form.reset();
-                setShowToast(true);
-
             }
         } catch (error) {
             console.error(error);
-            setRes("Something went wrong");
+            setToastType('error');
+            setToastTitle('Error');
+            setToastDescription('Something went wrong.');
+            setShowToast(true);
+            setRes('Something went wrong');
         }
     };
 
@@ -60,7 +73,7 @@ const Banner = () => {
 
 
     const onChangeField = (e: any) => {
-        if (!e?.target?.value) form.reset() ;
+        if (!e?.target?.value) form.reset();
         setRes(null);
     }
 
@@ -119,6 +132,9 @@ const Banner = () => {
                 <CustomToast
                     show={showToast}
                     onClose={() => setShowToast(false)}
+                    title={toastTitle}
+                    description={toastDescription}
+                    type={toastType}
                 />
             </div>
         </section>
