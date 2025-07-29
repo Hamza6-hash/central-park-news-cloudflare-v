@@ -9,7 +9,7 @@ const AdBanner = () => {
         <picture>
           {/* Mobile banner */}
           <source
-            srcSet="/topBanner.webp"
+            srcSet="/topBanner.avif"
             media="(max-width: 640px)"
           />
           {/* Desktop banner */}
