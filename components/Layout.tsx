@@ -12,7 +12,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }
   return (
     <div>
-      {!isUnsubscribe && <Header />}
+      {!isUnsubscribe && <Header pathname={pathname} />}
       <main className="flex items-center justify-center px-generic pageTopBottonMargin overflow-hidden ">
         <div className="max-width">
           {children}

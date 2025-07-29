@@ -2,9 +2,7 @@ export default function FontLinks() {
   return (
     <>
       {/* Preload images */}
-      <link rel="preload" as="image" href="/MobileBanner.avif" media="(max-width: 640px)" />
-      <link rel="preload" as="image" href="/banner.webp" media="(min-width: 641px)" />
-
+    
       {/* Preload custom fonts */}
       <link
         rel="preload"
