@@ -62,7 +62,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
                 {title}
               </h1>
           </div>
-          <div className="relative w-full max-w-[1200px] aspect-[1200/514]">
+          <div className="relative w-full xl:min-w-[1200px] max-w-[1200px] aspect-[1200/514]">
             <SafeImage
               src={imageURL || defultImage}
               alt={title}

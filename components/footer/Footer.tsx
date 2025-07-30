@@ -14,6 +14,8 @@ const Footer = () => {
     pathName.startsWith("/unsubscribe");
 
   const hideLinks = pathName.startsWith("/unsubscribe");
+   const showFooter = pathName === '/' || pathName === '/contact' || pathName === '/news' || pathName === 'contact' || pathName === '/privacy' || pathName === '/terms-and-conditions' || pathName.includes('/news')
+  if (!showFooter) return null
 
   return (
     <footer className="w-full">
