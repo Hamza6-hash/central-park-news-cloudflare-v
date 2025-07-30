@@ -15,7 +15,7 @@ export default function Header({ pathname = "/" }) {
             {!hideBanner && (
                 <>
                     <Banner />
-                    <Adbanner />
+                    <Adbanner pathname={pathname} />
                     {isHomePage && <Searchbar />}
                 </>
             )}
