@@ -1,7 +1,6 @@
 import { fetchCombinedFeaturedItem } from "@/lib/query";
 import Home from "@/components/Home/Home";
 import { Metadata } from "next";
-import MobileAdBanner from "@/components/Ads/Mobilebanner";
 
 export const metadata: Metadata = {
   title: "Central Park News | Home",
@@ -12,12 +11,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const article = await fetchCombinedFeaturedItem();
-  return(
-    <>
-    <MobileAdBanner/>
-    <Home article={article} />
-    </>
-  )
+  return <Home article={article} />
 
 }
 
