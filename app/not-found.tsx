@@ -35,7 +35,7 @@ const NotFound = () => {
               <div className="flex-shrink-0">
 
                 <Image
-                  src="/not-found.svg"
+                  src="/not-found.png"
                   alt="Not Found"
                   width={430}
                   height={366}
@@ -50,7 +50,7 @@ const NotFound = () => {
                   Uh Oh. Page Does Not Exist
                 </h2>
                 <div className="flex flex-col" style={{ gap: '8px' }}>
-                  <p className="text-[#363636] font-century-gothic text-[14px] sm:text-[24px] ">
+                  <p className="text-[##303130] font-century-gothic text-[14px] sm:text-[24px] ">
                     We looked everywhere for this page.<br /> Are you sure that the URL is correct?
                   </p>
                 </div>
