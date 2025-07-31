@@ -10,7 +10,7 @@ const NotFound = () => {
   return (
     <div className="h-screen w-screen fixed inset-0 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="w-full flex justify-center items-center bg-[#E1E1E1] px-2  py-6 flex-shrink-0">
+      <div className="w-full flex justify-center items-center bg-white px-2  py-6 flex-shrink-0">
         <Link href={routes.home}>
           <Image
             src={'/logo.png'}
@@ -27,7 +27,7 @@ const NotFound = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-white overflow-hidden">
+      <div className="flex-1 flex flex-col bg-[#E1E1E1] overflow-hidden">
         <div className="flex-1 flex flex-col items-center justify-center px-4 py-4">
           <div className="w-full flex flex-col items-center justify-center" style={{ gap: '32px' }}>
             {/* Main content - Pink image left, Text right */}
@@ -57,7 +57,7 @@ const NotFound = () => {
 
                 <Button
                   onClick={() => router.push('/')}
-                  className="bg-[#303130] text-white font-bold py-3 px-6 rounded font-century-gothic hover:bg-white hover:text-black hover:shadow-md transition-colors w-fit mx-auto lg:mx-0">
+                  className="bg-[#E4212B] text-white font-bold py-3 px-6 rounded font-century-gothic hover:bg-white hover:text-black hover:shadow-md transition-colors w-fit mx-auto lg:mx-0">
                   Go Back Home
                 </Button>
               </div>

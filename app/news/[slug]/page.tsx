@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import SchemaOrg from "@/components/Schema";
 import { News } from "@/components/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
+import { redirect } from "next/navigation";
 
 
 export async function generateStaticParams() {
@@ -162,7 +163,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
   const newsData = await getNewsData(slug);
 
   if (!newsData) {
-    return <div>Newsletter not found.</div>;
+    redirect('/')
   }
 
   const relatedNews = await getFiveRelatedNewsByCategory(newsData.category, slug);
