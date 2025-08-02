@@ -50,9 +50,8 @@ export default function NewsArticleCollection() {
     // @ts-ignore
     isPreviousData
   } = useQuery({
-    queryKey: ['articles', activeTab, debouncedPage],
+    queryKey: ['articles', debouncedPage],
     queryFn: () => FetchArticleNewsData({
-      activeTab,
       currentPage: debouncedPage,
       itemsPerPage: ITEMS_PER_PAGE
     }),
@@ -70,7 +69,6 @@ export default function NewsArticleCollection() {
       queryClient.prefetchQuery({
         queryKey: ['articles', activeTab, debouncedPage + 1],
         queryFn: () => FetchArticleNewsData({
-          activeTab,
           currentPage: debouncedPage + 1,
           itemsPerPage: ITEMS_PER_PAGE
         }),
@@ -214,7 +212,7 @@ export default function NewsArticleCollection() {
           </div>
 
           {/* Enhanced Pagination */}
-         {totalPages > 1 && (
+          {totalPages > 1 && (
             <div className="mt-8 flex justify-center">
               <Pagination>
                 <PaginationContent>
@@ -311,11 +309,10 @@ export default function NewsArticleCollection() {
                           e.preventDefault();
                           if (hasPrevPage) handlePageChange(currentPage - 1);
                         }}
-                        className={`px-3 py-2 ${
-                          !hasPrevPage
+                        className={`px-3 py-2 ${!hasPrevPage
                             ? 'pointer-events-none opacity-50'
                             : 'cursor-pointer hover:bg-gray-100'
-                        }`}
+                          }`}
                       >
                         &lt;
                       </button>
@@ -395,11 +392,10 @@ export default function NewsArticleCollection() {
                           e.preventDefault();
                           if (hasNextPage) handlePageChange(currentPage + 1);
                         }}
-                        className={`px-3 py-2 ${
-                          !hasNextPage
+                        className={`px-3 py-2 ${!hasNextPage
                             ? 'pointer-events-none opacity-50'
                             : 'cursor-pointer hover:bg-gray-100'
-                        }`}
+                          }`}
                       >
                         &gt;
                       </button>

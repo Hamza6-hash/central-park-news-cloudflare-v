@@ -298,13 +298,6 @@ export const FetchLatestNews = async (): Promise<Article[]> => {
     if (!db) throw new Error("Database connection is not available");
 
     const collectionPath = "blog/centralparkNews/newsletter";
-
-    // const collectionPath = pathname.includes("/news")
-    //   ? "blog/broadWayBriefing/articles"
-    //   : pathname.includes("/articles")
-    //   ? "blog/broadWayBriefing/newsletter"
-    //   : "blog/broadWayBriefing/articles";
-
     const articlesRef = collection(db, collectionPath);
     const articlesQuery = query(
       articlesRef,
@@ -385,7 +378,6 @@ interface Author {
 }
 
 interface FetchArticlesParams {
-  activeTab: "news" | "article";
   currentPage: number;
   itemsPerPage?: number;
 }
@@ -574,7 +566,6 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
 };
 
 interface FetchArticlesParams {
-  activeTab: "article" | "news";
   currentPage: number;
   itemsPerPage?: number;
 }
@@ -591,7 +582,6 @@ const totalCountCache = new Map<string, { count: number; timestamp: number }>();
 const CACHE_DURATION = 5 * 60 * 1000;
 
 export const FetchArticleNewsData = async ({
-  activeTab,
   currentPage,
   itemsPerPage = 9,
 }: FetchArticlesParams): Promise<FetchArticlesResult> => {
@@ -599,10 +589,7 @@ export const FetchArticleNewsData = async ({
     throw new Error("Database connection is not available");
   }
 
-  const collectionPath =
-    activeTab === "article"
-      ? "blog/centralparkNews/articles"
-      : "blog/centralparkNews/newsletter";
+  const collectionPath = "blog/centralparkNews/newsletter";
 
   const itemsRef = collection(db, collectionPath);
   const baseQuery = query(
@@ -691,12 +678,10 @@ export const FetchArticleNewsData = async ({
 
   // Batch fetch authors and categories to reduce database calls
   const authorIds = new Set<string>();
-  const categoryIds = new Set<string>();
 
   snapshot.docs.forEach((doc) => {
     const data = doc.data();
     if (data.authorId) authorIds.add(data.authorId);
-    if (data.categoryId) categoryIds.add(data.categoryId);
   });
 
   // Fetch all authors in batch
@@ -717,31 +702,7 @@ export const FetchArticleNewsData = async ({
       console.error("Error fetching authors in batch:", error);
     }
   }
-
-  // Fetch all categories in batch
-  const categoriesMap = new Map<string, Category>();
-  if (categoryIds.size > 0) {
-    try {
-      const categoriesRef = collection(
-        db,
-        "blog/centralparkNews/categories"
-      );
-      const categoryQuery = query(
-        categoriesRef,
-        where("id", "in", Array.from(categoryIds))
-      );
-      const categorySnapshot = await getDocs(categoryQuery);
-
-      categorySnapshot.docs.forEach((doc) => {
-        const categoryData = doc.data() as Category;
-        // @ts-ignore
-        categoriesMap.set(categoryData.id, categoryData);
-      });
-    } catch (error) {
-      console.error("Error fetching categories in batch:", error);
-    }
-  }
-
+ 
   // Process items with batched data
   const itemsData = snapshot.docs.map((docSnapshot) => {
     const data = docSnapshot.data();
@@ -751,10 +712,6 @@ export const FetchArticleNewsData = async ({
         ? authorsMap.get(data.authorId)!.author_name
         : "Docket Digest News Room";
 
-    const category_name =
-      data.categoryId && categoriesMap.has(data.categoryId)
-        ? categoriesMap.get(data.categoryId)!.full_name
-        : "CryptoCurrency";
 
     return {
       id: docSnapshot.id,
@@ -765,9 +722,9 @@ export const FetchArticleNewsData = async ({
       authorId: data.authorId || "",
       authorName: authorName,
       categoryId: data.categoryId || "",
-      category_name: category_name,
+      category_name: data.category,
       titleSlug: data.titleSlug || "",
-      type: activeTab,
+      type: 'news',
       createdAt: data.createdAt || "",
       publishDate: {
         seconds: data.date?.seconds || Math.floor(new Date().getTime() / 1000),
