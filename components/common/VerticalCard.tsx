@@ -72,8 +72,8 @@ const VerticalCard = ({
                         <div className="flex items-center gap-2 mb-2 flex-shrink-0 h-[32px]">
                             <hr className="w-6 h-0.5 bg-[#FFFFFF] flex-shrink-0" />
                             <div className="flex flex-col min-w-0 flex-1">
-                                <span className="bg-[#303130] font-montserrat text-white text-xs font-medium px-2 py-1 rounded-md capitalize text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-fit">
-                                    {category || "News"}
+                                <span className="bg-[#303130] w-[80%] font-montserrat text-white text-xs font-medium px-2 py-1 rounded-md capitalize text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-fit">
+                                    {category || "Local News"}
                                 </span>
                                 <p className="text-[12px] font-montserrat  font-bold text-[#0F042D] italic mt-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
                                     {formatedPublishDate || ""}

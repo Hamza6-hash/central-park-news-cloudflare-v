@@ -17,12 +17,8 @@ interface Newsletter {
   category?: string;
 }
 
-interface TopStoriesProps {
-  showViewMore?: boolean;
-  isContactPage?: boolean;
-}
 
-const TopStories = async ({ showViewMore = false, isContactPage = false }: TopStoriesProps) => {
+const TopStories = async () => {
 
   const newsletters: Newsletter[] = await FetchTopStories();
 

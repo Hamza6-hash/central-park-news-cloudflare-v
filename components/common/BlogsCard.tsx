@@ -21,21 +21,18 @@ interface BlogsCard {
   createdAt?: string;
   category_name?: string,
   showTrending?: boolean,
-  isFeatured?:boolean 
+  isFeatured?: boolean
 }
 
 const BlogsCard = ({
-  showDateTimeInRow = false,
   title,
   content,
   imageURL,
-  authorName = "Docket Digest New Room",
   titleSlug = "",
   type = "article",
   category_name,
   createdAt,
-  showTrending = true,
-  isFeatured =  false,
+  isFeatured = false,
 }: BlogsCard) => {
   const formattedDate = createdAt
     ? new Date(createdAt).toLocaleDateString("en-US", {
@@ -77,9 +74,9 @@ const BlogsCard = ({
           </div>
 
           <div className="p-6 transition-colors duration-300 ease-in-out ">
-            <div className="mb-3">
-              <span className="bg-[#E4212B] font-montserrat text-white text-xs font-medium px-3 py-1 rounded-full capitalize">
-                {category_name}
+            <div className="mb-3 w-full">
+              <span className="bg-[#E4212B]  font-montserrat text-white text-xs font-medium px-3 py-1 rounded-full capitalize inline-block max-w-full truncate">
+                {category_name || "Local News"}
               </span>
             </div>
 
