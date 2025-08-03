@@ -10,9 +10,9 @@ const AdBanner = () => {
           <Image
             src="/MobileBanner.webp"
             alt="mobile-banner"
-            width={390}
-            height={200}
-            quality={75}
+            width={364}
+            height={190}
+            quality={60}
             className="object-contain w-full h-auto"
             loading="eager"
             priority={true}
