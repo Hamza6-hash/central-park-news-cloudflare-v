@@ -23,12 +23,12 @@ const Adbox = () => {
       <div className="block sm:hidden w-full">
         <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden ">
           <Image
-            src="/bottomBanner.png"
+            src="/bottomBanner.webp"
             alt="mobile ad"
             fill
-            quality={80}
+            quality={65}
             className="object-contain pointer-events-none select-none"
-            sizes="(max-width: 639px) 100vw, 390px"
+            sizes="(max-width: 768px) 100vw, 364px"
             loading="eager"
             priority={true}
             fetchPriority="high"
