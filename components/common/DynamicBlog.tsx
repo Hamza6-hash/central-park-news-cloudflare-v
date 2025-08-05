@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 const BlogsCard = dynamic(() => import("../common/BlogsCard"), {
   loading: () => <div className="w-full h-36 bg-gray-100 rounded-md" />,
-  ssr: false, 
+  ssr: false,
 });
 
 export interface DynamicBlogProps {
@@ -40,27 +40,19 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
   publishDate,
   content,
   showWritter = true,
-  mainHeading = "Blog",
-  articleId,
-  titleSlug,
-  isArticlePage = false,
   authorPosition,
-  authorImg,
   relatedNews,
-  createdAt,
   category
 }) => {
   const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
-
-
   return (
     <section className="pt-0">
       <div className="mt-1 mb-4">
         <div className="space-y-3 mb-4">
           <div className="sm:x-sm-generic mt-4">
-              <h1 className="font-century-schoolbook text-[22px] leading-tight sm:text-3xl capitalize">
-                {title}
-              </h1>
+            <h1 className="font-century-schoolbook text-[22px] leading-tight sm:text-3xl capitalize">
+              {title}
+            </h1>
           </div>
           <div className="relative w-full xl:min-w-[1200px] max-w-[1200px] aspect-[1200/514]">
             <SafeImage
@@ -93,21 +85,16 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
         <div className="markdown-content max-sm:text-[14px]">
           <ReactMarkdown>{content}</ReactMarkdown>
         </div>
-         <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
+        <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
           {showWritter === true && (
             <div className="flex gap-2 flex-col max-sm:justify-center ">
               <h4 className="text-lg">Written By:</h4>
               <div className="font-century-gothic text-[12px] sm:text-lg">
-                <p>
-                  {authorName
-                    ? authorName.charAt(0).toUpperCase() + authorName.slice(1)
-                    : "Unknown Author"}
+                <p className="capitalize">
+                  {authorName || "N/A"}
                 </p>
-                <p className="text-[#747474]">
-                  {authorPosition
-                    ? authorPosition?.charAt(0).toUpperCase() +
-                    authorPosition?.slice(1)
-                    : "Author"}
+                <p className="text-[#747474] capitalize">
+                  {authorPosition || "N/A"}
                 </p>
               </div>
             </div>

@@ -106,6 +106,7 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
     );
   }
 
+
   if (!news) {
     return null;
   }
