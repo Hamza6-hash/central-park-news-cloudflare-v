@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import FontLinks from "@/components/fontLinks/FontLinks";
 import { ToastProvider } from "@/context/ToastContext";
 import { Providers } from "@/context/Providers";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Central Parks News | Stories from the Heart of New York City",
@@ -22,8 +23,23 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/MobileBanner.webp" media="(max-width: 640px)" />
         <link rel="preload" as="image" href="/banner.webp" media="(min-width: 641px)" />
         <FontLinks />
+        <Script
+          id="gtm-script"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-P8GJNKXZ');
+            `,
+          }}
+        />
       </head>
       <body className="select-none ">
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P8GJNKXZ"
+          height="0" width="0" style={{ display: "none", visibility: "hidden" }}></iframe></noscript>
         <Providers>
           <ToastProvider>
             <Layout>{children}</Layout>

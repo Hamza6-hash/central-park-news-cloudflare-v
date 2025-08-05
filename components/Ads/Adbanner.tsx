@@ -1,39 +1,59 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 const AdBanner = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkSize = () => setIsMobile(window.innerWidth < 640);
+    checkSize();
+
+    window.addEventListener("resize", checkSize);
+    return () => window.removeEventListener("resize", checkSize);
+  }, []);
+
+  const adLink = "https://cross-bay-news.vercel.app/?utm_source=newssite1&utm_medium=banner&utm_campaign=homepage_top";
+
   return (
     <div className="px-generic flex justify-center w-full">
       <div className="w-full max-w-[1199px] mx-auto mt-3">
-        {/* Mobile Banner */}
-        <div className="sm:hidden">
-          <Image
-            src="/MobileBanner.webp"
-            alt="mobile-banner"
-            width={364}
-            height={190}
-            quality={60}
-            className="object-contain w-full h-auto"
-            loading="eager"
-            priority={true}
-            fetchPriority="high"
-          />
-        </div>
-
-        {/* Desktop Banner */}
-        <div className="hidden sm:block">
-          <Image
-            src="/banner.webp"
-            alt="desktop-banner"
-            width={1199}
-            height={153}
-            quality={100}
-            className="object-contain w-full h-auto"
-            loading="eager"
-            priority={true}
-            fetchPriority="high"
-          />
-        </div>
+        <a
+          href={adLink}
+          className="head-banner-ad block"
+          data-ad-name="Homepage Top Banner"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {isMobile ? (
+            <div className="relative w-full aspect-[390/200]">
+              <Image
+                src="/MobileBanner.webp"
+                alt="mobile-banner"
+                fill
+                quality={65}
+                className="head-banner-ad object-contain"
+                sizes="(max-width: 768px) 100vw, 357px"
+                loading="eager"
+                priority
+              />
+            </div>
+          ) : (
+            <div className="relative w-full aspect-[1199/153]">
+              <Image
+                src="/banner.webp"
+                alt="desktop-banner"
+                fill
+                quality={100}
+                className="head-banner-ad object-contain"
+                loading="eager"
+                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 1000px, 1199px"
+                priority
+              />
+            </div>
+          )}
+        </a>
       </div>
     </div>
   );
