@@ -547,13 +547,9 @@ export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
       });
     } catch (err) {}
 
-    const protectedImageURL = newsData.imageURL
-      ? `/api/protected-image?url=${encodeURIComponent(newsData.imageURL)}`
-      : "/default-image.png"; // fallback
-
     return {
       ...newsData,
-      imageURL: protectedImageURL,
+      imageURL: newsData.imageURL,
       id: newsDoc.id,
       authorName: authorName,
       authorImage,
@@ -702,7 +698,7 @@ export const FetchArticleNewsData = async ({
       console.error("Error fetching authors in batch:", error);
     }
   }
- 
+
   // Process items with batched data
   const itemsData = snapshot.docs.map((docSnapshot) => {
     const data = docSnapshot.data();
@@ -711,7 +707,6 @@ export const FetchArticleNewsData = async ({
       data.authorId && authorsMap.has(data.authorId)
         ? authorsMap.get(data.authorId)!.author_name
         : "Docket Digest News Room";
-
 
     return {
       id: docSnapshot.id,
@@ -724,7 +719,7 @@ export const FetchArticleNewsData = async ({
       categoryId: data.categoryId || "",
       category_name: data.category,
       titleSlug: data.titleSlug || "",
-      type: 'news',
+      type: "news",
       createdAt: data.createdAt || "",
       publishDate: {
         seconds: data.date?.seconds || Math.floor(new Date().getTime() / 1000),

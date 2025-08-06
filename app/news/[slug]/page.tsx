@@ -36,7 +36,7 @@ async function getNewsData(slug: string) {
     const docSnap = querySnapshot.docs[0];
     const rawData = docSnap.data();
 
-    
+
     const data = {
       ...rawData,
       citation: undefined,
@@ -44,10 +44,10 @@ async function getNewsData(slug: string) {
 
     let authorName = "Docket Digest News Room";
     let authorImage = "/default-avatar.png";
-    let authorPosition = "Unknown Position";
+    let authorPosition = "N/A";
 
     // @ts-ignore
-    if (data.authorId) {
+    if (data?.authorId) {
       try {
         // @ts-ignore
         const authorRef = doc(db, "blog/centralparkNews/authors", data.authorId);
