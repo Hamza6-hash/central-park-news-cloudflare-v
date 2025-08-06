@@ -137,7 +137,7 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
       <DynamicBlog
         title={news.title}
         category={news?.category}
-        imageURL={news.imageURL || "/CN-Default.png"}
+        imageURL={news.imageURL || "/main.webp"}
         authorName={news.authorName || "Unknown Author"}
         authorPosition={news.authorPosition || "Unknown Position"}
         authorImg={news.authorImage || user}

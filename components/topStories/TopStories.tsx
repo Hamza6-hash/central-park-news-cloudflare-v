@@ -55,7 +55,7 @@ const TopStories = async () => {
               <HorizontalCard
                 title={newsletter.title || "-"}
                 category={newsletter.category}
-                imageURL={newsletter.imageURL || "/CN-Default.png"}
+                imageURL={newsletter.imageURL || "/thumbnail.webp"}
                 authorName={newsletter.authorName || "Docket Digest New Room"}
                 publishDate={formattedDate}
                 content={newsletter.content || "-"}
