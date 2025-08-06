@@ -124,7 +124,7 @@ const UnsubscribeClient = () => {
         
         {/* Footer */}
         <footer className="text-center text-[12px] text-white py-2 bg-[#303130] flex-shrink-0 ">
-          COPYRIGHT 2024 © <b>CENTRAL PARK NEWS</b>. ALL RIGHTS RESERVED
+          COPYRIGHT 2025 © <b>CENTRAL PARK NEWS</b>. ALL RIGHTS RESERVED
         </footer>
       </div>
       

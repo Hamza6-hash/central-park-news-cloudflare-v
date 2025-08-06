@@ -198,7 +198,7 @@ export default function NewsArticleCollection() {
                 <BlogsCard
                   title={item.title}
                   content={item.content}
-                  imageURL={item.imageURL || defultImage}
+                  imageURL={item.imageURL || '/main.webp'}
                   isFeatured={item.isFeatured || false}
                   authorName={item.authorName}
                   createdAt={item.createdAt}

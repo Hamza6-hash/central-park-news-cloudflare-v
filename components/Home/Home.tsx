@@ -64,7 +64,7 @@ export default function Home({ article }: HomeProps) {
           <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
             <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-lg"></div>
             <SafeImage
-              src={article.imageURL || defultImage}
+              src={article.imageURL || '/main.webp'}
               alt={article.title}
               fill
               quality={75}
