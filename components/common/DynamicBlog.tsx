@@ -67,62 +67,64 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
             />
           </div>
 
+          <div className="flex flex-wrap items-center gap-2  max-sm:text-[12px] sm:text-lg text-[12px]">
+            <hr className="w-6 h-1" />
+            <h1 className="bg-[#E4212B] text-[12px]  text-white capitalize font-poppins truncate px-[12px] rounded-xl max-w-[50%] sm:max-w-full w-fit">
+              {category || "Local News"}
+            </h1>
+            <h6 className="capitalize text-nowrap font-montserrat">
+              {authorName}
+            </h6>
 
-          <div className="flex items-center max-sm:text-[12px] sm:text-lg text-[12px] gap-2 max-[400px]:flex-col max-[400px]:justify-start max-[400px]:items-start">
-            <div className="flex items-center gap-2">
-              <hr className="w-6 h-1 " />
-              <h6 className="capitalize text-nowrap font-montserrat">
-                {authorName}
-              </h6>
-              <span className="text-primary-500 ">|</span>
-            </div>
-            <p className="text-primary-500 text-nowrap ">
-              {formatedPublishDate && formatedPublishDate}
-            </p>
-          </div>
-        </div>
-
-        <div className="markdown-content max-sm:text-[14px]">
-          <ReactMarkdown>{content}</ReactMarkdown>
-        </div>
-        <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
-          {showWritter === true && (
-            <div className="flex gap-2 flex-col max-sm:justify-center ">
-              <h4 className="text-lg">Written By:</h4>
-              <div className="font-century-gothic text-[12px] sm:text-lg">
-                <p className="capitalize">
-                  {authorName || "N/A"}
-                </p>
-                <p className="text-[#747474] capitalize">
-                  {authorPosition || "N/A"}
-                </p>
-              </div>
-            </div>
-          )}
+            <span className="text-primary-500 ">|</span>
+          <p className="text-primary-500 text-nowrap ">
+            {formatedPublishDate && formatedPublishDate}
+          </p>
         </div>
 
-        {/* multiply by 5 */}
-        <p className="text-2xl text-primary-900 font-bold">Related News</p>
-        <div className="flex flex-wrap w-full gap-4 mt-3">
-          {relatedNews &&
-            relatedNews.map((item) => (
-              <BlogsCard
-                key={item.id}
-                title={item.title}
-                content={item.content}
-                imageURL={item.imageURL || defultImage}
-                authorName={item.authorName}
-                publishDate={item.publishDate}
-                createdAt={item.createdAt}
-                showDateTimeInRow={true}
-                titleSlug={item.titleSlug}
-                type={"news"}
-                category_name={item.category}
-              />
-            ))}
-        </div>
       </div>
-    </section>
+
+      <div className="markdown-content max-sm:text-[14px]">
+        <ReactMarkdown>{content}</ReactMarkdown>
+      </div>
+      <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
+        {showWritter === true && (
+          <div className="flex gap-2 flex-col max-sm:justify-center ">
+            <h4 className="text-lg">Written By:</h4>
+            <div className="font-century-gothic text-[12px] sm:text-lg">
+              <p className="capitalize">
+                {authorName || "N/A"}
+              </p>
+              <p className="text-[#747474] capitalize">
+                {authorPosition || "N/A"}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* multiply by 5 */}
+      <p className="text-2xl text-primary-900 font-bold">Related News</p>
+      <div className="flex flex-wrap w-full gap-4 mt-3">
+        {relatedNews &&
+          relatedNews.map((item) => (
+            <BlogsCard
+              key={item.id}
+              title={item.title}
+              content={item.content}
+              imageURL={item.imageURL || defultImage}
+              authorName={item.authorName}
+              publishDate={item.publishDate}
+              createdAt={item.createdAt}
+              showDateTimeInRow={true}
+              titleSlug={item.titleSlug}
+              type={"news"}
+              category_name={item.category}
+            />
+          ))}
+      </div>
+    </div>
+    </section >
   );
 };
 
