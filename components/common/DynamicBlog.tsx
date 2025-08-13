@@ -1,5 +1,5 @@
 
-import { StaticImageData } from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { formatedDate } from "@/lib/utils";
 
 import { defultImage } from "@/constants";
@@ -77,53 +77,67 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
             </h6>
 
             <span className="text-primary-500 ">|</span>
-          <p className="text-primary-500 text-nowrap ">
-            {formatedPublishDate && formatedPublishDate}
-          </p>
+            <p className="text-primary-500 text-nowrap ">
+              {formatedPublishDate && formatedPublishDate}
+            </p>
+          </div>
+
         </div>
 
-      </div>
-
-      <div className="markdown-content max-sm:text-[14px]">
-        <ReactMarkdown>{content}</ReactMarkdown>
-      </div>
-      <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
-        {showWritter === true && (
-          <div className="flex gap-2 flex-col max-sm:justify-center ">
-            <h4 className="text-lg">Written By:</h4>
-            <div className="font-century-gothic text-[12px] sm:text-lg">
-              <p className="capitalize">
-                {authorName || "N/A"}
-              </p>
-              <p className="text-[#747474] capitalize">
-                {authorPosition || "N/A"}
-              </p>
+        <div className="markdown-content max-sm:text-[14px]">
+          <ReactMarkdown>{content}</ReactMarkdown>
+        </div>
+        <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
+          {showWritter === true && (
+            <div className="flex gap-2 flex-col max-sm:justify-center ">
+              <h4 className="text-lg">Written By:</h4>
+              <div className="font-century-gothic text-[12px] sm:text-lg">
+                <p className="capitalize">
+                  {authorName || "N/A"}
+                </p>
+                <p className="text-[#747474] capitalize">
+                  {authorPosition || "N/A"}
+                </p>
+              </div>
             </div>
+          )}
+        </div>
+
+        <p className="text-2xl text-primary-900 font-bold">Related News</p>
+        {!relatedNews || relatedNews.length === 0 ? (
+          <div className="flex flex-col items-center justify-center w-full py-10 text-center">
+            <Image
+              src="/related.webp"
+              alt="No related news"
+              height={220}
+              width={170}
+              className="object-contain"
+            />
+            <p className="text-[#696969] font-montserrat text-[16px] max-sm:text-sm ">
+              NO RELATED NEWS YET
+            </p>
+          </div>
+
+        ) : (
+          <div className="flex flex-wrap w-full gap-4 mt-3">
+            {relatedNews.map((item) => (
+              <BlogsCard
+                key={item.id}
+                title={item.title}
+                content={item.content}
+                imageURL={item.imageURL || defultImage}
+                authorName={item.authorName}
+                publishDate={item.publishDate}
+                createdAt={item.createdAt}
+                showDateTimeInRow={true}
+                titleSlug={item.titleSlug}
+                type={"news"}
+                category_name={item.category}
+              />
+            ))}
           </div>
         )}
       </div>
-
-      {/* multiply by 5 */}
-      <p className="text-2xl text-primary-900 font-bold">Related News</p>
-      <div className="flex flex-wrap w-full gap-4 mt-3">
-        {relatedNews &&
-          relatedNews.map((item) => (
-            <BlogsCard
-              key={item.id}
-              title={item.title}
-              content={item.content}
-              imageURL={item.imageURL || defultImage}
-              authorName={item.authorName}
-              publishDate={item.publishDate}
-              createdAt={item.createdAt}
-              showDateTimeInRow={true}
-              titleSlug={item.titleSlug}
-              type={"news"}
-              category_name={item.category}
-            />
-          ))}
-      </div>
-    </div>
     </section >
   );
 };
