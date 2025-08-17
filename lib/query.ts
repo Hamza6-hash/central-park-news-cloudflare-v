@@ -15,6 +15,7 @@ import {
   getCountFromServer,
 } from "firebase/firestore";
 import { defultImage } from "@/constants";
+import { unstable_cache } from "next/cache";
 
 interface Article {
   id: string;
@@ -140,7 +141,7 @@ export const fetchArticleBySlug = async (
   }
 };
 
-export const fetchCombinedFeaturedItem = async () => {
+export const _fetchCombinedFeaturedItem = async () => {
   try {
     if (!db) {
       throw new Error("Database connection is not available");
@@ -209,9 +210,15 @@ export const fetchCombinedFeaturedItem = async () => {
   }
 };
 
-// --------------------------
+export const fetchCombinedFeaturedItem = unstable_cache(
+  _fetchCombinedFeaturedItem,
+  ["combined-featured-item"],
+  { revalidate: 120 }
+);
 
-export const FetchTopStories = async (): Promise<Newsletter[]> => {
+// -------------------------- Top Stories
+
+export const _FetchTopStories = async (): Promise<Newsletter[]> => {
   if (!db) {
     throw new Error("Database connection is not available");
   }
@@ -290,6 +297,11 @@ export const FetchTopStories = async (): Promise<Newsletter[]> => {
     return [];
   }
 };
+export const FetchTopStories = unstable_cache(
+  _FetchTopStories,
+  ["top-stories"],
+  { revalidate: 120 }
+);
 
 // --------------------------
 
@@ -369,140 +381,9 @@ export const FetchLatestNews = async (): Promise<Article[]> => {
 
 // -----------------------------
 
-interface Category {
-  full_name: string;
-}
-
 interface Author {
   author_name: string;
 }
-
-interface FetchArticlesParams {
-  currentPage: number;
-  itemsPerPage?: number;
-}
-
-interface FetchArticlesResult {
-  items: Article[];
-  totalPages: number;
-  totalItems: number;
-}
-
-// export const FetchArticleNewsData = async ({
-//   activeTab,
-//   currentPage,
-//   itemsPerPage = 9,
-// }: FetchArticlesParams): Promise<FetchArticlesResult> => {
-//   if (!db) {
-//     throw new Error("Database connection is not available");
-//   }
-
-//   const collectionPath =
-//     activeTab === "article"
-//       ? "blog/centralparkNews/articles"
-//       : "blog/centralparkNews/newsletter";
-
-//   const itemsRef = collection(db, collectionPath);
-
-//   const baseQuery = query(
-//     itemsRef,
-//     where("status", "==", "published"),
-//     orderBy("createdAt", "desc")
-//   );
-
-//   const totalSnapshot = await getDocs(baseQuery);
-//   const totalItems = totalSnapshot.docs.length;
-//   const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-//   const startAt = (currentPage - 1) * itemsPerPage;
-//   const startDoc = startAt > 0 ? totalSnapshot.docs[startAt - 1] : null;
-
-//   const q = startDoc
-//     ? query(baseQuery, startAfter(startDoc), limit(itemsPerPage))
-//     : query(baseQuery, limit(itemsPerPage));
-
-//   const snapshot = await getDocs(q);
-
-//   if (snapshot.empty) {
-//     return {
-//       items: [],
-//       totalPages,
-//       totalItems,
-//     };
-//   }
-
-//   const itemsData = await Promise.all(
-//     snapshot.docs.map(async (docSnapshot) => {
-//       const data = docSnapshot.data();
-//       let authorName = "Docket Digest News Room";
-//       let category_name = "CryptoCurrency";
-
-//       if (data.authorId) {
-//         try {
-//           const authorRef = doc(
-//             db,
-//             "blog/centralparkNews/authors",
-//             data.authorId
-//           );
-//           const authorSnap = await getDoc(authorRef);
-//           if (authorSnap.exists()) {
-//             const authorData = authorSnap.data() as Author;
-//             authorName = authorData.author_name;
-//           }
-//         } catch (error) {}
-//       }
-
-//       if (data.categoryId) {
-//         try {
-//           const categoriesRef = collection(
-//             db,
-//             "blog/centralparkNews/categories"
-//           );
-//           const categoryQuery = query(
-//             categoriesRef,
-//             where("id", "==", data.categoryId)
-//           );
-//           const categorySnapshot = await getDocs(categoryQuery);
-
-//           if (!categorySnapshot.empty) {
-//             const categoryDoc = categorySnapshot.docs[0];
-//             const categoryData = categoryDoc.data() as Category;
-//             category_name = categoryData.full_name;
-//           } else {
-//           }
-//         } catch (error) {
-//           console.error("Error fetching category:", error);
-//         }
-//       }
-
-//       return {
-//         id: docSnapshot.id,
-//         title: data.title || "",
-//         content: data.content || "",
-//         imageURL: data.imageURL || defultImage,
-//         isFeatured: data.isFeatured,
-//         authorId: data.authorId || "",
-//         authorName: authorName,
-//         categoryId: data.categoryId,
-//         category_name: category_name,
-//         titleSlug: data.titleSlug || "",
-//         type: activeTab,
-//         createdAt: data.createdAt,
-//         publishDate: {
-//           seconds: data.date?.seconds || new Date().getTime() / 1000,
-//           nanoseconds: data.date?.nanoseconds || 0,
-//         },
-//       };
-//     })
-//   );
-
-//   return {
-//     // @ts-ignore
-//     items: itemsData,
-//     totalPages,
-//     totalItems,
-//   };
-// };
 
 export const fetchNewsBySlug = async (slug: string): Promise<News | null> => {
   try {
