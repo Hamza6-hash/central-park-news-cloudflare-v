@@ -207,3 +207,5 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     </>
   );
 }
+
+export const revalidate = 300;

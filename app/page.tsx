@@ -8,7 +8,6 @@ export const metadata: Metadata = {
   keywords: "Central Park news, NYC park updates, New York local stories, Manhattan news"
 };
 
-
 export default async function HomePage() {
   const article = await fetchCombinedFeaturedItem();
   return <Home article={article} />
