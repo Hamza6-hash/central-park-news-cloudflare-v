@@ -21,7 +21,6 @@ interface Newsletter {
 const TopStories = async () => {
 
   const newsletters: Newsletter[] = await FetchTopStories();
-  console.log(newsletters)
 
   if (!newsletters || newsletters.length === 0) {
     return (
