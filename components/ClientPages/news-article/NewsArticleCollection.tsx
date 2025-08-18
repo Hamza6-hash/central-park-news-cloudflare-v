@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import BlogsCard from "../common/BlogsCard";
+import BlogsCard from "@/components/common/BlogsCard"; 
 import {
   Pagination,
   PaginationContent,
@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/pagination";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FetchArticleNewsData } from "@/lib/query";
-import { defultImage } from "@/constants";
 
 const ITEMS_PER_PAGE = 9;
 const STALE_TIME = 5 * 60 * 1000;

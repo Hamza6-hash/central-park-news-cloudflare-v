@@ -218,7 +218,7 @@ export const fetchCombinedFeaturedItem = unstable_cache(
 
 // -------------------------- Top Stories
 
-export const _FetchTopStories = async (): Promise<Newsletter[]> => {
+export const FetchTopStories = async (): Promise<Newsletter[]> => {
   if (!db) {
     throw new Error("Database connection is not available");
   }
@@ -297,11 +297,7 @@ export const _FetchTopStories = async (): Promise<Newsletter[]> => {
     return [];
   }
 };
-export const FetchTopStories = unstable_cache(
-  _FetchTopStories,
-  ["top-stories"],
-  { revalidate: 120 }
-);
+
 
 // --------------------------
 

@@ -1,4 +1,4 @@
-import PrivacyAndPolicy from '@/components/PrivacyAndPolicy/PrivacyAndPolicy'
+import PrivacyAndPolicy from '@/components/ClientPages/PrivacyAndPolicy/PrivacyAndPolicy'
 
 import { Metadata } from "next";
 

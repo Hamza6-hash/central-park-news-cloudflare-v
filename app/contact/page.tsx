@@ -1,5 +1,4 @@
-import AdBanner from "@/components/Ads/Adbanner";
-import ContactClient from "@/components/ContactPage/ContactClient";
+import ContactClient from "@/components/ClientPages/ContactPage/ContactClient";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

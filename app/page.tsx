@@ -1,5 +1,5 @@
 import { fetchCombinedFeaturedItem } from "@/lib/query";
-import Home from "@/components/Home/Home";
+import Home from "@/components/ClientPages/Home/Home";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
