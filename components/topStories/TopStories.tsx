@@ -54,7 +54,7 @@ const TopStories = async () => {
             <React.Fragment key={newsletter.id}>
               <HorizontalCard
                 title={newsletter.title || "-"}
-                category={newsletter.category}
+                category={newsletter.category || "Local News"}
                 imageURL={newsletter.imageURL || "/thumbnail.webp"}
                 authorName={newsletter.authorName || "Docket Digest New Room"}
                 publishDate={formattedDate}
@@ -73,3 +73,5 @@ const TopStories = async () => {
 };
 
 export default TopStories;
+export const revalidate = 120;
+

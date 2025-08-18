@@ -1,10 +1,10 @@
 import React from "react";
-import NewsClient from "@/components/NewsSingle/NewsClient";
+import NewsClient from "@/components/ClientPages/NewsSingle/NewsClient";
 import { db } from "@/lib/firebaseConfig";
 import { collection, doc, getDocs, query, where, getDoc } from "firebase/firestore";
 import { Metadata } from "next";
 import SchemaOrg from "@/components/Schema";
-import { News } from "@/components/NewsSingle/NewsClient";
+import { News } from "@/components/ClientPages/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 import { redirect } from "next/navigation";
 

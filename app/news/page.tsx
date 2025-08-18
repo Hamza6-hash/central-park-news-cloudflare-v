@@ -1,4 +1,4 @@
-import NewsArticleCollection from "@/components/news-article/NewsArticleCollection";
+import NewsArticleCollection from "@/components/ClientPages/news-article/NewsArticleCollection"; 
 import { Metadata } from "next";
 import { Suspense } from "react";
 

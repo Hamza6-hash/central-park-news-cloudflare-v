@@ -1,4 +1,4 @@
-import TermsAndCondition from '@/components/TermsAndConditions/TermsAndCondition'
+import TermsAndCondition from '@/components/ClientPages/TermsAndConditions/TermsAndCondition'
 
 import { Metadata } from "next";
 
