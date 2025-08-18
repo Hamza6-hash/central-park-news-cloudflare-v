@@ -67,12 +67,6 @@ const policySections = [
             <>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated effective date.</>
         ),
     },
-    {
-        title: "Contact Us",
-        content: (
-            <>If you have any questions about this Privacy Policy, please contact us at [Insert Contact Email].</>
-        ),
-    },
 ];
 
 const SideTabbedPolicy = () => {

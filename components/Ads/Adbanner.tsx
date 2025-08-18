@@ -14,7 +14,7 @@ const AdBanner = () => {
     return () => window.removeEventListener("resize", checkSize);
   }, []);
 
-  const adLink = "https://cross-bay-news.vercel.app/?utm_source=newssite1&utm_medium=banner&utm_campaign=homepage_top";
+  const adLink = "https://www.scottbaronassociates.com/";
 
   return (
     <div className="px-generic flex justify-center w-full">
