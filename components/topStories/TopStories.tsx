@@ -41,7 +41,7 @@ const TopStories = async () => {
   return (
     <div className="">
       <h2 className="font-poppins font-bold text-[32px] mb-4 uppercase tracking-normal">
-        TOP <span className="text-[#E4212B]">{newsletters?.length}</span> STORIES
+        TOP <span className="text-[#E4212B]">{7}</span> STORIES
       </h2>
       <div className="flex flex-col xl:gap-5 sm:gap-7 gap-8">
         {displayedNewsletters?.map((newsletter: Newsletter) => {
