@@ -15,12 +15,25 @@ const AdBanner = () => {
   }, []);
 
   const adLink = "https://www.scottbaronassociates.com/";
+  const adName = "Homepage Top Banner";
+
+  const handleClick = () => {
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({
+      event: "banner_click",       
+      adName,                      
+      device: isMobile ? "mobile" : "desktop", 
+      pagePath: window.location.pathname,      
+      targetUrl: adLink,           
+    });
+  };
 
   return (
     <div className="px-generic flex justify-center w-full">
       <div className="w-full max-w-[1199px] mx-auto mt-3">
         <a
           href={adLink}
+          onClick={handleClick}
           className="head-banner-ad block"
           data-ad-name="Homepage Top Banner"
           target="_blank"
