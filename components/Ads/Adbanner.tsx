@@ -15,13 +15,12 @@ const AdBanner = () => {
   }, []);
 
   const adLink = "https://www.scottbaronassociates.com/";
-  const adName = "Homepage Top Banner";
 
   const handleClick = () => {
     (window as any).dataLayer = (window as any).dataLayer || [];
     (window as any).dataLayer.push({
       event: "banner_click",       
-      adName,                      
+      adName: "Top Banner",                      
       device: isMobile ? "mobile" : "desktop", 
       pagePath: window.location.pathname,      
       targetUrl: adLink,           
