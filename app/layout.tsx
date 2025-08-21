@@ -36,6 +36,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             `,
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            // Default: deny all until user consents
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('consent', 'default', {
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied',
+              'analytics_storage': 'denied',
+              'functionality_storage': 'denied',
+              'personalization_storage': 'denied',
+              'security_storage': 'granted'
+           });`
+          }}
+        />
       </head>
       <body className="select-none ">
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79LR8"
