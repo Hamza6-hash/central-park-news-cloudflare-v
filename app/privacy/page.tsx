@@ -10,8 +10,6 @@ export const metadata: Metadata = {
     "Central Park News privacy policy, data protection NYC news, user privacy Central Park, privacy terms",
 };
 
-
-
 const Privacy = () => {
   return (
     <div>
