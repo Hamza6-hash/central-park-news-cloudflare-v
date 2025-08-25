@@ -69,10 +69,10 @@ export class HashBasedToken {
       }
 
       // Check if token is expired
-      const timestamp = parseInt(timestampStr);
-      if (isNaN(timestamp) || Date.now() > timestamp + 24 * 60 * 60 * 1000) {
-        return { valid: false, error: 'Token expired' };
-      }
+      // const timestamp = parseInt(timestampStr);
+      // if (isNaN(timestamp) || Date.now() > timestamp + 24 * 60 * 60 * 1000) {
+      //   return { valid: false, error: 'Token expired' };
+      // }
 
       // Check token in user document
       const userDoc = await getDoc(doc(db, "blog", "centralparkNews", "subscribeUsers", email));
@@ -94,9 +94,9 @@ export class HashBasedToken {
       }
 
       // Check token expiry from database
-      if (userData.tokenExpiresAt && new Date() > userData.tokenExpiresAt.toDate()) {
-        return { valid: false, error: 'Token expired' };
-      }
+      // if (userData.tokenExpiresAt && new Date() > userData.tokenExpiresAt.toDate()) {
+      //   return { valid: false, error: 'Token expired' };
+      // }
 
       return { valid: true };
 

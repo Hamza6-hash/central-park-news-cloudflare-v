@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     const unsubscribeToken = await HashBasedToken.generateToken(email);
 
     const SENDGRID_API_KEY = process.env.SendGridApiKey;
-    const SENDGRID_LIST_ID = process.env.SENDGRID_LIST_ID;
+    // const SENDGRID_LIST_ID = process.env.SENDGRID_LIST_ID;
 
     if (!SENDGRID_API_KEY) {
         console.error('SendGrid API key not configured');
@@ -31,30 +31,30 @@ export async function POST(request: Request) {
     }
 
     // Add contact to SendGrid Marketing Campaigns
-    const response = await fetch('https://api.sendgrid.com/v3/marketing/contacts', {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${SENDGRID_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            contacts: [
-                {
-                    email: email,
-                }
-            ],
-            list_ids: SENDGRID_LIST_ID ? [SENDGRID_LIST_ID] : undefined,
-        }),
-    });
+    // const response = await fetch('https://api.sendgrid.com/v3/marketing/contacts', {
+    //     method: 'PUT',
+    //     headers: {
+    //         'Authorization': `Bearer ${SENDGRID_API_KEY}`,
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //         contacts: [
+    //             {
+    //                 email: email,
+    //             }
+    //         ],
+    //         list_ids: SENDGRID_LIST_ID ? [SENDGRID_LIST_ID] : undefined,
+    //     }),
+    // });
 
-    if (!response.ok) {
-        const errorData = await response.json();
-        console.error('SendGrid API error:', errorData);
-        return NextResponse.json(
-            { error: 'Failed to subscribe to newsletter' },
-            { status: 500 }
-        );
-    }
+    // if (!response.ok) {
+    //     const errorData = await response.json();
+    //     console.error('SendGrid API error:', errorData);
+    //     return NextResponse.json(
+    //         { error: 'Failed to subscribe to newsletter' },
+    //         { status: 500 }
+    //     );
+    // }
 
     // Create secure unsubscribe URL with both email and token
     const unsubscribeUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/unsubscribe?email=${encodeURIComponent(email)}&token=${encodeURIComponent(unsubscribeToken)}`;
