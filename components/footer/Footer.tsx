@@ -30,7 +30,7 @@ const Footer = () => {
 
       <div className="bg-[#303130] w-full text-white py-3 px-1">
         <p className="text-center sm:text-xs text-[10px]">
-          COPYRIGHT 2025 © <strong>CENTERAL PARK NEWS</strong>. ALL RIGHTS RESERVED
+          COPYRIGHT 2025 © <strong>CENTRAL PARK NEWS</strong>. ALL RIGHTS RESERVED
         </p>
       </div>
     </footer>

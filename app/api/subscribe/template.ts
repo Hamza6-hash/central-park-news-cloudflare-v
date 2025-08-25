@@ -98,14 +98,14 @@ export function subscribeTemplate(unsubscribeUrl: string) {
                 <p>Thanks for subscribing to <span class="brand-name">Central Park News</span> – your new source for updates and stories from Central Park and surrounding NYC areas.</p>
                 
                 <p>We'll send you regular updates so you never miss what's happening in the park and around the city.</p>
-                
-                <p>You can unsubscribe here anytime: <a href="${unsubscribeUrl}" class="unsubscribe-link">[unsubscribe link]</a></p>
-                
+              
                 <p class="signature">– The Central Park News Team</p>
             </div>
             <div class="footer">
                 <a href="${process.env.NEXT_PUBLIC_SITE_URL}">Website</a> | 
-                <a href="${process.env.NEXT_PUBLIC_SITE_URL}contact">Contact Email</a>
+                <a href="${process.env.NEXT_PUBLIC_SITE_URL}contact">Contact Email</a> | 
+                <a href="${unsubscribeUrl}" class="unsubscribe-link">Unsubscribe From These Emails</a>
+          
             </div>
         </div>
     </body>

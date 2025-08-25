@@ -14,7 +14,6 @@ const Terms = () => {
   return (
     <div className='bg-primary-100'>
       <TermsAndCondition />
-
     </div>
 
   )
