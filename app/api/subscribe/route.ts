@@ -30,30 +30,6 @@ export async function POST(request: Request) {
         );
     }
 
-    // Add contact to SendGrid Marketing Campaigns
-    // const response = await fetch('https://api.sendgrid.com/v3/marketing/contacts', {
-    //     method: 'PUT',
-    //     headers: {
-    //         'Authorization': `Bearer ${SENDGRID_API_KEY}`,
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //         contacts: [
-    //             {
-    //                 email: email,
-    //             }
-    //         ],
-    //         list_ids: SENDGRID_LIST_ID ? [SENDGRID_LIST_ID] : undefined,
-    //     }),
-    // });
-
-    // if (!response.ok) {
-    //     const errorData = await response.json();
-    //     console.error('SendGrid API error:', errorData);
-    //     return NextResponse.json(
-    //         { error: 'Failed to subscribe to newsletter' },
-    //         { status: 500 }
-    //     );
     // }
 
     // Create secure unsubscribe URL with both email and token

@@ -21,13 +21,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const isUnsubscribe = pathname.includes('/unsubscribe')
 
   useEffect(() => {
-    // Wait for the page to fully load and check for CookieConsent
     const initCookieConsent = () => {
       try {
-        // Check if CookieConsent is available globally (from the CSS import)
         if (typeof window !== 'undefined' && CookieConsent) {
-          console.log('Initializing cookie consent...');
-
+          
           CookieConsent.run({
             guiOptions: {
               consentModal: {
@@ -88,23 +85,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               }
             },
             onConsent: ({ cookie }: any) => {
-              console.log('Cookie consent updated:', cookie);
-              const granted = (cat: string) => cookie.categories.includes(cat);
+             const granted = (cat: string) => cookie.categories.includes(cat);
 
-              // Update Google Analytics consent based on user choice
               if (window.gtag) {
                 if (granted("analytics") && granted("ads")) {
-                  // User accepted all cookies
-                  console.log('User accepted all cookies - granting analytics and ads');
-                  window.gtag("consent", "update", {
+                 window.gtag("consent", "update", {
                     ad_storage: 'granted',
                     analytics_storage: 'granted',
                     personalization_storage: 'granted',
                     functionality_storage: 'granted'
                   });
                 } else {
-                  // User rejected or only accepted necessary cookies
-                  console.log('User rejected cookies or only accepted necessary - denying analytics and ads');
                   window.gtag("consent", "update", {
                     ad_storage: 'denied',
                     analytics_storage: 'denied',
@@ -118,11 +109,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             }
           });
 
-          console.log('Cookie consent initialized successfully');
-          return true; // Success - stop retrying
+          return true; 
         } else {
-          console.warn('CookieConsent not available yet, will retry once more...');
-          return false; // Not ready yet
+          return false; 
         }
       } catch (error) {
         console.error('Error initializing cookie consent:', error);
@@ -130,28 +119,24 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    // Try to initialize with limited retries
     let retryCount = 0;
     const maxRetries = 3;
 
     const attemptInit = () => {
       if (retryCount >= maxRetries) {
-        console.error('Failed to initialize cookie consent after', maxRetries, 'attempts');
-        return;
+       return;
       }
 
       if (!initCookieConsent()) {
         retryCount++;
-        setTimeout(attemptInit, 1000); // Wait 1 second between retries
+        setTimeout(attemptInit, 1000); 
       }
     };
 
-    // Start the initialization process
     attemptInit();
 
-    // Cleanup function
     return () => {
-      retryCount = maxRetries; // Stop retries on unmount
+      retryCount = maxRetries;
     };
   }, []);
 
