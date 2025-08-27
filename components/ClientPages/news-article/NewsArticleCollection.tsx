@@ -87,18 +87,6 @@ export default function NewsArticleCollection() {
     fetchPageData(currentPage, activeTab);
   }, [currentPage, activeTab, fetchPageData]);
 
-  // Update URL when page changes
-  const updateUrl = useCallback((page: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (page === 1) {
-      params.delete('page');
-    } else {
-      params.set('page', page.toString());
-    }
-
-    const newUrl = params.toString() ? `${pathname}?${params}` : pathname;
-    router.replace(newUrl, { scroll: false });
-  }, [pathname, router, searchParams]);
 
   // Extract data from pagination state
   const items = paginationData?.items || [];
@@ -112,27 +100,9 @@ export default function NewsArticleCollection() {
     if (page === currentPage || page < 1 || page > totalPages) return;
 
     setCurrentPage(page);
-    updateUrl(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage, updateUrl, totalPages]);
+  }, [currentPage, totalPages]);
 
-  // Sync with URL changes
-  useEffect(() => {
-    const urlPage = parseInt(searchParams.get('page') || '1', 10);
-    if (urlPage !== currentPage && urlPage > 0) {
-      setCurrentPage(urlPage);
-    }
-  }, [searchParams, currentPage]);
-
-  // Handle tab changes
-  useEffect(() => {
-    const newTab = pathname.includes("/articles") ? "article" : "news";
-    if (newTab !== activeTab) {
-      setActiveTab(newTab);
-      setCurrentPage(1);
-      updateUrl(1);
-    }
-  }, [pathname, activeTab, updateUrl]);
 
 
 
