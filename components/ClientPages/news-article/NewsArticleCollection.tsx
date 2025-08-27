@@ -87,6 +87,18 @@ export default function NewsArticleCollection() {
     fetchPageData(currentPage, activeTab);
   }, [currentPage, activeTab, fetchPageData]);
 
+  // Update URL when page changes
+  const updateUrl = useCallback((page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (page === 1) {
+      params.delete('page');
+    } else {
+      params.set('page', page.toString());
+    }
+
+    const newUrl = params.toString() ? `${pathname}?${params}` : pathname;
+    router.replace(newUrl, { scroll: false });
+  }, [pathname, router, searchParams]);
 
   // Extract data from pagination state
   const items = paginationData?.items || [];
@@ -100,9 +112,27 @@ export default function NewsArticleCollection() {
     if (page === currentPage || page < 1 || page > totalPages) return;
 
     setCurrentPage(page);
+    updateUrl(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage, totalPages]);
+  }, [currentPage, updateUrl, totalPages]);
 
+  // Sync with URL changes
+  useEffect(() => {
+    const urlPage = parseInt(searchParams.get('page') || '1', 10);
+    if (urlPage !== currentPage && urlPage > 0) {
+      setCurrentPage(urlPage);
+    }
+  }, [searchParams, currentPage]);
+
+  // Handle tab changes
+  useEffect(() => {
+    const newTab = pathname.includes("/articles") ? "article" : "news";
+    if (newTab !== activeTab) {
+      setActiveTab(newTab);
+      setCurrentPage(1);
+      updateUrl(1);
+    }
+  }, [pathname, activeTab, updateUrl]);
 
 
 
@@ -135,12 +165,11 @@ export default function NewsArticleCollection() {
 
       {/* Content Area */}
       {isInitialLoad ? (
-        // Show loading skeleton only on initial load
         <NewsArticleSkeleton />
       ) : error ? (
         <div className="max-w-7xl mx-auto px-4">
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mt-4 text-sm sm:text-base">
-            {error}
+          <div className=" px-4 py-3 rounded mt-4 text-sm sm:text-base">
+            No Articles Found
           </div>
         </div>
       ) : (
