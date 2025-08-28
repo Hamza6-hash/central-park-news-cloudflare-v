@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Skeleton } from "@/components/ui/skeleton";
-import BlogsCard from "@/components/common/BlogsCard"; 
+import BlogsCard from "@/components/common/BlogsCard";
 import {
   Pagination,
   PaginationContent,
@@ -12,18 +11,37 @@ import {
   PaginationNext,
   PaginationPrevious
 } from "@/components/ui/pagination";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { FetchArticleNewsData } from "@/lib/query";
+import { defultImage } from "@/constants";
+import NewsArticleSkeleton from "./NewsArticleSkeleton";
 
 const ITEMS_PER_PAGE = 9;
-const STALE_TIME = 5 * 60 * 1000;
-const CACHE_TIME = 10 * 60 * 1000;
+
+interface Article {
+  id: string;
+  title: string;
+  content: string;
+  imageURL?: string;
+  isFeatured?: boolean;
+  authorName: string;
+  createdAt: string;
+  titleSlug: string;
+  type: string;
+  category_name?: string;
+}
+
+interface PaginationData {
+  items: Article[];
+  totalPages: number;
+  totalItems: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  currentPage: number;
+}
 
 export default function NewsArticleCollection() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const queryClient = useQueryClient();
 
   const isArticlePage = pathname.includes("/articles");
   const [activeTab, setActiveTab] = useState<"news" | "article">(
@@ -33,50 +51,43 @@ export default function NewsArticleCollection() {
   const pageFromUrl = parseInt(searchParams.get('page') || '1', 10);
   const [currentPage, setCurrentPage] = useState(Math.max(1, pageFromUrl));
 
-  const [debouncedPage, setDebouncedPage] = useState(currentPage);
+  // Server-side data state
+  const [paginationData, setPaginationData] = useState<PaginationData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedPage(currentPage);
-    }, 150);
-    return () => clearTimeout(timer);
-  }, [currentPage]);
+  // Fetch data from server-side API
+  const fetchPageData = useCallback(async (page: number, type: string) => {
+    setIsLoading(true);
+    setError(null);
 
-  const {
-    data: item,
-    isLoading,
-    error,
-    // @ts-ignore
-    isPreviousData
-  } = useQuery({
-    queryKey: ['articles', debouncedPage],
-    queryFn: () => FetchArticleNewsData({
-      currentPage: debouncedPage,
-      itemsPerPage: ITEMS_PER_PAGE
-    }),
-    staleTime: STALE_TIME,
-    // @ts-ignore
-    cacheTime: CACHE_TIME,
-    keepPreviousData: true,
-    retry: 2,
-    refetchOnWindowFocus: false,
-  });
+    try {
+      const response = await fetch(
+        `/api/articles/pagination?page=${page}&itemsPerPage=${ITEMS_PER_PAGE}&type=${type}`
+      );
 
-  useEffect(() => {
-    // @ts-ignore
-    if (item?.hasNextPage) {
-      queryClient.prefetchQuery({
-        queryKey: ['articles', activeTab, debouncedPage + 1],
-        queryFn: () => FetchArticleNewsData({
-          currentPage: debouncedPage + 1,
-          itemsPerPage: ITEMS_PER_PAGE
-        }),
-        staleTime: STALE_TIME,
-      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setPaginationData(data);
+    } catch (err) {
+      console.error('Error fetching page data:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch data');
+    } finally {
+      setIsLoading(false);
+      setIsInitialLoad(false);
     }
-    // @ts-ignore
-  }, [item?.hasNextPage, activeTab, debouncedPage, queryClient]);
+  }, []);
 
+  // Fetch data when page or tab changes
+  useEffect(() => {
+    fetchPageData(currentPage, activeTab);
+  }, [currentPage, activeTab, fetchPageData]);
+
+  // Update URL when page changes
   const updateUrl = useCallback((page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     if (page === 1) {
@@ -89,21 +100,31 @@ export default function NewsArticleCollection() {
     router.replace(newUrl, { scroll: false });
   }, [pathname, router, searchParams]);
 
+  // Extract data from pagination state
+  const items = paginationData?.items || [];
+  const totalPages = paginationData?.totalPages || 1;
+  const hasNextPage = paginationData?.hasNextPage || false;
+  const hasPrevPage = paginationData?.hasPrevPage || false;
+  const pageTitle = activeTab === "news" ? "News" : "Articles";
+
+  // Handle page change
   const handlePageChange = useCallback((page: number) => {
-    if (page === currentPage) return;
+    if (page === currentPage || page < 1 || page > totalPages) return;
+
     setCurrentPage(page);
     updateUrl(page);
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage, updateUrl]);
+  }, [currentPage, updateUrl, totalPages]);
 
+  // Sync with URL changes
   useEffect(() => {
     const urlPage = parseInt(searchParams.get('page') || '1', 10);
     if (urlPage !== currentPage && urlPage > 0) {
       setCurrentPage(urlPage);
     }
-  }, [searchParams]);
+  }, [searchParams, currentPage]);
 
+  // Handle tab changes
   useEffect(() => {
     const newTab = pathname.includes("/articles") ? "article" : "news";
     if (newTab !== activeTab) {
@@ -112,16 +133,8 @@ export default function NewsArticleCollection() {
       updateUrl(1);
     }
   }, [pathname, activeTab, updateUrl]);
-  // @ts-ignore
-  const items = item?.items || [];
-  // @ts-ignore
-  const totalPages = item?.totalPages || 1;
-  // @ts-ignore
-  const totalItems = item?.totalItems || 0;
-  // @ts-ignore
-  const hasNextPage = item?.hasNextPage || false;
-  // @ts-ignore
-  const hasPrevPage = item?.hasPrevPage || false;
+
+
 
 
   return (
@@ -137,81 +150,54 @@ export default function NewsArticleCollection() {
 
           <div className="flex flex-row gap-3 w-full">
             <h1 className="text-xl md:text-2xl font-century-gothic font-bold text-[#2B4864]">
-              News
+              {pageTitle}
             </h1>
-
           </div>
         </div>
 
         {/* Subtitle Section */}
         <div className="mt-4">
           <h2 className="text-base md:text-lg text-[#2B4864] font-century-gothic">
-            Central Park  / <span className="font-semibold">News</span>
+            Central Park News / <span className="font-semibold">News</span>
           </h2>
-
-
         </div>
       </div>
 
       {/* Content Area */}
-      {isLoading && !isPreviousData ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 mt-[53px] w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-12">
-          {Array.from({ length: ITEMS_PER_PAGE }, (_, index) => (
-            <div key={index} className="w-full flex justify-center">
-              <div className="bg-white transition-shadow w-full max-w-[350px]">
-                <Skeleton className="h-[150px] sm:h-[180px] md:h-[200px] w-full rounded-md bg-gray-100" />
-                <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
-                  <Skeleton className="h-4 sm:h-5 md:h-6 w-3/4 bg-gray-100" />
-                  <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
-                    <Skeleton className="h-3 sm:h-4 w-24 sm:w-32 md:w-52 bg-gray-100" />
-                    <Skeleton className="h-3 sm:h-4 w-3 sm:w-4 bg-gray-100" />
-                    <Skeleton className="h-3 sm:h-4 w-16 sm:w-20 md:w-24 bg-gray-100" />
-                  </div>
-                  <Skeleton className="h-12 sm:h-16 md:h-20 w-full bg-gray-100" />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+      {isInitialLoad ? (
+        <NewsArticleSkeleton />
       ) : error ? (
         <div className="max-w-7xl mx-auto px-4">
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mt-4 text-sm sm:text-base">
-            {error instanceof Error ? error.message : 'No News Found'}
+          <div className=" px-4 py-3 rounded mt-4 text-sm sm:text-base">
+            No Articles Found
           </div>
         </div>
       ) : (
         <>
-
-          {isPreviousData && (
-            <div className="max-w-7xl mx-auto px-4">
-              <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded text-sm">
-                Loading new page...
-              </div>
+          {isLoading ? (
+            <NewsArticleSkeleton />
+          ) : (
+            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 mt-[53px] w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 transition-opacity duration-200  `}>
+              {items.map((item) => (
+                <div key={item.id} className="w-full">
+                  <BlogsCard
+                    title={item.title}
+                    content={item.content}
+                    imageURL={item.imageURL || '/main.webp'}
+                    isFeatured={item.isFeatured || false}
+                    authorName={item.authorName}
+                    createdAt={item.createdAt}
+                    showDateTimeInRow={true}
+                    titleSlug={item.titleSlug}
+                    type={activeTab}
+                    category_name={item.category_name}
+                  />
+                </div>
+              ))}
             </div>
           )}
-
-          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 mt-[53px] w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 ${isPreviousData ? 'opacity-75' : ''}`}>
-            {/*@ts-ignore */}
-            {items.map((item) => (
-              <div key={item.id} className="w-full">
-                <BlogsCard
-                  title={item.title}
-                  content={item.content}
-                  imageURL={item.imageURL || '/main.webp'}
-                  isFeatured={item.isFeatured || false}
-                  authorName={item.authorName}
-                  createdAt={item.createdAt}
-                  showDateTimeInRow={true}
-                  titleSlug={item.titleSlug}
-                  type={activeTab}
-                  category_name={item.category_name}
-                />
-              </div>
-            ))}
-          </div>
-
           {/* Enhanced Pagination */}
-          {totalPages > 1 && (
+          {!isLoading && totalPages > 1 && (
             <div className="mt-8 flex justify-center">
               <Pagination>
                 <PaginationContent>
@@ -229,6 +215,7 @@ export default function NewsArticleCollection() {
                       }
                     />
                   </PaginationItem>
+
                   <div className="hidden md:flex">
                     {(() => {
                       const pages = [];
@@ -287,7 +274,7 @@ export default function NewsArticleCollection() {
                               href="#"
                               onClick={(e) => {
                                 e.preventDefault();
-                                handlePageChange(page);
+                                handlePageChange(Number(page));
                               }}
                               isActive={currentPage === page}
                               className="cursor-pointer hover:bg-gray-100"
@@ -309,8 +296,8 @@ export default function NewsArticleCollection() {
                           if (hasPrevPage) handlePageChange(currentPage - 1);
                         }}
                         className={`px-3 py-2 ${!hasPrevPage
-                            ? 'pointer-events-none opacity-50'
-                            : 'cursor-pointer hover:bg-gray-100'
+                          ? 'pointer-events-none opacity-50'
+                          : 'cursor-pointer hover:bg-gray-100'
                           }`}
                       >
                         &lt;
@@ -325,7 +312,7 @@ export default function NewsArticleCollection() {
                               href="#"
                               onClick={(e) => {
                                 e.preventDefault();
-                                handlePageChange(page);
+                                handlePageChange(Number(page));
                               }}
                               isActive={currentPage === page}
                               className="cursor-pointer hover:bg-gray-100"
@@ -371,7 +358,7 @@ export default function NewsArticleCollection() {
                                 href="#"
                                 onClick={(e) => {
                                   e.preventDefault();
-                                  handlePageChange(page);
+                                  handlePageChange(Number(page));
                                 }}
                                 isActive={currentPage === page}
                                 className="cursor-pointer hover:bg-gray-100"
@@ -392,8 +379,8 @@ export default function NewsArticleCollection() {
                           if (hasNextPage) handlePageChange(currentPage + 1);
                         }}
                         className={`px-3 py-2 ${!hasNextPage
-                            ? 'pointer-events-none opacity-50'
-                            : 'cursor-pointer hover:bg-gray-100'
+                          ? 'pointer-events-none opacity-50'
+                          : 'cursor-pointer hover:bg-gray-100'
                           }`}
                       >
                         &gt;
@@ -421,7 +408,6 @@ export default function NewsArticleCollection() {
           )}
         </>
       )}
-
     </section>
   );
 }
