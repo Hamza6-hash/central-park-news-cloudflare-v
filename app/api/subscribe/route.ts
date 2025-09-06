@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import sgMail from "@sendgrid/mail";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import { HashBasedToken } from "@/lib/unsubscribeToken";
 import { subscribeTemplate } from "./template";
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     // Generate secure unsubscribe token and store in user document
-    const unsubscribeToken = await HashBasedToken.generateToken(email);
+    const { token: unsubscribeToken, expiryTime } = await HashBasedToken.generateToken(email);
 
     const SENDGRID_API_KEY = process.env.SendGridApiKey;
     const SENDGRID_LIST_ID = process.env.SENDGRID_LIST_ID;
@@ -70,11 +70,23 @@ export async function POST(request: Request) {
 
     try {
         await sgMail.send(msg);
+        
+        // Only save to Firebase after both SendGrid and email operations succeed
+        await setDoc(doc(db, "blog", "blockchainBriefing", "subscribeUsers", email), {
+            email: email,
+            unsubscribeToken: unsubscribeToken,
+            subscribedAt: new Date(),
+            status: "active",
+            tokenCreatedAt: new Date(),
+            tokenExpiresAt: expiryTime,
+            tokenUsed: false
+        });
+        
         return NextResponse.json({ 
             message: "Email sent successfully"
         }, { status: 200 });
-    } catch (error) {
-        console.error(error);
+    } catch (error: any) {
+        console.error(error?.response?.body);
         return NextResponse.json({ message: "Error sending email" }, { status: 500 });
     }
 }

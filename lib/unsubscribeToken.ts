@@ -5,7 +5,7 @@ import { db } from '@/lib/firebaseConfig';
 export class HashBasedToken {
   private static readonly SECRET_KEY = process.env.TOKEN_SECRET || 'your-secret-key-make-it-long-and-random';
 
-  static async generateToken(email: string): Promise<string> {
+  static async generateToken(email: string): Promise<{ token: string; expiryTime: Date }> {
     const timestamp = Date.now();
     const randomBytes = crypto.randomBytes(16).toString('hex');
     
@@ -23,17 +23,7 @@ export class HashBasedToken {
     
     const expiryTime = new Date(timestamp + 24 * 60 * 60 * 1000); // 24 hours for testing
 
-    // Store token info directly in user document
-    await setDoc(doc(db, "blog", "centralparkNews", "subscribeUsers", email), {
-      email,
-      createdAt: new Date(),
-      unsubscribeToken: token,
-      tokenCreatedAt: new Date(timestamp),
-      tokenExpiresAt: expiryTime,
-      tokenUsed: false
-    }, { merge: true });
-
-    return token;
+    return { token, expiryTime };
   }
 
   static async verifyToken(email: string, token: string): Promise<{ valid: boolean; error?: string }> {
