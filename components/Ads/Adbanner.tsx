@@ -19,11 +19,11 @@ const AdBanner = () => {
   const handleClick = () => {
     (window as any).dataLayer = (window as any).dataLayer || [];
     (window as any).dataLayer.push({
-      event: "banner_click",       
-      adName: "Top Banner",                      
-      device: isMobile ? "mobile" : "desktop", 
-      pagePath: window.location.pathname,      
-      targetUrl: adLink,           
+      event: "banner_click",
+      adName: "Top Banner",
+      device: isMobile ? "mobile" : "desktop",
+      pagePath: window.location.pathname,
+      targetUrl: adLink,
     });
   };
 
@@ -39,12 +39,13 @@ const AdBanner = () => {
           rel="noopener noreferrer"
         >
           {isMobile ? (
-            <div className="relative w-full aspect-[390/200]">
+            <div className="relative w-full aspect-[1/1]">
               <Image
-                src="/MobileBanner.webp"
+                src="/bottomBanner.webp"
                 alt="mobile-banner"
                 fill
                 quality={65}
+                fetchPriority="high"
                 className="head-banner-ad object-contain"
                 sizes="(max-width: 768px) 100vw, 357px"
                 loading="eager"
@@ -54,12 +55,13 @@ const AdBanner = () => {
           ) : (
             <div className="relative w-full aspect-[1199/153]">
               <Image
-                src="/banner.webp"
+                src="/top.png"
                 alt="desktop-banner"
                 fill
-                quality={100}
+                quality={80}
                 className="head-banner-ad object-contain"
                 loading="eager"
+                fetchPriority="high"
                 sizes="(max-width: 640px) 100vw, (max-width: 1280px) 1000px, 1199px"
                 priority
               />
