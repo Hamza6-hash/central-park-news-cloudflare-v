@@ -123,13 +123,10 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
               </Link>
             </span>
             <span className="text-[#1E3D5A]">/</span>
-            <span className=" font-bold text-[#1E3D5A] flex items-center gap-1 flex-wrap">
+            <span className="text-sm font-bold text-[#1E3D5A] flex items-center gap-1 flex-wrap">
               {news.title}
             </span>
           </h1>
-
-          {/* Searchbar modal */}
-
         </div>
       </div>
 
