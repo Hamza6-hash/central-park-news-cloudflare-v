@@ -20,8 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preload" as="image" href="/MobileBanner.webp" media="(max-width: 640px)" />
-        <link rel="preload" as="image" href="/banner.webp" media="(min-width: 641px)" />
+        <link rel="preload" as="image" href="/bottomBanner.webp" media="(max-width: 640px)" />
         <FontLinks />
         <Script
           id="gtm-script"
