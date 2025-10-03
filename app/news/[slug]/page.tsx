@@ -171,36 +171,51 @@ export default async function NewsPage({ params }: { params: { slug: string } })
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.central-park-news.com";
   const pageUrl = `${siteUrl}/news/${slug}`;
 
-  const jsonLd = {
+  // ----- JSON-LD Schemas -----
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${pageUrl}#webpage`,
+    name: newsData.title,
+    url: pageUrl,
+    description: newsData.excerpt,
+    isPartOf: { "@id": `${siteUrl}/#website` },
+    publisher: { "@id": `${siteUrl}/#organization` },
+  };
+
+  const newsArticleSchema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": pageUrl,
-    },
+    "@id": `${pageUrl}#article`,
+    mainEntityOfPage: { "@id": `${pageUrl}#webpage` },
     headline: newsData.title,
     image: newsData.socialImageUrls?.original?.url || newsData.imageURL,
     datePublished: newsData.publishDate,
-    dateModified: newsData.updatedAt,
+    dateModified: newsData.updatedAt || newsData.publishDate,
     author: {
-      "@type": "Organization",
-      name: "Central Park News",
+      "@type": "Person",
+      name: newsData.authorName || "Central Park News Editorial"
     },
-    publisher: {
-      "@type": "Organization",
-      name: "Central Park News",
-      logo: {
-        "@type": "ImageObject",
-        url: `${siteUrl}/logo.png`,
-      },
-    },
+    publisher: { "@id": `${siteUrl}/#organization` },
     description: newsData.excerpt,
     articleBody: newsData.content,
+    articleSection: newsData.category || "News",
+    url: pageUrl
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: "News", item: `${siteUrl}/news` },
+      { "@type": "ListItem", position: 3, name: newsData.title, item: pageUrl },
+    ],
   };
 
   return (
     <>
-      <SchemaOrg schemas={[jsonLd]} />
+      <SchemaOrg schemas={[breadcrumbSchema, webPageSchema, newsArticleSchema]} />
       <div>
         <NewsClient slug={params.slug} data={newsData as News} relatedNews={relatedNews as News[]} />
       </div>

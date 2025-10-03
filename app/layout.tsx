@@ -5,6 +5,7 @@ import FontLinks from "@/components/fontLinks/FontLinks";
 import { ToastProvider } from "@/context/ToastContext";
 import { Providers } from "@/context/Providers";
 import Script from "next/script";
+import SchemaOrg from "@/components/Schema";
 
 export const metadata: Metadata = {
   title: "Central Parks News | Stories from the Heart of New York City",
@@ -17,9 +18,54 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const siteUrl = "https://central-park-news.vercel.app/";
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "@id": "https://central-park-news.vercel.app/#organization",
+    name: "Central Park News",
+    url: "https://central-park-news.vercel.app/",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://central-park-news.vercel.app/logo.png"
+    },
+    sameAs: [
+      "https://twitter.com/centralparknews",
+      "https://facebook.com/centralparknews"
+    ],
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "Editorial",
+      email: "editorial@centralparknews.com"
+    }
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://central-park-news.vercel.app/#website",
+    name: "Central Park News",
+    url: "https://central-park-news.vercel.app/",
+    publisher: { "@id": "https://central-park-news.vercel.app/#organization" },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://central-park-news.vercel.app/search?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  };
+
+
+
   return (
     <html lang="en">
       <head>
+        <SchemaOrg schemas={[websiteSchema, organizationSchema]} />
+
         <link rel="preload" as="image" href="/bottomBanner.webp" media="(max-width: 640px)" />
         <FontLinks />
         <Script
