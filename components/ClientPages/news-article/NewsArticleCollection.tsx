@@ -178,7 +178,7 @@ export default function NewsArticleCollection() {
             <NewsArticleSkeleton />
           ) : (
             <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 mt-[53px] w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 transition-opacity duration-200  `}>
-              {items.map((item) => (
+              {items?.map((item) => (
                 <div key={item.id} className="w-full">
                   <BlogsCard
                     title={item.title}

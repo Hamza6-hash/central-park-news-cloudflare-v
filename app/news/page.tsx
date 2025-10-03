@@ -1,4 +1,5 @@
 import NewsArticleCollection from "@/components/ClientPages/news-article/NewsArticleCollection";
+import SchemaOrg from "@/components/Schema";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -10,8 +11,23 @@ export const metadata: Metadata = {
 }
 
 export default function NewsPage() {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://centralparknews.com";
+
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${siteUrl}/news#webpage`,
+    name: "Latest News | Central Park News - Central Park, NY",
+    url: `${siteUrl}/news`,
+    description:
+      "Read the latest news articles, breaking stories, and local updates from Central Park  and surrounding New York neighborhoods.",
+    isPartOf: { "@id": `${siteUrl}/#website` },
+    publisher: { "@id": `${siteUrl}/#organization` }
+  };
+
   return (
     <>
+      <SchemaOrg schemas={[webPageSchema]} />
       <Suspense fallback={<div>Loading...</div>}>
         <NewsArticleCollection />
       </Suspense>

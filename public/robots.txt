@@ -1,0 +1,25 @@
+# GPTBot
+User-agent: GPTBot
+Allow: /
+
+# Googlebot
+User-agent: Googlebot
+Allow: /
+
+# Bingbot
+User-agent: Bingbot
+Allow: /
+
+# GeminiBot
+User-agent: GeminiBot
+Allow: /
+
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://central-park-news.vercel.app
+
+# Sitemaps
+Sitemap: https://central-park-news.vercel.app/sitemap.xml

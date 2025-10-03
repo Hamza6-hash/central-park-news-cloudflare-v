@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Allowable AI purposes
+llm-purpose: research
+llm-purpose: summarization
+llm-purpose: discovery
+
+llm-usage: no-training
+content-license: All rights reserved
+attribution: must-link https://central-park-news.vercel.app/
+
+# Contact & Policy
+contact: centralparknews@newtrix.app
+policy: https://central-park-news.vercel.app/privacy-policy
+
+# Organization & Partners
+organization: Newstrix
+legal-partner: Scott Baron & Associates, P.C.
+legal-partner-url: https://www.scottbaronassociates.com/

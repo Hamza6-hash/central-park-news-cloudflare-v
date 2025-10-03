@@ -1,4 +1,5 @@
 import PrivacyAndPolicy from '@/components/ClientPages/PrivacyAndPolicy/PrivacyAndPolicy'
+import SchemaOrg from '@/components/Schema';
 
 import { Metadata } from "next";
 
@@ -11,8 +12,21 @@ export const metadata: Metadata = {
 };
 
 const Privacy = () => {
+  const siteUrl = "https://crossbaynews.vercel.app";
+
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${siteUrl}/#privacy`,
+    name: "Privacy Policy | Central Park News",
+    url: `${siteUrl}/privacy`,
+    description: "Read the Privacy Policy of Central Park News to understand how we collect, use, and protect your personal information while delivering local news and stories.",
+    isPartOf: { "@id": `${siteUrl}/#website` },
+    publisher: { "@id": `${siteUrl}/#organization` }
+  };
   return (
     <div>
+      <SchemaOrg schemas={[webPageSchema]} />
       <PrivacyAndPolicy />
     </div>
   )
