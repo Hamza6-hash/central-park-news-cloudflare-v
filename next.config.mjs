@@ -18,7 +18,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "firebasestorage.googleapis.com",
-        pathname: "/**", // allow all Firebase Storage paths
+        pathname: "/**", 
+      },
+       {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        pathname: "/**",
       },
     ],
     deviceSizes: [320, 420, 768, 1024, 1200],
