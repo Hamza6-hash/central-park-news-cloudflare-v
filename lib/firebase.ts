@@ -10,7 +10,7 @@ interface Author {
 export async function getAuthorName(authorId: string): Promise<string> {
     try {
         if (!authorId) return "Unknown Author";
-        
+ 
         const authorRef = doc(db, 'blog/centralparkNews/authors', authorId);
         const authorDoc = await getDoc(authorRef);
         

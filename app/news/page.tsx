@@ -1,5 +1,6 @@
 import NewsArticleCollection from "@/components/ClientPages/news-article/NewsArticleCollection";
 import SchemaOrg from "@/components/Schema";
+import { liveUrl } from "@/lib/utils";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 }
 
 export default function NewsPage() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://centralparknews.com";
+  const siteUrl = liveUrl;
 
   const webPageSchema = {
     "@context": "https://schema.org",

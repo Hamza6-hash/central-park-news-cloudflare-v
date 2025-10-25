@@ -7,6 +7,7 @@ import SchemaOrg from "@/components/Schema";
 import { News } from "@/components/ClientPages/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 import { redirect } from "next/navigation";
+import { liveUrl } from "@/lib/utils";
 
 
 export async function generateStaticParams() {
@@ -100,7 +101,7 @@ export async function generateMetadata({
       };
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://central-park-news.com";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || liveUrl;
 
     const pageUrl = `${siteUrl}/news/${slug}`;
     const ogImageUrl =
@@ -168,7 +169,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
 
   const relatedNews = await getFiveRelatedNewsByCategory(newsData.category, slug);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.central-park-news.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || liveUrl;
   const pageUrl = `${siteUrl}/news/${slug}`;
 
   // ----- JSON-LD Schemas -----

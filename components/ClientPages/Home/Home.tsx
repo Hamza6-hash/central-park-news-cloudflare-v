@@ -3,7 +3,6 @@ import { StaticImageData } from "next/image";
 import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
-import { defultImage } from "@/constants";
 import SafeImage from "@/constants/SafeImage";
 import { Suspense } from "react";
 import { ToastHandler } from "./ToastHandler";

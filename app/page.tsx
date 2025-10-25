@@ -2,6 +2,7 @@ import { fetchCombinedFeaturedItem } from "@/lib/query";
 import Home from "@/components/ClientPages/Home/Home";
 import { Metadata } from "next";
 import SchemaOrg from "@/components/Schema";
+import { liveUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Central Park News | Home",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const article = await fetchCombinedFeaturedItem();
-  const siteUrl = "https://central-park-news.vercel.app/";
+  const siteUrl = liveUrl;
 
   const webPageSchema = {
     "@context": "https://schema.org",

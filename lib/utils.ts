@@ -76,3 +76,4 @@ export const generateSlug = (title: string, id?: string): string => {
     return slug;
 };
 
+export const liveUrl = "https://www.centralpark.news"

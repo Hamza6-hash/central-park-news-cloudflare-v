@@ -1,6 +1,6 @@
 import PrivacyAndPolicy from '@/components/ClientPages/PrivacyAndPolicy/PrivacyAndPolicy'
 import SchemaOrg from '@/components/Schema';
-
+import { liveUrl } from '@/lib/utils';
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 const Privacy = () => {
-  const siteUrl = "https://crossbaynews.vercel.app";
+  const siteUrl = liveUrl;
 
   const webPageSchema = {
     "@context": "https://schema.org",
