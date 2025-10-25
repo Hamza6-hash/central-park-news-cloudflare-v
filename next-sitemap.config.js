@@ -1,7 +1,9 @@
 // next-sitemap.config.js
+const { liveUrl } = require('./lib/utils');
+
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://central-park-news.vercel.app",
+  siteUrl: liveUrl,
   generateRobotsTxt: true,
   sitemapSize: 5000,
   changefreq: "daily",
@@ -16,7 +18,7 @@ module.exports = {
       lastmod: new Date().toISOString(),
       alternateRefs: [
         {
-          href: "https://central-park-news.vercel.app",
+          href: liveUrl,
           hreflang: "en",
         },
       ],
@@ -30,6 +32,6 @@ module.exports = {
       { userAgent: "GeminiBot", allow: "/" },
       { userAgent: "*", allow: "/" },
     ],
-    additionalSitemaps: ["https://central-park-news.vercel.app/sitemap.xml"],
+    additionalSitemaps: [`${liveUrl}/sitemap.xml`],
   },
 };
