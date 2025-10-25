@@ -1,9 +1,7 @@
-// next-sitemap.config.js
-const { liveUrl } = require('./lib/utils');
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: liveUrl,
+  siteUrl: "https://centralpark.news",
   generateRobotsTxt: true,
   sitemapSize: 5000,
   changefreq: "daily",
@@ -18,7 +16,7 @@ module.exports = {
       lastmod: new Date().toISOString(),
       alternateRefs: [
         {
-          href: liveUrl,
+          href: "https://centralpark.news",
           hreflang: "en",
         },
       ],
@@ -32,6 +30,6 @@ module.exports = {
       { userAgent: "GeminiBot", allow: "/" },
       { userAgent: "*", allow: "/" },
     ],
-    additionalSitemaps: [`${liveUrl}/sitemap.xml`],
+    additionalSitemaps: [`https://centralpark.news/sitemap.xml`],
   },
 };
