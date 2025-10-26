@@ -4,7 +4,6 @@ import VerticalCard from "../common/VerticalCard";
 import { usePathname } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { defultImage } from "@/constants";
-import { FetchLatestNews } from "@/lib/query";
 import { useQuery } from "@tanstack/react-query";
 import {
   Carousel,
@@ -16,6 +15,17 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
+
+interface Article {
+  title: string;
+  content: string;
+  category?: string;
+  imageURL?: string;
+  authorName?: string;
+  publishDate: string;
+  titleSlug?: string;
+  type?: "article" | "news";
+}
 
 const LastestNews = () => {
   const pathname = usePathname();
@@ -30,7 +40,11 @@ const LastestNews = () => {
     error,
   } = useQuery({
     queryKey: ["latestNews", pathname],
-    queryFn: FetchLatestNews,
+    queryFn: async () => {
+      const response = await fetch('/api/latest-news');
+      if (!response.ok) throw new Error('Failed to fetch latest news');
+      return response.json();
+    },
     retry: 2,
     staleTime: 1000 * 60 * 7,
   });
@@ -125,7 +139,7 @@ const LastestNews = () => {
             }}
           >
             <CarouselContent className="-ml-3">
-              {articles.map((article, index) => (
+              {articles.map((article: Article, index: number) => (
                 <CarouselItem
                   key={index}
                   className="pl-3 basis-[252px] flex-shrink-0"

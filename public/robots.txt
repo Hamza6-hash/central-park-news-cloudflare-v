@@ -19,7 +19,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://central-park-news.vercel.app
+Host: https://centralpark.news
 
 # Sitemaps
-Sitemap: https://central-park-news.vercel.app/sitemap.xml
+Sitemap: https://centralpark.news/sitemap.xml

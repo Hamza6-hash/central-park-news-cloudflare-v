@@ -4,7 +4,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import user from '/assets/user.png'
 import { StaticImageData } from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import { fetchNewsBySlug } from "@/lib/query";
 import Link from "next/link";
 
 export interface News {
@@ -37,7 +36,11 @@ export interface News {
 const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, relatedNews: News[] }) => {
   const { data: news, isLoading } = useQuery({
     queryKey: ['fetchSingleNews', slug],
-    queryFn: () => fetchNewsBySlug(slug),
+    queryFn: async () => {
+      const response = await fetch(`/api/article/${slug}?type=news`);
+      if (!response.ok) throw new Error('Failed to fetch news');
+      return response.json();
+    },
     retry: 2,
     staleTime: 1000 * 60 * 7,
     initialData: data,
