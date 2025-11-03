@@ -49,19 +49,19 @@ export default function Home({ article }: HomeProps) {
         <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
 
         <div className="space-y-3 mb-4">
-          <div className="min-h-[48px] flex items-start">
+       <div className="">
             <Link
               href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug}`}
             >
-              <h1 className="text-[30px] leading-normal font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full ">
+              {/* <h1 className="text-[30px] leading-normal font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-3" style={{ minHeight: 'calc(1.5 * 30px * 3)', height: 'calc(1.5 * 30px * 3)' }}> */}
+              <h1 className="text-[30px] leading-normal font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-3" style={{ minHeight: 'calc(1.5 * 30px * 3)', height: 'calc(1.5 * 30px * 3)' }}>
                 {article.title}
               </h1>
-
             </Link>
           </div>
 
-          <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
-            <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-lg"></div>
+
+          <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
             <SafeImage
               src={article.imageURL || '/main.webp'}
               alt={article.title}
@@ -69,7 +69,7 @@ export default function Home({ article }: HomeProps) {
               quality={75}
               loading="eager"
               priority={true}
-              className="object-cover protected-image relative z-10 rounded-lg"
+              className="object-cover protected-image relative z-10 rounded-[16px]"
               sizes="(max-width: 1279px) 100vw, 644px"
               placeholder="blur"
               blurDataURL="data:image/svg+xml;base64,..."

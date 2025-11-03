@@ -14,7 +14,6 @@ interface VerticalCard {
     type?: "article" | "news";
     category?: string,
     content?: string,
-
 }
 
 const VerticalCard = ({
@@ -36,11 +35,11 @@ const VerticalCard = ({
     };
 
     return (
-        <Link href={getLinkPath()} aria-label={title || "View article"}>
-            <div className="group bg-primary-300 w-[245px] h-[272px] relative rounded text-white overflow-hidden">
+        <Link href={getLinkPath()} aria-label={title || "View article"} className="block">
+            <div className="group bg-primary-300 w-[245px] h-[272px] rounded-[16px] relative  text-white overflow-hidden" style={{backfaceVisibility: "hidden", perspective: "1000px"}}>
 
-                {/* Background Image - with relative positioning for fill to work properly */}
-                <div className="inset-0 z-0 w-[245px] h-[272px] relative">
+                {/* Background Image - ensure it fills container completely */}
+                <div className="absolute inset-0 z-0 w-full h-full" style={{backfaceVisibility: "hidden"}}>
                     <SafeImage
                         src={imageURL}
                         alt={title || "Article image"}
@@ -75,7 +74,7 @@ const VerticalCard = ({
                                 <span className="bg-[#303130] w-[80%] font-montserrat text-white text-xs font-medium px-2 py-1 rounded-md capitalize text-center whitespace-nowrap overflow-hidden text-ellipsis max-w-fit">
                                     {category || "Local News"}
                                 </span>
-                                <p className="text-[12px] font-montserrat  font-bold text-[#0F042D] italic mt-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+                                <p className="text-[12px] font-montserrat font-bold text-[#0F042D] italic mt-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
                                     {formatedPublishDate || ""}
                                 </p>
                             </div>
@@ -87,4 +86,4 @@ const VerticalCard = ({
     );
 };
 
-export default React.memo(VerticalCard); 
+export default React.memo(VerticalCard);

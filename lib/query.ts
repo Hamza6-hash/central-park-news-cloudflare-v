@@ -81,65 +81,65 @@ interface Newsletter {
   type?: string;
 }
 
-export const fetchArticleBySlug = async (
-  slug: string
-): Promise<Article | null> => {
-  try {
-    const articlesRef = collection(db, "blog/centralparkNews/articles");
-    const q = query(articlesRef, where("titleSlug", "==", slug));
-    const querySnapshot = await getDocs(q);
+// export const fetchArticleBySlug = async (
+//   slug: string
+// ): Promise<Article | null> => {
+//   try {
+//     const articlesRef = collection(db, "blog/centralparkNews/articles");
+//     const q = query(articlesRef, where("titleSlug", "==", slug));
+//     const querySnapshot = await getDocs(q);
 
-    if (querySnapshot.empty) {
-      return null;
-    }
+//     if (querySnapshot.empty) {
+//       return null;
+//     }
 
-    const articleDoc = querySnapshot.docs[0];
-    const articleData = articleDoc.data() as Article;
+//     const articleDoc = querySnapshot.docs[0];
+//     const articleData = articleDoc.data() as Article;
 
-    if (!articleData || articleData.status !== "published") {
-      return null;
-    }
+//     if (!articleData || articleData.status !== "published") {
+//       return null;
+//     }
 
-    const authorRef = doc(
-      db,
-      "blog/centralparkNews/authors",
-      articleData.authorId
-    );
-    const authorDoc = await getDoc(authorRef);
+//     const authorRef = doc(
+//       db,
+//       "blog/centralparkNews/authors",
+//       articleData.authorId
+//     );
+//     const authorDoc = await getDoc(authorRef);
 
-    const authorName = authorDoc.exists()
-      ? authorDoc.data().author_name
-      : "Unknown Author";
-    const authorPosition = authorDoc.exists()
-      ? authorDoc.data().position
-      : "Unknown Position";
-    const authorImage = authorDoc.exists() ? authorDoc.data().imageURL : "";
+//     const authorName = authorDoc.exists()
+//       ? authorDoc.data().author_name
+//       : "Unknown Author";
+//     const authorPosition = authorDoc.exists()
+//       ? authorDoc.data().position
+//       : "Unknown Position";
+//     const authorImage = authorDoc.exists() ? authorDoc.data().imageURL : "";
 
-    let formattedDate = "Unknown Date";
-    if (articleData.createdAt) {
-      try {
-        const date = new Date(articleData.createdAt);
-        formattedDate = date.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-      } catch (err) {}
-    }
+//     let formattedDate = "Unknown Date";
+//     if (articleData.createdAt) {
+//       try {
+//         const date = new Date(articleData.createdAt);
+//         formattedDate = date.toLocaleDateString("en-US", {
+//           year: "numeric",
+//           month: "long",
+//           day: "numeric",
+//         });
+//       } catch (err) {}
+//     }
 
-    return {
-      ...articleData,
-      id: articleDoc.id,
-      authorName,
-      position: authorPosition,
-      authorImage,
-      createdAt: formattedDate,
-    };
-  } catch (error) {
-    console.error("Error fetching article:", error);
-    return null;
-  }
-};
+//     return {
+//       ...articleData,
+//       id: articleDoc.id,
+//       authorName,
+//       position: authorPosition,
+//       authorImage,
+//       createdAt: formattedDate,
+//     };
+//   } catch (error) {
+//     console.error("Error fetching article:", error);
+//     return null;
+//   }
+// };
 
 export const _fetchCombinedFeaturedItem = async () => {
   try {

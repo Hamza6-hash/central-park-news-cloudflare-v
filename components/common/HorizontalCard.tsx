@@ -1,11 +1,12 @@
 import React from "react";
 import TruncateText from "./TruncateProps";
 import { formatedDate } from "@/lib/utils";
-import { StaticImageData } from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
 import SafeImage from "@/constants/SafeImage";
 import { stripMarkdown } from "@/lib/query";
+import { defultImage } from "@/constants";
 
 
 interface HorizontalCard {
@@ -43,16 +44,16 @@ const HorizontalCard = ({
     return (
         <Link href={getLinkPath()}>
             <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 rounded-lg cursor-pointer">
-                <div className="md:w-[210px] w-full">
-                    <div className="relative w-full md:w-[204px] aspect-[204/208]">
-                        <SafeImage
-                            src={imageURL}
+                <div className="md:w-[210px] w-full rounded-[16px] ">
+                    <div className="relative w-full md:w-[204px] aspect-[204/208] rounded-[16px]">
+                        <Image
+                            src={imageURL || defultImage}
                             priority={true}
                             loading="eager"
                             fill
                             alt={imageName || 'No Name'}
                             quality={75}
-                            className="rounded-md pointer-events-none select-none"
+                            className="pointer-events-none select-none rounded-[16px]"
                             sizes="(max-width: 768px) 100vw, (min-width: 769px) 204px"
 
                         />

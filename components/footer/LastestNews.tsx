@@ -136,16 +136,17 @@ const LastestNews = () => {
               align: "start",
               loop: false,
               slidesToScroll: 1,
+              skipSnaps: false,
             }}
           >
-            <CarouselContent className="-ml-3">
+            <CarouselContent className="-ml-3 border-none bg-transparent" style={{ backfaceVisibility: "hidden" }}>
               {articles.map((article: Article, index: number) => (
                 <CarouselItem
                   key={index}
                   className="pl-3 basis-[252px] flex-shrink-0"
                 >
-                  <Card className="bg-[#111] text-white focus:ring-0 border-none shadow-none h-full">
-                    <CardContent className="p-0">
+                  <Card className="bg-transparent text-white focus:ring-0 border-none shadow-none h-full">
+                    <CardContent className="bg-transparent rounded-[16px] overflow-hidden p-0 border-none">
                       <VerticalCard
                         title={article.title}
                         content={article.content}
@@ -169,7 +170,7 @@ const LastestNews = () => {
                   -left-10 top-1/2 -translate-y-1/2 z-10 hover:bg-[#FFFFFF] hover:scale-125 
                   transition-all duration-300 ease-in-out "
                 />
-                
+
 
               )}
               {canScrollNext && (
