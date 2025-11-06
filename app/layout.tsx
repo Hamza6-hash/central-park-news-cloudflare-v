@@ -65,8 +65,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <SchemaOrg schemas={[websiteSchema, organizationSchema]} />
-
-        <link rel="preload" as="image" href="/bottomBanner.webp" media="(max-width: 640px)" />
+        <link rel="preload" as="image" href="/bottomBanner.webp" fetchPriority="high" media="(max-width: 640px)" />
         <FontLinks />
         <Script
           id="gtm-script"
