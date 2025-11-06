@@ -10,7 +10,10 @@ import SchemaOrg from "@/components/Schema";
 export const metadata: Metadata = {
   title: "Central Parks News | Stories from the Heart of New York City",
   description: "Covering community events, local news, and stories in and around Central Park, NYC. Fresh coverage, updated daily.",
-  keywords: "Central Park news, NYC park updates, New York local stories, Manhattan news"
+  keywords: "Central Park news, NYC park updates, New York local stories, Manhattan news",
+  other: {
+    "x-ua-compatible": "IE=edge",
+  },
 };
 
 export default function RootLayout({
@@ -65,11 +68,17 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <SchemaOrg schemas={[websiteSchema, organizationSchema]} />
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
+        <link rel="preconnect" href="https://www.google-analytics.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="preload" as="image" href="/bottomBanner.webp" fetchPriority="high" media="(max-width: 640px)" />
+        <link rel="preload" as="image" href="/top.webp" media="(min-width: 641px)" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <FontLinks />
         <Script
           id="gtm-script"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
