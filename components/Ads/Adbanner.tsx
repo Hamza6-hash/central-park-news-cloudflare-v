@@ -1,30 +1,21 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import React from "react";
 
 const AdBanner = () => {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkSize = () => setIsMobile(window.innerWidth < 640);
-    checkSize();
-
-    window.addEventListener("resize", checkSize);
-    return () => window.removeEventListener("resize", checkSize);
-  }, []);
-
   const adLink = "https://www.scottbaronassociates.com/";
 
   const handleClick = () => {
-    (window as any).dataLayer = (window as any).dataLayer || [];
-    (window as any).dataLayer.push({
-      event: "banner_click",
-      adName: "Top Banner",
-      device: isMobile ? "mobile" : "desktop",
-      pagePath: window.location.pathname,
-      targetUrl: adLink,
-    });
+    if (typeof window !== 'undefined') {
+      const w = window as typeof window & { dataLayer?: unknown[] };
+      w.dataLayer = w.dataLayer || [];
+      w.dataLayer.push({
+        event: "banner_click",
+        adName: "Top Banner",
+        device: window.innerWidth < 640 ? "mobile" : "desktop",
+        pagePath: window.location.pathname,
+        targetUrl: adLink,
+      });
+    }
   };
 
   return (
@@ -38,35 +29,34 @@ const AdBanner = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          {isMobile ? (
-            <div className="relative w-full aspect-[1/1]">
-              <Image
-                src="/bottomBanner.webp"
-                alt="mobile-banner"
-                fill
-                quality={65}
-                fetchPriority="high"
-                className="head-banner-ad object-contain"
-                sizes="(max-width: 768px) 100vw, 357px"
-                loading="eager"
-                priority
-              />
-            </div>
-          ) : (
-            <div className="relative w-full aspect-[1199/153]">
-              <Image
-                src="/top.png"
-                alt="desktop-banner"
-                fill
-                quality={80}
-                className="head-banner-ad object-contain"
-                loading="eager"
-                fetchPriority="high"
-                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 1000px, 1199px"
-                priority
-              />
-            </div>
-          )}
+          <picture>
+            {/* Desktop source */}
+            <source
+              media="(min-width: 641px)"
+              srcSet="/top.png"
+              type="image/png"
+            />
+            
+            {/* Mobile source (WebP) */}
+            <source
+              media="(max-width: 640px)"
+              srcSet="/bottomBanner.webp"
+              type="image/webp"
+            />
+            
+            {/* Fallback img - uses mobile image */}
+            <img
+              src="/bottomBanner.webp"
+              alt="Banner"
+              className="w-full h-auto object-contain"
+              width="640"
+              height="640"
+              // @ts-ignore
+              fetchpriority="high"
+              loading="eager"
+              decoding="async"
+            />
+          </picture>
         </a>
       </div>
     </div>
