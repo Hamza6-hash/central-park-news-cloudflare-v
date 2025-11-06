@@ -33,17 +33,17 @@ const AdBanner = () => {
             {/* Desktop source */}
             <source
               media="(min-width: 641px)"
-              srcSet="/top.png"
-              type="image/png"
+              srcSet="/top.webp"
+              type="image/webp"
             />
-            
+
             {/* Mobile source (WebP) */}
             <source
               media="(max-width: 640px)"
               srcSet="/bottomBanner.webp"
               type="image/webp"
             />
-            
+
             {/* Fallback img - uses mobile image */}
             <img
               src="/bottomBanner.webp"
