@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 
 const AdBanner = () => {
   const adLink = "https://www.scottbaronassociates.com/";
@@ -29,34 +30,35 @@ const AdBanner = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <picture>
-            {/* Desktop source */}
-            <source
-              media="(min-width: 641px)"
-              srcSet="/top.webp"
-              type="image/webp"
+          {/* Desktop Image */}
+          <div className="relative hidden sm:block w-full aspect-[1199/200] overflow-hidden">
+            <Image
+              src="/top.webp"
+              alt="Banner"
+              fill
+              className="object-contain"
+              sizes="(min-width: 641px) 1199px, 100vw"
+              quality={70}
+              loading="eager"
+              priority={true}
+              fetchPriority="high"
             />
+          </div>
 
-            {/* Mobile source (WebP) */}
-            <source
-              media="(max-width: 640px)"
-              srcSet="/bottomBanner.webp"
-              type="image/webp"
-            />
-
-            {/* Fallback img - uses mobile image */}
-            <img
+          {/* Mobile Image - Optimized for LCP with constrained dimensions */}
+          <div className="relative block sm:hidden w-full max-w-[430px] mx-auto aspect-[3/4] overflow-hidden">
+            <Image
               src="/bottomBanner.webp"
               alt="Banner"
-              className="w-full h-auto object-contain"
-              width="640"
-              height="640"
-              // @ts-ignore
-              fetchpriority="high"
+              fill
+              className="object-contain"
+              sizes="(max-width: 375px) 100vw, (max-width: 430px) 100vw, 430px"
+              quality={50}
               loading="eager"
-              decoding="async"
+              priority={true}
+              fetchPriority="high"
             />
-          </picture>
+          </div>
         </a>
       </div>
     </div>
