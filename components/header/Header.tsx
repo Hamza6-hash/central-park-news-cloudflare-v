@@ -1,12 +1,16 @@
+'use client'
 import Navbar from "./Navbar";
 import Banner from "./Banner";
 import Adbanner from "../Ads/Adbanner";
 import Searchbar from "./Searchbar";
+import { usePathname } from 'next/navigation'
 
-export default function Header({ pathname = "/" }) {
+export default function Header() {
+
+    const pathname = usePathname()
     const hideBanner = ["/privacy", "/terms-and-conditions", "/unsubscribe"].includes(pathname);
     const isHomePage = pathname === "/";
-     const showHeader = pathname === '/' || pathname === '/news' || pathname === '/contact' || pathname === 'contact' || pathname === '/privacy' || pathname === '/terms-and-conditions' || pathname.includes('/news')
+    const showHeader = pathname === '/' || pathname === '/news' || pathname === '/contact' || pathname === 'contact' || pathname === '/privacy' || pathname === '/terms-and-conditions' || pathname.includes('/news')
     if (!showHeader) return null
 
     return (
@@ -15,7 +19,7 @@ export default function Header({ pathname = "/" }) {
             {!hideBanner && (
                 <>
                     <Banner />
-                    <Adbanner  />
+                    <Adbanner />
                     {isHomePage && <Searchbar />}
                 </>
             )}

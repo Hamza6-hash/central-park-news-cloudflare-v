@@ -42,7 +42,7 @@ const Adbox = () => {
         <div className="block sm:hidden w-full">
           <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden ">
             <Image
-              src="/bottomBanner.webp"
+              src="/mobile.webp"
               alt="mobile ad"
               fill
               quality={65}
