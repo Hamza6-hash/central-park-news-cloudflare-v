@@ -1,29 +1,24 @@
 "use client";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 import Image from "next/image";
 
 const AdBanner = () => {
   const adLink = "https://www.scottbaronassociates.com/";
 
-  // Cache device type to prevent forced reflows
-  const deviceType = useMemo(() => {
-    if (typeof window === 'undefined') return 'desktop';
-    return window.innerWidth < 640 ? "mobile" : "desktop";
-  }, []);
-
-  // Optimized click handler with cached values to prevent reflows
-  const handleClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (typeof window !== 'undefined' && window.dataLayer) {
-      const w = window as typeof window & { dataLayer?: unknown[] };
-      w.dataLayer.push({
-        event: "banner_click",
-        adName: "Top Banner",
-        device: deviceType,
-        pagePath: window.location.pathname,
-        targetUrl: adLink,
-      });
-    }
-  }, [adLink, deviceType]);
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (typeof window !== "undefined" && window.dataLayer) {
+        const w = window as typeof window & { dataLayer?: unknown[] };
+        w.dataLayer.push({
+          event: "banner_click",
+          adName: "Top Banner",
+          pagePath: window.location.pathname,
+          targetUrl: adLink,
+        });
+      }
+    },
+    [adLink]
+  );
 
   return (
     <div className="px-generic flex justify-center w-full">
@@ -38,37 +33,32 @@ const AdBanner = () => {
           aria-label="Advertisement"
         >
           {/* Desktop Image */}
-          <div className="relative hidden sm:block w-full aspect-[1199/200] overflow-hidden" style={{ contain: 'layout style paint' }}>
+          <div className="relative hidden sm:block w-full overflow-hidden">
             <Image
               src="/top.webp"
               alt="Banner"
-              fill
-              className="object-contain"
+              width={1199}
+              height={200}
+              className="object-contain head-banner-ad"
               sizes="(min-width: 641px) 1199px, 100vw"
               quality={70}
-              loading="eager"
-              priority={true}
+              priority
               fetchPriority="high"
-              style={{ willChange: 'auto' }}
             />
           </div>
 
-          {/* Mobile Image - Optimized for LCP with constrained dimensions */}
-          <div 
-            className="relative block sm:hidden w-full max-w-[430px] mx-auto aspect-[3/4] overflow-hidden" 
-            style={{ contain: 'layout style paint' }}
-          >
+          {/* Mobile Image */}
+          <div className="relative block sm:hidden w-full overflow-hidden mx-auto max-w-[436px]">
             <Image
-              src="/bottomBanner.webp"
+              src="/mobile.webp"
               alt="Banner"
-              fill
-              className="object-contain"
-              sizes="(max-width: 375px) 100vw, (max-width: 430px) 100vw, 430px"
+              width={436}
+              height={410}
+              className="object-contain head-banner-ad"
+              sizes="(max-width: 375px) 100vw, 430px"
               quality={45}
-              loading="eager"
-              priority={true}
+              priority
               fetchPriority="high"
-              style={{ willChange: 'auto' }}
             />
           </div>
         </a>

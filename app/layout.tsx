@@ -68,11 +68,12 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <SchemaOrg schemas={[websiteSchema, organizationSchema]} />
-        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
-        <link rel="preconnect" href="https://www.google-analytics.com" crossOrigin="" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        <link rel="preload" as="image" href="/bottomBanner.webp" fetchPriority="high" media="(max-width: 640px)" />
+        <link
+          rel="preload"
+          as="image"
+          href="/mobile.webp"
+          sizes="(max-width: 375px) 100vw, 430px"
+        />
         <link rel="preload" as="image" href="/top.webp" media="(min-width: 641px)" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <FontLinks />
