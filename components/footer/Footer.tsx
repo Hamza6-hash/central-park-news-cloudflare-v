@@ -8,6 +8,8 @@ import LastestNews from "./LastestNews";
 const Footer = () => {
   const pathName = usePathname();
 
+   const isUnsubscribe = pathName.includes('/unsubscribe')
+
   const hideNews =
     pathName.startsWith("/terms-and-conditions") ||
     pathName.startsWith("/privacy") ||
@@ -16,6 +18,7 @@ const Footer = () => {
   const hideLinks = pathName.startsWith("/unsubscribe");
   const showFooter = pathName === '/' || pathName === '/contact' || pathName === '/privacy' || pathName === '/terms-and-conditions' || pathName === '/terms-and-conditions' || pathName === '/news' || pathName.startsWith('/news/')
   if (!showFooter) return null
+  if (isUnsubscribe) return null
 
   return (
     <footer className="w-full">
