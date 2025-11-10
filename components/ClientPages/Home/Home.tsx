@@ -1,5 +1,5 @@
 import TopStories from "@/components/topStories/TopStories";
-import { StaticImageData } from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
@@ -62,7 +62,7 @@ export default function Home({ article }: HomeProps) {
 
 
           <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
-            <SafeImage
+            <Image
               src={article.imageURL || '/main.webp'}
               alt={article.title}
               fill

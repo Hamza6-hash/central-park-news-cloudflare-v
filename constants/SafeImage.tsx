@@ -24,6 +24,7 @@ const SafeImage: React.FC<SafeImageProps> = ({ src, alt, ...rest }) => {
       }}
       onLoad={() => setHasError(false)}
       draggable={false}
+      loading="lazy"
       className="select-none pointer-events-none object-cover"
     />
   );
