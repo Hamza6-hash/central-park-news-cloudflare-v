@@ -36,10 +36,10 @@ const VerticalCard = ({
 
     return (
         <Link href={getLinkPath()} aria-label={title || "View article"} className="block">
-            <div className="group bg-primary-300 w-[245px] h-[272px] rounded-[16px] relative  text-white overflow-hidden" style={{backfaceVisibility: "hidden", perspective: "1000px"}}>
+            <div className="group bg-primary-300 w-[245px] h-[272px] rounded-[16px] relative  text-white overflow-hidden" style={{ backfaceVisibility: "hidden", perspective: "1000px" }}>
 
                 {/* Background Image - ensure it fills container completely */}
-                <div className="absolute inset-0 z-0 w-full h-full" style={{backfaceVisibility: "hidden"}}>
+                <div className="absolute inset-0 z-0 w-full h-full" style={{ backfaceVisibility: "hidden" }}>
                     <SafeImage
                         src={imageURL}
                         alt={title || "Article image"}
@@ -47,7 +47,7 @@ const VerticalCard = ({
                         className="object-cover pointer-events-none select-none"
                         sizes="245px"
                         quality={85}
-                        priority={false}
+                        loading="lazy"
                         placeholder="blur"
                         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJ4HvqFvP5LHUKKjQVRKkqaKUC1lUklUgkK2U4lWEhIkQrWQqQwGQECGYsVHZ+hJEjbsOlTULqUG7QGgaQMvW3KRJg2nUPAl8mUKUEJLOhAGhpQQQXyLOIcGTgZnGfgbYFLNnLNbpqzBAJJjBCNGE"
                     />

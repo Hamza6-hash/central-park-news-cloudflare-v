@@ -19,14 +19,14 @@ export default function FontLinks() {
       />
       <link
         rel="preload"
-        href="/fonts/Poppins-Regular.woff2"
+        href="/fonts/Poppins/Poppins-Regular.woff2"
         as="font"
         type="font/woff2"
         crossOrigin="anonymous"
       />
       <link
         rel="preload"
-        href="/fonts/Poppins-Bold.woff2"
+        href="/fonts/Poppins/Poppins-Bold.woff2"
         as="font"
         type="font/woff2"
         crossOrigin="anonymous"
