@@ -4,7 +4,7 @@ import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
 import SafeImage from "@/constants/SafeImage";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ToastHandler } from "./ToastHandler";
 
 
@@ -30,7 +30,12 @@ interface HomeProps {
   article: Article | null;
 }
 
+
 export default function Home({ article }: HomeProps) {
+
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 640;
+
+
   if (!article) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
@@ -49,18 +54,16 @@ export default function Home({ article }: HomeProps) {
         <hr className={`w-64 h-0.5 mb-2 bg-gray-200`} />
 
         <div className="space-y-3 mb-4">
-       <div className="">
+          <div className="">
             <Link
               href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug}`}
             >
               {/* <h1 className="text-[30px] leading-normal font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-3" style={{ minHeight: 'calc(1.5 * 30px * 3)', height: 'calc(1.5 * 30px * 3)' }}> */}
-              <h1 className="text-[30px] leading-normal font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-3" style={{ minHeight: 'calc(1.5 * 30px * 3)', height: 'calc(1.5 * 30px * 3)' }}>
+              <h1 className="text-[30px] leading-normal font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full sm:line-clamp-3" style={{ minHeight: 'calc(1.5 * 30px * 3)', height: 'calc(1.5 * 30px * 3)' }}>
                 {article.title}
               </h1>
             </Link>
           </div>
-
-
           <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
             <Image
               src={article.imageURL || '/main.webp'}
@@ -70,7 +73,9 @@ export default function Home({ article }: HomeProps) {
               loading="eager"
               priority={true}
               className="object-cover protected-image relative z-10 rounded-[16px]"
-              sizes="(max-width: 1279px) 100vw, 644px"
+              sizes="(max-width: 640px) 436px,  
+       (max-width: 1279px) 100vw,  
+       644px"
               placeholder="blur"
               blurDataURL="data:image/svg+xml;base64,..."
             />

@@ -153,6 +153,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search..."
+                  maxLength={130}
                   autoFocus
                 />
               </div>
@@ -170,7 +171,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
             )}
             {searchTerm && !isSearching && (
               <div className="mt-2 px-2">
-                <p className="font-century-gothic text-[#b2b3b6]">
+                <p className="font-century-gothic text-[#b2b3b6] overflow-hidden">
                   Search for &quot;{searchTerm}&quot;
                 </p>
               </div>
