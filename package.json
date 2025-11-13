@@ -45,9 +45,10 @@
     "zod": "^3.23.8"
   },
   "browserslist": [
-    "defaults",
-    "not dead",
-    "not IE 11"
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 Edge versions"
   ],
   "devDependencies": {
     "@next/bundle-analyzer": "^15.3.3",
