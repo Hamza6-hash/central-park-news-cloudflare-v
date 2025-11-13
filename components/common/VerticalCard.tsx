@@ -41,8 +41,6 @@ const VerticalCard = ({
                 className="group  w-full max-w-[245px] h-full min-h-[272px]  relative text-white overflow-hidden"
                 style={{ backfaceVisibility: "hidden", perspective: "1000px" }}
             >
-
-                {/* Background Image - ensure it fills container completely */}
                 <div className="absolute inset-0 z-0 w-full h-full" style={{ backfaceVisibility: "hidden" }}>
                     <Image
                         src={imageURL}
@@ -50,7 +48,7 @@ const VerticalCard = ({
                         fill
                         className="object-cover pointer-events-none select-none rounded-t-[16px] rounded-b-[18px]"
                         sizes="245px"
-                        quality={85}
+                        quality={70}
                         loading="lazy"
                         placeholder="blur"
                         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJ4HvqFvP5LHUKKjQVRKkqaKUC1lUklUgkK2U4lWEhIkQrWQqQwGQECGYsVHZ+hJEjbsOlTULqUG7QGgaQMvW3KRJg2nUPAl8mUKUEJLOhAGhpQQQXyLOIcGTgZnGfgbYFLNnLNbpqzBAJJjBCNGE"

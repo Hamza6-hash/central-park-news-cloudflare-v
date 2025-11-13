@@ -58,15 +58,60 @@ export default function Home({ article }: HomeProps) {
             <Link
               href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug}`}
             >
-              {/* <h1 className="text-[30px] leading-normal font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full line-clamp-3" style={{ minHeight: 'calc(1.5 * 30px * 3)', height: 'calc(1.5 * 30px * 3)' }}> */}
-              <h1 className="text-[30px] leading-normal font-century-schoolbook capitalize hover:text-primary-500 transition-colors break-words max-w-full sm:line-clamp-3" style={{ minHeight: 'calc(1.5 * 30px * 3)', height: 'calc(1.5 * 30px * 3)' }}>
+              <h1
+                className="
+                text-[30px]
+                leading-normal
+                font-century-schoolbook 
+                capitalize
+               hover:text-primary-500
+                transition-colors
+                break-words
+                max-w-full
+                min-h-[calc(1.5_*_30px_*_3)]     
+                sm:line-clamp-3                 
+                sm:max-h-[calc(1.5_*_30px_*_3)]  
+                sm:overflow-hidden"
+              >
                 {article.title}
               </h1>
             </Link>
           </div>
+          {/* {isMobile ? (
+            <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[4/3] max-w-full protected-image-container">
+              <Image
+                src={"/thumbnail.webp"}
+                alt={article.title}
+                fill
+                quality={75}
+                loading="eager"
+                priority
+                className="object-cover protected-image relative z-10 rounded-[16px]"
+                sizes="(max-width: 640px) 436px, 100vw"
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml;base64,..."
+              />
+            </div>
+          ) : (
+            <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
+              <Image
+                src={article.imageURL || "/main.webp"}
+                alt={article.title}
+                fill
+                quality={75}
+                loading="eager"
+                priority
+                className="object-cover protected-image relative z-10 rounded-[16px]"
+                sizes="(max-width: 1279px) 100vw, 644px"
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml;base64,..."
+              />
+            </div>
+          )} */}
+
           <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
             <Image
-              src={article.imageURL || '/main.webp'}
+              src={'/thumbnail.webp'}
               alt={article.title}
               fill
               quality={75}
@@ -74,8 +119,8 @@ export default function Home({ article }: HomeProps) {
               priority={true}
               className="object-cover protected-image relative z-10 rounded-[16px]"
               sizes="(max-width: 640px) 436px,  
-       (max-width: 1279px) 100vw,  
-       644px"
+              (max-width: 1279px) 100vw,  
+              644px"
               placeholder="blur"
               blurDataURL="data:image/svg+xml;base64,..."
             />
