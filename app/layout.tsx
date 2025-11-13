@@ -72,6 +72,7 @@ export default function RootLayout({
           rel="preload"
           as="image"
           href="/mobile.webp"
+          fetchPriority="high"
           sizes="(max-width: 375px) 100vw, 430px"
         />
         <link rel="preload" as="image" href="/top.webp" media="(min-width: 641px)" />
@@ -79,7 +80,8 @@ export default function RootLayout({
         <FontLinks />
         <Script
           id="gtm-script"
-          strategy="afterInteractive"
+          // strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -90,7 +92,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             `,
           }}
         />
-        <script
+        <Script
+          // strategy="afterInteractive"
+          strategy="lazyOnload"
+          id="ga-init"
           dangerouslySetInnerHTML={{
             __html: `
             // Default: deny all until user consents
