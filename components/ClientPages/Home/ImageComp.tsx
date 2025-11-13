@@ -23,7 +23,7 @@ const ImageComp = ({ imageURL, title }: { imageURL: string | StaticImageData, ti
   return (
     <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
             <Image
-              src={mounted && isMobile ? '/main.webp' : (imageURL || '/main.webp')}
+              src={mounted && isMobile ? '/Mobilethumbnail.webp' : (imageURL || '/main.webp')}
               alt={title}
               fill
               quality={75}

@@ -23,7 +23,7 @@ const ImageComp = ({ imageURL, imageName }: { imageURL: string | StaticImageData
   return (
     <div className="relative w-full md:w-[204px] aspect-[204/208] rounded-[16px]">
                         <Image
-                            src={mounted && isMobile ? '/thumbnail.webp' : imageURL || '/thumbnail.webp'}
+                            src={mounted && isMobile ? '/Mobilethumbnail.webp' : imageURL || '/thumbnail.webp'}
                             priority={true}
                             loading="eager"
                             fill
