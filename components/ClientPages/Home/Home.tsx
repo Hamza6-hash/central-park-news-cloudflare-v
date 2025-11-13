@@ -58,7 +58,7 @@ export default function Home({ article }: HomeProps) {
             <Link
               href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug}`}
             >
-           <h1
+              <h1
                 className="
                 text-[30px]
                 leading-normal
@@ -73,13 +73,13 @@ export default function Home({ article }: HomeProps) {
                 sm:max-h-[calc(1.5_*_30px_*_3)]  
                 sm:overflow-hidden"
               >
-              {article.title}
+                {article.title}
               </h1>
             </Link>
           </div>
           <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
             <Image
-              src={'/main.webp'}
+              src={article.imageURL || '/main.webp'}
               alt={article.title}
               fill
               quality={75}
