@@ -79,7 +79,7 @@ export default function Home({ article }: HomeProps) {
           </div>
           <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
             <Image
-              src={'/main.webp'}
+              src={isMobile ? '/main.webp' : (article.imageURL || '/main.webp')}
               alt={article.title}
               fill
               quality={75}
