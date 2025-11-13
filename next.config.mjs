@@ -15,7 +15,7 @@ const nextConfig = {
   },
   experimental: {
     // perfromance optimzation
-    optimizeCss: true,
+    optimizeCss: true, // Enables CSS optimization and critical CSS extraction
     optimizePackageImports: [
       "firebase",
       "swiper",
