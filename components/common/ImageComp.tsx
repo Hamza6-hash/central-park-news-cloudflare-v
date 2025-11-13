@@ -14,7 +14,7 @@ const ImageComp = ({ imageURL, imageName }: { imageURL: string | StaticImageData
         // Use requestAnimationFrame to defer media query check and prevent forced reflow
         const rafId = requestAnimationFrame(() => {
             setMounted(true);
-            mediaQuery = window.matchMedia('(max-width: 640px)');
+            mediaQuery = window.matchMedia('(max-width: 756px)');
             setIsMobile(mediaQuery.matches);
 
             handleChange = (e: MediaQueryListEvent) => {

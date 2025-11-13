@@ -68,6 +68,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Resource hints for performance optimization */}
+        <link rel="dns-prefetch" href="https://central-park-news.vercel.app" />
+        <link rel="preconnect" href="https://central-park-news.vercel.app" crossOrigin="anonymous" />
+        {/* Preconnect to Google Fonts if used */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <SchemaOrg schemas={[websiteSchema, organizationSchema]} />
         <link
           rel="preload"
