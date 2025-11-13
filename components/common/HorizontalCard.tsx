@@ -48,8 +48,7 @@ const HorizontalCard = ({
                 <div className="md:w-[210px] w-full rounded-[16px] ">
                     <div className="relative w-full md:w-[204px] aspect-[204/208] rounded-[16px]">
                         <Image
-                            // src={isMobile ? defultImage : imageURL || '/thumbnail.webp'}
-                            src={'/thumbnail.webp'}
+                            src={isMobile ? defultImage : imageURL || '/thumbnail.webp'}
                             priority={true}
                             loading="eager"
                             fill
