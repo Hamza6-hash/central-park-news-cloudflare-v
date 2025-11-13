@@ -8,16 +8,31 @@ const ImageComp = ({ imageURL, imageName }: { imageURL: string | StaticImageData
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
-        const mediaQuery = window.matchMedia('(max-width: 640px)');
-        setIsMobile(mediaQuery.matches);
+        let mediaQuery: MediaQueryList | null = null;
+        let handleChange: ((e: MediaQueryListEvent) => void) | null = null;
 
-        const handleChange = (e: MediaQueryListEvent) => {
-            setIsMobile(e.matches);
+        // Use requestAnimationFrame to defer media query check and prevent forced reflow
+        const rafId = requestAnimationFrame(() => {
+            setMounted(true);
+            mediaQuery = window.matchMedia('(max-width: 640px)');
+            setIsMobile(mediaQuery.matches);
+
+            handleChange = (e: MediaQueryListEvent) => {
+                // Batch state updates to prevent multiple reflows
+                requestAnimationFrame(() => {
+                    setIsMobile(e.matches);
+                });
+            };
+
+            mediaQuery.addEventListener('change', handleChange);
+        });
+
+        return () => {
+            cancelAnimationFrame(rafId);
+            if (mediaQuery && handleChange) {
+                mediaQuery.removeEventListener('change', handleChange);
+            }
         };
-
-        mediaQuery.addEventListener('change', handleChange);
-        return () => mediaQuery.removeEventListener('change', handleChange);
     }, []);
 
   return (
