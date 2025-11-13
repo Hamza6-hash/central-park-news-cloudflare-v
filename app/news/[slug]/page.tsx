@@ -9,7 +9,6 @@ import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 import { redirect } from "next/navigation";
 import { liveUrl } from "@/lib/utils";
 
-
 export async function generateStaticParams() {
   const newsCollection = collection(db, "blog/centralparkNews/newsletter");
   const q = query(newsCollection, where("status", "==", "published"));
@@ -25,7 +24,6 @@ async function getNewsData(slug: string) {
     if (!db) {
       return null;
     }
-
     const newsCollection = collection(db, "blog/centralparkNews/newsletter");
     const q = query(newsCollection, where("titleSlug", "==", slug));
     const querySnapshot = await getDocs(q);
@@ -36,7 +34,6 @@ async function getNewsData(slug: string) {
 
     const docSnap = querySnapshot.docs[0];
     const rawData = docSnap.data();
-
 
     const data = {
       ...rawData,
@@ -63,14 +60,14 @@ async function getNewsData(slug: string) {
       } catch (err) {
       }
     }
-
+    
     return {
       ...data,
       id: docSnap.id,
       authorName,
       authorImage,
       authorPosition,
-    } as News;
+    } as unknown as News;
   } catch (error) {
     return null;
   }
