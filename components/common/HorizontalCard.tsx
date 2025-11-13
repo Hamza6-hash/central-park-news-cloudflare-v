@@ -1,11 +1,13 @@
 import React from "react";
 import TruncateText from "./TruncateProps";
 import { formatedDate } from "@/lib/utils";
-import Image, { StaticImageData } from "next/image";
+import  { StaticImageData } from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
 import { stripMarkdown } from "@/lib/query";
-import { defultImage } from "@/constants";
+import dynamic from "next/dynamic";
+
+const ImageComp = dynamic(() => import("./ImageComp"), { ssr: false });
 
 interface HorizontalCard {
     title?: string;
@@ -32,7 +34,6 @@ const HorizontalCard = ({
     imageName,
 }: HorizontalCard) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
-    const isMobile = typeof window !== "undefined" && window.innerWidth <= 640;
 
 
     const getLinkPath = () => {
@@ -46,18 +47,7 @@ const HorizontalCard = ({
         <Link href={getLinkPath()}>
             <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 rounded-lg cursor-pointer">
                 <div className="md:w-[210px] w-full rounded-[16px] ">
-                    <div className="relative w-full md:w-[204px] aspect-[204/208] rounded-[16px]">
-                        <Image
-                            src={isMobile ? defultImage : imageURL || '/thumbnail.webp'}
-                            priority={true}
-                            loading="eager"
-                            fill
-                            alt={imageName || 'No Name'}
-                            quality={75}
-                            className="pointer-events-none select-none rounded-[16px]"
-                            sizes="(max-width: 768px) 100vw, (min-width: 769px) 204px"
-                        />
-                    </div>
+                    <ImageComp imageURL={imageURL} imageName={imageName || 'No Name'} />
                 </div>
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">
