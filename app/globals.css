@@ -10,7 +10,7 @@
       format("woff");
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 @font-face {
@@ -18,7 +18,7 @@
   src: url("/fonts/century-schoolbook/SCHLBKB.woff") format("truetype");
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 /* century ghotic */
@@ -28,7 +28,7 @@
   src: url("/fonts/century-gothic/centurygothic.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 /* Add Montserrat font */
@@ -37,7 +37,7 @@
   src: url("/fonts/Montserrat/Montserrat-Regular.woff") format("truetype");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 @font-face {
@@ -45,7 +45,7 @@
   src: url("/fonts/century-725/century-725-cn-bt.woff") format("truetype");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 /* Poppins Added  */
@@ -54,7 +54,7 @@
   src: url("/fonts/Poppins/Poppins-Regular.woff2") format("truetype");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 @font-face {
@@ -62,7 +62,7 @@
   src: url("/fonts/Poppins/Poppins-Bold.woff2") format("truetype");
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 :root {
