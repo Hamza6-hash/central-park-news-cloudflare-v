@@ -4,7 +4,6 @@ import { formatedDate } from "@/lib/utils";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
-import SafeImage from "@/constants/SafeImage";
 import { stripMarkdown } from "@/lib/query";
 import { defultImage } from "@/constants";
 
@@ -55,7 +54,6 @@ const HorizontalCard = ({
                             quality={75}
                             className="pointer-events-none select-none rounded-[16px]"
                             sizes="(max-width: 768px) 100vw, (min-width: 769px) 204px"
-
                         />
                     </div>
                 </div>

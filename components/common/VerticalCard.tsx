@@ -4,6 +4,7 @@ import { formatedDate } from "@/lib/utils";
 import { routes } from "@/constants";
 import SafeImage from "@/constants/SafeImage";
 import { stripMarkdown } from "@/lib/query";
+import Image from "next/image";
 
 interface VerticalCard {
     title: string;
@@ -35,16 +36,19 @@ const VerticalCard = ({
     };
 
     return (
-        <Link href={getLinkPath()} aria-label={title || "View article"} className="block">
-            <div className="group bg-primary-300 w-[245px] h-[272px] rounded-[16px] relative  text-white overflow-hidden" style={{ backfaceVisibility: "hidden", perspective: "1000px" }}>
+        <Link href={getLinkPath()} aria-label={title || "View article"} className="block h-full">
+            <div
+                className="group  w-full max-w-[245px] h-full min-h-[272px]  relative text-white overflow-hidden"
+                style={{ backfaceVisibility: "hidden", perspective: "1000px" }}
+            >
 
                 {/* Background Image - ensure it fills container completely */}
                 <div className="absolute inset-0 z-0 w-full h-full" style={{ backfaceVisibility: "hidden" }}>
-                    <SafeImage
+                    <Image
                         src={imageURL}
                         alt={title || "Article image"}
                         fill
-                        className="object-cover pointer-events-none select-none"
+                        className="object-cover pointer-events-none select-none rounded-t-[16px] rounded-b-[18px]"
                         sizes="245px"
                         quality={85}
                         loading="lazy"
@@ -53,7 +57,7 @@ const VerticalCard = ({
                     />
                 </div>
 
-                <div className="absolute bottom-0 left-0 right-0 z-20 bg-[#FFFFFFCC]/80 backdrop-blur-[4.7px] transition-all duration-300 ease-in-out h-[160px] group-hover:h-full overflow-hidden">
+                <div className="absolute rounded-[16px] bottom-0 left-0 right-0 z-20 bg-[#FFFFFFCC]/80 backdrop-blur-[4.7px] transition-all duration-300 ease-in-out h-[160px] group-hover:h-full overflow-hidden">
                     <div className="relative w-full h-full px-4 py-4 flex flex-col justify-between">
 
                         <div className="mb-2 flex-shrink-0 h-[60px]">

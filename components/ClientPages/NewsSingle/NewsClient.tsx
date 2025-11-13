@@ -132,8 +132,6 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
           </h1>
         </div>
       </div>
-
-
       <DynamicBlog
         title={news.title}
         category={news?.category}

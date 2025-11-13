@@ -145,8 +145,8 @@ const LastestNews = () => {
                   key={index}
                   className="pl-3 basis-[252px] flex-shrink-0"
                 >
-                  <Card className="bg-transparent text-white focus:ring-0 border-none shadow-none h-full">
-                    <CardContent className="bg-transparent rounded-[16px] overflow-hidden p-0 border-none">
+                  <Card className="bg-transparent text-white border-0 focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 shadow-none h-full">
+                    <CardContent className="bg-transparent  overflow-hidden p-0 border-0">
                       <VerticalCard
                         title={article.title}
                         content={article.content}

@@ -1,74 +1,67 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import Image from "next/image";
 
 const AdBanner = () => {
-    const [isMobile, setIsMobile] = useState(false);
+  const adLink = "https://www.scottbaronassociates.com/";
 
-    useEffect(() => {
-        const checkSize = () => setIsMobile(window.innerWidth < 640);
-        checkSize();
-
-        window.addEventListener("resize", checkSize);
-        return () => window.removeEventListener("resize", checkSize);
-    }, []);
-
-    const adLink = "https://www.scottbaronassociates.com/";
-    const handleClick = () => {
-        (window as any).dataLayer = (window as any).dataLayer || [];
-        (window as any).dataLayer.push({
-            event: "banner_click",
-            adName: "Top Banner",
-            site: 'Blockchain Briefing',
-            device: isMobile ? "mobile" : "desktop",
-            pagePath: window.location.pathname,
-            targetUrl: adLink,
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (typeof window !== "undefined" && window.dataLayer) {
+        const w = window as typeof window & { dataLayer?: unknown[] };
+        w.dataLayer.push({
+          event: "banner_click",
+          adName: "Top Banner",
+          pagePath: window.location.pathname,
+          targetUrl: adLink,
         });
-    };
+      }
+    },
+    [adLink]
+  );
 
-    return (
-        <div className="px-generic flex justify-center w-full">
-            <div className="w-full max-w-[1199px] mx-auto mt-3">
-                <a
-                    href={adLink}
-                    onClick={handleClick}
-                    className="head-banner-ad block"
-                    data-ad-name="Homepage Top Banner"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    {isMobile ? (
-                        <div className="relative w-full aspect-[436/410]">
-                            <Image
-                                src="/mobile.webp"
-                                alt="mobile-banner"
-                                width={436}
-                                height={410}
-                                quality={65}
-                                className="head-banner-ad object-contain"
-                                loading="eager"
-                                priority
-                            />
-                        </div>
-                    ) : (
-                        <div className="relative w-full aspect-[1199/153]">
-                            <Image
-                                src="/top.png"
-                                alt="desktop-banner"
-                                fill
-                                quality={100}
-                                className="head-banner-ad object-contain"
-                                loading="eager"
-                                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 1000px, 1199px"
-                                priority
-                            />
-                        </div>
-                    )}
-                </a>
-            </div>
-        </div>
-    );
+  return (
+    <div className="px-generic flex justify-center w-full">
+      <div className="w-full max-w-[1199px] mx-auto mt-3">
+        <a
+          href={adLink}
+          onClick={handleClick}
+          className="head-banner-ad block"
+          data-ad-name="Homepage Top Banner"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Advertisement"
+        >
+          <div className="relative hidden sm:block w-full overflow-hidden">
+            <Image
+              src="/top.webp"
+              alt="Banner"
+              width={1199}
+              height={200}
+              className="object-contain head-banner-ad"
+              sizes="(min-width: 641px) 1199px, 100vw"
+              quality={70}
+              priority
+              fetchPriority="high"
+            />
+          </div>
+          <div className="relative block sm:hidden w-full overflow-hidden mx-auto max-w-[436px]">
+            <Image
+              src="/mobile.webp"
+              alt="Banner"
+              width={436}
+              height={410}
+              className="object-contain head-banner-ad"
+              sizes="(max-width: 375px) 100vw, 430px"
+              quality={45}
+              priority
+              fetchPriority="high"
+            />
+          </div>
+        </a>
+      </div>
+    </div>
+  );
 };
 
 export default AdBanner;

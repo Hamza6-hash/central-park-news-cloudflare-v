@@ -60,13 +60,11 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               alt={title}
               fill
               quality={80}
-              loading="eager"
-              priority
+              loading="lazy"
               className="pointer-events-none select-none"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
             />
           </div>
-
           <div className="flex flex-wrap items-center gap-2  max-sm:text-[12px] sm:text-lg text-[12px]">
             <hr className="w-6 h-1" />
             <h1 className="bg-[#E4212B] text-[12px]  text-white capitalize font-poppins truncate px-[12px] rounded-xl max-w-[50%] sm:max-w-full w-fit">
