@@ -46,7 +46,7 @@ const HorizontalCard = ({
                 <div className="md:w-[210px] w-full rounded-[16px] ">
                     <div className="relative w-full md:w-[204px] aspect-[204/208] rounded-[16px]">
                         <Image
-                            src={imageURL || defultImage}
+                            src={defultImage}
                             priority={true}
                             loading="eager"
                             fill
