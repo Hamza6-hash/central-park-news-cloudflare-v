@@ -1,7 +1,13 @@
-import TermsAndCondition from '@/components/ClientPages/TermsAndConditions/TermsAndCondition'
 import SchemaOrg from '@/components/Schema';
 import { liveUrl } from '@/lib/utils';
 import { Metadata } from "next";
+import dynamic from 'next/dynamic';
+
+// 1. Define the component dynamically
+const DynamicTermsAndCondition = dynamic(
+  () => import('@/components/ClientPages/TermsAndConditions/TermsAndCondition'),
+);
+
 
 export const metadata: Metadata = {
   title: "Terms and Conditions | Central Park News",
@@ -29,7 +35,7 @@ const Terms = () => {
   return (
     <div className='bg-primary-100'>
       <SchemaOrg schemas={[webPageSchema]} />
-      <TermsAndCondition />
+      <DynamicTermsAndCondition />
     </div>
 
   )
