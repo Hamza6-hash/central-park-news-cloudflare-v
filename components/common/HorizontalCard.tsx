@@ -7,7 +7,6 @@ import { routes } from "@/constants";
 import { stripMarkdown } from "@/lib/query";
 import { defultImage } from "@/constants";
 
-
 interface HorizontalCard {
     title?: string;
     imageURL: string | StaticImageData;
@@ -33,6 +32,9 @@ const HorizontalCard = ({
     imageName,
 }: HorizontalCard) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
+    const isMobile = typeof window !== "undefined" && window.innerWidth <= 640;
+
+
     const getLinkPath = () => {
         if (type === "news") {
             return `${routes.news}/${titleSlug}`;
@@ -46,7 +48,8 @@ const HorizontalCard = ({
                 <div className="md:w-[210px] w-full rounded-[16px] ">
                     <div className="relative w-full md:w-[204px] aspect-[204/208] rounded-[16px]">
                         <Image
-                            src={defultImage}
+                            // src={isMobile ? defultImage : imageURL || '/thumbnail.webp'}
+                            src={'/thumbnail.webp'}
                             priority={true}
                             loading="eager"
                             fill
@@ -57,8 +60,6 @@ const HorizontalCard = ({
                         />
                     </div>
                 </div>
-
-
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">
                         <h1 className="bg-[#E4212B] text-white text-xs capitalize font-montserrat truncate w-fit max-w-[70%] py-1 px-2  rounded-full">{category || 'Local News'}</h1>

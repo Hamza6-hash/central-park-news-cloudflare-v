@@ -13,6 +13,17 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
+  experimental: {
+    // perfromance optimzation
+    optimizeCss: true,
+    optimizePackageImports: [
+      "firebase",
+      "swiper",
+      "@radix-ui/react-dialog",
+      "react-markdown",
+      "lucide-react",
+    ],
+  },
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
