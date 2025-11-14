@@ -1,8 +1,25 @@
 export default function FontLinks() {
   return (
     <>
-      {/* Preload images */}
-
+      {/* Preload critical fonts - these are in the critical rendering path */}
+      <link
+        rel="preload"
+        href="/fonts/century-gothic/centurygothic.ttf"
+        as="font"
+        type="font/truetype"
+        crossOrigin="anonymous"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        href="/fonts/Montserrat/Montserrat-Regular.woff"
+        as="font"
+        type="font/woff"
+        crossOrigin="anonymous"
+        fetchPriority="high"
+      />
+      
+      {/* Preload other important fonts */}
       <link
         rel="preload"
         href="/fonts/century-schoolbook/SCHLBKB.woff"
@@ -31,7 +48,6 @@ export default function FontLinks() {
         type="font/woff2"
         crossOrigin="anonymous"
       />
-
     </>
   );
 }

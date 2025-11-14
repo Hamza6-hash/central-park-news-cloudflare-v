@@ -1,11 +1,12 @@
+
 import TopStories from "@/components/topStories/TopStories";
-import Image, { StaticImageData } from "next/image";
+import  { StaticImageData } from "next/image";
 import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
-import SafeImage from "@/constants/SafeImage";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 import { ToastHandler } from "./ToastHandler";
+import ImageComp from "./ImageComp";
 
 
 interface Article {
@@ -32,8 +33,6 @@ interface HomeProps {
 
 
 export default function Home({ article }: HomeProps) {
-
-  const isMobile = typeof window !== "undefined" && window.innerWidth <= 640;
 
 
   if (!article) {
@@ -77,22 +76,7 @@ export default function Home({ article }: HomeProps) {
               </h1>
             </Link>
           </div>
-          <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
-            <Image
-              src={article.imageURL || '/main.webp'}
-              alt={article.title}
-              fill
-              quality={75}
-              loading="eager"
-              priority={true}
-              className="object-cover protected-image relative z-10 rounded-[16px]"
-              sizes="(max-width: 640px) 436px,  
-       (max-width: 1279px) 100vw,  
-       644px"
-              placeholder="blur"
-              blurDataURL="data:image/svg+xml;base64,..."
-            />
-          </div>
+          <ImageComp imageURL={article.imageURL || ''} title={article.title} />
 
           <div className="min-h-[24px] flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
             <hr className="w-4 text-[#34148E] sm:w-6 h-1" />
