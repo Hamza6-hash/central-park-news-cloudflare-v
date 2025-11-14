@@ -44,11 +44,6 @@
     "vanilla-cookieconsent": "^3.1.0",
     "zod": "^3.23.8"
   },
-  "browserslist": [
-    "defaults",
-    "not dead",
-    "not IE 11"
-  ],
   "devDependencies": {
     "@next/bundle-analyzer": "^15.3.3",
     "@types/node": "^20",

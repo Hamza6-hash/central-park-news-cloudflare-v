@@ -1,0 +1,12 @@
+# Target modern browsers that support ES2022 features natively
+# This eliminates the need for polyfills for baseline features like:
+# - Array.prototype.at, flat, flatMap
+# - Object.fromEntries, Object.hasOwn
+# - String.prototype.trimStart, trimEnd
+# - ES6 classes and spread operator
+
+Chrome >= 92
+Firefox >= 90
+Safari >= 15.4
+Edge >= 92
+

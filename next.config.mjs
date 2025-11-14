@@ -14,8 +14,8 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === "production",
   },
   experimental: {
-    // perfromance optimzation
-    optimizeCss: true,
+    // performance optimization
+    optimizeCss: true, // Enables CSS optimization and critical CSS extraction
     optimizePackageImports: [
       "firebase",
       "swiper",
@@ -24,6 +24,10 @@ const nextConfig = {
       "lucide-react",
     ],
   },
+  // Performance optimizations
+  compress: true, // Enable gzip compression
+  // Optimize font loading
+  optimizeFonts: true,
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],

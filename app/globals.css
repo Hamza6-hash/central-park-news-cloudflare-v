@@ -4,20 +4,13 @@
 
 @font-face {
   font-family: "Century-BT";
-  src: url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.eot");
-  src: url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.eot?#iefix")
-      format("embedded-opentype"),
-    url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.woff")
-      format("woff"),
-    url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.woff2")
+  src: url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.woff2")
       format("woff2"),
-    url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.ttf")
-      format("truetype"),
-    url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.svg#Century 751 BT")
-      format("svg");
+    url("/fonts/Century-751-BT/bf7889647459a27b61d0ba9af90d94ce.woff")
+      format("woff");
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display:fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 @font-face {
@@ -25,7 +18,7 @@
   src: url("/fonts/century-schoolbook/SCHLBKB.woff") format("truetype");
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display:fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 /* century ghotic */
@@ -35,7 +28,7 @@
   src: url("/fonts/century-gothic/centurygothic.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display:fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 /* Add Montserrat font */
@@ -44,7 +37,7 @@
   src: url("/fonts/Montserrat/Montserrat-Regular.woff") format("truetype");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display:fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 @font-face {
@@ -52,7 +45,7 @@
   src: url("/fonts/century-725/century-725-cn-bt.woff") format("truetype");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display:fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 /* Poppins Added  */
@@ -61,7 +54,7 @@
   src: url("/fonts/Poppins/Poppins-Regular.woff2") format("truetype");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display:fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 @font-face {
@@ -69,7 +62,7 @@
   src: url("/fonts/Poppins/Poppins-Bold.woff2") format("truetype");
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display:fallback; /* Use fallback to reduce render blocking while allowing swap */
 }
 
 :root {
@@ -279,3 +272,4 @@
   -webkit-user-drag: none;
   user-select: none;
 }
+

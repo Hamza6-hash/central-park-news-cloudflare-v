@@ -6,6 +6,7 @@ import { ToastProvider } from "@/context/ToastContext";
 import { Providers } from "@/context/Providers";
 import Script from "next/script";
 import SchemaOrg from "@/components/Schema";
+import CSSOptimizer from "@/components/CSSOptimizer";
 
 export const metadata: Metadata = {
   title: "Central Parks News | Stories from the Heart of New York City",
@@ -67,6 +68,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Resource hints for performance optimization */}
+        <link rel="dns-prefetch" href="https://central-park-news.vercel.app" />
+        <link rel="preconnect" href="https://central-park-news.vercel.app" crossOrigin="anonymous" />
+        {/* Preconnect to Google Fonts if used */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <SchemaOrg schemas={[websiteSchema, organizationSchema]} />
         <link
           rel="preload"
@@ -78,6 +85,7 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/top.webp" media="(min-width: 641px)" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <FontLinks />
+        {/* CSS optimization is handled by CSSOptimizer component and Next.js optimizeCss */}
         <Script
           id="gtm-script"
           // strategy="afterInteractive"
@@ -116,6 +124,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <body className="select-none ">
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79LR8"
           height="0" width="0" style={{ display: "none", visibility: "hidden" }}></iframe></noscript>
+        <CSSOptimizer />
         <Providers>
           <ToastProvider>
             <Layout>{children}</Layout>

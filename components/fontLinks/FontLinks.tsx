@@ -1,7 +1,8 @@
 export default function FontLinks() {
   return (
     <>
-      {/* Preload critical fonts - these are in the critical rendering path */}
+      {/* Preload only the most critical font with high priority */}
+      {/* Other fonts will load asynchronously to reduce critical path */}
       <link
         rel="preload"
         href="/fonts/century-gothic/centurygothic.ttf"
@@ -10,22 +11,24 @@ export default function FontLinks() {
         crossOrigin="anonymous"
         fetchPriority="high"
       />
+      {/* Defer non-critical fonts - they will load after initial render */}
       <link
         rel="preload"
         href="/fonts/Montserrat/Montserrat-Regular.woff"
         as="font"
         type="font/woff"
         crossOrigin="anonymous"
-        fetchPriority="high"
+        fetchPriority="low"
       />
       
-      {/* Preload other important fonts */}
+      {/* Preload other fonts with low priority to avoid blocking */}
       <link
         rel="preload"
         href="/fonts/century-schoolbook/SCHLBKB.woff"
         as="font"
         type="font/woff"
         crossOrigin="anonymous"
+        fetchPriority="low"
       />
       <link
         rel="preload"
@@ -33,6 +36,7 @@ export default function FontLinks() {
         as="font"
         type="font/woff"
         crossOrigin="anonymous"
+        fetchPriority="low"
       />
       <link
         rel="preload"
@@ -40,6 +44,7 @@ export default function FontLinks() {
         as="font"
         type="font/woff2"
         crossOrigin="anonymous"
+        fetchPriority="low"
       />
       <link
         rel="preload"
@@ -47,6 +52,7 @@ export default function FontLinks() {
         as="font"
         type="font/woff2"
         crossOrigin="anonymous"
+        fetchPriority="low"
       />
     </>
   );
