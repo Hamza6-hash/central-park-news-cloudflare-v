@@ -44,12 +44,6 @@
     "vanilla-cookieconsent": "^3.1.0",
     "zod": "^3.23.8"
   },
-  "browserslist": [
-    "last 2 Chrome versions",
-    "last 2 Firefox versions",
-    "last 2 Safari versions",
-    "last 2 Edge versions"
-  ],
   "devDependencies": {
     "@next/bundle-analyzer": "^15.3.3",
     "@types/node": "^20",
