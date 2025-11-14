@@ -13,6 +13,7 @@ interface Newsletter {
   authorName?: string;
   imageURL?: string;
   titleSlug?: string;
+  mobileURL: string;
   status?: string;
   createdAt?: string;
   category?: string;
@@ -80,6 +81,7 @@ async function fetchTopStories(): Promise<Newsletter[]> {
         ? authorMap.get(data.authorId) || 'Docket Digest New Room'
         : 'Docket Digest New Room',
       titleSlug: data.titleSlug || '',
+      mobileURL: data?.socialImageUrls?.mobile?.url || '',
       createdAt: data.createdAt,
       category: data.category || '',
     }));
@@ -93,6 +95,8 @@ async function fetchTopStories(): Promise<Newsletter[]> {
 
 const TopStories = async () => {
   const newsletters = await fetchTopStories();
+
+  console.log(newsletters)
 
   if (!newsletters || newsletters.length === 0) {
     return (
@@ -128,6 +132,7 @@ const TopStories = async () => {
                 title={newsletter.title || "-"}
                 category={newsletter.category || "Local News"}
                 imageURL={newsletter.imageURL || "/thumbnail.webp"}
+                mobileURL={newsletter.mobileURL || "/thumbnail.webp"}
                 authorName={newsletter.authorName || "Docket Digest New Room"}
                 publishDate={formattedDate}
                 content={newsletter.content || "-"}

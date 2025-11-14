@@ -62,6 +62,7 @@ async function fetchFeaturedArticle() {
       imageURL: data.imageURL,
       authorId: data.authorId || '',
       authorName,
+      mobileURL: data?.socialImageUrls?.mobile.url || '',
       titleSlug: data.titleSlug || '',
       type: 'newsletter',
       createdAt: data.createdAt,

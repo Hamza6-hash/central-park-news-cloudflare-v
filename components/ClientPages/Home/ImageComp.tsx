@@ -3,12 +3,12 @@
 import React from 'react'
 import Image, { StaticImageData } from 'next/image';
 
-const ImageComp = ({ imageURL, title }: { imageURL: string | StaticImageData, title: string }) => {
+const ImageComp = ({ imageURL, title, mobileURL }: { imageURL: string | StaticImageData, mobileURL: string | StaticImageData, title: string }) => {
   // Get the desktop image source - handle both string URLs and StaticImageData
-  const desktopSrc = typeof imageURL === 'string' 
-    ? imageURL 
+  const desktopSrc = typeof imageURL === 'string'
+    ? imageURL
     : imageURL?.src || '/main.webp';
-  const mobileSrc = '/Mobilethumbnail.webp';
+  const mobileSrc = mobileURL || '/Mobilethumbnail.webp';
 
   return (
     <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
@@ -17,11 +17,11 @@ const ImageComp = ({ imageURL, title }: { imageURL: string | StaticImageData, ti
           BROWSER LOGIC: 
           If the screen is >= 756px wide, only this source is used and downloaded. 
         */}
-        <source 
-          media="(min-width: 756px)" 
-          srcSet={desktopSrc || '/main.webp'} 
+        <source
+          media="(min-width: 756px)"
+          srcSet={desktopSrc || '/main.webp'}
         />
-        
+
         {/* 
           BROWSER LOGIC: 
           If the screen is < 756px wide, this is the fallback, and only this image is used. 
@@ -30,7 +30,7 @@ const ImageComp = ({ imageURL, title }: { imageURL: string | StaticImageData, ti
           src={mobileSrc}
           alt={title}
           fill
-          quality={75}
+          quality={70}
           loading="eager"
           priority={true}
           className="object-cover protected-image relative z-10 rounded-[16px]"
