@@ -1,6 +1,6 @@
 
 import TopStories from "@/components/topStories/TopStories";
-import  { StaticImageData } from "next/image";
+import { StaticImageData } from "next/image";
 import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
@@ -24,6 +24,7 @@ interface Article {
   titleSlug?: string;
   createdAt: string,
   type: string,
+  mobileURL: string,
   category: string,
 }
 
@@ -33,7 +34,6 @@ interface HomeProps {
 
 
 export default function Home({ article }: HomeProps) {
-
 
   if (!article) {
     return (
@@ -76,7 +76,7 @@ export default function Home({ article }: HomeProps) {
               </h1>
             </Link>
           </div>
-          <ImageComp imageURL={article.imageURL || ''} title={article.title} />
+          <ImageComp imageURL={article.imageURL || '/main.webp'} mobileURL={article?.mobileURL || '/Mobilethumbnail.webp'} title={article.title} />
 
           <div className="min-h-[24px] flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
             <hr className="w-4 text-[#34148E] sm:w-6 h-1" />

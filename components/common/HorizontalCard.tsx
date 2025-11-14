@@ -1,7 +1,7 @@
 import React from "react";
 import TruncateText from "./TruncateProps";
 import { formatedDate } from "@/lib/utils";
-import  { StaticImageData } from "next/image";
+import { StaticImageData } from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
 import { stripMarkdown } from "@/lib/query";
@@ -18,7 +18,8 @@ interface HorizontalCard {
     titleSlug?: string;
     type?: string;
     category?: string,
-    imageName?: string
+    imageName?: string,
+    mobileURL?: string,
 
 }
 
@@ -29,6 +30,7 @@ const HorizontalCard = ({
     publishDate,
     content,
     titleSlug = "",
+    mobileURL,
     type,
     category,
     imageName,
@@ -47,7 +49,7 @@ const HorizontalCard = ({
         <Link href={getLinkPath()}>
             <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 rounded-lg cursor-pointer">
                 <div className="md:w-[210px] w-full rounded-[16px] ">
-                    <ImageComp imageURL={imageURL} imageName={imageName || 'No Name'} />
+                    <ImageComp imageURL={imageURL} mobileURL={mobileURL || ''} imageName={imageName || 'No Name'} />
                 </div>
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">

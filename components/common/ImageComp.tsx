@@ -3,12 +3,12 @@
 import Image, { StaticImageData } from 'next/image'
 import React from 'react'
 
-const ImageComp = ({ imageURL, imageName }: { imageURL: string | StaticImageData, imageName: string }) => {
+const ImageComp = ({ imageURL, imageName, mobileURL }: { imageURL: string | StaticImageData,  mobileURL: string | StaticImageData, imageName: string }) => {
   // Get the desktop image source - handle both string URLs and StaticImageData
   const desktopSrc = typeof imageURL === 'string' 
     ? imageURL 
     : imageURL?.src || '/thumbnail.webp';
-  const mobileSrc = '/Mobilethumbnail.webp';
+  const mobileSrc =  mobileURL || '/Mobilethumbnail.webp';
 
   return (
     <div className="relative w-full md:w-[204px] aspect-[204/208] rounded-[16px]">
