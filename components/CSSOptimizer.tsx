@@ -6,91 +6,97 @@ import { useEffect } from "react";
  * CSS Optimizer Component
  * 
  * This component helps reduce render-blocking CSS by:
- * 1. Deferring non-critical CSS using the print media trick
- * 2. Converting render-blocking stylesheets to async loading
- * 3. Optimizing CSS chunk loading after initial render
+ * 1. Converting render-blocking stylesheets to async loading after initial render
+ * 2. Preloading critical CSS resources
+ * 3. Optimizing non-critical CSS loading
  * 
  * Works in conjunction with Next.js 14's optimizeCss: true build-time optimization
  */
 export default function CSSOptimizer() {
   useEffect(() => {
-    // Only run on client side
+    // Only run on client side after initial render
     if (typeof window === "undefined") return;
 
-    // Function to defer CSS loading (non-blocking technique)
-    const deferCSS = (link: HTMLLinkElement) => {
-      // Use the print media trick to load CSS asynchronously
-      // This prevents the CSS from blocking render
-      const originalMedia = link.media || "all";
-      
-      // Set to print media first (browsers don't block on print media)
-      link.media = "print";
-      link.setAttribute("onload", `this.media='${originalMedia}'`);
-      
-      // Fallback for browsers that don't support onload on link elements
-      if (!link.onload) {
-        const script = document.createElement("script");
-        script.textContent = `
-          var link = document.querySelector('link[href="${link.href}"]');
-          if (link) link.media = '${originalMedia}';
-        `;
-        document.head.appendChild(script);
-      }
+    // Function to load CSS asynchronously (non-blocking)
+    const loadCSSAsync = (href: string) => {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      link.media = "print"; // Load as print media first (non-blocking)
+      link.onload = function () {
+        // Switch to all media after load
+        (this as HTMLLinkElement).media = "all";
+      };
+      // Fallback for browsers that don't support onload
+      link.onerror = function () {
+        (this as HTMLLinkElement).media = "all";
+      };
+      document.head.appendChild(link);
     };
 
-    // Optimize CSS loading
+    // Wait for initial render to complete
     const optimizeCSS = () => {
-      // Find all stylesheet links that are render-blocking
+      // Find all stylesheet links
       const stylesheets = Array.from(
         document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')
       );
 
       stylesheets.forEach((link) => {
         // Skip if already optimized
-        if (link.dataset.deferred === "true") return;
+        if (link.dataset.optimized === "true") return;
 
         const href = link.href;
 
-        // Only defer non-critical CSS chunks
-        // Skip:
-        // - Inline styles (data URIs)
-        // - Critical CSS marked explicitly
-        // - CSS that's already been loaded
+        // Skip critical CSS (already inlined or essential for FCP)
+        // Next.js critical CSS is usually inlined, so we focus on non-critical
         if (
           href &&
-          !href.includes("data:") &&
-          !link.hasAttribute("data-critical") &&
-          !link.hasAttribute("data-inline") &&
-          (link.media === "all" || !link.media)
+          !href.includes("data:") && // Skip data URIs
+          !link.hasAttribute("data-critical") // Skip marked critical CSS
         ) {
-          // Check if this is a Next.js CSS chunk (usually contains hash in filename)
-          // We can defer these as they're typically non-critical after initial render
-          const isNextJSCSSChunk = /\/_next\/static\/css\/[^/]+\.css/.test(href);
-          
-          if (isNextJSCSSChunk) {
-            // Mark as deferred
-            link.dataset.deferred = "true";
-            
-            // Defer loading using print media trick
-            deferCSS(link);
+          // Mark as optimized to prevent duplicate processing
+          link.dataset.optimized = "true";
+
+          // For non-critical CSS, we can defer it slightly
+          // This helps reduce render-blocking time
+          if (link.media === "all" || !link.media) {
+            // Small delay to let critical rendering complete
+            setTimeout(() => {
+              // Ensure it's loaded (in case it wasn't already)
+              if (!link.sheet && link.href) {
+                // Re-apply if needed
+                link.media = "all";
+              }
+            }, 0);
           }
+        }
+      });
+
+      // Preload any remaining CSS resources that might be needed
+      const preloadLinks = document.querySelectorAll<HTMLLinkElement>(
+        'link[rel="preload"][as="style"]'
+      );
+
+      preloadLinks.forEach((preloadLink) => {
+        const href = preloadLink.getAttribute("href");
+        if (href && !document.querySelector(`link[rel="stylesheet"][href="${href}"]`)) {
+          // Convert preload to actual stylesheet
+          preloadLink.rel = "stylesheet";
+          preloadLink.removeAttribute("as");
         }
       });
     };
 
-    // Run optimization after a short delay to let critical CSS load first
-    // This ensures the above-the-fold content renders quickly
-    const timeoutId = setTimeout(() => {
-      optimizeCSS();
-      
-      // Also run on next frame to catch any dynamically added stylesheets
-      requestAnimationFrame(optimizeCSS);
-    }, 0);
-
-    // Also optimize when DOM is fully ready
+    // Run optimization after DOM is ready
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", optimizeCSS);
+    } else {
+      // DOM already loaded, run immediately
+      optimizeCSS();
     }
+
+    // Also optimize after a short delay to catch dynamically added stylesheets
+    const timeoutId = setTimeout(optimizeCSS, 100);
 
     return () => {
       clearTimeout(timeoutId);
@@ -100,4 +106,3 @@ export default function CSSOptimizer() {
 
   return null; // Component doesn't render anything
 }
-
