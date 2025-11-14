@@ -171,13 +171,13 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
             )}
             {searchTerm && !isSearching && (
               <div className="mt-2 px-2">
-                <p className="font-century-gothic text-[#b2b3b6] overflow-hidden">
+                <p className="font-century-gothic text-[#b2b3b6] overflow-hidden break-words">
                   Search for &quot;{searchTerm}&quot;
                 </p>
               </div>
             )}
             {error && (
-              <div className="mt-4 text-center">
+              <div className="mt-4 text-center break-words">
                 <p className="text-red-500">{error}</p>
               </div>
             )}
@@ -198,8 +198,8 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
                       >
                         <li className="mb-2 p-2 space-y-2 hover:border-l-[5px] border-[#1E3D5A] hover:bg-[#E2EDF3] rounded cursor-pointer">
                           <h4 className="font-semibold font-century-gothic text-[#224667] text-[14px]">{article.title}</h4>
-                          <p className="text-sm text-[#224667] capitalize space-x-2">
-                            <span className="border border-[#1E3D5A] px-2 text-[#224667] rounded-md">
+                          <p className="text-sm max-sm:flex max-sm:flex-col max-sm:gap-2 max-sm:justify-center max-sm:w-full text-[#224667] capitalize sm:space-x-2">
+                            <span className="border border-[#1E3D5A] px-2 text-[#224667] rounded-md max-sm:flex-nowrap">
                               {article.category_name || "Local News"}
                             </span>
                             <span className="border text-[#224667] border-[#1E3D5A] px-2 rounded-md">
