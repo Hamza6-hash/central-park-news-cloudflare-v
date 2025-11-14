@@ -85,6 +85,41 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/top.webp" media="(min-width: 641px)" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <FontLinks />
+        {/* Inline script to defer non-critical CSS before React loads */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function() {
+              // Function to defer CSS loading using print media trick
+              function deferCSS(link) {
+                if (link.dataset && link.dataset.deferred) return;
+                var originalMedia = link.media || 'all';
+                link.media = 'print';
+                link.setAttribute('onload', "this.media='" + originalMedia + "'");
+                if (link.dataset) link.dataset.deferred = 'true';
+              }
+              
+              // Defer non-critical CSS chunks after a short delay
+              // This allows critical CSS to load first
+              setTimeout(function() {
+                var links = document.querySelectorAll('link[rel="stylesheet"]');
+                for (var i = 0; i < links.length; i++) {
+                  var link = links[i];
+                  var href = link.href || '';
+                  // Only defer Next.js CSS chunks (non-critical)
+                  if (href && /\\/_next\\/static\\/css\\/[^/]+\\.css/.test(href)) {
+                    if (!link.hasAttribute('data-critical') && 
+                        !link.hasAttribute('data-inline') &&
+                        (link.media === 'all' || !link.media)) {
+                      deferCSS(link);
+                    }
+                  }
+                }
+              }, 0);
+            })();
+            `,
+          }}
+        />
         {/* CSS optimization is handled by CSSOptimizer component and Next.js optimizeCss */}
         <Script
           id="gtm-script"
