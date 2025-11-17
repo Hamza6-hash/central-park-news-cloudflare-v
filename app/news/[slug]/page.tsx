@@ -9,15 +9,15 @@ import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 import { redirect } from "next/navigation";
 import { liveUrl } from "@/lib/utils";
 
-export async function generateStaticParams() {
-  const newsCollection = collection(db, "blog/centralparkNews/newsletter");
-  const q = query(newsCollection, where("status", "==", "published"));
-  const snapshot = await getDocs(q);
+// export async function generateStaticParams() {
+//   const newsCollection = collection(db, "blog/centralparkNews/newsletter");
+//   const q = query(newsCollection, where("status", "==", "published"));
+//   const snapshot = await getDocs(q);
 
-  return snapshot.docs.map((doc) => ({
-    slug: doc.data().titleSlug,
-  }));
-}
+//   return snapshot.docs.map((doc) => ({
+//     slug: doc.data().titleSlug,
+//   }));
+// }
 
 async function getNewsData(slug: string) {
   try {

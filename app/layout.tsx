@@ -68,6 +68,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="google-site-verification" content="IX-zmkyeEfEBU_8lk9SpqKuxdnNAM8T_Tla3i0qDrw0" />
         {/* Resource hints for performance optimization */}
         <link rel="dns-prefetch" href="https://central-park-news.vercel.app" />
         <link rel="preconnect" href="https://central-park-news.vercel.app" crossOrigin="anonymous" />
