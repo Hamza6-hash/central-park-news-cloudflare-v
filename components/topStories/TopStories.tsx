@@ -96,8 +96,6 @@ async function fetchTopStories(): Promise<Newsletter[]> {
 const TopStories = async () => {
   const newsletters = await fetchTopStories();
 
-  console.log(newsletters)
-
   if (!newsletters || newsletters.length === 0) {
     return (
       <div className="">
