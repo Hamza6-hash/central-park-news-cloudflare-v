@@ -29,21 +29,27 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "NewsMediaOrganization",
     "@id": "https://central-park-news.vercel.app/#organization",
-    name: "Central Park News",
-    url: "https://central-park-news.vercel.app/",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://central-park-news.vercel.app/logo.png"
+    "name": "Central Park News",
+    "url": "https://central-park-news.vercel.app/",
+    "logo": "https://central-park-news.vercel.app/logo.png",
+    "description": "Local updates, events, community stories and real-time news around Central Park and New York City.",
+    "foundingDate": "2025",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "New York",
+      "addressRegion": "NY",
+      "addressCountry": "US"
     },
-    sameAs: [
-      "https://twitter.com/centralparknews",
-      "https://facebook.com/centralparknews"
-    ],
-    contactPoint: {
-      "@type": "ContactPoint",
-      contactType: "Editorial",
-      email: "editorial@centralparknews.com"
-    }
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 40.7829,
+      "longitude": -73.9654
+    },
+    "sameAs": [
+      "https://www.facebook.com/",
+      "https://www.instagram.com/",
+      "https://twitter.com/"
+    ]
   };
 
   const websiteSchema = {
@@ -68,10 +74,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* --------------------- GEO META TAGS ------------------ */}
+        <meta name="geo.region" content="US-NY" />
+        <meta name="geo.placename" content="New York" />
+        <meta name="geo.position" content="40.7829;-73.9654" />
+        <meta name="ICBM" content="40.7829, -73.9654" />
+
+        {/* --------------------- GEO META TAGS ------------------ */}
         <meta name="google-site-verification" content="IX-zmkyeEfEBU_8lk9SpqKuxdnNAM8T_Tla3i0qDrw0" />
+
         {/* Resource hints for performance optimization */}
         <link rel="dns-prefetch" href="https://central-park-news.vercel.app" />
         <link rel="preconnect" href="https://central-park-news.vercel.app" crossOrigin="anonymous" />
+
         {/* Preconnect to Google Fonts if used */}
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
