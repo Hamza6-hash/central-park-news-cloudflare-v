@@ -7,6 +7,7 @@ import { Providers } from "@/context/Providers";
 import Script from "next/script";
 import SchemaOrg from "@/components/Schema";
 import CSSOptimizer from "@/components/CSSOptimizer";
+import { liveUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Central Parks News | Stories from the Heart of New York City",
@@ -23,50 +24,54 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const siteUrl = "https://central-park-news.vercel.app/";
+  const siteUrl = "https://central-park-news.vercel.apps/";
 
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "NewsMediaOrganization",
-    "@id": "https://central-park-news.vercel.app/#organization",
-    "name": "Central Park News",
-    "url": "https://central-park-news.vercel.app/",
-    "logo": "https://central-park-news.vercel.app/logo.png",
-    "description": "Local updates, events, community stories and real-time news around Central Park and New York City.",
-    "foundingDate": "2025",
-    "address": {
+    "@id": `${liveUrl}#organization`,
+    name: "Central Park News",
+    url: liveUrl,
+    logo: {
+      "@type": "ImageObject",
+      url: "https://central-park-news.vercel.app/logo.png",
+    },
+    description:
+      "Local updates, events, community stories and real-time news around Central Park and New York City.",
+    foundingDate: "2025",
+    address: {
       "@type": "PostalAddress",
-      "addressLocality": "New York",
-      "addressRegion": "NY",
-      "addressCountry": "US"
+      addressLocality: "New York",
+      addressRegion: "NY",
+      addressCountry: "US",
     },
-    "geo": {
+    geo: {
       "@type": "GeoCoordinates",
-      "latitude": 40.7829,
-      "longitude": -73.9654
+      latitude: 40.7829,
+      longitude: -73.9654,
     },
-    "sameAs": [
+    sameAs: [
       "https://www.facebook.com/",
       "https://www.instagram.com/",
-      "https://twitter.com/"
-    ]
+      "https://twitter.com/",
+    ],
   };
 
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": "https://central-park-news.vercel.app/#website",
+    "@id": `${liveUrl}#website`,
     name: "Central Park News",
-    url: "https://central-park-news.vercel.app/",
-    publisher: { "@id": "https://central-park-news.vercel.app/#organization" },
+    url: liveUrl,
+    publisher: { "@id": `${liveUrl}#organization` },
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://central-park-news.vercel.app/search?q={search_term_string}"
+        urlTemplate: `${liveUrl}search?q={search_term_string}`,
       },
-      "query-input": "required name=search_term_string"
-    }
+      "query-input": "required name=search_term_string",
+    },
   };
 
 
