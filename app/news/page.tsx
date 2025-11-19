@@ -9,7 +9,10 @@ import { Suspense } from "react";
 export const metadata: Metadata = {
   title: "News | Central Parks News - Central Park, NYC",
   description: "Follow up-to-date news, stories, and developments from Central Park and nearby New York areas.",
-  keywords: "Central Park NYC news, local updates, Manhattan current events"
+  keywords: "Central Park NYC news, local updates, Manhattan current events",
+  alternates: {
+    canonical: `${liveUrl}/news`
+  }
 }
 
 export default function NewsPage() {

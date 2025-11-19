@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Contact Us | Central Parks News",
   description: "Got a tip or feedback? Contact Central Parks News for media inquiries or news leads.",
   keywords: "contact Central Parks News, Central Park NYC newsroom, submit a tip",
+  alternates: {
+    canonical: `${liveUrl}/contact`
+  }
 };
 
 const Contacts = () => {

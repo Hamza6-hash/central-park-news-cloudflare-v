@@ -8,7 +8,10 @@ import { collection, query, where, getDocs, doc, getDoc, orderBy, limit } from "
 export const metadata: Metadata = {
   title: "Central Park News | Home",
   description: "Covering community events, local news, and stories in and around Central Park, NYC. Fresh coverage, updated daily.",
-  keywords: "Central Park news, NYC park updates, New York local stories, Manhattan news"
+  keywords: "Central Park news, NYC park updates, New York local stories, Manhattan news",
+  alternates: {
+    canonical: `${liveUrl}`
+  }
 };
 
 async function fetchFeaturedArticle() {
