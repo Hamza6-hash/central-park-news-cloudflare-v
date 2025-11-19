@@ -1,4 +1,5 @@
 import NewsArticleCollection from "@/components/ClientPages/news-article/NewsArticleCollection";
+import CardSkeleton from "@/components/Loadings/CardSkeleton";
 import SchemaOrg from "@/components/Schema";
 import { liveUrl } from "@/lib/utils";
 import { Metadata } from "next";
@@ -29,7 +30,7 @@ export default function NewsPage() {
   return (
     <>
       <SchemaOrg schemas={[webPageSchema]} />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<CardSkeleton ITEMS_PER_PAGE={9} />}>
         <NewsArticleCollection />
       </Suspense>
     </>
