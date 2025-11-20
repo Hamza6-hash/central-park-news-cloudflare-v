@@ -50,11 +50,11 @@ export default function RootLayout({
       latitude: 40.7829,
       longitude: -73.9654,
     },
-    sameAs: [
-      "https://www.facebook.com/",
-      "https://www.instagram.com/",
-      "https://twitter.com/",
-    ],
+    // sameAs: [
+    //   "https://www.facebook.com/",
+    //   "https://www.instagram.com/",
+    //   "https://twitter.com/",
+    // ],
   };
 
   const websiteSchema = {
