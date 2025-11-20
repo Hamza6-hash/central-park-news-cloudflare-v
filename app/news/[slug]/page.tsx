@@ -192,12 +192,12 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     dateModified: newsData.updatedAt || newsData.publishDate,
     author: {
       "@type": "Person",
-      name: newsData.authorName || "Central Park News Editorial"
+      name: newsData.authorName || "Newstrix"
     },
     publisher: { "@id": `${siteUrl}/#organization` },
     description: newsData.excerpt,
     articleBody: newsData.content,
-    articleSection: newsData.category || "News",
+    articleSection: newsData.category || "Central Park News",
     url: pageUrl
   };
 
