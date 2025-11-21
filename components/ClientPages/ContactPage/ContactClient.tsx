@@ -56,7 +56,7 @@ const ContactClient = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-6 mt-10 w-[100vw] font-century-gothic max-w-[1200px] px-8  mx-auto"
+              className="flex flex-col gap-6 mt-10 w-[100vw] font-century-gothic max-w-[800px] px-8  mx-auto"
             >
               <CustomInput
                 control={form.control}
