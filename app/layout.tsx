@@ -8,6 +8,7 @@ import Script from "next/script";
 import SchemaOrg from "@/components/Schema";
 import CSSOptimizer from "@/components/CSSOptimizer";
 import { liveUrl } from "@/lib/utils";
+import GTM from "@/components/ClientPages/GTM/GoogleTagManager";
 
 export const metadata: Metadata = {
   title: "Central Parks News | Stories from the Heart of New York City",
@@ -85,16 +86,8 @@ export default function RootLayout({
         <meta name="geo.position" content="40.7829;-73.9654" />
         <meta name="ICBM" content="40.7829, -73.9654" />
 
-        {/* --------------------- GEO META TAGS ------------------ */}
         <meta name="google-site-verification" content="IX-zmkyeEfEBU_8lk9SpqKuxdnNAM8T_Tla3i0qDrw0" />
-
-        {/* Resource hints for performance optimization */}
-        <link rel="dns-prefetch" href="https://central-park-news.vercel.app" />
-        <link rel="preconnect" href="https://central-park-news.vercel.app" crossOrigin="anonymous" />
-
-        {/* Preconnect to Google Fonts if used */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* --------------------- GEO META TAGS ------------------ */}
         <SchemaOrg schemas={[websiteSchema, organizationSchema]} />
         <link
           rel="preload"
@@ -106,45 +99,9 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/top.webp" media="(min-width: 641px)" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <FontLinks />
-        {/* CSS optimization is handled by CSSOptimizer component and Next.js optimizeCss */}
-        <Script
-          id="gtm-script"
-          // strategy="afterInteractive"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-M5W79LR8')
-            `,
-          }}
-        />
-        <Script
-          // strategy="afterInteractive"
-          strategy="lazyOnload"
-          id="ga-init"
-          dangerouslySetInnerHTML={{
-            __html: `
-            // Default: deny all until user consents
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('consent', 'default', {
-              'ad_storage': 'denied',
-              'ad_user_data': 'denied',
-              'ad_personalization': 'denied',
-              'analytics_storage': 'denied',
-              'functionality_storage': 'denied',
-              'personalization_storage': 'denied',
-              'security_storage': 'granted'
-           });`
-          }}
-        />
       </head>
       <body className="select-none ">
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79LR8"
-          height="0" width="0" style={{ display: "none", visibility: "hidden" }}></iframe></noscript>
+        <GTM />
         <CSSOptimizer />
         <Providers>
           <ToastProvider>
