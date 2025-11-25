@@ -10,6 +10,8 @@ const withBundleAnalyzer = bundleAnalyzer({
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  // Target modern browsers to avoid unnecessary polyfills
+  // Modern browsers support ES2022 features natively (Array.at, Object.fromEntries, etc.)
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
@@ -46,6 +48,30 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
+  // Optional: skip transpiling some packages
+  transpilePackages: [],
+
+  // Configure webpack to exclude unnecessary polyfills for modern browsers
+  webpack: (config, { isServer }) => {
+    // Exclude polyfills that are not needed for modern browsers
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        // Prevent polyfills from being included
+        fs: false,
+        net: false,
+        tls: false,
+      };
+      
+      // Exclude core-js polyfills for modern browser features
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        // Prevent automatic polyfill injection
+      };
+    }
+    return config;
+  },
+
   async rewrites() {
     return [
       {

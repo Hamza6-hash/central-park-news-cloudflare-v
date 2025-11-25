@@ -5,9 +5,7 @@ import { StaticImageData } from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
 import { stripMarkdown } from "@/lib/query";
-import dynamic from "next/dynamic";
-
-const ImageComp = dynamic(() => import("./ImageComp"), { ssr: false });
+import ImageComp from "./ImageComp";
 
 interface HorizontalCard {
     title?: string;

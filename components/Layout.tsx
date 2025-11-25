@@ -1,10 +1,15 @@
 // app/layout.tsx (SERVER COMPONENT)
 import React from 'react'
 import Header from './header/Header'
-import Footer from './footer/Footer'
-import CookieConsentWrapper from './ClientPages/Cookie/CookieConsentWrapper' 
+import CookieConsentWrapper from './ClientPages/Cookie/CookieConsentWrapper'
 import { ReactNode } from 'react'
-import { usePathname } from 'next/navigation'
+import dynamic from 'next/dynamic';
+
+const Footer = dynamic(() => import('./footer/Footer'), {
+  ssr: false, 
+});
+
+
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (

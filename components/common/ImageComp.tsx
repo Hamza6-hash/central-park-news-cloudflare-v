@@ -3,29 +3,19 @@
 import Image, { StaticImageData } from 'next/image'
 import React from 'react'
 
-const ImageComp = ({ imageURL, imageName, mobileURL }: { imageURL: string | StaticImageData,  mobileURL: string | StaticImageData, imageName: string }) => {
-  // Get the desktop image source - handle both string URLs and StaticImageData
-  const desktopSrc = typeof imageURL === 'string' 
-    ? imageURL 
+const ImageComp = ({ imageURL, imageName, mobileURL }: { imageURL: string | StaticImageData, mobileURL: string | StaticImageData, imageName: string }) => {
+  const desktopSrc = typeof imageURL === 'string'
+    ? imageURL
     : imageURL?.src || '/thumbnail.webp';
-  const mobileSrc =  mobileURL || '/Mobilethumbnail.webp';
+  const mobileSrc = mobileURL || '/Mobilethumbnail.webp';
 
   return (
     <div className="relative w-full md:w-[204px] aspect-[204/208] rounded-[16px]">
       <picture>
-        {/* 
-          BROWSER LOGIC: 
-          If the screen is >= 756px wide, only this source is used and downloaded. 
-        */}
-        <source 
-          media="(min-width: 756px)" 
-          srcSet={desktopSrc || '/thumbnail.webp'} 
+        <source
+          media="(min-width: 756px)"
+          srcSet={desktopSrc || '/thumbnail.webp'}
         />
-        
-        {/* 
-          BROWSER LOGIC: 
-          If the screen is < 756px wide, this is the fallback, and only this image is used. 
-        */}
         <Image
           src={mobileSrc}
           priority={true}
