@@ -1,12 +1,16 @@
 // app/layout.tsx (SERVER COMPONENT)
 import React from 'react'
 import Header from './header/Header'
-import CookieConsentWrapper from './ClientPages/Cookie/CookieConsentWrapper'
 import { ReactNode } from 'react'
 import dynamic from 'next/dynamic';
 
+// Lazy load non-critical components
 const Footer = dynamic(() => import('./footer/Footer'), {
   ssr: false, 
+});
+
+const CookieConsentWrapper = dynamic(() => import('./ClientPages/Cookie/CookieConsentWrapper'), {
+  ssr: false,
 });
 
 
