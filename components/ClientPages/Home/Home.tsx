@@ -1,12 +1,20 @@
 
-import TopStories from "@/components/topStories/TopStories";
 import { StaticImageData } from "next/image";
 import { formatedDate } from "@/lib/utils";
 import Link from "next/link";
-import ReactMarkdown from 'react-markdown';
 import { Suspense } from "react";
 import { ToastHandler } from "./ToastHandler";
 import ImageComp from "./ImageComp";
+import dynamic from "next/dynamic";
+
+// Lazy load non-critical components to improve LCP
+const TopStories = dynamic(() => import("@/components/topStories/TopStories"), {
+  ssr: false,
+});
+
+const ReactMarkdown = dynamic(() => import('react-markdown'), {
+  ssr: false,
+});
 
 
 interface Article {
