@@ -30,7 +30,7 @@ const ImageComp = ({ imageURL, title, mobileURL }: { imageURL: string | StaticIm
           src={mobileSrc}
           alt={title}
           fill
-          quality={70}
+          quality={65}
           loading="eager"
           priority={true}
           className="object-cover protected-image relative z-10 rounded-[16px]"
@@ -38,7 +38,7 @@ const ImageComp = ({ imageURL, title, mobileURL }: { imageURL: string | StaticIm
                  (max-width: 1279px) 100vw,  
                  644px"
           placeholder="blur"
-          blurDataURL="data:image/svg+xml;base64,..."
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmM2Y0ZjYiLz48L3N2Zz4="
         />
       </picture>
     </div>

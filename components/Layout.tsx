@@ -1,6 +1,5 @@
 // app/layout.tsx (SERVER COMPONENT)
 import React from 'react'
-import Header from './header/Header'
 import { ReactNode } from 'react'
 import dynamic from 'next/dynamic';
 
@@ -13,7 +12,10 @@ const CookieConsentWrapper = dynamic(() => import('./ClientPages/Cookie/CookieCo
   ssr: false,
 });
 
-
+// Lazy load Header on mobile to improve LCP - loads after initial render
+const Header = dynamic(() => import('./header/Header'), {
+  ssr: false,
+});
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
