@@ -80,7 +80,7 @@ export default function Home({ article }: HomeProps) {
 
           <div className="min-h-[24px] flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
             <hr className="w-4 text-[#34148E] sm:w-6 h-1" />
-            <h1 className="bg-[#E4212B] text-white text-[12px] capitalize font-poppins truncate w-fit max-w-[60%] px-[12px] rounded-xl">{article.category || "Local News"}</h1>
+            <h2 className="bg-[#E4212B] text-white text-[12px] capitalize font-poppins truncate w-fit max-w-[60%] px-[12px] rounded-xl">{article.category || "Local News"}</h2>
             <h6 className="capitalize font-poppins text-[12px] sm:text-xs md:text-sm lg:text-base">
               {article.authorName}
             </h6>

@@ -8,6 +8,7 @@ import { News } from "@/components/ClientPages/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 import { redirect } from "next/navigation";
 import { liveUrl } from "@/lib/utils";
+import { stripMarkdown } from "@/lib/query";
 
 // export async function generateStaticParams() {
 //   const newsCollection = collection(db, "blog/centralparkNews/newsletter");
@@ -60,7 +61,7 @@ async function getNewsData(slug: string) {
       } catch (err) {
       }
     }
-    
+
     return {
       ...data,
       id: docSnap.id,
@@ -196,7 +197,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     },
     publisher: { "@id": `${siteUrl}/#organization` },
     description: newsData.excerpt,
-    articleBody: newsData.content,
+    articleBody: stripMarkdown(newsData.excerpt),
     articleSection: newsData.category || "Central Park News",
     url: pageUrl
   };

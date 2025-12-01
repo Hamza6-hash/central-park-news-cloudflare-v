@@ -32,8 +32,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const siteUrl = "https://central-park-news.vercel.apps/";
-
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "NewsMediaOrganization",
@@ -42,7 +40,7 @@ export default function RootLayout({
     url: liveUrl,
     logo: {
       "@type": "ImageObject",
-      url: "https://central-park-news.vercel.app/logo.png",
+      url: `${liveUrl}/logo`,
     },
     description:
       "Local updates, events, community stories and real-time news around Central Park and New York City.",

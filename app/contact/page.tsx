@@ -18,7 +18,7 @@ const Contacts = () => {
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    "@id": `${siteUrl}/contact#webpage`,
+    "@id": `${siteUrl}/contact/#webpage`,
     name: "Contact | Central Park News",
     url: `${siteUrl}/contact`,
     description: "Reach out to the Central Park News team for inquiries, press releases, or community tips.",

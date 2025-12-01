@@ -65,10 +65,11 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
 
   return (
     <div className="w-full ">
+      <h1 className="sr-only">{news.title}</h1>
       <div className="w-full">
         <div className="w-full sm:w-[537px] h-[2px] bg-[#252525]"></div>
         <div className="flex flex-col gap-4 mt-2 mb-4 ">
-          <h1 className="text-[12px] sm:text-lg font-century-gothic text-black capitalize flex flex-wrap items-center gap-[16px]">
+          <nav className="text-[12px] sm:text-lg font-century-gothic text-black capitalize flex flex-wrap items-center gap-[16px]">
             <span className="cursor-pointer">
               <Link href={'/news'}>
                 News
@@ -78,7 +79,7 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
             <span className="text-sm font-bold text-[#1E3D5A] flex items-center gap-1 flex-wrap">
               {news.title}
             </span>
-          </h1>
+          </nav>
         </div>
       </div>
       <DynamicBlog
