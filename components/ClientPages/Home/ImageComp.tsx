@@ -13,22 +13,13 @@ const ImageComp = ({ imageURL, title, mobileURL }: { imageURL: string | StaticIm
   return (
     <div className="relative w-full z-10 overflow-hidden rounded-[16px] aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[1.6/1] max-w-full protected-image-container">
       <picture>
-        {/* 
-          BROWSER LOGIC: 
-          If the screen is >= 756px wide, only this source is used and downloaded. 
-        */}
         <source
           media="(min-width: 756px)"
           srcSet={desktopSrc || '/main.webp'}
         />
-
-        {/* 
-          BROWSER LOGIC: 
-          If the screen is < 756px wide, this is the fallback, and only this image is used. 
-        */}
         <Image
           src={mobileSrc}
-          alt={title}
+          alt={`Featured image for news: ${title}`}
           fill
           quality={65}
           loading="eager"
@@ -39,6 +30,7 @@ const ImageComp = ({ imageURL, title, mobileURL }: { imageURL: string | StaticIm
                  644px"
           placeholder="blur"
           blurDataURL="data:image/svg+xml;base64,..."
+          role='img'
         />
       </picture>
     </div>

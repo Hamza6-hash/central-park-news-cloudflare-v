@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import BlogsCard from "@/components/common/BlogsCard";
 import {
@@ -11,7 +11,6 @@ import {
   PaginationNext,
   PaginationPrevious
 } from "@/components/ui/pagination";
-import { defultImage } from "@/constants";
 import NewsArticleSkeleton from "./NewsArticleSkeleton";
 
 const ITEMS_PER_PAGE = 9;
@@ -38,7 +37,11 @@ interface PaginationData {
   currentPage: number;
 }
 
-export default function NewsArticleCollection() {
+interface NewsArticleCollectionProps {
+  initialData?: PaginationData;
+}
+
+export default function NewsArticleCollection({ initialData }: NewsArticleCollectionProps) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -82,10 +85,17 @@ export default function NewsArticleCollection() {
     }
   }, []);
 
-  // Fetch data when page or tab changes
+  // Use initial data on first load if available
   useEffect(() => {
+    if (initialData && currentPage === 1 && activeTab === "news" && isInitialLoad) {
+      setPaginationData(initialData);
+      setIsInitialLoad(false);
+      return;
+    }
+
+    // Fetch data when page or tab changes
     fetchPageData(currentPage, activeTab);
-  }, [currentPage, activeTab, fetchPageData]);
+  }, [currentPage, activeTab]);
 
   // Update URL when page changes
   const updateUrl = useCallback((page: number) => {
@@ -134,9 +144,6 @@ export default function NewsArticleCollection() {
     }
   }, [pathname, activeTab, updateUrl]);
 
-
-
-
   return (
     <section className="w-full">
       <div className="max-w-7xl mx-auto w-full px-1 py-2">
@@ -147,7 +154,6 @@ export default function NewsArticleCollection() {
               background: 'linear-gradient(90deg, #408ED7 0%, #224B71 100%)',
             }}
           />
-
           <div className="flex flex-row gap-3 w-full">
             <h1 className="text-xl md:text-2xl font-century-gothic font-bold text-[#2B4864]">
               {pageTitle}

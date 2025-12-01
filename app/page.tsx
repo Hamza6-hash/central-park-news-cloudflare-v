@@ -88,8 +88,8 @@ export default async function HomePage() {
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": `${siteUrl}/#webpage`,
-    name: "Cenral Park News | Home",
+    "@id": `${siteUrl}/#home`,
+    name: "Central Park News | Home",
     url: siteUrl,
     description:
       "Stay updated with the latest headlines, breaking news, and community stories in Central Park , NY. Your trusted source for local updates.",
@@ -97,9 +97,19 @@ export default async function HomePage() {
     publisher: { "@id": `${siteUrl}/#organization` }
   };
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article?.title || "Welcome To Central Park News",
+    image: [article?.imageURL || article?.mobileURL || null],
+    author: { "@type": "Person", name: article?.authorName || 'Newstrix' },
+    datePublished: article?.createdAt || new Date().toISOString(),
+    dateModified: article?.createdAt || new Date().toISOString(),
+    mainEntityOfPage: `${siteUrl}/news/${article?.titleSlug}`
+  };
 
   return <>
-    <SchemaOrg schemas={[webPageSchema]} />
+    <SchemaOrg schemas={[webPageSchema, articleSchema]} />
     <Home article={article} />
   </>
 }
