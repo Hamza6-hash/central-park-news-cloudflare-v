@@ -22,8 +22,16 @@ const nextConfig = {
       "firebase",
       "swiper",
       "@radix-ui/react-dialog",
+      "@radix-ui/react-label",
+      "@radix-ui/react-slot",
+      "@radix-ui/react-tabs",
+      "@radix-ui/react-toast",
       "react-markdown",
       "lucide-react",
+      "react-icons",
+      "embla-carousel-react",
+      "date-fns",
+      "vanilla-cookieconsent",
     ],
   },
   // Performance optimizations
@@ -31,6 +39,8 @@ const nextConfig = {
   // Optimize font loading
   optimizeFonts: true,
   poweredByHeader: false,
+  // Optimize production builds
+  productionBrowserSourceMaps: false, // Disable source maps in production to reduce bundle size
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [

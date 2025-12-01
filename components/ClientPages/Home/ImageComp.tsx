@@ -30,7 +30,7 @@ const ImageComp = ({ imageURL, title, mobileURL }: { imageURL: string | StaticIm
           src={mobileSrc}
           alt={title}
           fill
-          quality={70}
+          quality={65}
           loading="eager"
           priority={true}
           className="object-cover protected-image relative z-10 rounded-[16px]"

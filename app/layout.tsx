@@ -6,9 +6,16 @@ import { ToastProvider } from "@/context/ToastContext";
 import { Providers } from "@/context/Providers";
 import Script from "next/script";
 import SchemaOrg from "@/components/Schema";
-import CSSOptimizer from "@/components/CSSOptimizer";
+import dynamic from "next/dynamic";
 import { liveUrl } from "@/lib/utils";
-import GTM from "@/components/ClientPages/GTM/GoogleTagManager";
+
+// Lazy load non-critical components
+const GTM = dynamic(() => import("@/components/ClientPages/GTM/GoogleTagManager"), {
+  ssr: false,
+});
+const CSSOptimizer = dynamic(() => import("@/components/CSSOptimizer"), {
+  ssr: false,
+});
 
 export const metadata: Metadata = {
   title: "Central Parks News | Stories from the Heart of New York City",
