@@ -21,8 +21,8 @@ const AdBanner = () => {
   );
 
   return (
-    <div className="px-generic flex justify-center w-full">
-      <div className="w-full max-w-[1199px] mx-auto mt-3">
+    <div className="px-generic flex justify-center w-full head-banner-ad">
+      <div className="w-full max-w-[1199px] mx-auto mt-3 head-banner-ad">
         <a
           href={adLink}
           onClick={handleClick}
