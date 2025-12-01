@@ -1,6 +1,7 @@
 import NewsArticleCollection from "@/components/ClientPages/news-article/NewsArticleCollection";
 import CardSkeleton from "@/components/Loadings/CardSkeleton";
 import SchemaOrg from "@/components/Schema";
+import { stripMarkdown } from "@/lib/query";
 import { liveUrl } from "@/lib/utils";
 import { Metadata } from "next";
 import { Suspense } from "react";
@@ -32,7 +33,13 @@ interface PaginationData {
 export const metadata: Metadata = {
   title: "News | Central Parks News - Central Park, NYC",
   description: "Follow up-to-date news, stories, and developments from Central Park and nearby New York areas.",
-  keywords: "Central Park NYC news, local updates, Manhattan current events",
+  keywords: [
+    "Central Park NYC news",
+    "local updates",
+    "Manhattan current events",
+    "Central Park community stories",
+    "NYC breaking news"
+  ],
   alternates: {
     canonical: `${liveUrl}/news`
   }
@@ -80,6 +87,10 @@ export default async function NewsPage() {
       "Read the latest news articles, breaking stories, and local updates from Central Park and surrounding New York neighborhoods.",
     isPartOf: { "@id": `${siteUrl}/#website` },
     publisher: { "@id": `${siteUrl}/#organization` },
+    "mainEntity": {
+      "@type": "ItemList",
+      "@id": `${siteUrl}/news#itemlist`
+    },
     mainContentOfPage: {
       "@type": "ItemList",
       numberOfItems: initialData.totalItems,
@@ -87,7 +98,7 @@ export default async function NewsPage() {
         "@type": "NewsArticle",
         position: index + 1,
         headline: article.title,
-        description: article.content.substring(0, 160),
+        description: stripMarkdown(article.content).substring(0, 160),
         image: article.imageURL || `${siteUrl}/main.webp`,
         datePublished: article.createdAt,
         author: {
