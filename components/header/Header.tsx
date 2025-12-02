@@ -8,9 +8,9 @@ import { usePathname } from 'next/navigation'
 export default function Header() {
 
     const pathname = usePathname()
-    const hideBanner = ["/privacy", "/terms-and-conditions", "/unsubscribe"].includes(pathname);
+    const hideBanner = ["/privacy-policy", "/terms-and-conditions", "/unsubscribe"].includes(pathname);
     const isHomePage = pathname === "/";
-    const showHeader = pathname === '/' || pathname === '/news' || pathname === '/contact' || pathname === 'contact' || pathname === '/privacy' || pathname === '/terms-and-conditions' || pathname.includes('/news')
+    const showHeader = pathname === '/' || pathname === '/news' || pathname === '/contact' || pathname === 'contact' || pathname === '-policy' || pathname === '/terms-and-conditions' || pathname.includes('/news')
     if (!showHeader) return null
 
     return (

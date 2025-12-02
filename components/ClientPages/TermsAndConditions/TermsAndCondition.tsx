@@ -59,19 +59,19 @@ const termsSections = [
             </>
         ),
     },
-    {
-        title: "Governing Law",
-        content: (
-            <>
-                These Terms & Conditions are governed by the laws of US.
-            </>
-        ),
-    },
+    // {
+    //     title: "Governing Law",
+    //     content: (
+    //         <>
+    //             These Terms & Conditions are governed by the laws of US.
+    //         </>
+    //     ),
+    // },
     {
         title: "Contact Us",
         content: (
             <>
-                For any questions regarding these Terms & Conditions, please contact us at support@newstrix.app.
+                For any questions regarding these Terms & Conditions, please contact us at <a href="mailto:centralparknews@newtrix.app" className="text-blue-700">centralparknews@newtrix.app</a>.
             </>
         ),
     },
@@ -98,11 +98,10 @@ const TermsConditions = () => {
                                 <button
                                     key={index}
                                     onClick={() => setSelectedIndex(index)}
-                                    className={`w-full text-left py-3 px-4 rounded-md mb-2 text-sm font-medium transition-colors ${
-                                        index === selectedIndex 
-                                            ? "bg-blue-100 text-black border-l-4 border-blue-600" 
-                                            : "hover:bg-gray-100 text-[#2B4864]"
-                                    }`}
+                                    className={`w-full text-left py-3 px-4 rounded-md mb-2 text-sm font-medium transition-colors ${index === selectedIndex
+                                        ? "bg-blue-100 text-black border-l-4 border-blue-600"
+                                        : "hover:bg-gray-100 text-[#2B4864]"
+                                        }`}
                                 >
                                     {section.title}
                                 </button>
