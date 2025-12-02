@@ -197,7 +197,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     },
     publisher: { "@id": `${siteUrl}/#organization` },
     description: newsData.excerpt,
-    articleBody: stripMarkdown(newsData.excerpt),
+    articleBody: stripMarkdown(newsData.content),
     articleSection: newsData.category || "Central Park News",
     url: pageUrl
   };
