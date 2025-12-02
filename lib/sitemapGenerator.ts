@@ -327,7 +327,6 @@ ${pages
   }
 
   private extractLatestModTime(content: string): number {
-    // Extract the latest lastmod timestamp from sitemap content
     const matches = content.match(/<lastmod>([^<]+)<\/lastmod>/g);
     if (!matches || matches.length === 0) return Date.now();
 
