@@ -63,7 +63,7 @@ const termsSections = [
         title: "Governing Law",
         content: (
             <>
-                These Terms & Conditions are governed by the laws of [Insert Jurisdiction].
+                These Terms & Conditions are governed by the laws of US.
             </>
         ),
     },
@@ -71,7 +71,7 @@ const termsSections = [
         title: "Contact Us",
         content: (
             <>
-                For any questions regarding these Terms & Conditions, please contact us at [Insert Contact Email].
+                For any questions regarding these Terms & Conditions, please contact us at support@newstrix.app.
             </>
         ),
     },
