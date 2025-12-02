@@ -1,3 +1,4 @@
+// app/api/sitemap.xml/route.ts
 import { NextResponse } from 'next/server';
 import { sitemapGenerator } from '@/lib/sitemapGenerator';
 

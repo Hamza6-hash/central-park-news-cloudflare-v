@@ -23,6 +23,7 @@ interface GeneratedSitemap {
   content: string;
   timestamp: number;
   articleCount: number;
+  lastmodTimestamp?: number; // Track actual lastmod time for index
 }
 
 class BackgroundSitemapGenerator {
@@ -73,16 +74,7 @@ class BackgroundSitemapGenerator {
     try {
       console.log("Starting background sitemap generation...");
 
-      // Generate sitemap index
-      const indexContent = await this.generateSitemapIndex();
-      this.cache.set("sitemap_0", {
-        page: 0,
-        content: indexContent,
-        timestamp: Date.now(),
-        articleCount: 0,
-      });
-
-      // Generate first few sitemaps (most important ones)
+      // Generate first few sitemaps (most important ones) - do this first
       const sitemapsToGenerate = Math.min(5, this.config.maxSitemaps);
 
       for (let page = 1; page <= sitemapsToGenerate; page++) {
@@ -92,8 +84,19 @@ class BackgroundSitemapGenerator {
           content,
           timestamp: Date.now(),
           articleCount: this.extractArticleCount(content),
+          lastmodTimestamp: this.extractLatestModTime(content),
         });
       }
+
+      // Generate sitemap index after individual sitemaps (uses their timestamps)
+      const indexContent = await this.generateSitemapIndex();
+      this.cache.set("sitemap_index", {
+        page: 0,
+        content: indexContent,
+        timestamp: Date.now(),
+        articleCount: 0,
+        lastmodTimestamp: Date.now(),
+      });
 
       console.log(
         `Background sitemap generation completed. Generated ${
@@ -119,17 +122,19 @@ class BackgroundSitemapGenerator {
     const estimatedSitemaps = await this.estimateSitemapCount();
 
     let sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap>
-    <loc>${this.config.baseUrl}/sitemap.xml?page=1</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-  </sitemap>`;
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
-    for (let i = 2; i <= estimatedSitemaps; i++) {
+    // Add individual sitemap entries with their actual lastmod times
+    for (let i = 1; i <= estimatedSitemaps; i++) {
+      const cached = this.cache.get(`sitemap_${i}`);
+      const lastmod = cached?.lastmodTimestamp
+        ? new Date(cached.lastmodTimestamp).toISOString()
+        : new Date().toISOString();
+
       sitemapIndex += `
   <sitemap>
     <loc>${this.config.baseUrl}/sitemap.xml?page=${i}</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
+    <lastmod>${lastmod}</lastmod>
   </sitemap>`;
     }
 
@@ -144,11 +149,36 @@ class BackgroundSitemapGenerator {
 
     if (page === 1) {
       pages = [
-        { url: "", priority: "1.0", changefreq: "daily" },
-        { url: "/news", priority: "0.8", changefreq: "daily" },
-        { url: "/contact", priority: "0.6", changefreq: "monthly" },
-        { url: "/privacy", priority: "0.3", changefreq: "yearly" },
-        { url: "/terms-and-conditions", priority: "0.3", changefreq: "yearly" },
+        {
+          url: "",
+          priority: "1.0",
+          changefreq: "daily",
+          lastmod: new Date().toISOString(),
+        },
+        {
+          url: "/news",
+          priority: "0.8",
+          changefreq: "daily",
+          lastmod: new Date().toISOString(),
+        },
+        {
+          url: "/contact",
+          priority: "0.6",
+          changefreq: "monthly",
+          lastmod: new Date().toISOString(),
+        },
+        {
+          url: "/privacy",
+          priority: "0.3",
+          changefreq: "yearly",
+          lastmod: new Date().toISOString(),
+        },
+        {
+          url: "/terms-and-conditions",
+          priority: "0.3",
+          changefreq: "yearly",
+          lastmod: new Date().toISOString(),
+        },
       ];
     } else {
       pages = await this.getArticlesWithEfficientPagination(page);
@@ -160,7 +190,7 @@ ${pages
   .map(
     (page) => `  <url>
     <loc>${this.config.baseUrl}${page.url}</loc>
-    <lastmod>${page.lastmod || new Date().toISOString()}</lastmod>
+    <lastmod>${page.lastmod}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`
@@ -294,6 +324,20 @@ ${pages
   private extractArticleCount(content: string): number {
     const matches = content.match(/<url>/g);
     return matches ? matches.length : 0;
+  }
+
+  private extractLatestModTime(content: string): number {
+    const matches = content.match(/<lastmod>([^<]+)<\/lastmod>/g);
+    if (!matches || matches.length === 0) return Date.now();
+
+    const timestamps = matches
+      .map((match) => {
+        const dateStr = match.replace(/<\/?lastmod>/g, "");
+        return new Date(dateStr).getTime();
+      })
+      .filter((time) => !isNaN(time));
+
+    return timestamps.length > 0 ? Math.max(...timestamps) : Date.now();
   }
 
   getCacheStats() {
