@@ -3,7 +3,6 @@ import { liveUrl } from '@/lib/utils';
 import { Metadata } from "next";
 import dynamic from 'next/dynamic';
 
-// 1. Define the component dynamically
 const DynamicTermsAndCondition = dynamic(
   () => import('@/components/ClientPages/TermsAndConditions/TermsAndCondition'),
 );
@@ -28,7 +27,7 @@ const Terms = () => {
     "@type": "WebPage",
     "@id": `${siteUrl}/#terms`,
     name: "Terms and Conditions | Central Park News",
-    url: `${siteUrl}/terms`,
+    url: `${siteUrl}/terms-and-conditions`,
     description:
       "Welcome to Central Park News. By using our website, you agree to comply with these Terms and Conditions and our Privacy Policy.",
     isPartOf: { "@id": `${siteUrl}/#website` },

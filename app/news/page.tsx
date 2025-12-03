@@ -87,10 +87,6 @@ export default async function NewsPage() {
       "Read the latest news articles, breaking stories, and local updates from Central Park and surrounding New York neighborhoods.",
     isPartOf: { "@id": `${siteUrl}/#website` },
     publisher: { "@id": `${siteUrl}/#organization` },
-    "mainEntity": {
-      "@type": "ItemList",
-      "@id": `${siteUrl}/news#itemlist`
-    },
     mainContentOfPage: {
       "@type": "ItemList",
       numberOfItems: initialData.totalItems,

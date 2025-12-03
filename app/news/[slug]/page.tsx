@@ -9,6 +9,7 @@ import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 import { redirect } from "next/navigation";
 import { liveUrl } from "@/lib/utils";
 import { stripMarkdown } from "@/lib/query";
+import GoogleNewsSubscription from "@/components/Scripts/GoogleNewsSubscription";
 
 // export async function generateStaticParams() {
 //   const newsCollection = collection(db, "blog/centralparkNews/newsletter");
@@ -215,6 +216,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
   return (
     <>
       <SchemaOrg schemas={[breadcrumbSchema, webPageSchema, newsArticleSchema]} />
+      <GoogleNewsSubscription slug={slug} />
       <div>
         <NewsClient slug={params.slug} data={newsData as News} relatedNews={relatedNews as News[]} />
       </div>
