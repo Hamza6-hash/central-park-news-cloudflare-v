@@ -16,7 +16,7 @@ const Footer = () => {
     pathName.startsWith("/unsubscribe");
 
   const hideLinks = pathName.startsWith("/unsubscribe");
-  const showFooter = pathName === '/' || pathName === '/contact' || pathName === '/privacy' || pathName === '/terms-and-conditions' || pathName === '/terms-and-conditions' || pathName === '/news' || pathName.startsWith('/news/')
+  const showFooter = pathName === '/' || pathName === '/contact' || pathName === '/privacy-policy' || pathName === '/terms-and-conditions' || pathName === '/terms-and-conditions' || pathName === '/news' || pathName.startsWith('/news/')
   if (!showFooter) return null
   if (isUnsubscribe) return null
 

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   keywords:
     "Central Park News privacy policy, data protection NYC news, user privacy Central Park, privacy terms",
   alternates: {
-    canonical: `${liveUrl}/privacy`
+    canonical: `${liveUrl}/privacy-policy`
   }
 };
 
@@ -22,7 +22,7 @@ const Privacy = () => {
     "@type": "WebPage",
     "@id": `${siteUrl}/#privacy`,
     name: "Privacy Policy | Central Park News",
-    url: `${siteUrl}/privacy`,
+    url: `${siteUrl}/privacy-policy`,
     description: "Read the Privacy Policy of Central Park News to understand how we collect, use, and protect your personal information while delivering local news and stories.",
     isPartOf: { "@id": `${siteUrl}/#website` },
     publisher: { "@id": `${siteUrl}/#organization` }

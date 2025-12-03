@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 const FooterLinks = () => {
     const pathName = usePathname();
-    const isActive = pathName === '/privacy' || pathName === '/terms-and-conditions';
+    const isActive = pathName === '/privacy-policy' || pathName === '/terms-and-conditions';
 
     return (
         // <div className="flex flex-row border border-black justify-between items-center gap-4 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
@@ -33,9 +33,9 @@ const FooterLinks = () => {
                 })}
             </div>
             <div className='flex gap-3 max-[398px]:flex-col max-[398px]:items-center font-normal font-montserrat text-[14px] text-[#1E3D5A]'>
-                <Link href={'/privacy'} >
+                <Link href={'/privacy-policy'} >
                     <p
-                        className={`cursor-pointer hover:font-bold hover:text-primary-900 ${pathName === '/privacy' ? 'font-bold' : ''
+                        className={`cursor-pointer hover:font-bold hover:text-primary-900 ${pathName === '/privacy-policy' ? 'font-bold' : ''
                             }`}>PRIVACY POLICY</p>
                 </Link>
                 <Link href={'/terms-and-conditions'} >

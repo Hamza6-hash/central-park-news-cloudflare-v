@@ -168,7 +168,7 @@ class BackgroundSitemapGenerator {
           lastmod: new Date().toISOString(),
         },
         {
-          url: "/privacy",
+          url: "/privacy-policy",
           priority: "0.3",
           changefreq: "yearly",
           lastmod: new Date().toISOString(),
