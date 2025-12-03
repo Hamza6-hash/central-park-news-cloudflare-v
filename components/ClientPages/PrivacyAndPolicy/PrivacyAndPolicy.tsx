@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import { email } from "@/constants";
+import { liveUrl } from "@/lib/utils";
+import React from "react";
 
 const policySections = [
   {
@@ -8,7 +10,7 @@ const policySections = [
       <>
         Welcome to Central Park News ("we," "our," or "us"). This Privacy Policy explains
         how we collect, use, disclose, and safeguard your information when you visit our
-        website, centralpark.news, or engage with our services. Central Park News curates
+        website, <a href={liveUrl} className="text-blue-600 underline">centralpark.news</a>, or engage with our services. Central Park News curates
         and presents news content using advanced machine learning and automation technologies,
         rather than traditional journalism practices. We are committed to protecting your
         privacy and ensuring transparency in how we handle your information. Please read
@@ -146,8 +148,8 @@ const policySections = [
         </ul>
         <p className="mt-3">
           To exercise these rights, please contact us at{" "}
-          <a href="mailto:centralparknews@newtrix.app" className="text-blue-600 underline">
-            centralparknews@newtrix.app
+          <a href={`mailto:${email}@newtrix.app`} className="text-blue-600 underline">
+            {email}@newtrix.app
           </a>
           .
         </p>
@@ -186,7 +188,7 @@ const policySections = [
     ),
   },
   {
-    title: "Children’s Privacy",
+    title: "Children's Privacy",
     content: (
       <>
         Our services are not directed to children under 13 (or under 16 in the EU). We do not knowingly
@@ -225,10 +227,9 @@ const policySections = [
           <p>
             Email:{" "}
             <a href="mailto:centralparknews@newtrix.app" className="text-blue-600 underline">
-              centralparknews@newtrix.app
+              {email}@newtrix.app
             </a>
           </p>
-          {/* <p>Address: [Insert Business Address]</p> */}
           <p>Attn: Privacy Compliance Officer</p>
         </div>
       </>
@@ -237,61 +238,29 @@ const policySections = [
 ];
 
 const PrivacyAndPolicy = () => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
   return (
-    <main className="w-full min-h-screen bg-white text-black">
-      <div className="max-w-[1200px] mx-auto px-4 py-6">
-        <hr className="w-64 h-0.5 mb-2 bg-gray-200" />
-        <h1 className="text-3xl font-century-schoolbook font-bold text-[#2B4864] mb-2">
+    <div className="min-h-screen bg-white lg:px-20">
+      <div className="w-full mx-auto">
+        <h1 className="text-4xl font-bold text-[#2B4864] mb-2">
           Privacy Policy
         </h1>
-        <p className="text-sm text-gray-500 mb-6">Effective Date: 10-06-2025</p>
-
-        {/* Desktop Tabs */}
-        <div className="hidden md:flex flex-row gap-6 min-h-[500px]">
-          <aside className="md:w-1/3 border-r border-[#2B4864] pr-4">
-            <div className="sticky top-6">
-              {policySections.map((section, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedIndex(index)}
-                  className={`w-full text-left py-3 px-4 rounded-md mb-2 text-sm font-medium transition-colors ${index === selectedIndex
-                      ? "bg-blue-100 text-black border-l-4 border-gray-200"
-                      : "hover:bg-gray-100 text-[#2B4864]"
-                    }`}
-                >
-                  {section.title}
-                </button>
-              ))}
-            </div>
-          </aside>
-
-          <article className="md:w-2/3 text-sm leading-relaxed text-black">
-            <h2 className="text-xl font-semibold mb-4 text-[#2B4864]">
-              {policySections[selectedIndex].title}
-            </h2>
-            <div className="prose prose-sm max-w-none">
-              {policySections[selectedIndex].content}
-            </div>
-          </article>
-        </div>
-
-        {/* Mobile Full List */}
-        <div className="md:hidden flex flex-col gap-6">
+        <p className="text-gray-600 mb-8">
+          Effective Date: 10-06-2025
+        </p>
+        <div className="space-y-8">
           {policySections.map((section, index) => (
-            <section key={index} className="border-b border-gray-200 pb-6 last:border-b-0">
-              <h2 className="text-lg font-semibold mb-3 text-[#2B4864]">
+            <div key={index} className="pb-6 border-b border-gray-200 last:border-b-0">
+              <h2 className="text-2xl font-bold text-[#2B4864] mb-3">
                 {section.title}
               </h2>
-              <div className="text-sm leading-relaxed text-black prose prose-sm max-w-none">
+              <p className="text-black leading-relaxed">
                 {section.content}
-              </div>
-            </section>
+              </p>
+            </div>
           ))}
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

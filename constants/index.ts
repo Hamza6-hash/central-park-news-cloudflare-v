@@ -37,3 +37,4 @@ export const navbarLinks = [
 ];
 
 export const defultImage = "/thumbnail.webp";
+export const email = 'centralparknews'
