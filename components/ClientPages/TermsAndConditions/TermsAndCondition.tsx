@@ -72,8 +72,9 @@ const termsSections = [
         content: (
             <>
                 For any questions regarding these Terms & Conditions, please contact us
-                at <a href={`mailto:${email}@newstrix.app`} className="text-blue-600 underline">{email}@newtrix.app.</a>
-            </>
+                at  <a href={`mailto:${email}@blackacre.company`} className="text-blue-600 underline">
+                    {email}@blackacre.company
+                </a>  </>
         ),
     },
 ];

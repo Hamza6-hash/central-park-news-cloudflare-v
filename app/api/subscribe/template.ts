@@ -1,3 +1,5 @@
+import { liveUrl } from "@/lib/utils";
+
 export function subscribeTemplate(unsubscribeUrl: string) {
   return `
     <!DOCTYPE html>
@@ -90,7 +92,7 @@ export function subscribeTemplate(unsubscribeUrl: string) {
     <body>
         <div class="email-container">
             <div class="header">
-                <img src="${process.env.NEXT_PUBLIC_SITE_URL}logo.png" alt="Central Park News Logo">
+                <img src="${liveUrl}/logo.png" alt="Central Park News Logo">
             </div>
             <div class="content">
                 <p>Hello,</p>
@@ -102,8 +104,8 @@ export function subscribeTemplate(unsubscribeUrl: string) {
                 <p class="signature">– The Central Park News Team</p>
             </div>
             <div class="footer">
-                <a href="${process.env.NEXT_PUBLIC_SITE_URL}">Website</a> | 
-                <a href="${process.env.NEXT_PUBLIC_SITE_URL}contact">Contact Email</a> | 
+                <a href="${liveUrl}">Website</a> | 
+                <a href="${liveUrl}contact">Contact Email</a> | 
                 <a href="${unsubscribeUrl}" class="unsubscribe-link">Unsubscribe From These Emails</a>
           
             </div>
