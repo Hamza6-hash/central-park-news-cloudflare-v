@@ -56,11 +56,6 @@ export default function RootLayout({
       latitude: 40.7829,
       longitude: -73.9654,
     },
-    // sameAs: [
-    //   "https://www.facebook.com/",
-    //   "https://www.instagram.com/",
-    //   "https://twitter.com/",
-    // ],
   };
 
   const websiteSchema = {
@@ -94,6 +89,13 @@ export default function RootLayout({
         <meta name="google-site-verification" content="IX-zmkyeEfEBU_8lk9SpqKuxdnNAM8T_Tla3i0qDrw0" />
         {/* --------------------- GEO META TAGS ------------------ */}
         <SchemaOrg schemas={[websiteSchema, organizationSchema]} />
+        {/* ----------------- GOOGLE SUBSCRIPTION SCRIPT ---------*/}
+        <Script
+          src="https://news.google.com/swg/js/v1/swg-basic.js"
+          strategy="beforeInteractive"
+          type="application/javascript"
+        />
+        {/* ----------------- GOOGLE SUBSCRIPTION SCRIPT ---------*/}
         <link
           rel="preload"
           as="image"
