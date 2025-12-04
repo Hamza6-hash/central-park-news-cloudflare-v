@@ -148,8 +148,8 @@ const policySections = [
         </ul>
         <p className="mt-3">
           To exercise these rights, please contact us at{" "}
-          <a href={`mailto:${email}@newtrix.app`} className="text-blue-600 underline">
-            {email}@newtrix.app
+          <a href={`mailto:${email}@blackacre.company`} className="text-blue-600 underline">
+            {email}@blackacre.company
           </a>
           .
         </p>
@@ -226,8 +226,8 @@ const policySections = [
           <p><b>Central Park News</b></p>
           <p>
             Email:{" "}
-            <a href="mailto:centralparknews@newtrix.app" className="text-blue-600 underline">
-              {email}@newtrix.app
+            <a href={`mailto:${email}@blackacre.company`} className="text-blue-600 underline">
+              {email}@blackacre.company
             </a>
           </p>
           <p>Attn: Privacy Compliance Officer</p>
