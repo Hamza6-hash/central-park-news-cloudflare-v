@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import sgMail from "@sendgrid/mail";
-import { getDoc, doc, setDoc } from "firebase/firestore";
-import { db } from "@/lib/firebaseConfig";
+import admin from "firebase-admin";
+import { adminDb } from "@/lib/firebaseAdmin";
 import { HashBasedToken } from "@/lib/unsubscribeToken";
 import { subscribeTemplate } from "./template";
 
@@ -11,10 +11,14 @@ export async function POST(request: Request) {
   const { email } = await request.json();
 
   // Check if email already exists
-  const subscribeUser = await getDoc(
-    doc(db, "blog", "centralparkNews", "subscribeUsers", email)
-  );
-  if (subscribeUser.exists()) {
+  const subscribeUserRef = adminDb
+    .collection("blog")
+    .doc("centralparkNews")
+    .collection("subscribeUsers")
+    .doc(email);
+  
+  const subscribeUser = await subscribeUserRef.get();
+  if (subscribeUser.exists) {
     return NextResponse.json(
       { message: "Email already exists" },
       { status: 400 }
@@ -85,12 +89,12 @@ export async function POST(request: Request) {
     await sgMail.send(msg);
 
     // Only save to Firebase after both SendGrid and email operations succeed
-    await setDoc(doc(db, "blog", "centralparkNews", "subscribeUsers", email), {
+    await subscribeUserRef.set({
       email: email,
       unsubscribeToken: unsubscribeToken,
-      subscribedAt: new Date(),
+      subscribedAt: admin.firestore.FieldValue.serverTimestamp(),
       status: "active",
-      tokenCreatedAt: new Date(),
+      tokenCreatedAt: admin.firestore.FieldValue.serverTimestamp(),
       tokenExpiresAt: expiryTime,
       tokenUsed: false,
     });
