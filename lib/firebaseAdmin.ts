@@ -9,7 +9,7 @@ if (!admin.apps.length) {
 
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-      storageBucket: process.env.NEXT_PUBLIC_MEDIA_STORAGE_BUCKET
+      storageBucket: process.env.FIREBASE_STORAGE_BUCKET
     });
   } catch (error) {
     throw error
