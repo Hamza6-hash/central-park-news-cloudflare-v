@@ -17,6 +17,5 @@ export const getClientIp = (req: NextRequest): string => {
   return ip;
 };
 
-// export const toEmail = "newstrix@blackacre.company";
-export const toEmail = "passplay62@gmail.com";
+export const toEmail = "newstrix@blackacre.company";
 export const fromEmail = "newstrix@blackacre.company";
