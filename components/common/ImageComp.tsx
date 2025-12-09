@@ -10,7 +10,7 @@ const ImageComp = ({ imageURL, imageName, mobileURL }: { imageURL: string | Stat
   const mobileSrc = mobileURL || '/Mobilethumbnail.webp';
 
   return (
-    <div className="relative w-full md:w-[204px] aspect-[204/208] rounded-[16px]">
+    <div className="relative w-full md:w-[204px] aspect-[204/208] rounded-[16px] max-sm:aspect-[204/140]">
       <picture>
         <source
           media="(min-width: 756px)"
@@ -23,7 +23,7 @@ const ImageComp = ({ imageURL, imageName, mobileURL }: { imageURL: string | Stat
           fill
           alt={imageName || 'No Name'}
           quality={75}
-          className="pointer-events-none select-none rounded-[16px]"
+          className="pointer-events-none object-cover select-none rounded-[16px]"
           sizes="(max-width: 768px) 100vw, (min-width: 769px) 204px"
         />
       </picture>
