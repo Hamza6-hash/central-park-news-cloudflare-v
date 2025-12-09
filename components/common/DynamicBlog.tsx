@@ -55,13 +55,13 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
             </h1>
           </div>
           <div className="relative w-full xl:min-w-[1200px] max-w-[1200px] aspect-[1200/514]">
-            <SafeImage
+            <Image
               src={imageURL || defultImage}
               alt={title}
               fill
               quality={80}
               loading="lazy"
-              className="pointer-events-none select-none"
+              className="pointer-events-none object-fit rounded-[16px] select-none"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
             />
           </div>
