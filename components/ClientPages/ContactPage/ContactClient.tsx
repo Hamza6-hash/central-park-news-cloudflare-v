@@ -12,7 +12,7 @@ import CustomTextArea from "@/components/customInput/CustomTextArea";
 import ThankYouDialog from "@/components/dialogs/ThankYouDialog";
 
 const fieldClass = "!border-gray-100";
-const COOLDOWN_SECONDS = 300; // 5 minutes
+const COOLDOWN_SECONDS = 300;
 
 const ContactClient = () => {
   const formSchema = contactFormSchema();
@@ -20,7 +20,8 @@ const ContactClient = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cooldownRemaining, setCooldownRemaining] = useState<number>(0);
   const [isLocked, setIsLocked] = useState(false);
-  const [dialogType, setDialogType] = useState<"success" | "cooldown">("success");
+  const [dialogType, setDialogType] = useState<"success" | "cooldown" | "error">("success");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -31,7 +32,6 @@ const ContactClient = () => {
     },
   });
 
-  // Calculate remaining cooldown from localStorage
   const getRemainingCooldown = (): number => {
     if (typeof window === "undefined") return 0;
 
@@ -50,7 +50,6 @@ const ContactClient = () => {
     return remaining;
   };
 
-  // Check for cooldown on mount
   useEffect(() => {
     const remaining = getRemainingCooldown();
     if (remaining > 0) {
@@ -58,7 +57,6 @@ const ContactClient = () => {
       setCooldownRemaining(remaining);
     }
 
-    // Listen for storage changes (from other tabs)
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "contact_form_cooldown") {
         const newRemaining = getRemainingCooldown();
@@ -76,7 +74,6 @@ const ContactClient = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  // Countdown timer - updates every second
   useEffect(() => {
     const timer = setInterval(() => {
       const remaining = getRemainingCooldown();
@@ -104,7 +101,6 @@ const ContactClient = () => {
   };
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    // Prevent submission if already locked
     if (isLocked || isSubmitting) {
       return;
     }
@@ -131,21 +127,22 @@ const ContactClient = () => {
         throw new Error(responseData.message || "Failed to send message");
       }
 
-      // Success - start cooldown and show dialog
       startCooldown();
       setDialogType("success");
+      setErrorMessage("");
       setOpenDialog(true);
       form.reset();
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to send your message. Please try again.";
+      const errorMsg = error instanceof Error ? error.message : "Failed to send your message. Please try again.";
 
-      // Check if it's a cooldown error
-      if (errorMessage.includes("Please wait")) {
+      if (errorMsg.includes("Please wait")) {
         setDialogType("cooldown");
-        setOpenDialog(true);
       } else {
-        form.setError("root", { message: errorMessage });
+        setDialogType("error");
+        setErrorMessage(errorMsg);
       }
+
+      setOpenDialog(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -198,12 +195,12 @@ const ContactClient = () => {
                 placeholder="Message Here..."
                 schema={formSchema}
               />
+
               <div className="flex justify-end">
                 <Button
                   disabled={isButtonDisabled}
-                  className="bg-[#303130] text-white sm:w-[35%] transition-all   ease-in hover:bg-[#a9aca9] hover:text-black duration-300 py-3 px-6 w-full "
+                  className="bg-[#303130] hover:bg-white hover:text-black transition-all duration-300 text-white py-3 px-6 w-full sm:w-[35%] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                                           
                   {buttonText}
                 </Button>
               </div>
@@ -213,8 +210,9 @@ const ContactClient = () => {
           <ThankYouDialog
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
-            cooldownRemaining={cooldownRemaining}
             type={dialogType}
+            cooldownRemaining={cooldownRemaining}
+            errorMessage={errorMessage}
           />
         </div>
       </section>

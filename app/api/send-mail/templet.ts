@@ -50,8 +50,6 @@ export function contactAdminEmailTemplate(data: ContactEmailData) {
         .info-top p {
             margin: 4px 0;
         }
-
-        /* 🔥 Changed red to gray */
         .label {
             font-weight: 600;
             color: #6b6b6b;
