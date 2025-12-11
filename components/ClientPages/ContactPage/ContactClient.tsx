@@ -12,7 +12,7 @@ import CustomTextArea from "@/components/customInput/CustomTextArea";
 import ThankYouDialog from "@/components/dialogs/ThankYouDialog";
 
 const fieldClass = "!border-gray-100";
-const COOLDOWN_SECONDS = 300;
+const COOLDOWN_SECONDS = 60;
 
 const ContactClient = () => {
   const formSchema = contactFormSchema();

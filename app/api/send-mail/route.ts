@@ -18,7 +18,7 @@ interface ContactFormData {
   message: string;
 }
 
-const COOLDOWN_MINUTES = 5;
+const COOLDOWN_MINUTES = 1;
 const COOLDOWN_MS = COOLDOWN_MINUTES * 60 * 1000;
 
 const checkCooldown = async (
