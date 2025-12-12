@@ -1,6 +1,5 @@
 import crypto from 'crypto';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebaseConfig';
+import { adminDb } from '@/lib/firebaseAdmin';
 
 export class HashBasedToken {
   private static readonly SECRET_KEY = process.env.TOKEN_SECRET || 'your-secret-key-make-it-long-and-random';
@@ -65,14 +64,18 @@ export class HashBasedToken {
       // }
 
       // Check token in user document
-      const userDoc = await getDoc(doc(db, "blog", "centralparkNews", "subscribeUsers", email));
+      const userDoc = await adminDb.doc(`blog/centralparkNews/subscribeUsers/${email}`).get();
 
-      if (!userDoc.exists()) {
+      if (!userDoc.exists) {
         return { valid: false, error: 'User not found' };
       }
 
       const userData = userDoc.data();
-      
+
+      if (!userData) {
+        return { valid: false, error: 'User data not found' };
+      }
+
       // Check if token matches stored token
       if (userData.unsubscribeToken !== token) {
         return { valid: false, error: 'Token not found or invalid' };
@@ -98,7 +101,7 @@ export class HashBasedToken {
 
   // Mark token as used (one-time use)
   static async markTokenAsUsed(email: string): Promise<void> {
-    await setDoc(doc(db, "blog", "centralparkNews", "subscribeUsers", email), {
+    await adminDb.doc(`blog/centralparkNews/subscribeUsers/${email}`).set({
       tokenUsed: true,
       tokenUsedAt: new Date()
     }, { merge: true });
