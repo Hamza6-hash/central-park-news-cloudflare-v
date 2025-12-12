@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { HashBasedToken } from "@/lib/unsubscribeToken";
-import { doc, deleteDoc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebaseConfig";
+import { doc } from "firebase/firestore";
+import { adminDb } from "@/lib/firebaseAdmin";
 
 export async function POST(request: Request) {
     try {
@@ -35,12 +35,12 @@ export async function POST(request: Request) {
         await HashBasedToken.markTokenAsUsed(email);
 
         // Step 1: Remove from Firebase subscriber collection
-        const userDoc = doc(db, "blog", "centralparkNews", "subscribeUsers", email);
-        const userExists = await getDoc(userDoc);
-        
+        const userDoc = adminDb.doc(`blog/centralparkNews/subscribeUsers/${email}`);
+        const userExists = await userDoc.get();
+
         let removedFromFirebase = false;
-        if (userExists.exists()) {
-            await deleteDoc(userDoc);
+        if (userExists.exists) {
+            await userDoc.delete();
             removedFromFirebase = true;
             console.log(`Removed ${email} from Firebase`);
         } else {
