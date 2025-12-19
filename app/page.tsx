@@ -4,17 +4,62 @@ import SchemaOrg from "@/components/Schema";
 import { liveUrl } from "@/lib/utils";
 import { db } from "@/lib/firebaseConfig";
 import { collection, query, where, getDocs, doc, getDoc, orderBy, limit } from "firebase/firestore";
+import { unstable_cache } from "next/cache";
 
-export const metadata: Metadata = {
-  title: "Central Park News | Home",
-  description: "Covering community events, local news, and stories in and around Central Park, NYC. Fresh coverage, updated daily.",
-  keywords: "Central Park news, NYC park updates, New York local stories, Manhattan news",
-  alternates: {
-    canonical: `${liveUrl}`
-  }
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const article = await fetchFeaturedArticle();
+  const siteUrl = liveUrl;
+  const title = "Central Park News | Home";
+  const description = "Covering community events, local news, and stories in and around Central Park, NYC. Fresh coverage, updated daily.";
+  const ogImage = article?.mobileURL || article?.imageURL || `${siteUrl}/og-image.jpg`;
 
-async function fetchFeaturedArticle() {
+  return {
+    title,
+    description,
+    keywords: ["Central Park news", "NYC park updates", "New York local stories", "Manhattan news"],
+    alternates: {
+      canonical: siteUrl,
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url: siteUrl,
+      siteName: "Central Park News",
+      title,
+      description,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: article?.title || "Central Park News",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+      creator: "@centralparknews",
+      site: "@centralparknews",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+  };
+}
+
+// Internal function that performs the actual fetch
+async function _fetchFeaturedArticle() {
   try {
     if (!db) {
       return null;
@@ -81,6 +126,14 @@ async function fetchFeaturedArticle() {
   }
 }
 
+// Cached function - not exported to avoid Next.js build errors
+// Page files can only export specific Next.js exports (default, metadata, generateMetadata, etc.)
+const fetchFeaturedArticle = unstable_cache(
+  _fetchFeaturedArticle,
+  ['featured-article'],
+  { revalidate: 360 }
+);
+
 export default async function HomePage() {
   const article = await fetchFeaturedArticle();
   const siteUrl = liveUrl;
@@ -92,26 +145,31 @@ export default async function HomePage() {
     name: "Central Park News | Home",
     url: siteUrl,
     description:
-      "Stay updated with the latest headlines, breaking news, and community stories in Central Park , NY. Your trusted source for local updates.",
+      "Stay updated with the latest headlines, breaking news, and community stories in Central Park, NY. Your trusted source for local updates.",
     isPartOf: { "@id": `${siteUrl}/#website` },
-    publisher: { "@id": `${siteUrl}/#organization` }
+    publisher: { "@id": `${siteUrl}/#organization` },
+    inLanguage: "en-US",
+    datePublished: new Date().toISOString(),
+    dateModified: new Date().toISOString(),
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: siteUrl,
+        },
+      ],
+    },
   };
 
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "NewsArticle",
-    headline: article?.title || "Welcome To Central Park News",
-    image: [article?.imageURL || article?.mobileURL || null],
-    author: { "@type": "Person", name: article?.authorName || 'Newstrix' },
-    datePublished: article?.createdAt || new Date().toISOString(),
-    dateModified: article?.createdAt || new Date().toISOString(),
-    mainEntityOfPage: `${siteUrl}/news/${article?.titleSlug}`
-  };
-
-  return <>
-    <SchemaOrg schemas={[webPageSchema, articleSchema]} />
-    <Home article={article} />
-  </>
+  return (
+    <>
+      <SchemaOrg schemas={[webPageSchema]} />
+      <Home article={article} />
+    </>
+  );
 }
 
 export const revalidate = 360; 

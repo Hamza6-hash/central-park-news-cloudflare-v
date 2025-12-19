@@ -7,7 +7,6 @@ const DynamicTermsAndCondition = dynamic(
   () => import('@/components/ClientPages/TermsAndConditions/TermsAndCondition'),
 );
 
-
 export const metadata: Metadata = {
   title: "Terms and Conditions | Central Park News",
   description:
@@ -16,6 +15,16 @@ export const metadata: Metadata = {
     "Central Park News terms, NYC news site policies, user agreement Central Park News, legal terms",
   alternates: {
     canonical: `${liveUrl}/terms-and-conditions`
+  },
+  openGraph: {
+    title: "Terms and Conditions | Central Park News",
+    description:
+      "Welcome to Howard Beach News. By using our website, you agree to these Terms and Conditions and our Privacy Policy. If you disagree with any part of these terms, please do not use our services.",
+    url: liveUrl,
+    siteName: "Central Park News",
+    images: [
+      { url: `${liveUrl}/images/og-image.jpg` }
+    ]
   }
 };
 

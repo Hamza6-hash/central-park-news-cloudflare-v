@@ -30,19 +30,65 @@ interface PaginationData {
   currentPage: number;
 }
 
-export const metadata: Metadata = {
-  title: "News | Central Parks News - Central Park, NYC",
-  description: "Follow up-to-date news, stories, and developments from Central Park and nearby New York areas.",
-  keywords: [
-    "Central Park NYC news",
-    "local updates",
-    "Manhattan current events",
-    "Central Park community stories",
-    "NYC breaking news"
-  ],
-  alternates: {
-    canonical: `${liveUrl}/news`
-  }
+export async function generateMetadata(): Promise<Metadata> {
+  const initialData = await getInitialNewsData();
+  const siteUrl = liveUrl;
+  const newsUrl = `${siteUrl}/news`;
+  const title = "News | Central Parks News - Central Park, NYC";
+  const description = "Follow up-to-date news, stories, and developments from Central Park and nearby New York areas.";
+
+  // Use first article's image if available, otherwise fallback
+  const ogImage = initialData.items[0]?.imageURL || `${siteUrl}/main.webp`;
+
+  return {
+    title,
+    description,
+    keywords: [
+      "Central Park NYC news",
+      "local updates",
+      "Manhattan current events",
+      "Central Park community stories",
+      "NYC breaking news"
+    ],
+    alternates: {
+      canonical: newsUrl,
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url: newsUrl,
+      siteName: "Central Park News",
+      title,
+      description,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: initialData.items[0]?.title || "Central Park News Collection",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+      creator: "@centralparknews",
+      site: "@centralparknews",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+  };
 }
 
 async function getInitialNewsData(): Promise<PaginationData> {
@@ -96,7 +142,7 @@ export default async function NewsPage() {
         headline: article.title,
         description: stripMarkdown(article.content).substring(0, 160),
         image: article.imageURL || `${siteUrl}/main.webp`,
-        datePublished: article.createdAt,
+        datePublished: article.createdAt ? new Date(article.createdAt).toISOString() : new Date().toISOString(),
         author: {
           "@type": "Person",
           name: article.authorName,
