@@ -8,9 +8,19 @@ export const metadata: Metadata = {
   description:
     "Read the Privacy Policy of Central Park News to learn how we handle your data, ensure user privacy, and protect your information.",
   keywords:
-    "Central Park News privacy policy, data protection NYC news, user privacy Central Park, privacy terms",
+    ["Central Park News privacy policy", "data protection NYC news", "user privacy Central Park", "privacy terms"],
   alternates: {
     canonical: `${liveUrl}/privacy-policy`
+  },
+  openGraph: {
+    title: "Privacy Policy | Central Park News",
+    description:
+      "Read the Privacy Policy of Central Park News to learn how we handle your data, ensure user privacy, and protect your information.",
+    url: liveUrl,
+    siteName: "Central Park News",
+    images: [
+      { url: `${liveUrl}/images/og-image.jpg` }
+    ]
   }
 };
 

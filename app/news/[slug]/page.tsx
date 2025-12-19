@@ -7,9 +7,10 @@ import SchemaOrg from "@/components/Schema";
 import { News } from "@/components/ClientPages/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 import { redirect } from "next/navigation";
-import { liveUrl } from "@/lib/utils";
+import { formatDateToISO, liveUrl } from "@/lib/utils";
 import { stripMarkdown } from "@/lib/query";
 import GoogleNewsSubscription from "@/components/Scripts/GoogleNewsSubscription";
+import { unstable_cache } from "next/cache";
 
 // export async function generateStaticParams() {
 //   const newsCollection = collection(db, "blog/centralparkNews/newsletter");
@@ -21,7 +22,8 @@ import GoogleNewsSubscription from "@/components/Scripts/GoogleNewsSubscription"
 //   }));
 // }
 
-async function getNewsData(slug: string) {
+// Internal function that performs the actual fetch
+async function _getNewsData(slug: string) {
   try {
     if (!db) {
       return null;
@@ -75,6 +77,12 @@ async function getNewsData(slug: string) {
   }
 }
 
+const getNewsData = unstable_cache(
+  _getNewsData,
+  ['news-article'],
+  { revalidate: 300 }
+);
+
 
 export async function generateMetadata({
   params,
@@ -90,6 +98,10 @@ export async function generateMetadata({
       return {
         title: `Newsletter Not Found | Central Park News`,
         description: "The requested newsletter could not be found.",
+        robots: {
+          index: false,
+          follow: false,
+        },
       };
     }
 
@@ -97,26 +109,40 @@ export async function generateMetadata({
       return {
         title: "Invalid Newsletter Data | Central Park News",
         description: "The requested newsletter has invalid data.",
+        robots: {
+          index: false,
+          follow: false,
+        },
       };
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || liveUrl;
-
     const pageUrl = `${siteUrl}/news/${slug}`;
-    const ogImageUrl =
-      newsData.socialImageUrls?.facebook?.url || newsData.imageURL;
-    const twitterImageUrl =
-      newsData.socialImageUrls?.twitter?.url || newsData.imageURL;
 
-    const keywords = newsData.tags;
+    // Prefer mobile/portrait images for better Google Discover performance
+    const ogImageUrl =
+      newsData.socialImageUrls?.mobile?.url ||
+      newsData.socialImageUrls?.facebook?.url ||
+      newsData.imageURL;
+    const twitterImageUrl =
+      newsData.socialImageUrls?.twitter?.url ||
+      newsData.socialImageUrls?.facebook?.url ||
+      newsData.imageURL;
+
+    // Format dates to ISO strings
+    const publishedTime = formatDateToISO(newsData.publishDate || newsData.date || newsData.createdAt);
+    const modifiedTime = formatDateToISO(newsData.updatedAt || newsData.publishDate || newsData.date || newsData.createdAt);
+
+    const keywords = Array.isArray(newsData.tags) ? [...newsData.tags] : [];
     if (newsData.category) {
       keywords.push(newsData.category);
     }
+    keywords.push("Central Park News", "NYC News", "Manhattan News");
 
     return {
       title: `${newsData.title} | Central Park News`,
       description: newsData.excerpt,
-      keywords: keywords,
+      keywords: keywords.length > 0 ? keywords : undefined,
       alternates: {
         canonical: pageUrl,
       },
@@ -137,23 +163,40 @@ export async function generateMetadata({
           : [],
         locale: "en_US",
         type: "article",
-        publishedTime: newsData.publishDate,
-        modifiedTime: newsData.updatedAt,
-        authors: ["Central Park News"],
-        section: newsData.category,
-        tags: newsData.tags,
+        publishedTime: publishedTime,
+        modifiedTime: modifiedTime,
+        authors: [newsData.authorName || "Central Park News"],
+        section: newsData.category || "News",
+        tags: Array.isArray(newsData.tags) ? newsData.tags : [],
       },
       twitter: {
         card: "summary_large_image",
         title: newsData.title,
         description: newsData.excerpt,
         images: twitterImageUrl ? [twitterImageUrl] : [],
+        creator: "@centralparknews",
+        site: "@centralparknews",
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+        },
       },
     };
   } catch (error) {
     return {
       title: "Error | Central Park News",
       description: "An error occurred while fetching the newsletter metadata.",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 }
@@ -171,6 +214,26 @@ export default async function NewsPage({ params }: { params: { slug: string } })
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || liveUrl;
   const pageUrl = `${siteUrl}/news/${slug}`;
 
+  // Format dates to ISO strings for schema.org
+  const publishedDate = formatDateToISO(newsData.publishDate || newsData.date || newsData.createdAt);
+  const modifiedDate = formatDateToISO(newsData.updatedAt || newsData.publishDate || newsData.date || newsData.createdAt);
+
+  // Get article images - ensure it's an array
+  const articleImages = [];
+  if (newsData.socialImageUrls?.original?.url) {
+    articleImages.push(newsData.socialImageUrls.original.url);
+  }
+  if (newsData.socialImageUrls?.facebook?.url && !articleImages.includes(newsData.socialImageUrls.facebook.url)) {
+    articleImages.push(newsData.socialImageUrls.facebook.url);
+  }
+  if (newsData.imageURL && !articleImages.includes(newsData.imageURL)) {
+    articleImages.push(newsData.imageURL);
+  }
+  // Fallback if no images
+  if (articleImages.length === 0) {
+    articleImages.push(`${siteUrl}/main.webp`);
+  }
+
   // ----- JSON-LD Schemas -----
   const webPageSchema = {
     "@context": "https://schema.org",
@@ -181,26 +244,48 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     description: newsData.excerpt,
     isPartOf: { "@id": `${siteUrl}/#website` },
     publisher: { "@id": `${siteUrl}/#organization` },
+    inLanguage: "en-US",
+    datePublished: publishedDate,
+    dateModified: modifiedDate,
   };
 
   const newsArticleSchema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     "@id": `${pageUrl}#article`,
-    mainEntityOfPage: { "@id": `${pageUrl}#webpage` },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${pageUrl}#webpage`
+    },
     headline: newsData.title,
-    image: newsData.socialImageUrls?.original?.url || newsData.imageURL,
-    datePublished: newsData.publishDate,
-    dateModified: newsData.updatedAt || newsData.publishDate,
+    image: articleImages.length === 1 ? articleImages[0] : articleImages,
+    datePublished: publishedDate,
+    dateModified: modifiedDate,
     author: {
       "@type": "Person",
-      name: newsData.authorName || "Newstrix"
+      name: newsData.authorName || "Central Park News",
+      ...((newsData as any).authorImage && (newsData as any).authorImage !== "/default-avatar.png" && {
+        image: (newsData as any).authorImage
+      })
     },
-    publisher: { "@id": `${siteUrl}/#organization` },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: "Central Park News",
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/logo`
+      }
+    },
     description: newsData.excerpt,
-    articleBody: stripMarkdown(newsData.content),
-    articleSection: newsData.category || "Central Park News",
-    url: pageUrl
+    articleBody: stripMarkdown(newsData.content || "").substring(0, 5000),
+    articleSection: newsData.category || "News",
+    url: pageUrl,
+    ...(Array.isArray(newsData.tags) && newsData.tags.length > 0 && {
+      keywords: newsData.tags.join(", ")
+    }),
+    wordCount: stripMarkdown(newsData.content || "").split(/\s+/).length,
+    inLanguage: "en-US",
   };
 
   const breadcrumbSchema = {

@@ -58,6 +58,30 @@ export const formatedDate = (date: any, formatString: string = 'MMMM dd, yyyy'):
   }
 };
 
+export function formatDateToISO(date: any): string {
+  if (!date) return new Date().toISOString();
+  
+  if (date.seconds) {
+    return new Date(date.seconds * 1000).toISOString();
+  }
+  
+  // If it's already a string, try to parse it
+  if (typeof date === 'string') {
+    const parsed = new Date(date);
+    if (!isNaN(parsed.getTime())) {
+      return parsed.toISOString();
+    }
+  }
+  
+  // If it's a Date object
+  if (date instanceof Date) {
+    return date.toISOString();
+  }
+  
+  return new Date().toISOString();
+}
+
+
 export const generateSlug = (title: string, id?: string): string => {
     if (!title) return '';
     let slug = title.toLowerCase();
