@@ -7,6 +7,7 @@ import TruncateText from "./TruncateProps";
 import SafeImage from "@/constants/SafeImage";
 import { Calendar, Zap } from "lucide-react";
 import { stripMarkdown } from "@/lib/query";
+import { getConciseAnchorText } from "@/lib/utils";
 
 interface BlogsCard {
   showDateTimeInRow?: boolean;
@@ -49,8 +50,12 @@ const BlogsCard = ({
     return `${routes.articles}/${titleSlug}`;
   };
 
+  const conciseAnchorText = getConciseAnchorText(title);
+
   return (
     <Link href={getLinkPath()}>
+      {/* Screen-reader-only concise anchor text for SEO */}
+      <span className="sr-only">{conciseAnchorText}</span>
       <div className="w-full max-w-[381px] mx-auto cursor-pointer group">
         <div className="bg-[#67B6DF24] rounded-lg overflow-hidden shadow-sm  duration-300 ease-in-out group-hover:shadow-lg group-hover:scale-[1.02]">
 

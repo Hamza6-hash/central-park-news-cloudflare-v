@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Layout from "@/components/Layout";
 import FontLinks from "@/components/fontLinks/FontLinks";
@@ -21,9 +21,19 @@ export const metadata: Metadata = {
   title: "Central Parks News | Stories from the Heart of New York City",
   description: "Covering community events, local news, and stories in and around Central Park, NYC. Fresh coverage, updated daily.",
   keywords: ["Central Park news", "NYC park updates", "New York local stories", "Manhattan news"],
+  icons: {
+    apple: "/apple-touch-icon.png",
+  },
   other: {
     "x-ua-compatible": "IE=edge",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({
@@ -104,7 +114,6 @@ export default function RootLayout({
           sizes="(max-width: 375px) 100vw, 430px"
         />
         <link rel="preload" as="image" href="/top.webp" media="(min-width: 641px)" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <FontLinks />
       </head>
       <body className="select-none ">

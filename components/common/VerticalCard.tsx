@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { formatedDate } from "@/lib/utils";
+import { formatedDate, getConciseAnchorText } from "@/lib/utils";
 import { routes } from "@/constants";
 import SafeImage from "@/constants/SafeImage";
 import { stripMarkdown } from "@/lib/query";
@@ -27,6 +27,7 @@ const VerticalCard = ({
     category,
 }: VerticalCard) => {
     const formatedPublishDate = formatedDate(publishDate, "MMMM dd, yyyy");
+    const conciseAnchorText = getConciseAnchorText(title);
 
     const getLinkPath = () => {
         if (type === "news") {
@@ -37,6 +38,8 @@ const VerticalCard = ({
 
     return (
         <Link href={getLinkPath()} aria-label={title || "View article"} className="block h-full border-0">
+            {/* Screen-reader-only concise anchor text for SEO - appears first in DOM */}
+            <span className="sr-only">{conciseAnchorText}</span>
             <div
                 className="group border-0  w-full max-w-[245px] h-full min-h-[272px]  relative text-white overflow-hidden"
                 style={{ backfaceVisibility: "hidden", perspective: "1000px" }}

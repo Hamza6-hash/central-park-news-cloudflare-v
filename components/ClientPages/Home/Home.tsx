@@ -1,7 +1,7 @@
 
 import TopStories from "@/components/topStories/TopStories";
 import { StaticImageData } from "next/image";
-import { formatedDate } from "@/lib/utils";
+import { formatedDate, getConciseAnchorText } from "@/lib/utils";
 import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
 import { Suspense } from "react";
@@ -57,6 +57,8 @@ export default function Home({ article }: HomeProps) {
             <Link
               href={`/${article.type === 'newsletter' ? 'news' : 'articles'}/${article.titleSlug}`}
             >
+              {/* Screen-reader-only concise anchor text for SEO */}
+              <span className="sr-only">{getConciseAnchorText(article.title || "")}</span>
               <h1
                 className="
                 text-[30px]
@@ -80,7 +82,7 @@ export default function Home({ article }: HomeProps) {
 
           <div className="min-h-[24px] flex items-center text-[12px] sm:text-xs md:text-sm lg:text-base gap-2 flex-wrap">
             <hr className="w-4 text-[#34148E] sm:w-6 h-1" />
-            <h2 className="bg-[#E4212B] text-white text-[12px] capitalize font-poppins truncate w-fit max-w-[60%] px-[12px] rounded-xl">{article.category || "Local News"}</h2>
+            <span className="bg-[#E4212B] text-white text-[12px] capitalize font-poppins truncate w-fit max-w-[60%] px-[12px] rounded-xl inline-block">{article.category || "Local News"}</span>
             <h6 className="capitalize font-poppins text-[12px] sm:text-xs md:text-sm lg:text-base">
               {article.authorName}
             </h6>
@@ -93,7 +95,13 @@ export default function Home({ article }: HomeProps) {
 
         {/* Content with reserved space */}
         <div className="markdown-content min-h-[200px] text-[#000000] font-poppins">
-          <ReactMarkdown>{article?.content}</ReactMarkdown>
+          <ReactMarkdown
+            components={{
+              h1: ({ node, ...props }) => <h2 {...props} />,
+            }}
+          >
+            {article?.content}
+          </ReactMarkdown>
         </div>
 
 
