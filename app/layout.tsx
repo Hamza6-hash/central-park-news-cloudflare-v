@@ -57,8 +57,10 @@ export default function RootLayout({
     foundingDate: "2025",
     address: {
       "@type": "PostalAddress",
+      streetAddress: "Central Park, Manhattan",
       addressLocality: "New York",
       addressRegion: "NY",
+      postalCode: "10024",
       addressCountry: "US",
     },
     geo: {
