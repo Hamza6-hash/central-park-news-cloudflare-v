@@ -31,9 +31,6 @@ async function validateUser(email: string): Promise<void | null | UserData> {
       redirect("/?toast=token-already-used");
     }
 
-    if (userData.tokenExpiresAt.toDate() < now) {
-      redirect("/?toast=expired");
-    }
   } catch (error: any) {
     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
       throw error;
