@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { getConciseAnchorText } from "@/lib/utils";
 
 interface SearchResult {
   id: string;
@@ -196,6 +197,8 @@ const Searchbar: React.FC<SearchbarProps> = ({ isOpen, onClose, onOpen }) => {
                           onClose();
                         }}
                       >
+                        {/* Screen-reader-only concise anchor text for SEO */}
+                        <span className="sr-only">{getConciseAnchorText(article.title)}</span>
                         <li className="mb-2 p-2 space-y-2 hover:border-l-[5px] border-[#1E3D5A] hover:bg-[#E2EDF3] rounded cursor-pointer">
                           <h4 className="font-semibold font-century-gothic text-[#224667] text-[14px]">{article.title}</h4>
                           <p className="text-sm max-sm:flex max-sm:flex-col max-sm:gap-2 max-sm:justify-center max-sm:w-full text-[#224667] capitalize sm:space-x-2">

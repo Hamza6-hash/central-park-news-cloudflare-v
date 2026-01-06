@@ -1,6 +1,6 @@
 import React from "react";
 import TruncateText from "./TruncateProps";
-import { formatedDate } from "@/lib/utils";
+import { formatedDate, getConciseAnchorText } from "@/lib/utils";
 import { StaticImageData } from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
@@ -43,15 +43,19 @@ const HorizontalCard = ({
         return `${routes.articles}/${titleSlug}`;
     };
 
+    const conciseAnchorText = getConciseAnchorText(title || "");
+
     return (
         <Link href={getLinkPath()}>
+            {/* Screen-reader-only concise anchor text for SEO */}
+            <span className="sr-only">{conciseAnchorText}</span>
             <div className="flex gap-4 relative text-black max-md:flex-col max-md:w-full transition-all duration-300 rounded-lg cursor-pointer">
                 <div className="md:w-[210px] w-full rounded-[16px] ">
                     <ImageComp imageURL={imageURL} mobileURL={mobileURL || ''} imageName={imageName || 'No Name'} />
                 </div>
                 <div className="flex flex-col gap-4">
                     <div className="space-y-1">
-                        <h1 className="bg-[#E4212B] text-white text-xs capitalize font-montserrat truncate w-fit max-w-[70%] py-1 px-2  rounded-full">{category || 'Local News'}</h1>
+                        <span className="bg-[#E4212B] text-white text-xs capitalize font-montserrat truncate w-fit max-w-[70%] py-1 px-2  rounded-full inline-block">{category || 'Local News'}</span>
                         <h2 className="font-century-schoolbook capitalize text-2xl leading-7 text-[18px] sm:text-[24px] line-clamp-3 hover:text-primary-800 ">
                             {title || "-"}
                         </h2>

@@ -100,4 +100,33 @@ export const generateSlug = (title: string, id?: string): string => {
     return slug;
 };
 
+/**
+ * Creates concise anchor text for SEO optimization
+ * Limits to 60 characters or 8 words maximum for better SEO
+ * @param text - The full text to truncate
+ * @param maxLength - Maximum character length (default: 60)
+ * @param maxWords - Maximum word count (default: 8)
+ * @returns Concise anchor text optimized for SEO
+ */
+export const getConciseAnchorText = (
+    text: string, 
+    maxLength: number = 60, 
+    maxWords: number = 8
+): string => {
+    if (!text) return "Read article";
+    const words = text.split(' ');
+    
+    // If text is already within limits, return as is
+    if (words.length <= maxWords && text.length <= maxLength) return text;
+    
+    // Take first N words
+    const firstWords = words.slice(0, maxWords).join(' ');
+    
+    // If first words are within length limit, return them
+    if (firstWords.length <= maxLength) return firstWords;
+    
+    // Otherwise truncate at character limit with ellipsis
+    return text.substring(0, maxLength - 3) + '...';
+};
+
 export const liveUrl = "https://www.centralpark.news"

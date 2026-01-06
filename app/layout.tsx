@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Layout from "@/components/Layout";
 import FontLinks from "@/components/fontLinks/FontLinks";
@@ -9,10 +9,6 @@ import SchemaOrg from "@/components/Schema";
 import dynamic from "next/dynamic";
 import { liveUrl } from "@/lib/utils";
 
-// Lazy load non-critical components
-const GTM = dynamic(() => import("@/components/ClientPages/GTM/GoogleTagManager"), {
-  ssr: false,
-});
 const CSSOptimizer = dynamic(() => import("@/components/CSSOptimizer"), {
   ssr: false,
 });
@@ -21,9 +17,19 @@ export const metadata: Metadata = {
   title: "Central Parks News | Stories from the Heart of New York City",
   description: "Covering community events, local news, and stories in and around Central Park, NYC. Fresh coverage, updated daily.",
   keywords: ["Central Park news", "NYC park updates", "New York local stories", "Manhattan news"],
+  icons: {
+    apple: "/apple-touch-icon.png",
+  },
   other: {
     "x-ua-compatible": "IE=edge",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({
@@ -47,8 +53,10 @@ export default function RootLayout({
     foundingDate: "2025",
     address: {
       "@type": "PostalAddress",
+      streetAddress: "Central Park, Manhattan",
       addressLocality: "New York",
       addressRegion: "NY",
+      postalCode: "10024",
       addressCountry: "US",
     },
     geo: {
@@ -95,6 +103,37 @@ export default function RootLayout({
           strategy="beforeInteractive"
           type="application/javascript"
         />
+        <Script
+          id="gtm-script"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M5W79LR8');`,
+          }}
+        />
+        <Script
+          id="ga-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+            // Default: deny all until user consents
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('consent', 'default', {
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied',
+              'analytics_storage': 'denied',
+              'functionality_storage': 'denied',
+              'personalization_storage': 'denied',
+              'security_storage': 'granted'
+           });`
+          }}
+        />
         {/* ----------------- GOOGLE SUBSCRIPTION SCRIPT ---------*/}
         <link
           rel="preload"
@@ -104,11 +143,11 @@ export default function RootLayout({
           sizes="(max-width: 375px) 100vw, 430px"
         />
         <link rel="preload" as="image" href="/top.webp" media="(min-width: 641px)" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <FontLinks />
       </head>
       <body className="select-none ">
-        <GTM />
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5W79LR8"
+          height="0" width="0" style={{ display: "none", visibility: "hidden" }}></iframe></noscript>
         <CSSOptimizer />
         <Providers>
           <ToastProvider>

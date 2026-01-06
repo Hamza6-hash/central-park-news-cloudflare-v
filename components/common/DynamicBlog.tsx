@@ -67,9 +67,9 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           </div>
           <div className="flex flex-wrap items-center gap-2  max-sm:text-[12px] sm:text-lg text-[12px]">
             <hr className="w-6 h-1" />
-            <h1 className="bg-[#E4212B] text-[12px]  text-white capitalize font-poppins truncate px-[12px] rounded-xl max-w-[50%] sm:max-w-full w-fit">
+            <span className="bg-[#E4212B] text-[12px]  text-white capitalize font-poppins truncate px-[12px] rounded-xl max-w-[50%] sm:max-w-full w-fit">
               {category || "Local News"}
-            </h1>
+            </span>
             <h6 className="capitalize text-nowrap font-montserrat">
               {authorName}
             </h6>
@@ -83,7 +83,13 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
         </div>
 
         <div className="markdown-content max-sm:text-[14px]">
-          <ReactMarkdown>{content}</ReactMarkdown>
+          <ReactMarkdown
+            components={{
+              h1: ({ node, ...props }) => <h2 {...props} />,
+            }}
+          >
+            {content}
+          </ReactMarkdown>
         </div>
         <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
           {showWritter === true && (

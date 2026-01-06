@@ -65,7 +65,6 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
 
   return (
     <div className="w-full ">
-      <h1 className="sr-only">{news.title}</h1>
       <div className="w-full">
         <div className="w-full sm:w-[537px] h-[2px] bg-[#252525]"></div>
         <div className="flex flex-col gap-4 mt-2 mb-4 ">
