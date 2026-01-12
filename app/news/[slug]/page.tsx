@@ -12,15 +12,6 @@ import { stripMarkdown } from "@/lib/query";
 import GoogleNewsSubscription from "@/components/Scripts/GoogleNewsSubscription";
 import { unstable_cache } from "next/cache";
 
-// export async function generateStaticParams() {
-//   const newsCollection = collection(db, "blog/centralparkNews/newsletter");
-//   const q = query(newsCollection, where("status", "==", "published"));
-//   const snapshot = await getDocs(q);
-
-//   return snapshot.docs.map((doc) => ({
-//     slug: doc.data().titleSlug,
-//   }));
-// }
 
 // Internal function that performs the actual fetch
 async function _getNewsData(slug: string) {
