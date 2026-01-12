@@ -61,7 +61,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               fill
               quality={80}
               loading="lazy"
-              className="pointer-events-none object-fit rounded-[16px] select-none"
+              className="pointer-events-none object-cover object-center rounded-[16px] select-none"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
             />
           </div>
