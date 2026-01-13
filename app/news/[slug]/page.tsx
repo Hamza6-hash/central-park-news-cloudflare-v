@@ -268,6 +268,10 @@ export default async function NewsPage({ params }: { params: { slug: string } })
         url: `${siteUrl}/logo`
       }
     },
+    isPartOf: {
+      "@type": "Product",
+      productID: "CAowjsrDDA:openaccess"
+    },
     description: newsData.excerpt,
     articleBody: stripMarkdown(newsData.content || "").substring(0, 5000),
     articleSection: newsData.category || "News",
