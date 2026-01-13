@@ -83,7 +83,7 @@ export async function GET() {
     const q = query(
       newsRef,
       where('status', '==', 'published'),
-      orderBy('date', 'desc'),
+      orderBy('createdAt', 'desc'),
       limit(50)
     );
     
