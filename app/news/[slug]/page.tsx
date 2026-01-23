@@ -272,6 +272,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
       "@type": "Product",
       productID: "CAowjsrDDA:openaccess"
     },
+    isAccessibleForFree: true,
     description: newsData.excerpt,
     articleBody: stripMarkdown(newsData.content || "").substring(0, 5000),
     articleSection: newsData.category || "News",
