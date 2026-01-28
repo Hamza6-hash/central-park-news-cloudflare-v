@@ -1,25 +1,17 @@
-# GPTBot
+# Sitemaps
+Sitemap: https://www.centralpark.news/sitemap.xml
+
 User-agent: GPTBot
 Allow: /
 
-# Googlebot
 User-agent: Googlebot
 Allow: /
 
-# Bingbot
 User-agent: Bingbot
 Allow: /
 
-# GeminiBot
 User-agent: GeminiBot
 Allow: /
 
-# *
 User-agent: *
 Allow: /
-
-# Host
-Host: https://www.centralpark.news
-
-# Sitemaps
-Sitemap: https://www.centralpark.news/sitemap.xml
