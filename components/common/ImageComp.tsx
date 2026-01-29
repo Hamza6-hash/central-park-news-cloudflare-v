@@ -22,6 +22,7 @@ const ImageComp = ({ imageURL, imageName, mobileURL }: { imageURL: string | Stat
           loading="eager"
           fill
           alt={imageName || 'No Name'}
+          title={imageName || 'No Name'}
           quality={75}
           className="pointer-events-none object-cover select-none rounded-[16px]"
           sizes="(max-width: 768px) 100vw, (min-width: 769px) 204px"

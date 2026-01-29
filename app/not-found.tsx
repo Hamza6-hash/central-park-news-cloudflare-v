@@ -15,6 +15,7 @@ const NotFound = () => {
           <Image
             src={'/logo.png'}
             alt="Blockchain Briefing logo"
+            title="Central Park News logo"
             quality={75}
             width={180}
             height={80}
@@ -37,6 +38,7 @@ const NotFound = () => {
                 <Image
                   src="/not-found.png"
                   alt="Not Found"
+                  title="Not Found"
                   width={430}
                   height={366}
                   className="w-full max-w-[200px] sm:max-w-[350px] h-auto"

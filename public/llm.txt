@@ -8,11 +8,11 @@ llm-purpose: discovery
 
 llm-usage: no-training
 content-license: All rights reserved
-attribution: must-link https://central-park-news.vercel.app/
+attribution: must-link https://www.centralpark.news/
 
 # Contact & Policy
 contact: centralparknews@newtrix.app
-policy: https://central-park-news.vercel.app/privacy-policy
+policy: https://www.centralpark.news/privacy-policy
 
 # Organization & Partners
 organization: Newstrix

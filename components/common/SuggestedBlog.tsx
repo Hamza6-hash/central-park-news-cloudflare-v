@@ -57,6 +57,7 @@ const SuggestedBlogCard: React.FC<SuggestedBlogCardProps> = ({
                     <Image
                         src={imageURL}
                         alt={title || "Article image"}
+                        title={title || "Article image"}
                         fill
                         priority={true}
                         className="object-cover"
