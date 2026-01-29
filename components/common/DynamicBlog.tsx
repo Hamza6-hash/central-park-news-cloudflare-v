@@ -58,6 +58,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
             <Image
               src={imageURL || defultImage}
               alt={title}
+              title={title}
               fill
               quality={80}
               loading="lazy"
@@ -119,6 +120,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
             <Image
               src="/related.webp"
               alt="No related news"
+              title="No related news"
               height={220}
               width={170}
               className="object-contain"

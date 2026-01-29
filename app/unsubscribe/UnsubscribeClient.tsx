@@ -74,6 +74,7 @@ const UnsubscribeClient = () => {
           <Image
             src={'/logo.png'}
             alt="Blockchain Briefing logo"
+            title="Central Park News logo"
             quality={75}
             width={180}
             height={80}

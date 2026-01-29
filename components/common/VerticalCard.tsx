@@ -48,6 +48,7 @@ const VerticalCard = ({
                     <Image
                         src={imageURL}
                         alt={title || "Article image"}
+                        title={title || "Article image"}
                         fill
                         className="object-cover pointer-events-none select-none rounded-t-[16px] rounded-b-[17px] border-0"
                         sizes="245px"

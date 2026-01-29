@@ -32,6 +32,7 @@ const Navbar = () => {
             <Image
               src={'/logo.png'}
               alt="Horizon logo"
+              title="Central Park News logo"
               quality={75}
               width={120}
               height={120}
@@ -65,6 +66,7 @@ const Navbar = () => {
               <Image
                 src={'/logo.png'}
                 alt="Horizon logo"
+                title="Central Park News logo"
                 quality={75}
                 width={151}
                 height={120}

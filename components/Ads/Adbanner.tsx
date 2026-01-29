@@ -36,6 +36,7 @@ const AdBanner = () => {
             <Image
               src="/top.webp"
               alt="Banner"
+              title="Banner"
               width={1199}
               height={200}
               className="object-contain head-banner-ad"
@@ -49,6 +50,7 @@ const AdBanner = () => {
             <Image
               src="/mobile.webp"
               alt="Banner"
+              title="Banner"
               width={436}
               height={410}
               className="object-contain head-banner-ad"

@@ -30,6 +30,7 @@ const Adbox = () => {
           <Image
             src="/image (12).png"
             alt="desktop ad"
+            title="desktop ad"
             fill
             className="head-banner-ad object-contain"
             sizes="(min-width: 640px) 510px, 100vw"
@@ -44,6 +45,7 @@ const Adbox = () => {
             <Image
               src="/mobile.webp"
               alt="mobile ad"
+              title="mobile ad"
               fill
               quality={65}
               className="head-banner-ad object-contain pointer-events-none select-none"

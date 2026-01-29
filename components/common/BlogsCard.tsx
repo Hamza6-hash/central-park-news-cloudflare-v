@@ -72,6 +72,7 @@ const BlogsCard = ({
             <SafeImage
               src={imageURL || defultImage}
               alt={title}
+              title={title}
               fill
               className="object-cover pointer-events-none select-none "
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
