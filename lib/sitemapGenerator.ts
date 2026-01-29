@@ -74,7 +74,17 @@ class BackgroundSitemapGenerator {
     try {
       console.log("Starting background sitemap generation...");
 
-      // Generate first few sitemaps (most important ones) - do this first
+      // Generate sitemap index first (match Howard-Beach-News working setup)
+      const indexContent = await this.generateSitemapIndex();
+      this.cache.set("sitemap_0", {
+        page: 0,
+        content: indexContent,
+        timestamp: Date.now(),
+        articleCount: 0,
+        lastmodTimestamp: Date.now(),
+      });
+
+      // Generate first few sitemaps (most important ones)
       const sitemapsToGenerate = Math.min(5, this.config.maxSitemaps);
 
       for (let page = 1; page <= sitemapsToGenerate; page++) {
@@ -87,16 +97,6 @@ class BackgroundSitemapGenerator {
           lastmodTimestamp: this.extractLatestModTime(content),
         });
       }
-
-      // Generate sitemap index after individual sitemaps (uses their timestamps)
-      const indexContent = await this.generateSitemapIndex();
-      this.cache.set("sitemap_index", {
-        page: 0,
-        content: indexContent,
-        timestamp: Date.now(),
-        articleCount: 0,
-        lastmodTimestamp: Date.now(),
-      });
 
       console.log(
         `Background sitemap generation completed. Generated ${

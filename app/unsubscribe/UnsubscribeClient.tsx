@@ -73,8 +73,8 @@ const UnsubscribeClient = () => {
         <Link href={routes.home}>
           <Image
             src={'/logo.png'}
-            alt="Blockchain Briefing logo"
-            title="Central Park News logo"
+            alt="Central Park News logo linking to homepage"
+            title="Links to homepage"
             quality={75}
             width={180}
             height={80}

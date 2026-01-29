@@ -57,8 +57,8 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           <div className="relative w-full xl:min-w-[1200px] max-w-[1200px] aspect-[1200/514]">
             <Image
               src={imageURL || defultImage}
-              alt={title}
-              title={title}
+              alt={title ? `${title} – Article featured image` : "Central Park News article featured image"}
+              title="Main image for this article"
               fill
               quality={80}
               loading="lazy"
@@ -119,8 +119,8 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
           <div className="flex flex-col items-center justify-center w-full py-10 text-center">
             <Image
               src="/related.webp"
-              alt="No related news"
-              title="No related news"
+              alt="Placeholder graphic when no related articles are available"
+              title="Shown when there are no related articles"
               height={220}
               width={170}
               className="object-contain"

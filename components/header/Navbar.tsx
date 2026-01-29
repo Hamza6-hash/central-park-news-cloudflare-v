@@ -31,8 +31,8 @@ const Navbar = () => {
           <Link href={routes.home}>
             <Image
               src={'/logo.png'}
-              alt="Horizon logo"
-              title="Central Park News logo"
+              alt="Central Park News logo linking to homepage"
+              title="Links to homepage"
               quality={75}
               width={120}
               height={120}
@@ -65,8 +65,8 @@ const Navbar = () => {
             <Link href={routes.home}>
               <Image
                 src={'/logo.png'}
-                alt="Horizon logo"
-                title="Central Park News logo"
+                alt="Central Park News logo linking to homepage"
+                title="Links to homepage"
                 quality={75}
                 width={151}
                 height={120}
