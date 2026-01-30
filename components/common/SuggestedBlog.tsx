@@ -56,8 +56,8 @@ const SuggestedBlogCard: React.FC<SuggestedBlogCardProps> = ({
                 <div className="absolute inset-0 z-0">
                     <Image
                         src={imageURL}
-                        alt={title || "Article image"}
-                        title={title || "Article image"}
+                        alt={title ? `${title} – Article card image` : "Central Park News article card image"}
+                        title="Links to full article"
                         fill
                         priority={true}
                         className="object-cover"

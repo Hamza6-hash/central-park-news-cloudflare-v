@@ -92,7 +92,7 @@ export function subscribeTemplate(unsubscribeUrl: string) {
     <body>
         <div class="email-container">
             <div class="header">
-                <img src="${liveUrl}/logo.png" alt="Central Park News Logo" title="Central Park News Logo">
+                <img src="${liveUrl}/logo.png" alt="Central Park News logo" title="Newsletter header">
             </div>
             <div class="content">
                 <p>Hello,</p>

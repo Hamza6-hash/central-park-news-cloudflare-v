@@ -19,8 +19,8 @@ const ImageComp = ({ imageURL, title, mobileURL }: { imageURL: string | StaticIm
         />
         <Image
           src={mobileSrc}
-          alt={`Featured image for news: ${title}`}
-          title={`Featured image for news: ${title}`}
+          alt={title ? `${title} – Featured story image on Central Park News` : "Central Park News homepage featured story image"}
+          title="Displayed as main story on homepage"
           fill
           quality={65}
           loading="eager"

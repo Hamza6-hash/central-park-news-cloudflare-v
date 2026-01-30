@@ -29,8 +29,8 @@ const Adbox = () => {
         <div className="relative  hidden sm:block w-full max-w-[510px] aspect-[17/10] overflow-hidden rounded-lg">
           <Image
             src="/image (12).png"
-            alt="desktop ad"
-            title="desktop ad"
+            alt="Sponsored desktop advertisement for legal services"
+            title="Displayed on viewports 640px and wider"
             fill
             className="head-banner-ad object-contain"
             sizes="(min-width: 640px) 510px, 100vw"
@@ -44,8 +44,8 @@ const Adbox = () => {
           <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden ">
             <Image
               src="/mobile.webp"
-              alt="mobile ad"
-              title="mobile ad"
+              alt="Sponsored mobile advertisement for legal services"
+              title="Displayed on viewports under 768px"
               fill
               quality={65}
               className="head-banner-ad object-contain pointer-events-none select-none"
