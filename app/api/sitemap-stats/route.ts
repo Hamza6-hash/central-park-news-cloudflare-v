@@ -15,7 +15,7 @@ export async function GET() {
         entries: stats.entries.map(entry => ({
           page: entry.page,
           articleCount: entry.articleCount,
-          ageMinutes: Math.round(entry.age / (1000 * 60))
+          ageMinutes: entry.ageMinutes
         }))
       },
       performance: {

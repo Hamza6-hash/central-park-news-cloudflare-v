@@ -1,8 +1,10 @@
-// lib/sitemapGenerator.ts - Background sitemap generation service
+// lib/sitemapGenerator.ts - SEO best-practice sitemap for news/blog
+// Index at /sitemap.xml, chunked post sitemaps at /sitemap-posts/1, /sitemap-posts/2, etc. (150 URLs per file)
 import { db } from "@/lib/firebaseConfig";
 import {
   collection,
   getDocs,
+  getCountFromServer,
   query,
   where,
   orderBy,
@@ -11,354 +13,244 @@ import {
   DocumentSnapshot,
 } from "firebase/firestore";
 
+const NEWS_COLLECTION = "blog/centralparkNews/newsletter";
+const POSTS_PER_SITEMAP = 150; // 100-200 per file for fast indexing
+
 interface SitemapConfig {
   baseUrl: string;
-  articlesPerSitemap: number;
-  maxSitemaps: number;
   cacheDuration: number;
 }
 
-interface GeneratedSitemap {
-  page: number;
+interface CacheEntry {
   content: string;
   timestamp: number;
-  articleCount: number;
-  lastmodTimestamp?: number; // Track actual lastmod time for index
 }
 
-class BackgroundSitemapGenerator {
-  private cache = new Map<string, GeneratedSitemap>();
+/** Escape for XML so special chars in URLs don't break sitemap */
+function escapeXmlInUrl(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+class SitemapGenerator {
+  private cache = new Map<string, CacheEntry>();
   private readonly config: SitemapConfig;
-  private isGenerating = false;
-  private lastGeneration = 0;
-  private readonly GENERATION_INTERVAL = 30 * 60 * 1000; // 30 minutes
 
   constructor(config: SitemapConfig) {
     this.config = config;
   }
 
-  async getSitemap(page: number): Promise<string | null> {
-    const cacheKey = `sitemap_${page}`;
-    const cached = this.cache.get(cacheKey);
-
-    // Check if cache is still valid
-    if (
-      cached &&
-      Date.now() - cached.timestamp < this.config.cacheDuration * 1000
-    ) {
-      return cached.content;
-    }
-
-    // If not generating and cache is stale, trigger background generation
-    if (
-      !this.isGenerating &&
-      Date.now() - this.lastGeneration > this.GENERATION_INTERVAL
-    ) {
-      this.generateSitemapsInBackground().catch(console.error);
-    }
-
-    // Return stale cache if available, otherwise generate on-demand
-    if (cached) {
-      return cached.content;
-    }
-
-    return await this.generateSitemapOnDemand(page);
+  private getCached(key: string): string | null {
+    const entry = this.cache.get(key);
+    if (!entry || Date.now() - entry.timestamp > this.config.cacheDuration * 1000)
+      return null;
+    return entry.content;
   }
 
-  private async generateSitemapsInBackground(): Promise<void> {
-    if (this.isGenerating) return;
-
-    this.isGenerating = true;
-    this.lastGeneration = Date.now();
-
-    try {
-      console.log("Starting background sitemap generation...");
-
-      // Generate sitemap index first (match Howard-Beach-News working setup)
-      const indexContent = await this.generateSitemapIndex();
-      this.cache.set("sitemap_0", {
-        page: 0,
-        content: indexContent,
-        timestamp: Date.now(),
-        articleCount: 0,
-        lastmodTimestamp: Date.now(),
-      });
-
-      // Generate first few sitemaps (most important ones)
-      const sitemapsToGenerate = Math.min(5, this.config.maxSitemaps);
-
-      for (let page = 1; page <= sitemapsToGenerate; page++) {
-        const content = await this.generateIndividualSitemap(page);
-        this.cache.set(`sitemap_${page}`, {
-          page,
-          content,
-          timestamp: Date.now(),
-          articleCount: this.extractArticleCount(content),
-          lastmodTimestamp: this.extractLatestModTime(content),
-        });
-      }
-
-      console.log(
-        `Background sitemap generation completed. Generated ${
-          sitemapsToGenerate + 1
-        } sitemaps.`
-      );
-    } catch (error) {
-      console.error("Error in background sitemap generation:", error);
-    } finally {
-      this.isGenerating = false;
-    }
+  private setCache(key: string, content: string) {
+    this.cache.set(key, { content, timestamp: Date.now() });
   }
 
-  private async generateSitemapOnDemand(page: number): Promise<string> {
-    if (page === 0) {
-      return await this.generateSitemapIndex();
-    } else {
-      return await this.generateIndividualSitemap(page);
-    }
-  }
+  /** Sitemap index: lists sitemap-pages.xml + sitemap-posts/1, 2, ... */
+  async getSitemapIndex(): Promise<string> {
+    const cacheKey = "index";
+    const cached = this.getCached(cacheKey);
+    if (cached) return cached;
 
-  private async generateSitemapIndex(): Promise<string> {
-    const estimatedSitemaps = await this.estimateSitemapCount();
+    const postChunkCount = await this.getPostChunkCount();
+    const now = new Date().toISOString();
 
-    let sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
-
-    // Add individual sitemap entries with their actual lastmod times
-    for (let i = 1; i <= estimatedSitemaps; i++) {
-      const cached = this.cache.get(`sitemap_${i}`);
-      const lastmod = cached?.lastmodTimestamp
-        ? new Date(cached.lastmodTimestamp).toISOString()
-        : new Date().toISOString();
-
-      sitemapIndex += `
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>${this.config.baseUrl}/sitemap.xml?page=${i}</loc>
-    <lastmod>${lastmod}</lastmod>
+    <loc>${escapeXmlInUrl(`${this.config.baseUrl}/sitemap-pages.xml`)}</loc>
+    <lastmod>${now}</lastmod>
+  </sitemap>`;
+
+    for (let i = 1; i <= postChunkCount; i++) {
+      xml += `
+  <sitemap>
+    <loc>${escapeXmlInUrl(`${this.config.baseUrl}/sitemap-posts/${i}`)}</loc>
+    <lastmod>${now}</lastmod>
   </sitemap>`;
     }
-
-    sitemapIndex += `
+    xml += `
 </sitemapindex>`;
 
-    return sitemapIndex;
+    this.setCache(cacheKey, xml);
+    return xml;
   }
 
-  private async generateIndividualSitemap(page: number): Promise<string> {
-    let pages: any[] = [];
+  /** Static pages only: /, /news, /contact, etc. */
+  async getPagesSitemap(): Promise<string> {
+    const cacheKey = "pages";
+    const cached = this.getCached(cacheKey);
+    if (cached) return cached;
 
-    if (page === 1) {
-      pages = [
-        {
-          url: "",
-          priority: "1.0",
-          changefreq: "daily",
-          lastmod: new Date().toISOString(),
-        },
-        {
-          url: "/news",
-          priority: "0.8",
-          changefreq: "daily",
-          lastmod: new Date().toISOString(),
-        },
-        {
-          url: "/contact",
-          priority: "0.6",
-          changefreq: "monthly",
-          lastmod: new Date().toISOString(),
-        },
-        {
-          url: "/privacy-policy",
-          priority: "0.3",
-          changefreq: "yearly",
-          lastmod: new Date().toISOString(),
-        },
-        {
-          url: "/terms-and-conditions",
-          priority: "0.3",
-          changefreq: "yearly",
-          lastmod: new Date().toISOString(),
-        },
-      ];
-    } else {
-      pages = await this.getArticlesWithEfficientPagination(page);
-    }
+    const now = new Date().toISOString();
+    const pages: { url: string; lastmod: string }[] = [
+      { url: "", lastmod: now },
+      { url: "/news", lastmod: now },
+      { url: "/contact", lastmod: now },
+      { url: "/privacy-policy", lastmod: now },
+      { url: "/terms-and-conditions", lastmod: now },
+    ];
 
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    const xml = this.buildUrlset(pages);
+    this.setCache(cacheKey, xml);
+    return xml;
+  }
+
+  /** One chunk of post URLs (1-based chunk number, POSTS_PER_SITEMAP per chunk). Returns null if empty or out of range (route should 404). */
+  async getPostsSitemap(chunkNum: number): Promise<string | null> {
+    if (chunkNum < 1) return null;
+
+    const cacheKey = `posts_${chunkNum}`;
+    const cached = this.getCached(cacheKey);
+    if (cached) return cached;
+
+    const entries = await this.getPostChunk(chunkNum);
+    if (entries.length === 0) return null;
+    const xml = this.buildUrlset(entries);
+    this.setCache(cacheKey, xml);
+    return xml;
+  }
+
+  private buildUrlset(
+    entries: { url: string; lastmod: string; changefreq?: string; priority?: string }[]
+  ): string {
+    const urls = entries
+      .map((e) => {
+        const loc = escapeXmlInUrl(this.config.baseUrl + (e.url.startsWith("/") ? e.url : "/" + e.url));
+        const changefreq = e.changefreq != null ? `\n    <changefreq>${e.changefreq}</changefreq>` : "";
+        const priority = e.priority != null ? `\n    <priority>${e.priority}</priority>` : "";
+        return `  <url>
+    <loc>${loc}</loc>
+    <lastmod>${e.lastmod}</lastmod>${changefreq}${priority}
+  </url>`;
+      })
+      .join("\n");
+    return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pages
-  .map(
-    (page) => `  <url>
-    <loc>${this.config.baseUrl}${page.url}</loc>
-    <lastmod>${page.lastmod}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
-  </url>`
-  )
-  .join("\n")}
+${urls}
 </urlset>`;
-
-    return sitemap;
   }
 
-  private async estimateSitemapCount(): Promise<number> {
-    if (!db) return 5;
-
+  /** Number of sitemap files needed for all posts (0 if no posts, else ceil(total / POSTS_PER_SITEMAP)) */
+  private async getPostChunkCount(): Promise<number> {
+    if (!db) return 0;
     try {
-      const newsCollection = collection(db, "blog/centralparkNews/newsletter");
-      const sampleQuery = query(
-        newsCollection,
-        where("status", "==", "published"),
-        orderBy("createdAt", "desc"),
-        limit(100)
-      );
-
-      const sampleSnapshot = await getDocs(sampleQuery);
-
-      if (sampleSnapshot.empty) return 1;
-
-      const oldestDoc = sampleSnapshot.docs[sampleSnapshot.docs.length - 1];
-      const oldestDate = oldestDoc.data().createdAt?.toDate();
-
-      if (!oldestDate) return 5;
-
-      const daysDiff =
-        (Date.now() - oldestDate.getTime()) / (1000 * 60 * 60 * 24);
-      const estimatedYearlyTotal = Math.ceil(
-        (100 / Math.max(daysDiff, 1)) * 365
-      );
-      const estimatedSitemaps = Math.ceil(
-        estimatedYearlyTotal / this.config.articlesPerSitemap
-      );
-
-      return Math.min(Math.max(estimatedSitemaps, 5), this.config.maxSitemaps);
-    } catch (error) {
-      console.error("Error estimating sitemap count:", error);
-      return 5;
+      const total = await this.getTotalPublishedCount();
+      return total === 0 ? 0 : Math.ceil(total / POSTS_PER_SITEMAP);
+    } catch {
+      return 0;
     }
   }
 
-  private async getArticlesWithEfficientPagination(
-    page: number
-  ): Promise<any[]> {
+  private async getTotalPublishedCount(): Promise<number> {
+    if (!db) return 0;
+    try {
+      const ref = collection(db, NEWS_COLLECTION);
+      const q = query(ref, where("status", "==", "published"));
+      const snap = await getCountFromServer(q);
+      return snap.data().count ?? 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  /** Fetch one chunk of posts (1-based), each with url, lastmod, changefreq, priority */
+  private async getPostChunk(
+    chunkNum: number
+  ): Promise<{ url: string; lastmod: string; changefreq: string; priority: string }[]> {
     if (!db) return [];
 
-    const newsCollection = collection(db, "blog/centralparkNews/newsletter");
+    const skip = (chunkNum - 1) * POSTS_PER_SITEMAP;
+    let lastDoc: DocumentSnapshot | null = null;
 
-    try {
-      const articlesToSkip = (page - 2) * this.config.articlesPerSitemap;
-      let lastDoc: DocumentSnapshot | null = null;
-
-      if (articlesToSkip > 0) {
-        const batchSize = 500;
-        let currentSkip = 0;
-
-        while (currentSkip < articlesToSkip) {
-          const remainingSkip = articlesToSkip - currentSkip;
-          const currentBatchSize = Math.min(batchSize, remainingSkip);
-
-          let queryRef = query(
-            newsCollection,
-            where("status", "==", "published"),
-            orderBy("createdAt", "desc"),
-            limit(currentBatchSize)
-          );
-
-          if (lastDoc) {
-            queryRef = query(
-              newsCollection,
-              where("status", "==", "published"),
-              orderBy("createdAt", "desc"),
-              startAfter(lastDoc),
-              limit(currentBatchSize)
-            );
-          }
-
-          const snapshot = await getDocs(queryRef);
-
-          if (snapshot.empty) break;
-
-          lastDoc = snapshot.docs[snapshot.docs.length - 1];
-          currentSkip += snapshot.docs.length;
-
-          if (currentSkip >= articlesToSkip) break;
-        }
-      }
-
-      let finalQuery = query(
-        newsCollection,
-        where("status", "==", "published"),
-        orderBy("createdAt", "desc"),
-        limit(this.config.articlesPerSitemap)
-      );
-
-      if (lastDoc) {
-        finalQuery = query(
-          newsCollection,
+    if (skip > 0) {
+      const batchSize = 500;
+      let skipped = 0;
+      while (skipped < skip) {
+        const toSkip = Math.min(batchSize, skip - skipped);
+        let q = query(
+          collection(db, NEWS_COLLECTION),
           where("status", "==", "published"),
           orderBy("createdAt", "desc"),
-          startAfter(lastDoc),
-          limit(this.config.articlesPerSitemap)
+          limit(toSkip)
         );
+        if (lastDoc) {
+          q = query(
+            collection(db, NEWS_COLLECTION),
+            where("status", "==", "published"),
+            orderBy("createdAt", "desc"),
+            startAfter(lastDoc),
+            limit(toSkip)
+          );
+        }
+        const snap = await getDocs(q);
+        if (snap.empty) return [];
+        lastDoc = snap.docs[snap.docs.length - 1];
+        skipped += snap.docs.length;
       }
-
-      const snapshot = await getDocs(finalQuery);
-
-      return snapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          url: `/news/${data.titleSlug}`,
-          priority: "0.7",
-          changefreq: "weekly",
-          lastmod: data.createdAt
-            ? new Date(data.createdAt).toISOString()
-            : new Date().toISOString(),
-        };
-      });
-    } catch (error) {
-      console.error("Error in efficient pagination:", error);
-      return [];
     }
-  }
 
-  private extractArticleCount(content: string): number {
-    const matches = content.match(/<url>/g);
-    return matches ? matches.length : 0;
-  }
+    let q = query(
+      collection(db, NEWS_COLLECTION),
+      where("status", "==", "published"),
+      orderBy("createdAt", "desc"),
+      limit(POSTS_PER_SITEMAP)
+    );
+    if (lastDoc) {
+      q = query(
+        collection(db, NEWS_COLLECTION),
+        where("status", "==", "published"),
+        orderBy("createdAt", "desc"),
+        startAfter(lastDoc),
+        limit(POSTS_PER_SITEMAP)
+      );
+    }
 
-  private extractLatestModTime(content: string): number {
-    const matches = content.match(/<lastmod>([^<]+)<\/lastmod>/g);
-    if (!matches || matches.length === 0) return Date.now();
-
-    const timestamps = matches
-      .map((match) => {
-        const dateStr = match.replace(/<\/?lastmod>/g, "");
-        return new Date(dateStr).getTime();
-      })
-      .filter((time) => !isNaN(time));
-
-    return timestamps.length > 0 ? Math.max(...timestamps) : Date.now();
+    const snap = await getDocs(q);
+    return snap.docs.map((doc) => {
+      const d = doc.data();
+      const created = d.createdAt;
+      let lastmod = new Date().toISOString();
+      if (created) {
+        if (typeof created.toDate === "function") lastmod = created.toDate().toISOString();
+        else if (typeof created?.seconds === "number") lastmod = new Date(created.seconds * 1000).toISOString();
+      }
+      return {
+        url: `/news/${d.titleSlug || doc.id}`,
+        lastmod,
+        changefreq: "weekly",
+        priority: "0.7",
+      };
+    });
   }
 
   getCacheStats() {
+    const now = Date.now();
     return {
       cacheSize: this.cache.size,
-      isGenerating: this.isGenerating,
-      lastGeneration: this.lastGeneration,
+      isGenerating: false,
+      lastGeneration: now,
       entries: Array.from(this.cache.entries()).map(([key, value]) => ({
         key,
-        page: value.page,
-        articleCount: value.articleCount,
-        age: Date.now() - value.timestamp,
+        page: key,
+        articleCount: 0,
+        ageMinutes: Math.round((now - value.timestamp) / 60000),
       })),
+      postsPerSitemap: POSTS_PER_SITEMAP,
     };
   }
 }
 
-// Export singleton instance
-export const sitemapGenerator = new BackgroundSitemapGenerator({
+export const sitemapGenerator = new SitemapGenerator({
   baseUrl: "https://www.centralpark.news",
-  articlesPerSitemap: 1000,
-  maxSitemaps: 100,
-  cacheDuration: 3600,
+  cacheDuration: 900, // 15 min — faster discovery of new articles for news/ranking (was 3600)
 });

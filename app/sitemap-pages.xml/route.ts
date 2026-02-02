@@ -1,12 +1,12 @@
-// Serves sitemap index at /sitemap.xml (lists sitemap-pages.xml + sitemap-posts/1, 2, ...)
+// Serves static pages sitemap at /sitemap-pages.xml
 import { NextResponse } from "next/server";
 import { sitemapGenerator } from "@/lib/sitemapGenerator";
 
-const CACHE_MAX_AGE = 900; // 15 min — faster discovery of new content
+const CACHE_MAX_AGE = 900; // 15 min
 
 export async function GET() {
   try {
-    const xml = await sitemapGenerator.getSitemapIndex();
+    const xml = await sitemapGenerator.getPagesSitemap();
     return new NextResponse(xml, {
       headers: {
         "Content-Type": "application/xml",
@@ -14,7 +14,7 @@ export async function GET() {
       },
     });
   } catch (error) {
-    console.error("Sitemap index error:", error);
+    console.error("Sitemap pages error:", error);
     return new NextResponse("Error generating sitemap", { status: 500 });
   }
 }
