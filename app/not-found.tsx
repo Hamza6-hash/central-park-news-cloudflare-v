@@ -1,12 +1,23 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { routes } from "@/constants";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Page Not Found | Central Park News",
+  description: "The requested page could not be found.",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
 
 const NotFound = () => {
-  const router = useRouter()
   return (
     <div className="h-screen w-screen fixed inset-0 flex flex-col overflow-hidden">
       {/* Header */}
@@ -58,9 +69,9 @@ const NotFound = () => {
                 </div>
 
                 <Button
-                  onClick={() => router.push('/')}
+                  asChild
                   className="bg-[#E4212B] text-white font-bold py-3 px-6 rounded font-century-gothic hover:bg-white hover:text-black hover:shadow-md transition-colors w-fit mx-auto lg:mx-0">
-                  Go Back Home
+                  <Link href={routes.home}>Go Back Home</Link>
                 </Button>
               </div>
 
