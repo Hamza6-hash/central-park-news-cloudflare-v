@@ -19,7 +19,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://www.centralpark.news
+Host: https://www.centralpark.news/
 
 # Sitemaps
 Sitemap: https://www.centralpark.news/sitemap.xml

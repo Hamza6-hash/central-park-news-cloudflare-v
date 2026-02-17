@@ -81,7 +81,7 @@ export function contactAdminEmailTemplate(data: ContactEmailData) {
         <div class="header">
             <img src="${
               process.env.NEXT_PUBLIC_SITE_URL
-            }logo.png" alt="Central Park News Logo">
+            }logo.png" alt="Central Park News logo" title="Contact form email header">
         </div>
 
         <div class="content">

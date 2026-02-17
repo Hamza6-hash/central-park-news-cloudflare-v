@@ -54,7 +54,8 @@ const MobileNav = () => {
                             width={220}
                             height={89}
                             quality={75}
-                            alt='Horizon logo'
+                            alt="Central Park News logo linking to homepage"
+                            title="Links to homepage"
                         />
                     </Link>
 

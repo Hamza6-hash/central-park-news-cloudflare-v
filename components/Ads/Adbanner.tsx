@@ -35,7 +35,8 @@ const AdBanner = () => {
           <div className="relative hidden sm:block w-full overflow-hidden">
             <Image
               src="/top.webp"
-              alt="Banner"
+              alt="Sponsored desktop banner advertisement for legal services"
+              title="Displayed on viewports 641px and wider"
               width={1199}
               height={200}
               className="object-contain head-banner-ad"
@@ -48,7 +49,8 @@ const AdBanner = () => {
           <div className="relative block sm:hidden w-full overflow-hidden mx-auto max-w-[436px]">
             <Image
               src="/mobile.webp"
-              alt="Banner"
+              alt="Sponsored mobile banner advertisement for legal services"
+              title="Displayed on viewports under 641px"
               width={436}
               height={410}
               className="object-contain head-banner-ad"

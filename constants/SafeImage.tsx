@@ -7,7 +7,7 @@ interface SafeImageProps extends Omit<ImageProps, "src"> {
   src: string | StaticImageData | undefined;
 }
 
-const SafeImage: React.FC<SafeImageProps> = ({ src, alt, ...rest }) => {
+const SafeImage: React.FC<SafeImageProps> = ({ src, alt, title, ...rest }) => {
   const [imgSrc, setImgSrc] = useState(src || defultImage);
   const [hasError, setHasError] = useState(false);
 
@@ -16,6 +16,7 @@ const SafeImage: React.FC<SafeImageProps> = ({ src, alt, ...rest }) => {
       {...rest}
       src={imgSrc}
       alt={alt}
+      title={title}
       onError={() => {
         if (!hasError) {
           setHasError(true);
