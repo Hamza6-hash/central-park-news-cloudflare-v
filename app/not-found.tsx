@@ -10,14 +10,14 @@ const NotFound = () => {
   return (
     <div className="h-screen w-screen fixed inset-0 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="w-full flex justify-center items-center bg-white px-2  py-6 flex-shrink-0">
+      <div className="w-full flex justify-center items-center bg-white px-2  py-4 flex-shrink-0">
         <Link href={routes.home}>
           <Image
             src={'/logo.png'}
             alt="Central Park News logo linking to homepage"
             title="Links to homepage"
             quality={75}
-            width={180}
+            width={100}
             height={80}
             priority
             loading="eager"

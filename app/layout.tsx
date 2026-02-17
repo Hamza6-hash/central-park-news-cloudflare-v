@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import Layout from "@/components/Layout";
 import FontLinks from "@/components/fontLinks/FontLinks";
 import { ToastProvider } from "@/context/ToastContext";
 import { Providers } from "@/context/Providers";
@@ -14,7 +13,8 @@ const CSSOptimizer = dynamic(() => import("@/components/CSSOptimizer"), {
 });
 
 export const metadata: Metadata = {
-  title: "Central Parks News | Stories from the Heart of New York City",
+  metadataBase: new URL(liveUrl),
+  title: "Central Park News | Stories from the Heart of New York City",
   description: "Covering community events, local news, and stories in and around Central Park, NYC. Fresh coverage, updated daily.",
   keywords: ["Central Park news", "NYC park updates", "New York local stories", "Manhattan news"],
   icons: {
@@ -151,7 +151,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <CSSOptimizer />
         <Providers>
           <ToastProvider>
-            <Layout>{children}</Layout>
+            {children}
           </ToastProvider>
         </Providers>
       </body>

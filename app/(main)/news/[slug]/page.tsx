@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import SchemaOrg from "@/components/Schema";
 import { News } from "@/components/ClientPages/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { formatDateToISO, liveUrl } from "@/lib/utils";
 import { stripMarkdown } from "@/lib/query";
 import GoogleNewsSubscription from "@/components/Scripts/GoogleNewsSubscription";
@@ -197,7 +197,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
   const newsData = await getNewsData(slug);
 
   if (!newsData) {
-    redirect('/')
+    notFound();
   }
 
   const relatedNews = await getFiveRelatedNewsByCategory(newsData.category, slug);

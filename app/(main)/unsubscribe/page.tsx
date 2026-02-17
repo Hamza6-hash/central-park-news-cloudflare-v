@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import UnsubscribeClient from "./UnsubscribeClient";
+import { liveUrl } from "@/lib/utils";
+import type { Metadata } from "next";
 
 interface UserData {
   email: string;
@@ -10,6 +12,18 @@ interface UserData {
   tokenUsed: boolean;
   unsubscribeToken: string;
 }
+
+export const metadata: Metadata = {
+  title: "Unsubscribe | Central Park News",
+  description: "Manage your subscription preferences for Central Park News.",
+  alternates: {
+    canonical: `${liveUrl}/unsubscribe`,
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 async function validateUser(email: string): Promise<void | null | UserData> {
   if (!email) {
