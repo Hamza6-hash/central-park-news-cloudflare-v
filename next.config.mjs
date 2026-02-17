@@ -17,6 +17,8 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === "production",
   },
   experimental: {
+    // Prevent @opentelemetry from being bundled (avoids vendor-chunks path errors)
+    serverComponentsExternalPackages: ["@opentelemetry/api"],
     // performance optimization
     optimizeCss: true, // Enables CSS optimization and critical CSS extraction
     optimizePackageImports: [

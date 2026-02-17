@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: "Privacy Policy | Central Park News",
     description:
       "Read the Privacy Policy of Central Park News to learn how we handle your data, ensure user privacy, and protect your information.",
-    url: liveUrl,
+    url: `${liveUrl}/privacy-policy`,
     siteName: "Central Park News",
     images: [
       { url: `${liveUrl}/images/og-image.jpg` }

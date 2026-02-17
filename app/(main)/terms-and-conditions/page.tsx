@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Terms and Conditions | Central Park News",
     description:
-      "Welcome to Howard Beach News. By using our website, you agree to these Terms and Conditions and our Privacy Policy. If you disagree with any part of these terms, please do not use our services.",
-    url: liveUrl,
+      "Welcome to Central Park News. By using our website, you agree to these Terms and Conditions and our Privacy Policy. If you disagree with any part of these terms, please do not use our services.",
+    url: `${liveUrl}/terms-and-conditions`,
     siteName: "Central Park News",
     images: [
       { url: `${liveUrl}/images/og-image.jpg` }

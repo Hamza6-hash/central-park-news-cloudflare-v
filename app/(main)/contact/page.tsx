@@ -4,12 +4,24 @@ import { Metadata } from "next";
 import { liveUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Central Parks News",
-  description: "Got a tip or feedback? Contact Central Parks News for media inquiries or news leads.",
-  keywords: "contact Central Parks News, Central Park NYC newsroom, submit a tip",
+  title: "Contact Us | Central Park News",
+  description: "Got a tip or feedback? Contact Central Park News for media inquiries or news leads.",
+  keywords: "contact Central Park News, Central Park NYC newsroom, submit a tip",
   alternates: {
     canonical: `${liveUrl}/contact`
-  }
+  },
+  openGraph: {
+    title: "Contact Us | Central Park News",
+    description: "Got a tip or feedback? Contact Central Park News for media inquiries or news leads.",
+    url: `${liveUrl}/contact`,
+    siteName: "Central Park News",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Us | Central Park News",
+    description: "Got a tip or feedback? Contact Central Park News for media inquiries or news leads.",
+  },
 };
 
 const Contacts = () => {
