@@ -8,6 +8,7 @@ import Script from "next/script";
 import SchemaOrg from "@/components/Schema";
 import dynamic from "next/dynamic";
 import { liveUrl } from "@/lib/utils";
+import * as Sentry from '@sentry/nextjs';
 
 const CSSOptimizer = dynamic(() => import("@/components/CSSOptimizer"), {
   ssr: false,
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
   },
   other: {
     "x-ua-compatible": "IE=edge",
+    ...Sentry.getTraceData()
   },
 };
 
