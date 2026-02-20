@@ -7,6 +7,22 @@ import * as Sentry from "@sentry/nextjs";
 Sentry.init({
   dsn: "https://49bc3ac620b3470be62f239a41571a98@o4509228688080896.ingest.us.sentry.io/4510899543277568",
 
+  // Ignore AbortError — expected when fetches are cancelled (navigation, query cancel, Suspense)
+  ignoreErrors: [
+    /^AbortError$/,
+    /^AbortError: AbortError$/,
+    /^canceled$/,
+    /^The operation was aborted\.?$/,
+  ],
+
+  beforeSend(event, hint) {
+    const error = hint.originalException;
+    if (error instanceof DOMException && error.name === "AbortError" && error.code === 20) {
+      return null;
+    }
+    return event;
+  },
+
   // Add optional integrations for additional features
   integrations: [Sentry.replayIntegration()],
 

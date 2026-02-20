@@ -8,7 +8,7 @@ import dynamic from "next/dynamic";
 
 const DynamicBlog = dynamic(() => import("@/components/common/DynamicBlog"), {
   loading: () => <NewsSingleLoading />,
-
+  ssr: false, // Avoid hydration mismatch: server and client both show loading, then client mounts content
 });
 
 
@@ -46,7 +46,10 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
       if (!response.ok) throw new Error('Failed to fetch news');
       return response.json();
     },
-    retry: 2,
+    retry: (failureCount, error) => {
+      if (error instanceof Error && error.name === 'AbortError') return false;
+      return failureCount < 2;
+    },
     staleTime: 1000 * 60 * 7,
     initialData: data,
     enabled: !!slug,

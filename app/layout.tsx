@@ -100,11 +100,14 @@ export default function RootLayout({
         {/* --------------------- GEO META TAGS ------------------ */}
         <SchemaOrg schemas={[websiteSchema, organizationSchema]} />
         {/* ----------------- GOOGLE SUBSCRIPTION SCRIPT ---------*/}
-        <Script
-          src="https://news.google.com/swg/js/v1/swg-basic.js"
-          strategy="beforeInteractive"
-          type="application/javascript"
-        />
+        {/* Only load SWG on production; localhost triggers CORS/403 from Google's API */}
+        {process.env.NODE_ENV === "production" && (
+          <Script
+            src="https://news.google.com/swg/js/v1/swg-basic.js"
+            strategy="beforeInteractive"
+            type="application/javascript"
+          />
+        )}
         <Script
           id="gtm-script"
           strategy="beforeInteractive"
