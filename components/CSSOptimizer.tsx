@@ -4,12 +4,12 @@ import { useEffect } from "react";
 
 /**
  * CSS Optimizer Component
- * 
+ *
  * This component helps reduce render-blocking CSS by:
  * 1. Converting render-blocking stylesheets to async loading after initial render
  * 2. Preloading critical CSS resources
  * 3. Optimizing non-critical CSS loading
- * 
+ *
  * Works in conjunction with Next.js 14's optimizeCss: true build-time optimization
  */
 export default function CSSOptimizer() {
@@ -38,7 +38,7 @@ export default function CSSOptimizer() {
     const optimizeCSS = () => {
       // Find all stylesheet links
       const stylesheets = Array.from(
-        document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')
+        document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'),
       );
 
       stylesheets.forEach((link) => {
@@ -74,12 +74,15 @@ export default function CSSOptimizer() {
 
       // Preload any remaining CSS resources that might be needed
       const preloadLinks = document.querySelectorAll<HTMLLinkElement>(
-        'link[rel="preload"][as="style"]'
+        'link[rel="preload"][as="style"]',
       );
 
       preloadLinks.forEach((preloadLink) => {
         const href = preloadLink.getAttribute("href");
-        if (href && !document.querySelector(`link[rel="stylesheet"][href="${href}"]`)) {
+        if (
+          href &&
+          !document.querySelector(`link[rel="stylesheet"][href="${href}"]`)
+        ) {
           // Convert preload to actual stylesheet
           preloadLink.rel = "stylesheet";
           preloadLink.removeAttribute("as");
