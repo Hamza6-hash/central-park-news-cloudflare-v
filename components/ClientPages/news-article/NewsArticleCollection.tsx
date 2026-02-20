@@ -95,6 +95,7 @@ export default function NewsArticleCollection({ initialData }: NewsArticleCollec
 
     // Fetch data when page or tab changes
     fetchPageData(currentPage, activeTab);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, activeTab]);
 
   // Update URL when page changes
