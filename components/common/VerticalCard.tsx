@@ -63,7 +63,7 @@ const VerticalCard = ({
                     <div className="relative w-full h-full px-4 py-4 flex flex-col justify-between">
 
                         <div className="mb-2 flex-shrink-0 h-[60px]">
-                            <h2 className="font-century-schoolbook text-[18px] text-[#0F042D] capitalize font-normal leading-5 line-clamp-2 overflow-hidden h-full">
+                            <h2 className="font-century-schoolbook text-[18px] text-[#0F042D] capitalize font-normal leading-5 line-clamp-3 overflow-hidden h-full">
                                 {title || "-"}
                             </h2>
                         </div>
