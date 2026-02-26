@@ -4,7 +4,6 @@ import React from 'react'
 import Image, { StaticImageData } from 'next/image';
 
 const ImageComp = ({ imageURL, title, mobileURL }: { imageURL: string | StaticImageData, mobileURL: string | StaticImageData, title: string }) => {
-  // Get the desktop image source - handle both string URLs and StaticImageData
   const desktopSrc = typeof imageURL === 'string'
     ? imageURL
     : imageURL?.src || '/main.webp';
@@ -22,7 +21,7 @@ const ImageComp = ({ imageURL, title, mobileURL }: { imageURL: string | StaticIm
           alt={title ? `${title} – Featured story image on Central Park News` : "Central Park News homepage featured story image"}
           title="Displayed as main story on homepage"
           fill
-          quality={80}
+          quality={90}
           loading="eager"
           priority={true}
           className="object-cover protected-image relative z-10 rounded-[16px]"

@@ -55,7 +55,7 @@ const AdBanner = () => {
               height={410}
               className="object-contain head-banner-ad"
               sizes="(max-width: 375px) 100vw, 430px"
-              quality={45}
+              quality={80}
               priority
               fetchPriority="high"
             />
