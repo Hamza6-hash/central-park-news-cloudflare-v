@@ -23,7 +23,7 @@ const ImageComp = ({ imageURL, imageName, mobileURL }: { imageURL: string | Stat
           fill
           alt={imageName ? `${imageName} – Article or story image` : "Central Park News story image"}
           title="Article or story illustration"
-          quality={75}
+          quality={90}
           className="pointer-events-none object-cover select-none rounded-[16px]"
           sizes="(max-width: 768px) 100vw, (min-width: 769px) 204px"
         />
