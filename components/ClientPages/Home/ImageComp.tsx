@@ -22,7 +22,7 @@ const ImageComp = ({ imageURL, title, mobileURL }: { imageURL: string | StaticIm
           alt={title ? `${title} – Featured story image on Central Park News` : "Central Park News homepage featured story image"}
           title="Displayed as main story on homepage"
           fill
-          quality={65}
+          quality={80}
           loading="eager"
           priority={true}
           className="object-cover protected-image relative z-10 rounded-[16px]"

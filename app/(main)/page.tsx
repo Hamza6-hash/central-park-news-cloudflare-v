@@ -58,7 +58,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-// Internal function that performs the actual fetch
 async function _fetchFeaturedArticle() {
   try {
     if (!db) {
@@ -126,8 +125,6 @@ async function _fetchFeaturedArticle() {
   }
 }
 
-// Cached function - not exported to avoid Next.js build errors
-// Page files can only export specific Next.js exports (default, metadata, generateMetadata, etc.)
 const fetchFeaturedArticle = unstable_cache(
   _fetchFeaturedArticle,
   ['featured-article'],
