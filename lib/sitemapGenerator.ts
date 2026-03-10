@@ -55,7 +55,7 @@ class SitemapGenerator {
     this.cache.set(key, { content, timestamp: Date.now() });
   }
 
-  /** Sitemap index: lists sitemap-pages.xml + sitemap-posts/1, 2, ... */
+  /** Sitemap index: lists sitemap-pages.xml + sitemap-posts/1, 2, ... + sitemap-images.xml */
   async getSitemapIndex(): Promise<string> {
     const cacheKey = "index";
     const cached = this.getCached(cacheKey);
@@ -78,6 +78,14 @@ class SitemapGenerator {
     <lastmod>${now}</lastmod>
   </sitemap>`;
     }
+    
+    // Add image sitemap
+    xml += `
+  <sitemap>
+    <loc>${escapeXmlInUrl(`${this.config.baseUrl}/sitemap-images.xml`)}</loc>
+    <lastmod>${now}</lastmod>
+  </sitemap>`;
+    
     xml += `
 </sitemapindex>`;
 
@@ -85,7 +93,7 @@ class SitemapGenerator {
     return xml;
   }
 
-  /** Static pages only: /, /news, /contact, etc. */
+  /** Static pages + author pages: /, /news, /contact, /author/[slug], etc. */
   async getPagesSitemap(): Promise<string> {
     const cacheKey = "pages";
     const cached = this.getCached(cacheKey);
@@ -99,6 +107,15 @@ class SitemapGenerator {
       { url: "/privacy-policy", lastmod: now },
       { url: "/terms-and-conditions", lastmod: now },
     ];
+
+    // Add author pages
+    const authors = await this.getAllAuthors();
+    authors.forEach((author) => {
+      pages.push({
+        url: `/author/${author.slug || author.author_name.toLowerCase().replace(/\s+/g, "-")}`,
+        lastmod: now,
+      });
+    });
 
     const xml = this.buildUrlset(pages);
     this.setCache(cacheKey, xml);
@@ -231,6 +248,18 @@ ${urls}
         priority: "0.7",
       };
     });
+  }
+
+  private async getAllAuthors(): Promise<any[]> {
+    if (!db) return [];
+    try {
+      const authorsRef = collection(db, "blog/centralparkNews/authors");
+      const snapshot = await getDocs(authorsRef);
+      return snapshot.docs.map((doc) => doc.data());
+    } catch (error) {
+      console.error("Error fetching authors for sitemap:", error);
+      return [];
+    }
   }
 
   getCacheStats() {

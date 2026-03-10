@@ -129,4 +129,20 @@ export const getConciseAnchorText = (
     return text.substring(0, maxLength - 3) + '...';
 };
 
+/**
+ * Calculate reading time in minutes for an article
+ * Average reading speed: 200 words per minute
+ * @param content - The article content (text)
+ * @returns Reading time in minutes (minimum 1)
+ */
+export const calculateReadingTime = (content: string): number => {
+    if (!content) return 1;
+    
+    const wordsPerMinute = 200;
+    const wordCount = content.trim().split(/\s+/).length;
+    const readingTime = Math.ceil(wordCount / wordsPerMinute);
+    
+    return Math.max(1, readingTime);
+};
+
 export const liveUrl = "https://www.centralpark.news"

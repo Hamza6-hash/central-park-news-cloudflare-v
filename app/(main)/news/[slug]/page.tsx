@@ -1,13 +1,13 @@
 import React from "react";
 import NewsClient from "@/components/ClientPages/NewsSingle/NewsClient";
 import { db } from "@/lib/firebaseConfig";
-import { collection, doc, getDocs, query, where, getDoc } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { Metadata } from "next";
 import SchemaOrg from "@/components/Schema";
 import { News } from "@/components/ClientPages/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 import { notFound } from "next/navigation";
-import { formatDateToISO, liveUrl } from "@/lib/utils";
+import { formatDateToISO, liveUrl, calculateReadingTime } from "@/lib/utils";
 import { stripMarkdown } from "@/lib/query";
 import GoogleNewsSubscription from "@/components/Scripts/GoogleNewsSubscription";
 import { unstable_cache } from "next/cache";
@@ -35,26 +35,10 @@ async function _getNewsData(slug: string) {
       citation: undefined,
     };
 
-    let authorName = "Docket Digest News Room";
-    let authorImage = "/default-avatar.png";
-    let authorPosition = "N/A";
-
-    // @ts-ignore
-    if (data?.authorId) {
-      try {
-        // @ts-ignore
-        const authorRef = doc(db, "blog/centralparkNews/authors", data.authorId);
-        const authorDoc = await getDoc(authorRef);
-
-        if (authorDoc.exists()) {
-          const authorData = authorDoc.data();
-          authorName = authorData.author_name || authorName;
-          authorImage = authorData.imageURL || authorImage;
-          authorPosition = authorData.position || authorPosition;
-        }
-      } catch (err) {
-      }
-    }
+    // always use static author (Sarah Lee) to avoid backend fetch
+    const authorName = "Sarah Lee";
+    const authorImage = "/default-avatar.png";
+    const authorPosition = "N/A";
 
     return {
       ...data,
@@ -124,6 +108,10 @@ export async function generateMetadata({
     const publishedTime = formatDateToISO(newsData.publishDate || newsData.date || newsData.createdAt);
     const modifiedTime = formatDateToISO(newsData.updatedAt || newsData.publishDate || newsData.date || newsData.createdAt);
 
+    // Calculate reading time
+    const plainContent = stripMarkdown(newsData.content || "");
+    const readingTimeMinutes = calculateReadingTime(plainContent);
+
     const keywords = Array.isArray(newsData.tags) ? [...newsData.tags] : [];
     if (newsData.category) {
       keywords.push(newsData.category);
@@ -156,7 +144,7 @@ export async function generateMetadata({
         type: "article",
         publishedTime: publishedTime,
         modifiedTime: modifiedTime,
-        authors: [newsData.authorName || "Central Park News"],
+        authors: [newsData.authorName || "Sarah Lee"],
         section: newsData.category || "News",
         tags: Array.isArray(newsData.tags) ? newsData.tags : [],
       },
@@ -178,6 +166,9 @@ export async function generateMetadata({
           "max-image-preview": "large",
           "max-snippet": -1,
         },
+      },
+      other: {
+        "article:reading_time": `${readingTimeMinutes}`,
       },
     };
   } catch (error) {
