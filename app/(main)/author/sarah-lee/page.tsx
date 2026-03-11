@@ -4,13 +4,21 @@ import { liveUrl } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 
-const PAGE_URL = `${liveUrl}/author/sarah-lee`;
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || liveUrl).replace(/\/$/, "");
+const PAGE_URL = `${siteUrl}/author/sarah-lee`;
 
 export const metadata: Metadata = {
-  title: "Sarah Lee | Author | Central Park News",
+  title: "Sarah Lee | Staff Reporter | Central Park News",
   description:
-    "Sarah Lee is a staff reporter at Central Park News covering events, public safety, nature, and community stories in Central Park, NYC.",
-  keywords: ["Sarah Lee", "Central Park News", "author", "journalist", "reporter"],
+    "Sarah Lee is a staff reporter at Central Park News specializing in Central Park events, NYC public safety, urban nature, and Manhattan community stories. Based in New York City.",
+  keywords: [
+    "Sarah Lee",
+    "Central Park News reporter",
+    "NYC journalist",
+    "Central Park correspondent",
+    "Manhattan community reporter",
+    "New York City local news",
+  ],
   alternates: {
     canonical: PAGE_URL,
   },
@@ -18,35 +26,73 @@ export const metadata: Metadata = {
     type: "profile",
     locale: "en_US",
     url: PAGE_URL,
-    title: "Sarah Lee | Central Park News",
-    description: "Staff reporter covering Central Park, NYC.",
+    title: "Sarah Lee | Staff Reporter | Central Park News",
+    description:
+      "Sarah Lee covers Central Park events, NYC public safety, and Manhattan community stories for Central Park News.",
+    siteName: "Central Park News",
+    images: [
+      {
+        url: `${siteUrl}/user.png`,
+        width: 200,
+        height: 200,
+        alt: "Sarah Lee - Staff Reporter at Central Park News",
+      },
+    ],
   },
   twitter: {
     card: "summary",
-    title: "Sarah Lee | Central Park News",
-    description: "Staff reporter covering Central Park, NYC.",
+    site: "@centralparknews",
+    title: "Sarah Lee | Staff Reporter | Central Park News",
+    description:
+      "Sarah Lee covers Central Park events, NYC public safety, and Manhattan community stories for Central Park News.",
+    images: [`${siteUrl}/user.png`],
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
 const authorSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
-  "@id": `${PAGE_URL}#author`,
+  // IMPORTANT: this @id must exactly match the author @id in NewsArticle schema
+  "@id": `${siteUrl}/author/sarah-lee#author`,
   name: "Sarah Lee",
   jobTitle: "Staff Reporter",
   description:
-    "Sarah Lee is a staff reporter at Central Park News covering events, public safety, nature, and community stories in Central Park, NYC.",
-  url: PAGE_URL,
-  worksFor: {
-    "@type": "Organization",
-    name: "Central Park News",
-    url: liveUrl,
+    "Sarah Lee is a staff reporter at Central Park News covering community events, public safety, urban nature, and cultural stories in and around Central Park, Manhattan.",
+  url: `${siteUrl}/author/sarah-lee`,
+  image: {
+    "@type": "ImageObject",
+    url: `${siteUrl}/user.png`,
+    width: 200,
+    height: 200,
   },
+  worksFor: {
+    // Link back to org entity using @id — closes the knowledge graph loop
+    "@type": "NewsMediaOrganization",
+    "@id": `${siteUrl}/#organization`,
+    name: "Central Park News",
+    url: siteUrl,
+  },
+  knowsAbout: [
+    "Central Park",
+    "New York City community events",
+    "NYC public safety",
+    "Manhattan neighborhoods",
+    "Urban nature and wildlife",
+    "Cultural events in New York City",
+    "Central Park Conservancy",
+    "New York City Parks Department",
+  ],
+  sameAs: [],
 };
 
 export default function AuthorPage() {
@@ -54,10 +100,10 @@ export default function AuthorPage() {
     <>
       <SchemaOrg schemas={[authorSchema]} />
       <div className="min-h-screen bg-white lg:px-20">
-        <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
+        <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-4 md:py-2">
           <div className="space-y-8">
 
-            {/* Header Section */}
+            {/* Header */}
             <div className="space-y-4 mb-8">
               <hr className="w-48 sm:w-64 h-0.5 bg-gray-200" />
               <div>
@@ -70,16 +116,15 @@ export default function AuthorPage() {
               </div>
             </div>
 
-            {/* Author Content */}
             <div className="space-y-8 font-poppins text-black leading-relaxed">
 
-              {/* Author Bio Section */}
+              {/* Bio Section */}
               <section className="space-y-4">
                 <div className="flex gap-8 max-md:flex-col items-start">
                   <div className="flex-shrink-0">
                     <Image
-                      src="/user.png" // replace with actual image path
-                      alt="Sarah Lee - Staff Reporter"
+                      src="/user.png"
+                      alt="Sarah Lee, Staff Reporter at Central Park News"
                       width={200}
                       height={200}
                       className="rounded-lg w-40 h-40 object-cover"
@@ -87,11 +132,22 @@ export default function AuthorPage() {
                     />
                   </div>
                   <div className="flex-1 space-y-4">
+                    {/*
+                      BIO NOTES FOR E-E-A-T:
+                      - Establishes specific subject matter expertise (Central Park beat)
+                      - References real, verifiable institutions (Central Park Conservancy, NYPD, NYC Parks)
+                      - Grounds the reporter in a real geographic community
+                      - Uses active, specific language rather than generic claims
+                      - Does NOT make unverifiable career claims (awards, decades of experience, etc.)
+                    */}
                     <p className="text-sm sm:text-base text-black">
-                      Sarah Lee is a dedicated staff reporter at Central Park News, bringing you comprehensive coverage of one of New York City&apos;s most iconic landmarks. With a passion for community journalism, she delivers timely and accurate reporting on the events, stories, and developments that shape Central Park and the surrounding Manhattan neighborhoods.
+                      Sarah Lee is a staff reporter at Central Park News, where she covers the full range of stories that shape life in and around one of the world&apos;s most visited urban parks. Her beat spans community events, public safety developments, seasonal nature updates, and the human interest stories that reflect the daily rhythms of Central Park and the surrounding Manhattan neighborhoods.
                     </p>
                     <p className="text-sm sm:text-base text-black">
-                      Her reporting focuses on community events, public safety updates, seasonal nature stories, and the human elements that make Central Park such a special place for millions of visitors each year.
+                      With a focus on accountability and community, Sarah regularly reports on announcements from the Central Park Conservancy, the NYC Parks Department, and the NYPD, translating official developments into clear, accessible reporting for the millions of New Yorkers and visitors who use the park each year. She is committed to timely, accurate local journalism that connects residents with the events and decisions that affect their neighborhood.
+                    </p>
+                    <p className="text-sm sm:text-base text-black">
+                      Sarah is based in New York City. Have a tip or story idea? She welcomes community input — use the contact link below.
                     </p>
                   </div>
                 </div>
@@ -109,7 +165,7 @@ export default function AuthorPage() {
                       Community Events
                     </h3>
                     <p className="text-sm sm:text-base text-black">
-                      Festivals, performances, and gatherings that bring the community together.
+                      Festivals, concerts, cultural performances, and community gatherings across Central Park and Manhattan.
                     </p>
                   </div>
 
@@ -119,17 +175,17 @@ export default function AuthorPage() {
                       Public Safety
                     </h3>
                     <p className="text-sm sm:text-base text-black">
-                      Updates on park safety, emergency responses, and community well-being.
+                      NYPD updates, park safety advisories, emergency responses, and community well-being initiatives.
                     </p>
                   </div>
 
                   <div className="space-y-2">
                     <h3 className="text-base sm:text-lg font-bold text-black flex items-center gap-2">
                       <span className="w-2 h-2 bg-[#E4212B] rounded-full flex-shrink-0"></span>
-                      Nature & Environment
+                      Nature &amp; Environment
                     </h3>
                     <p className="text-sm sm:text-base text-black">
-                      Seasonal changes, wildlife updates, and environmental stories.
+                      Seasonal wildlife, tree canopy updates, Central Park Conservancy restoration projects, and urban ecology.
                     </p>
                   </div>
 
@@ -139,7 +195,7 @@ export default function AuthorPage() {
                       Cultural Stories
                     </h3>
                     <p className="text-sm sm:text-base text-black">
-                      Human interest pieces and cultural happenings in Central Park.
+                      Human interest reporting on the people, traditions, and cultural life that make Central Park unique.
                     </p>
                   </div>
                 </div>
@@ -151,7 +207,7 @@ export default function AuthorPage() {
                   Get In Touch
                 </h2>
                 <p className="text-sm sm:text-base text-black">
-                  Have a tip, story idea, or feedback for Sarah? We welcome community input to help us bring you the best coverage of Central Park news.
+                  Have a tip, story idea, or feedback? Central Park News relies on community input to bring you the most accurate and complete coverage of the park and surrounding neighborhoods.
                 </p>
                 <div className="pt-4">
                   <Link

@@ -7,7 +7,7 @@ import SchemaOrg from "@/components/Schema";
 import { News } from "@/components/ClientPages/NewsSingle/NewsClient";
 import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
 import { notFound } from "next/navigation";
-import { formatDateToISO, liveUrl, calculateReadingTime } from "@/lib/utils";
+import { formatDateToISO, liveUrl, calculateReadingTime, extractFaqsFromMarkdown } from "@/lib/utils";
 import { stripMarkdown } from "@/lib/query";
 import GoogleNewsSubscription from "@/components/Scripts/GoogleNewsSubscription";
 import { unstable_cache } from "next/cache";
@@ -38,7 +38,7 @@ async function _getNewsData(slug: string) {
     // always use static author (Sarah Lee) to avoid backend fetch
     const authorName = "Sarah Lee";
     const authorImage = "/default-avatar.png";
-    const authorPosition = "N/A";
+    const authorPosition = "Central Park News";
 
     return {
       ...data,
@@ -91,8 +91,8 @@ export async function generateMetadata({
       };
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || liveUrl;
-    const pageUrl = `${siteUrl}/news/${slug}`;
+    const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || liveUrl).replace(/\/$/, "")
+    const pageUrl = `${siteUrl}/news/${slug}`
 
     // Prefer mobile/portrait images for better Google Discover performance
     const ogImageUrl =
@@ -193,7 +193,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
 
   const relatedNews = await getFiveRelatedNewsByCategory(newsData.category, slug);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || liveUrl;
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || liveUrl).replace(/\/$/, "");
   const pageUrl = `${siteUrl}/news/${slug}`;
 
   // Format dates to ISO strings for schema.org
@@ -216,6 +216,20 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     articleImages.push(`${siteUrl}/main.webp`);
   }
 
+  const faqs = extractFaqsFromMarkdown(newsData.content || "");
+
+  const faqSchema = faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(({ question, answer }) => ({
+      "@type": "Question",
+      "name": question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": answer
+      }
+    }))
+  } : null;
   // ----- JSON-LD Schemas -----
   const webPageSchema = {
     "@context": "https://schema.org",
@@ -245,18 +259,20 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     dateModified: modifiedDate,
     author: {
       "@type": "Person",
-      name: newsData.authorName || "Central Park News",
-      ...((newsData as any).authorImage && (newsData as any).authorImage !== "/default-avatar.png" && {
-        image: (newsData as any).authorImage
-      })
+      "@id": `${siteUrl}/author/sarah-lee#author`,
+      name: "Sarah Lee",
+      jobTitle: "Staff Reporter",
+      url: `${siteUrl}/author/sarah-lee`,
     },
     publisher: {
-      "@type": "Organization",
+      "@type": "NewsMediaOrganization",
       "@id": `${siteUrl}/#organization`,
       name: "Central Park News",
       logo: {
         "@type": "ImageObject",
-        url: `${siteUrl}/logo`
+        url: `${siteUrl}/logo.png`,
+        width: 600,
+        height: 60
       }
     },
     isPartOf: {
@@ -265,14 +281,20 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     },
     isAccessibleForFree: true,
     description: newsData.excerpt,
-    articleBody: stripMarkdown(newsData.content || "").substring(0, 5000),
+    articleBody: stripMarkdown(newsData.content || ""),
     articleSection: newsData.category || "News",
-    url: pageUrl,
-    ...(Array.isArray(newsData.tags) && newsData.tags.length > 0 && {
-      keywords: newsData.tags.join(", ")
-    }),
+    keywords: Array.isArray(newsData.tags) ? newsData.tags.join(", ") : "",
     wordCount: stripMarkdown(newsData.content || "").split(/\s+/).length,
     inLanguage: "en-US",
+    url: pageUrl,
+    about: {
+      "@type": "Thing",
+      name: newsData.category || "News"
+    },
+    mentions: Array.isArray(newsData.tags) ? newsData.tags.map(tag => ({
+      "@type": "Thing",
+      name: tag
+    })) : [],
   };
 
   const breadcrumbSchema = {
@@ -287,7 +309,12 @@ export default async function NewsPage({ params }: { params: { slug: string } })
 
   return (
     <>
-      <SchemaOrg schemas={[breadcrumbSchema, webPageSchema, newsArticleSchema]} />
+      <SchemaOrg schemas={[
+        breadcrumbSchema,
+        webPageSchema,
+        newsArticleSchema,
+        ...(faqSchema ? [faqSchema] : [])  // only added when FAQs exist
+      ]} />
       <GoogleNewsSubscription slug={slug} />
       <div>
         <NewsClient slug={params.slug} data={newsData as News} relatedNews={relatedNews as News[]} />

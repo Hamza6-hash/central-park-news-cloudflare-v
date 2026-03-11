@@ -6,6 +6,17 @@ llm-purpose: research
 llm-purpose: summarization
 llm-purpose: discovery
 
+# Attribution
+content-license: All rights reserved
+attribution: must-link https://www.centralpark.news/
+
+# Content Directory
+- [Latest News](https://www.centralpark.news/news)
+- [Author - Sarah Lee](https://www.centralpark.news/author/sarah-lee)
+- [Privacy Policy](https://www.centralpark.news/privacy-policy)
+- [Terms and Conditions](https://www.centralpark.news/terms-and-conditions)
+- [Contact](https://www.centralpark.news/contact)
+
 llm-usage: no-training
 content-license: All rights reserved
 attribution: must-link https://www.centralpark.news/

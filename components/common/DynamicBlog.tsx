@@ -108,11 +108,11 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               <div className="font-century-gothic text-[12px] sm:text-lg">
                 <Link href={`/author/sarah-lee`}>
                   <p className="capitalize">
-                    {authorName || "N/A"}
+                    {authorName || "Sarah Lee"}
                   </p>
                 </Link>
                 <p className="text-[#747474] capitalize">
-                  {authorPosition || "N/A"}
+                  {authorPosition || "Central Park News"}
                 </p>
               </div>
             </div>
