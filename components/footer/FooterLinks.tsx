@@ -42,6 +42,10 @@ const FooterLinks = () => {
                     <p  className={`cursor-pointer hover:font-bold hover:text-primary-900 ${pathName === '/terms-and-conditions' ? 'font-bold' : ''
                             }`}>TERMS AND CONDITIONS</p>
                 </Link>
+                <Link href={'/about'} >
+                    <p  className={`cursor-pointer hover:font-bold hover:text-primary-900 ${pathName === '/terms-and-conditions' ? 'font-bold' : ''
+                            }`}>ABOUT US</p>
+                </Link>
 
             </div>
         </div>

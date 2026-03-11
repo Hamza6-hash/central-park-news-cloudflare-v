@@ -43,12 +43,12 @@ export default function RootLayout({
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "NewsMediaOrganization",
-    "@id": `${liveUrl}#organization`,
+    "@id": `${liveUrl}/#organization`,
     name: "Central Park News",
     url: liveUrl,
     logo: {
       "@type": "ImageObject",
-      url: `${liveUrl}/logo`,
+      url: `${liveUrl}/logo.png`,
     },
     description:
       "Local updates, events, community stories and real-time news around Central Park and New York City.",
@@ -71,15 +71,15 @@ export default function RootLayout({
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": `${liveUrl}#website`,
+    "@id": `${liveUrl}/#website`,
     name: "Central Park News",
     url: liveUrl,
-    publisher: { "@id": `${liveUrl}#organization` },
+    publisher: { "@id": `${liveUrl}/#organization` },
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: `${liveUrl}search?q={search_term_string}`,
+        urlTemplate: `${liveUrl}/search?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },

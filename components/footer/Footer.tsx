@@ -13,10 +13,12 @@ const Footer = () => {
   const hideNews =
     pathName.startsWith("/terms-and-conditions") ||
     pathName.startsWith("/privacy") ||
+    pathName.startsWith("/author/sarah-lee") ||
+    pathName.startsWith("/about") ||
     pathName.startsWith("/unsubscribe");
 
   const hideLinks = pathName.startsWith("/unsubscribe");
-  const showFooter = pathName === '/' || pathName === '/contact' || pathName === '/privacy-policy' || pathName === '/terms-and-conditions' || pathName === '/terms-and-conditions' || pathName === '/news' || pathName.startsWith('/news/')
+  const showFooter = pathName === '/' || pathName === '/author/sarah-lee' || pathName === '/about' || pathName === '/contact' || pathName === '/privacy-policy' || pathName === '/terms-and-conditions' || pathName === '/terms-and-conditions' || pathName === '/news' || pathName.startsWith('/news/')
   if (!showFooter) return null
   if (isUnsubscribe) return null
 
@@ -33,7 +35,7 @@ const Footer = () => {
 
       <div className="bg-[#303130] w-full text-white py-3 px-1">
         <p className="text-center sm:text-xs text-[10px]">
-          COPYRIGHT 2025 © <strong>CENTRAL PARK NEWS</strong>. ALL RIGHTS RESERVED
+          COPYRIGHT 2026 © <strong>CENTRAL PARK NEWS</strong>. ALL RIGHTS RESERVED
         </p>
       </div>
     </footer>

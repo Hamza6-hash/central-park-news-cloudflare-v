@@ -6,6 +6,7 @@ import { defultImage } from "@/constants";
 import { News } from "../ClientPages/NewsSingle/NewsClient";
 import SafeImage from "@/constants/SafeImage";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 const BlogsCard = dynamic(() => import("../common/BlogsCard"), {
@@ -71,9 +72,11 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
             <span className="bg-[#E4212B] text-[12px]  text-white capitalize font-poppins truncate px-[12px] rounded-xl max-w-[50%] sm:max-w-full w-fit">
               {category || "Local News"}
             </span>
-            <h6 className="capitalize text-nowrap font-montserrat">
-              {authorName}
-            </h6>
+            <Link href={`/author/sarah-lee`}>
+              <h6 className="capitalize text-nowrap font-montserrat">
+                {authorName}
+              </h6>
+            </Link>
 
             <span className="text-primary-500 ">|</span>
             <p className="text-primary-500 text-nowrap ">
@@ -103,11 +106,13 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
             <div className="flex gap-2 flex-col max-sm:justify-center ">
               <h4 className="text-lg">Written By:</h4>
               <div className="font-century-gothic text-[12px] sm:text-lg">
-                <p className="capitalize">
-                  {authorName || "N/A"}
-                </p>
+                <Link href={`/author/sarah-lee`}>
+                  <p className="capitalize">
+                    {authorName || "Sarah Lee"}
+                  </p>
+                </Link>
                 <p className="text-[#747474] capitalize">
-                  {authorPosition || "N/A"}
+                  {authorPosition || "Central Park News"}
                 </p>
               </div>
             </div>

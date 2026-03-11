@@ -82,7 +82,7 @@ async function _fetchFeaturedArticle() {
 
     const docSnapshot = newsSnap.docs[0];
     const data = docSnapshot.data();
-    let authorName = 'Docket Digest News Room';
+    let authorName = 'Newstrix';
 
     if (data.authorId) {
       try {
@@ -93,7 +93,7 @@ async function _fetchFeaturedArticle() {
         );
         const authorSnap = await getDoc(authorRef);
         if (authorSnap.exists()) {
-          const authorData = authorSnap.data();
+          const authorData =  authorSnap.data();
           authorName = authorData.author_name;
         }
       } catch (error) {

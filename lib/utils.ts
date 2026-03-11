@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { format } from "date-fns/format";
 import { twMerge } from "tailwind-merge";
 import { object, string } from "zod";
+import { stripMarkdown } from "./query";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -129,4 +130,36 @@ export const getConciseAnchorText = (
     return text.substring(0, maxLength - 3) + '...';
 };
 
+/**
+ * Calculate reading time in minutes for an article
+ * Average reading speed: 200 words per minute
+ * @param content - The article content (text)
+ * @returns Reading time in minutes (minimum 1)
+ */
+export const calculateReadingTime = (content: string): number => {
+    if (!content) return 1;
+    
+    const wordsPerMinute = 200;
+    const wordCount = content.trim().split(/\s+/).length;
+    const readingTime = Math.ceil(wordCount / wordsPerMinute);
+    
+    return Math.max(1, readingTime);
+};
+
 export const liveUrl = "https://www.centralpark.news"
+
+export function extractFaqsFromMarkdown(content: string) {
+  const faqRegex = /\*\*(.+?)\*\*\s+([\s\S]+?)(?=\n\n\*\*|$)/g;
+  const faqs: { question: string; answer: string }[] = [];
+  let match;
+
+  while ((match = faqRegex.exec(content)) !== null) {
+    const question = match[1].trim();
+    const answer = stripMarkdown(match[2].trim());
+    if (question && answer) {
+      faqs.push({ question, answer });
+    }
+  }
+
+  return faqs;
+}
