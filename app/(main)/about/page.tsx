@@ -47,7 +47,9 @@ const AboutPage = () => {
         url: `${siteUrl}/about`,
         description: "Central Park News provides comprehensive coverage of Central Park and NYC community events with AI-driven journalistic content.",
         isPartOf: { "@id": `${siteUrl}/#website` },
-        publisher: { "@id": `${siteUrl}/#organization` }
+        publisher: { "@id": `${siteUrl}/#organization` },
+        dateModified: "2025-06-01T00:00:00Z",
+        lastReviewed: "2025-06-01T00:00:00Z"
     };
 
     const faqSchema = {

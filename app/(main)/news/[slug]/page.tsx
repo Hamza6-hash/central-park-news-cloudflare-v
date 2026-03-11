@@ -295,6 +295,13 @@ export default async function NewsPage({ params }: { params: { slug: string } })
       "@type": "Thing",
       name: tag
     })) : [],
+    speakable: {                            
+      "@type": "SpeakableSpecification",
+      cssSelector: [
+        "h1.font-century-schoolbook",
+        "p.markdown-p",              
+      ],
+    },
   };
 
   const breadcrumbSchema = {
