@@ -62,7 +62,6 @@ export const metadata: Metadata = {
 const authorSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
-  // IMPORTANT: this @id must exactly match the author @id in NewsArticle schema
   "@id": `${siteUrl}/author/sarah-lee#author`,
   name: "Sarah Lee",
   jobTitle: "Staff Reporter",
@@ -76,7 +75,6 @@ const authorSchema = {
     height: 200,
   },
   worksFor: {
-    // Link back to org entity using @id — closes the knowledge graph loop
     "@type": "NewsMediaOrganization",
     "@id": `${siteUrl}/#organization`,
     name: "Central Park News",
@@ -92,7 +90,9 @@ const authorSchema = {
     "Central Park Conservancy",
     "New York City Parks Department",
   ],
-  sameAs: [],
+  sameAs: [
+    "https://www.centralpark.news/author/sarah-lee", 
+  ],
 };
 
 export default function AuthorPage() {

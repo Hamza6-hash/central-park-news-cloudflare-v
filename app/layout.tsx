@@ -53,6 +53,10 @@ export default function RootLayout({
     description:
       "Local updates, events, community stories and real-time news around Central Park and New York City.",
     foundingDate: "2025",
+    inLanguage: "en-US",
+    sameAs: [
+       "https://www.centralpark.news",
+    ],
     address: {
       "@type": "PostalAddress",
       streetAddress: "Central Park, Manhattan",

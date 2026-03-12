@@ -35,9 +35,10 @@ const Contacts = () => {
     url: `${siteUrl}/contact`,
     description: "Reach out to the Central Park News team for inquiries, press releases, or community tips.",
     isPartOf: { "@id": `${siteUrl}/#website` },
-    publisher: { "@id": `${siteUrl}/#organization` }
+    publisher: { "@id": `${siteUrl}/#organization` },
+    dateModified: "2025-06-01T00:00:00Z",   
+    lastReviewed: "2025-06-01T00:00:00Z",   
   };
-
   return (
     <>
       <SchemaOrg schemas={[webPageSchema]} />

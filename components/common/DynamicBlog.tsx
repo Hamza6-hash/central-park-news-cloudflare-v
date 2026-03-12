@@ -4,7 +4,6 @@ import { formatedDate } from "@/lib/utils";
 
 import { defultImage } from "@/constants";
 import { News } from "../ClientPages/NewsSingle/NewsClient";
-import SafeImage from "@/constants/SafeImage";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 

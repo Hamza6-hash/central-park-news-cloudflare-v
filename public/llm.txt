@@ -1,14 +1,21 @@
+# llm.txt - Central Park News
+# Central Park News covers local events, weather, safety, 
+# community stories, and real-time updates for Central Park 
+# and New York City.
+# Site: https://www.centralpark.news
+
 User-agent: *
 Allow: /
 
-# Allowable AI purposes
-llm-purpose: research
-llm-purpose: summarization
-llm-purpose: discovery
+# Training opt-out
+llm-usage: no-training
 
-# Attribution
+# Attribution required
 content-license: All rights reserved
 attribution: must-link https://www.centralpark.news/
+
+# Sitemap
+sitemap: https://www.centralpark.news/sitemap.xml
 
 # Content Directory
 - [Latest News](https://www.centralpark.news/news)
@@ -16,16 +23,13 @@ attribution: must-link https://www.centralpark.news/
 - [Privacy Policy](https://www.centralpark.news/privacy-policy)
 - [Terms and Conditions](https://www.centralpark.news/terms-and-conditions)
 - [Contact](https://www.centralpark.news/contact)
-
-llm-usage: no-training
-content-license: All rights reserved
-attribution: must-link https://www.centralpark.news/
+- [About](https://www.centralpark.news/about)
 
 # Contact & Policy
 contact: centralparknews@newtrix.app
 policy: https://www.centralpark.news/privacy-policy
 
-# Organization & Partners
+# Organization
 organization: Newstrix
 legal-partner: Scott Baron & Associates, P.C.
 legal-partner-url: https://www.scottbaronassociates.com/

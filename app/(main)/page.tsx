@@ -93,7 +93,7 @@ async function _fetchFeaturedArticle() {
         );
         const authorSnap = await getDoc(authorRef);
         if (authorSnap.exists()) {
-          const authorData =  authorSnap.data();
+          const authorData = authorSnap.data();
           authorName = authorData.author_name;
         }
       } catch (error) {
@@ -134,6 +134,7 @@ const fetchFeaturedArticle = unstable_cache(
 export default async function HomePage() {
   const article = await fetchFeaturedArticle();
   const siteUrl = liveUrl;
+  const SITE_LAUNCH_DATE = "2025-01-01T00:00:00Z";
 
   const webPageSchema = {
     "@context": "https://schema.org",
@@ -146,8 +147,8 @@ export default async function HomePage() {
     isPartOf: { "@id": `${siteUrl}/#website` },
     publisher: { "@id": `${siteUrl}/#organization` },
     inLanguage: "en-US",
-    datePublished: new Date().toISOString(),
-    dateModified: new Date().toISOString(),
+    datePublished: SITE_LAUNCH_DATE,          
+    dateModified: article?.createdAt || new Date().toISOString(),
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
