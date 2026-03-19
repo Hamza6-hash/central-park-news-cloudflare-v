@@ -1,236 +1,142 @@
 import React from "react";
 import NewsClient from "@/components/ClientPages/NewsSingle/NewsClient";
-import { db } from "@/lib/firebaseConfig";
-import { collection, getDocs, query, where } from "firebase/firestore";
 import { Metadata } from "next";
 import SchemaOrg from "@/components/Schema";
 import { News } from "@/components/ClientPages/NewsSingle/NewsClient";
-import { getFiveRelatedNewsByCategory } from "@/lib/serverQuery";
+import { getArticleBySlug, getRelatedArticles } from "@/lib/services";
 import { notFound } from "next/navigation";
 import { formatDateToISO, liveUrl, calculateReadingTime, extractFaqsFromMarkdown } from "@/lib/utils";
 import { stripMarkdown } from "@/lib/query";
 import GoogleNewsSubscription from "@/components/Scripts/GoogleNewsSubscription";
 import { unstable_cache } from "next/cache";
 
-
-// Internal function that performs the actual fetch
 async function _getNewsData(slug: string) {
-  try {
-    if (!db) {
-      return null;
-    }
-    const newsCollection = collection(db, "blog/centralparkNews/newsletter");
-    const q = query(newsCollection, where("titleSlug", "==", slug));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.empty) {
-      return null;
-    }
-
-    const docSnap = querySnapshot.docs[0];
-    const rawData = docSnap.data();
-
-    const data = {
-      ...rawData,
-      citation: undefined,
-    };
-
-    // always use static author (Sarah Lee) to avoid backend fetch
-    const authorName = "Sarah Lee";
-    const authorImage = "/default-avatar.png";
-    const authorPosition = "Central Park News";
-
-    return {
-      ...data,
-      id: docSnap.id,
-      authorName,
-      authorImage,
-      authorPosition,
-    } as unknown as News;
-  } catch (error) {
-    return null;
-  }
+  return getArticleBySlug(slug, "news");
 }
 
 const getNewsData = unstable_cache(
-  _getNewsData,
-  ['news-article'],
+  (slug: string) => _getNewsData(slug),
+  ["news-article"],
   { revalidate: 300 }
 );
-
 
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const { slug } = params;
-
-  try {
-    const newsData = await getNewsData(slug);
-
-    if (!newsData) {
-      return {
-        title: `Newsletter Not Found | Central Park News`,
-        description: "The requested newsletter could not be found.",
-        robots: {
-          index: false,
-          follow: false,
-        },
-      };
-    }
-
-    if (!newsData.title || !newsData.excerpt) {
-      return {
-        title: "Invalid Newsletter Data | Central Park News",
-        description: "The requested newsletter has invalid data.",
-        robots: {
-          index: false,
-          follow: false,
-        },
-      };
-    }
-
-    const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || liveUrl).replace(/\/$/, "")
-    const pageUrl = `${siteUrl}/news/${slug}`
-
-    // Prefer mobile/portrait images for better Google Discover performance
-    const ogImageUrl =
-      newsData.socialImageUrls?.mobile?.url ||
-      newsData.socialImageUrls?.facebook?.url ||
-      newsData.imageURL;
-    const twitterImageUrl =
-      newsData.socialImageUrls?.twitter?.url ||
-      newsData.socialImageUrls?.facebook?.url ||
-      newsData.imageURL;
-
-    // Format dates to ISO strings
-    const publishedTime = formatDateToISO(newsData.publishDate || newsData.date || newsData.createdAt);
-    const modifiedTime = formatDateToISO(newsData.updatedAt || newsData.publishDate || newsData.date || newsData.createdAt);
-
-    // Calculate reading time
-    const plainContent = stripMarkdown(newsData.content || "");
-    const readingTimeMinutes = calculateReadingTime(plainContent);
-
-    const keywords = Array.isArray(newsData.tags) ? [...newsData.tags] : [];
-    if (newsData.category) {
-      keywords.push(newsData.category);
-    }
-    keywords.push("Central Park News", "NYC News", "Manhattan News");
-
-    return {
-      title: `${newsData.title} | Central Park News`,
-      description: newsData.excerpt,
-      keywords: keywords.length > 0 ? keywords : undefined,
-      alternates: {
-        canonical: pageUrl,
-      },
-      openGraph: {
-        title: newsData.title,
-        description: newsData.excerpt,
-        url: pageUrl,
-        siteName: "Central Park News",
-        images: ogImageUrl
-          ? [
-            {
-              url: ogImageUrl,
-              width: 1200,
-              height: 630,
-              alt: newsData.title,
-            },
-          ]
-          : [],
-        locale: "en_US",
-        type: "article",
-        publishedTime: publishedTime,
-        modifiedTime: modifiedTime,
-        authors: [newsData.authorName || "Sarah Lee"],
-        section: newsData.category || "News",
-        tags: Array.isArray(newsData.tags) ? newsData.tags : [],
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: newsData.title,
-        description: newsData.excerpt,
-        images: twitterImageUrl ? [twitterImageUrl] : [],
-        creator: "@centralparknews",
-        site: "@centralparknews",
-      },
-      robots: {
-        index: true,
-        follow: true,
-        googleBot: {
-          index: true,
-          follow: true,
-          "max-video-preview": -1,
-          "max-image-preview": "large",
-          "max-snippet": -1,
-        },
-      },
-      other: {
-        "article:reading_time": `${readingTimeMinutes}`,
-      },
-    };
-  } catch (error) {
-    return {
-      title: "Error | Central Park News",
-      description: "An error occurred while fetching the newsletter metadata.",
-      robots: {
-        index: false,
-        follow: false,
-      },
-    };
-  }
-}
-
-export default async function NewsPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+  const { slug } = await params;
   const newsData = await getNewsData(slug);
 
   if (!newsData) {
-    notFound();
+    return {
+      title: `Newsletter Not Found | Central Park News`,
+      description: "The requested newsletter could not be found.",
+      robots: { index: false, follow: false },
+    };
   }
 
-  const relatedNews = await getFiveRelatedNewsByCategory(newsData.category, slug);
+  if (!newsData.title || !newsData.excerpt) {
+    return {
+      title: "Invalid Newsletter Data | Central Park News",
+      description: "The requested newsletter has invalid data.",
+      robots: { index: false, follow: false },
+    };
+  }
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || liveUrl).replace(/\/$/, "");
   const pageUrl = `${siteUrl}/news/${slug}`;
 
-  // Format dates to ISO strings for schema.org
-  const publishedDate = formatDateToISO(newsData.publishDate || newsData.date || newsData.createdAt);
-  const modifiedDate = formatDateToISO(newsData.updatedAt || newsData.publishDate || newsData.date || newsData.createdAt);
+  const ogImageUrl =
+    (newsData as any).socialImageUrls?.mobile?.url ||
+    (newsData as any).socialImageUrls?.facebook?.url ||
+    newsData.imageURL;
+  const twitterImageUrl =
+    (newsData as any).socialImageUrls?.twitter?.url ||
+    (newsData as any).socialImageUrls?.facebook?.url ||
+    newsData.imageURL;
 
-  // Get article images - ensure it's an array
+  const publishedTime = formatDateToISO(newsData.publishDate || newsData.date || newsData.createdAt);
+  const modifiedTime = formatDateToISO((newsData as any).updatedAt || newsData.publishDate || newsData.date || newsData.createdAt);
+
+  const plainContent = stripMarkdown(newsData.content || "");
+  const readingTimeMinutes = calculateReadingTime(plainContent);
+
+  const keywords = Array.isArray(newsData.tags) ? [...newsData.tags] : [];
+  if (newsData.category) keywords.push(newsData.category);
+  keywords.push("Central Park News", "NYC News", "Manhattan News");
+
+  return {
+    title: `${newsData.title} | Central Park News`,
+    description: newsData.excerpt,
+    keywords: keywords.length > 0 ? keywords : undefined,
+    alternates: { canonical: pageUrl },
+    openGraph: {
+      title: newsData.title,
+      description: newsData.excerpt,
+      url: pageUrl,
+      siteName: "Central Park News",
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: newsData.title }] : [],
+      locale: "en_US",
+      type: "article",
+      publishedTime,
+      modifiedTime,
+      authors: [newsData.authorName || "Sarah Lee"],
+      section: newsData.category || "News",
+      tags: Array.isArray(newsData.tags) ? newsData.tags : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: newsData.title,
+      description: newsData.excerpt,
+      images: twitterImageUrl ? [twitterImageUrl] : [],
+      creator: "@centralparknews",
+      site: "@centralparknews",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1 },
+    },
+    other: { "article:reading_time": `${readingTimeMinutes}` },
+  };
+}
+
+export default async function NewsPage({ params }: { params: { slug: string } }) {
+  const { slug } = await params;
+  const newsData = await getNewsData(slug);
+
+  if (!newsData) notFound();
+
+  const relatedNews = await getRelatedArticles(newsData.category || "", slug, 6);
+
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || liveUrl).replace(/\/$/, "");
+  const pageUrl = `${siteUrl}/news/${slug}`;
+
+  const publishedDate = formatDateToISO(newsData.publishDate || newsData.date || newsData.createdAt);
+  const modifiedDate = formatDateToISO((newsData as any).updatedAt || newsData.publishDate || newsData.date || newsData.createdAt);
+
   const articleImages = [];
-  if (newsData.socialImageUrls?.original?.url) {
-    articleImages.push(newsData.socialImageUrls.original.url);
-  }
-  if (newsData.socialImageUrls?.facebook?.url && !articleImages.includes(newsData.socialImageUrls.facebook.url)) {
-    articleImages.push(newsData.socialImageUrls.facebook.url);
-  }
-  if (newsData.imageURL && !articleImages.includes(newsData.imageURL)) {
-    articleImages.push(newsData.imageURL);
-  }
-  // Fallback if no images
-  if (articleImages.length === 0) {
-    articleImages.push(`${siteUrl}/main.webp`);
-  }
+  const social = (newsData as any).socialImageUrls;
+  if (social?.original?.url) articleImages.push(social.original.url);
+  if (social?.facebook?.url && !articleImages.includes(social.facebook.url)) articleImages.push(social.facebook.url);
+  if (newsData.imageURL && !articleImages.includes(newsData.imageURL)) articleImages.push(newsData.imageURL);
+  if (articleImages.length === 0) articleImages.push(`${siteUrl}/main.webp`);
 
   const faqs = extractFaqsFromMarkdown(newsData.content || "");
+  const faqSchema =
+    faqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map(({ question, answer }) => ({
+            "@type": "Question",
+            name: question,
+            acceptedAnswer: { "@type": "Answer", text: answer },
+          })),
+        }
+      : null;
 
-  const faqSchema = faqs.length > 0 ? {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map(({ question, answer }) => ({
-      "@type": "Question",
-      "name": question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": answer
-      }
-    }))
-  } : null;
-  // ----- JSON-LD Schemas -----
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -249,10 +155,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     "@id": `${pageUrl}#article`,
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${pageUrl}#webpage`
-    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${pageUrl}#webpage` },
     headline: newsData.title,
     image: articleImages.length === 1 ? articleImages[0] : articleImages,
     datePublished: publishedDate,
@@ -268,17 +171,9 @@ export default async function NewsPage({ params }: { params: { slug: string } })
       "@type": "NewsMediaOrganization",
       "@id": `${siteUrl}/#organization`,
       name: "Central Park News",
-      logo: {
-        "@type": "ImageObject",
-        url: `${siteUrl}/logo.png`,
-        width: 600,
-        height: 60
-      }
+      logo: { "@type": "ImageObject", url: `${siteUrl}/logo.png`, width: 600, height: 60 },
     },
-    isPartOf: {
-      "@type": "Product",
-      productID: "CAowjsrDDA:openaccess"
-    },
+    isPartOf: { "@type": "Product", productID: "CAowjsrDDA:openaccess" },
     isAccessibleForFree: true,
     description: newsData.excerpt,
     articleBody: stripMarkdown(newsData.content || ""),
@@ -287,20 +182,11 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     wordCount: stripMarkdown(newsData.content || "").split(/\s+/).length,
     inLanguage: "en-US",
     url: pageUrl,
-    about: {
-      "@type": "Thing",
-      name: newsData.category || "News"
-    },
-    mentions: Array.isArray(newsData.tags) ? newsData.tags.map(tag => ({
-      "@type": "Thing",
-      name: tag
-    })) : [],
-    speakable: {                            
+    about: { "@type": "Thing", name: newsData.category || "News" },
+    mentions: Array.isArray(newsData.tags) ? newsData.tags.map((tag) => ({ "@type": "Thing", name: tag })) : [],
+    speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: [
-        "h1.font-century-schoolbook",
-        "p.markdown-p",              
-      ],
+      cssSelector: ["h1.font-century-schoolbook", "p.markdown-p"],
     },
   };
 
@@ -316,15 +202,17 @@ export default async function NewsPage({ params }: { params: { slug: string } })
 
   return (
     <>
-      <SchemaOrg schemas={[
-        breadcrumbSchema,
-        webPageSchema,
-        newsArticleSchema,
-        ...(faqSchema ? [faqSchema] : [])  // only added when FAQs exist
-      ]} />
+      <SchemaOrg
+        schemas={[
+          breadcrumbSchema,
+          webPageSchema,
+          newsArticleSchema,
+          ...(faqSchema ? [faqSchema] : []),
+        ]}
+      />
       <GoogleNewsSubscription slug={slug} />
       <div>
-        <NewsClient slug={params.slug} data={newsData as News} relatedNews={relatedNews as News[]} />
+        <NewsClient slug={slug} data={newsData as News} relatedNews={relatedNews as News[]} />
       </div>
     </>
   );

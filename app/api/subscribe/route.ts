@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import sgMail from "@sendgrid/mail";
-import admin from "firebase-admin";
-import { adminDb } from "@/lib/firebaseAdmin";
+import { getSubscribeUserByEmail, createSubscribeUser } from "@/lib/services";
 import { HashBasedToken } from "@/lib/unsubscribeToken";
 import { subscribeTemplate } from "./template";
 
@@ -10,22 +9,14 @@ sgMail.setApiKey(process.env.SendGridApiKey!);
 export async function POST(request: Request) {
   const { email } = await request.json();
 
-  // Check if email already exists
-  const subscribeUserRef = adminDb
-    .collection("blog")
-    .doc("centralparkNews")
-    .collection("subscribeUsers")
-    .doc(email);
-  
-  const subscribeUser = await subscribeUserRef.get();
-  if (subscribeUser.exists) {
+  const existingUser = await getSubscribeUserByEmail(email);
+  if (existingUser) {
     return NextResponse.json(
       { message: "Email already exists" },
       { status: 400 }
     );
   }
 
-  // Generate secure unsubscribe token and store in user document
   const { token: unsubscribeToken, expiryTime } =
     await HashBasedToken.generateToken(email);
 
@@ -40,7 +31,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // Add contact to SendGrid Marketing Campaigns
   const response = await fetch(
     "https://api.sendgrid.com/v3/marketing/contacts",
     {
@@ -50,11 +40,7 @@ export async function POST(request: Request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        contacts: [
-          {
-            email: email,
-          },
-        ],
+        contacts: [{ email }],
         list_ids: SENDGRID_LIST_ID ? [SENDGRID_LIST_ID] : undefined,
       }),
     }
@@ -69,7 +55,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // Create secure unsubscribe URL with both email and token
   const unsubscribeUrl = `${
     process.env.NEXT_PUBLIC_SITE_URL
   }/unsubscribe?email=${encodeURIComponent(email)}&token=${encodeURIComponent(
@@ -82,27 +67,22 @@ export async function POST(request: Request) {
     to: email,
     from: "newstrix@blackacre.company",
     subject: "Welcome to Central Parks News",
-    html: html,
+    html,
   };
 
   try {
     await sgMail.send(msg);
 
-    // Only save to Firebase after both SendGrid and email operations succeed
-    await subscribeUserRef.set({
-      email: email,
-      unsubscribeToken: unsubscribeToken,
-      subscribedAt: admin.firestore.FieldValue.serverTimestamp(),
+    await createSubscribeUser({
+      email,
+      unsubscribeToken,
       status: "active",
-      tokenCreatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      tokenCreatedAt: new Date(),
       tokenExpiresAt: expiryTime,
-      tokenUsed: false,
     });
 
     return NextResponse.json(
-      {
-        message: "Email sent successfully",
-      },
+      { message: "Email sent successfully" },
       { status: 200 }
     );
   } catch (error: any) {

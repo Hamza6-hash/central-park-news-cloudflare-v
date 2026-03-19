@@ -22,7 +22,6 @@ const nextConfig = {
     // performance optimization
     optimizeCss: true, // Enables CSS optimization and critical CSS extraction
     optimizePackageImports: [
-      "firebase",
       "swiper",
       "@radix-ui/react-dialog",
       "@radix-ui/react-label",
@@ -47,11 +46,6 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "firebasestorage.googleapis.com",
-        pathname: "/**",
-      },
       {
         protocol: "https",
         hostname: "storage.googleapis.com",

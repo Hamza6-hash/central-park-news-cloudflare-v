@@ -55,7 +55,7 @@ export default function RootLayout({
     foundingDate: "2025",
     inLanguage: "en-US",
     sameAs: [
-       "https://www.centralpark.news",
+      "https://www.centralpark.news",
     ],
     address: {
       "@type": "PostalAddress",
@@ -143,6 +143,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
            });`
           }}
         />
+        <Script src="https://platform.twitter.com/widgets.js" strategy="lazyOnload" />
         {/* ----------------- GOOGLE SUBSCRIPTION SCRIPT ---------*/}
         <link
           rel="preload"

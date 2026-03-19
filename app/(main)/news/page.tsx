@@ -5,6 +5,8 @@ import { stripMarkdown } from "@/lib/query";
 import { liveUrl } from "@/lib/utils";
 import { Metadata } from "next";
 import { Suspense } from "react";
+import { getArticlesPaginated } from "@/lib/services";
+import { defultImage } from "@/constants";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -93,28 +95,25 @@ export async function generateMetadata(): Promise<Metadata> {
 
 async function getInitialNewsData(): Promise<PaginationData> {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || liveUrl}/api/articles/pagination?page=1&itemsPerPage=${ITEMS_PER_PAGE}&type=news`,
-      {
-        next: { revalidate: 3600 }
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return await response.json();
+    const result = await getArticlesPaginated(1, ITEMS_PER_PAGE, "news");
+    const itemsData = result.items.map((data) => ({
+      ...data,
+      imageURL: data.imageURL || defultImage,
+      createdAt: data.createdAt ?? "",
+    }));
+    return {
+      ...result,
+      items: itemsData,
+    };
   } catch (error) {
-    console.error('Error fetching initial news data:', error);
-    // Return empty data if fetch fails
+    console.error("Error fetching initial news data:", error);
     return {
       items: [],
       totalPages: 0,
       totalItems: 0,
       hasNextPage: false,
       hasPrevPage: false,
-      currentPage: 1
+      currentPage: 1,
     };
   }
 }

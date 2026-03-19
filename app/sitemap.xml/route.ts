@@ -1,6 +1,6 @@
 // Serves sitemap index at /sitemap.xml (lists sitemap-pages.xml + sitemap-posts/1, 2, ...)
 import { NextResponse } from "next/server";
-import { sitemapGenerator } from "@/lib/sitemapGenerator";
+import { sitemapGenerator } from "@/lib/sitemap";
 
 const CACHE_MAX_AGE = 900; // 15 min — faster discovery of new content
 
