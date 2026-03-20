@@ -131,7 +131,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
               <BlogsCard
                 key={item.id}
                 title={item.title}
-                content={item.content}
+                content={item.content ?? ""}
                 imageURL={item.imageURL || defultImage}
                 authorName={item.authorName}
                 publishDate={item.publishDate}

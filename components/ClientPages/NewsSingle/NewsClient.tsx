@@ -18,25 +18,25 @@ export interface News {
   title: string;
   content: string;
   imageURL?: string;
-  authorId: string;
-  excerpt: string;
-  socialImageUrls: any;
-  tags: string[];
-  category: string;
-  publishDate: string;
-  updatedAt: string;
+  authorId?: string;
+  excerpt?: string;
+  socialImageUrls?: any;
+  tags?: string[];
+  category?: string;
+  publishDate?: string;
+  updatedAt?: string;
   authorName?: string;
-  date: {
+  date?: {
     seconds: number;
     nanoseconds: number;
   };
   formattedDate?: string;
   titleSlug?: string;
   authorPosition?: string;
-  createdAt: string,
-  status: string,
-  position: string,
-  citation?: string,
+  createdAt?: string;
+  status?: string;
+  position?: string;
+  citation?: string;
 }
 
 const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, relatedNews: News[] }) => {

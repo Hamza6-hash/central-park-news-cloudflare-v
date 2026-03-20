@@ -1,4 +1,4 @@
-name = "central-park-news"
+name = "newstrix"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
@@ -10,4 +10,4 @@ pages_build_output_dir = ".vercel/output/static"
 #   3. Copy the generated Hyperdrive ID and replace "YOUR_HYPERDRIVE_ID" below
 [[hyperdrive]]
 binding = "HYPERDRIVE"
-id = "YOUR_HYPERDRIVE_ID"
+id = "106835a97f094af79adb3979522d6d2a"

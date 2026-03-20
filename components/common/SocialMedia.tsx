@@ -6,7 +6,8 @@ const FaInstagram = dynamic(() => import("react-icons/fa6").then(mod => mod.FaIn
 const FaTwitter = dynamic(() => import("react-icons/fa").then(mod => mod.FaTwitter));
 const FaFacebookSquare = dynamic(() => import("react-icons/fa").then(mod => mod.FaFacebookSquare));
 
-const SocialMediaTag = ({ icon, link }: SocialMedia) => {
+interface SocialMediaTagProps { icon: React.ReactNode; link: string; }
+const SocialMediaTag = ({ icon, link }: SocialMediaTagProps) => {
     return (
         <div className="rounded-full border border-primary-900 p-1.5 cursor-pointer">
             {icon}

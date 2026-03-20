@@ -44,7 +44,7 @@ export default async function Page({
 }: {
   searchParams: { email?: string; token?: string };
 }) {
-  const email = searchParams?.email;
+  const email = searchParams?.email ?? "";
   await validateUser(email);
 
   return <UnsubscribeClient />;

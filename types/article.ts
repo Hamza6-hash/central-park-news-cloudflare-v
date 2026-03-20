@@ -15,6 +15,20 @@ export interface FeaturedArticle {
   publishDate?: { seconds: number; nanoseconds: number };
 }
 
+/** Related article shown alongside a news single page */
+export interface RelatedNewsItem {
+  id: string;
+  title: string;
+  titleSlug?: string;
+  imageURL?: string;
+  authorName?: string;
+  createdAt?: string;
+  category?: string;
+  excerpt?: string;
+  content?: string;
+  publishDate?: string;
+}
+
 /** Search result item */
 export interface SearchResult {
   id: string;
