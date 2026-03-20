@@ -1,6 +1,5 @@
 import { CMS_BASE_URL } from "./utils";
 
-
 const RAW_KEY = process.env.CMS_API_KEY || "";
 const CMS_API_KEY = RAW_KEY.includes(":") ? RAW_KEY.split(":")[1]?.trim() || RAW_KEY : RAW_KEY;
 

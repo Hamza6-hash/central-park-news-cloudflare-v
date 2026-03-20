@@ -2,7 +2,6 @@ import React from "react";
 import NewsClient from "@/components/ClientPages/NewsSingle/NewsClient";
 import { Metadata } from "next";
 import SchemaOrg from "@/components/Schema";
-import { News } from "@/components/ClientPages/NewsSingle/NewsClient";
 import { getArticleBySlug, getRelatedArticles } from "@/lib/services";
 import { notFound } from "next/navigation";
 import { formatDateToISO, liveUrl, calculateReadingTime, extractFaqsFromMarkdown } from "@/lib/utils";
@@ -212,7 +211,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
       />
       <GoogleNewsSubscription slug={slug} />
       <div>
-        <NewsClient slug={slug} data={newsData as News} relatedNews={relatedNews as News[]} />
+        <NewsClient slug={slug} data={newsData} relatedNews={relatedNews} />
       </div>
     </>
   );

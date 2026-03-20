@@ -36,13 +36,10 @@ const nextConfig = {
       "vanilla-cookieconsent",
     ],
   },
-  // Performance optimizations
-  compress: true, // Enable gzip compression
-  // Optimize font loading
+  compress: true,
   optimizeFonts: true,
   poweredByHeader: false,
-  // Optimize production builds
-  productionBrowserSourceMaps: false, // Disable source maps in production to reduce bundle size
+  productionBrowserSourceMaps: false,
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -51,29 +48,26 @@ const nextConfig = {
         hostname: "storage.googleapis.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "pub-336ef3681b5b432ba1f03247c9fb8bba.r2.dev",
+        pathname: "/**",
+      },
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  // Optional: skip transpiling some packages
   transpilePackages: [],
-
-  // Configure webpack to exclude unnecessary polyfills for modern browsers
   webpack: (config, { isServer }) => {
-    // Exclude polyfills that are not needed for modern browsers
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
-        // Prevent polyfills from being included
         fs: false,
         net: false,
         tls: false,
       };
-      
-      // Exclude core-js polyfills for modern browser features
       config.resolve.alias = {
         ...config.resolve.alias,
-        // Prevent automatic polyfill injection
       };
     }
     return config;
@@ -94,8 +88,6 @@ const nextConfig = {
 };
 
 export default withSentryConfig(withBundleAnalyzer(nextConfig), {
-  // For all available options, see:
-  // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
   org: "blackacre-llc",
 

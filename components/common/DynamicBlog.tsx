@@ -3,7 +3,7 @@ import Image, { StaticImageData } from "next/image";
 import { formatedDate } from "@/lib/utils";
 
 import { defultImage } from "@/constants";
-import { News } from "../ClientPages/NewsSingle/NewsClient";
+import type { RelatedNewsItem } from "@/types/article";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import rehypeRaw from "rehype-raw";
@@ -30,7 +30,7 @@ export interface DynamicBlogProps {
   authorPosition?: string;
   // @ts-ignore
   authorImg?: string | StaticImageData;
-  relatedNews?: News[];
+  relatedNews?: RelatedNewsItem[];
   createdAt?: string,
   category?: string,
 }

@@ -5,41 +5,25 @@ import Link from "next/link";
 import NewsSingleLoading from "@/components/Loadings/NewsSingleLoading";
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
+import type { NewsSingleArticle, RelatedNewsItem } from "@/types/article";
 
+/** @deprecated Prefer importing NewsSingleArticle from @/types/article */
+export type News = NewsSingleArticle;
 
 const DynamicBlog = dynamic(() => import("@/components/common/DynamicBlog"), {
   loading: () => <NewsSingleLoading />,
   ssr: false, // Avoid hydration mismatch: server and client both show loading, then client mounts content
 });
 
-
-export interface News {
-  id: string;
-  title: string;
-  content: string;
-  imageURL?: string;
-  authorId: string;
-  excerpt: string;
-  socialImageUrls: any;
-  tags: string[];
-  category: string;
-  publishDate: string;
-  updatedAt: string;
-  authorName?: string;
-  date: {
-    seconds: number;
-    nanoseconds: number;
-  };
-  formattedDate?: string;
-  titleSlug?: string;
-  authorPosition?: string;
-  createdAt: string,
-  status: string,
-  position: string,
-  citation?: string,
-}
-
-const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, relatedNews: News[] }) => {
+const NewsClient = ({
+  slug,
+  data,
+  relatedNews,
+}: {
+  slug: string;
+  data: NewsSingleArticle;
+  relatedNews: RelatedNewsItem[];
+}) => {
   const { data: news, isLoading } = useQuery({
     queryKey: ['fetchSingleNews', slug],
     queryFn: async () => {

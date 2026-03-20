@@ -162,7 +162,6 @@ export function extractFaqsFromMarkdown(content: string) {
   return faqs;
 }
 
-
+export const CMS_API_BASE_URL = "https://newstrix.vercel.app"
+export const CMS_BASE_URL = "https://newstrix.vercel.app"
 export const liveUrl = "https://www.centralpark.news";
-export const CMS_API_BASE_URL = "http://localhost:3000/"
-export const CMS_BASE_URL = "http://localhost:3000/"

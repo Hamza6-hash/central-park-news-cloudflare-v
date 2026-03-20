@@ -4,6 +4,7 @@ import {
   mapCmsArticleToList,
   mapCmsArticleToSingle,
 } from "@/lib/cmsApi";
+import type { NewsSingleArticle, RelatedNewsItem } from "@/types/article";
 
 /** Normalize date to legacy format for backward compatibility (Firebase-style) */
 function toLegacyDate(date: Date | string | null | undefined) {
@@ -16,11 +17,20 @@ function toLegacyDate(date: Date | string | null | undefined) {
 export async function getArticleBySlug(
   slug: string,
   _type: "news" | "article" = "news"
-) {
+): Promise<NewsSingleArticle | null> {
   const res = await fetchCmsArticleBySlug(slug);
-  if (!res?.success || !res.data) return null;
+  if (!res?.success || !res.data) {
+    console.log("[articleService] getArticleBySlug: no article", {
+      slug,
+      fetchReturnedNull: res == null,
+      success: res?.success,
+      hasData: Boolean(res?.data),
+    });
+    return null;
+  }
 
   const mapped = mapCmsArticleToSingle(res.data);
+  console.log("[articleService] getArticleBySlug: ok", { slug, title: mapped.title });
   return {
     ...mapped,
     citation: undefined,
@@ -33,7 +43,7 @@ export async function getRelatedArticles(
   category: string,
   slug: string,
   limit = 6
-) {
+): Promise<RelatedNewsItem[]> {
   if (!category) return [];
 
   const res = await fetchCmsArticles({ limit: 60, offset: 0 });
