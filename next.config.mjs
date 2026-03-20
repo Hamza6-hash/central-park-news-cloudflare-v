@@ -96,6 +96,12 @@ export default withSentryConfig(withBundleAnalyzer(nextConfig), {
   project: "central-park-news",
   silent: !process.env.CI,
   widenClientFileUpload: true,
+  // Disable auto-instrumentation — it injects duplicate identifiers into
+  // .func + .rsc.func bundles which breaks @cloudflare/next-on-pages.
+  // Sentry.init() in sentry.edge.config.ts still captures errors manually.
+  autoInstrumentServerFunctions: false,
+  autoInstrumentMiddleware: false,
+  autoInstrumentAppDirectory: false,
   webpack: {
     automaticVercelMonitors: true,
     treeshake: {

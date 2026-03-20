@@ -1,7 +1,11 @@
-import ReactMarkdown from 'react-markdown';
+"use client";
+
+import dynamic from 'next/dynamic';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+
+const ReactMarkdown = dynamic(() => import('react-markdown'), { ssr: false });
 
 const sanitizeSchema = {
     ...defaultSchema,
