@@ -2,6 +2,7 @@ import PrivacyAndPolicy from '@/components/ClientPages/PrivacyAndPolicy/PrivacyA
 import SchemaOrg from '@/components/Schema';
 import { liveUrl } from '@/lib/utils';
 import { Metadata } from "next";
+export const runtime = "edge";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Central Park News",

@@ -2,6 +2,7 @@ import SchemaOrg from '@/components/Schema';
 import { liveUrl } from '@/lib/utils';
 import { Metadata } from "next";
 import dynamic from 'next/dynamic';
+export const runtime = "edge";
 
 const DynamicTermsAndCondition = dynamic(
   () => import('@/components/ClientPages/TermsAndConditions/TermsAndCondition'),

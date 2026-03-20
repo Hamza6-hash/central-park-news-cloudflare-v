@@ -1,4 +1,5 @@
 import React from "react";
+export const runtime = "edge";
 import NewsClient from "@/components/ClientPages/NewsSingle/NewsClient";
 import { Metadata } from "next";
 import SchemaOrg from "@/components/Schema";

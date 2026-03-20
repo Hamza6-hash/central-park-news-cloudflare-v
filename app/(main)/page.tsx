@@ -4,6 +4,7 @@ import SchemaOrg from "@/components/Schema";
 import { liveUrl } from "@/lib/utils";
 import { getTopStories } from "@/lib/services";
 import { unstable_cache } from "next/cache";
+export const runtime = "edge";
 
 const fetchTopStories = unstable_cache(
   () => getTopStories(7),

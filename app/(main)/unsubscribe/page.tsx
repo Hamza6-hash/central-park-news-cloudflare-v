@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+export const runtime = "edge";
 import UnsubscribeClient from "./UnsubscribeClient";
 import { liveUrl } from "@/lib/utils";
 import type { Metadata } from "next";

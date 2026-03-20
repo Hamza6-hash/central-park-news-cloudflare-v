@@ -2,6 +2,7 @@ import ContactClient from "@/components/ClientPages/ContactPage/ContactClient";
 import SchemaOrg from "@/components/Schema";
 import { Metadata } from "next";
 import { liveUrl } from "@/lib/utils";
+export const runtime = "edge";
 
 export const metadata: Metadata = {
   title: "Contact Us | Central Park News",

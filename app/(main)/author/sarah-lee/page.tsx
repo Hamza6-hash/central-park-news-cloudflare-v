@@ -3,6 +3,7 @@ import SchemaOrg from "@/components/Schema";
 import { liveUrl } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
+export const runtime = "edge";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || liveUrl).replace(/\/$/, "");
 const PAGE_URL = `${siteUrl}/author/sarah-lee`;

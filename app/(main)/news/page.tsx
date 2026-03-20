@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 import { getArticlesPaginated } from "@/lib/services";
 import { defultImage } from "@/constants";
+export const runtime = "edge";
 
 const ITEMS_PER_PAGE = 9;
 
