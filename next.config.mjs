@@ -1,6 +1,3 @@
-import { withSentryConfig } from "@sentry/nextjs";
-/** @type {import('next').NextConfig} */
-
 import bundleAnalyzer from "@next/bundle-analyzer";
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -70,8 +67,13 @@ const nextConfig = {
       config.externals = [
         ...existingExternals,
         ({ request }, callback) => {
-          if (nodeBuiltins.includes(request) || request === "pg-native") {
-            return callback(null, `commonjs ${request}`);
+          if (nodeBuiltins.includes(request)) {
+            // Use node: prefix so esbuild (used by @cloudflare/next-on-pages)
+            // recognises them as external via its "node:*" pattern.
+            return callback(null, `commonjs node:${request}`);
+          }
+          if (request === "pg-native") {
+            return callback(null, `commonjs node:pg-native`);
           }
           callback();
         },
@@ -91,21 +93,8 @@ const nextConfig = {
 
 };
 
-export default withSentryConfig(withBundleAnalyzer(nextConfig), {
-  org: "blackacre-llc",
-  project: "central-park-news",
-  silent: !process.env.CI,
-  widenClientFileUpload: true,
-  // Disable auto-instrumentation — it injects duplicate identifiers into
-  // .func + .rsc.func bundles which breaks @cloudflare/next-on-pages.
-  // Sentry.init() in sentry.edge.config.ts still captures errors manually.
-  autoInstrumentServerFunctions: false,
-  autoInstrumentMiddleware: false,
-  autoInstrumentAppDirectory: false,
-  webpack: {
-    automaticVercelMonitors: true,
-    treeshake: {
-      removeDebugLogging: true,
-    },
-  },
-});
+// withSentryConfig is intentionally NOT used here.
+// Sentry's webpack plugin injects a debug-ID IIFE into every webpack chunk,
+// producing duplicate module identifiers that break @cloudflare/next-on-pages.
+// Error monitoring still works via Sentry.init() in sentry.edge.config.ts.
+export default withBundleAnalyzer(nextConfig);
