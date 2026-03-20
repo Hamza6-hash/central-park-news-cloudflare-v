@@ -1,0 +1,1 @@
+export { sitemapGenerator } from "./generator";

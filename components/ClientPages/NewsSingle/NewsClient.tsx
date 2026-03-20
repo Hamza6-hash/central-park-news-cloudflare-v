@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import NewsSingleLoading from "@/components/Loadings/NewsSingleLoading";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
 
 
 const DynamicBlog = dynamic(() => import("@/components/common/DynamicBlog"), {
@@ -55,6 +56,15 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
     enabled: !!slug,
   })
 
+  useEffect(() => {
+    // @ts-ignore
+    if (typeof window !== "undefined" && window.twttr?.widgets) {
+      // @ts-ignore
+      window.twttr.widgets.load();
+    }
+  }, [news]);
+
+
   if (isLoading) {
     return (
       <NewsSingleLoading />
@@ -65,6 +75,9 @@ const NewsClient = ({ slug, data, relatedNews }: { slug: string, data: News, rel
   if (!news) {
     return null;
   }
+
+
+
 
   return (
     <div className="w-full ">

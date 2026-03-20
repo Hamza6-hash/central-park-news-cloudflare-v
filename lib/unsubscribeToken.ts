@@ -1,109 +1,88 @@
-import crypto from 'crypto';
-import { adminDb } from '@/lib/firebaseAdmin';
+import { getSubscribeUserByEmail, markSubscribeUserTokenUsed } from "@/lib/services";
+
+const SECRET_KEY = process.env.TOKEN_SECRET || "your-secret-key-make-it-long-and-random";
+
+async function hmacSha256Hex(key: string, message: string): Promise<string> {
+  const enc = new TextEncoder();
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(key),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", cryptoKey, enc.encode(message));
+  return Array.from(new Uint8Array(sig))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+function randomHex(bytes: number): string {
+  return Array.from(crypto.getRandomValues(new Uint8Array(bytes)))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+function toBase64Url(str: string): string {
+  return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+}
+
+function fromBase64Url(str: string): string {
+  return atob(str.replace(/-/g, "+").replace(/_/g, "/"));
+}
 
 export class HashBasedToken {
-  private static readonly SECRET_KEY = process.env.TOKEN_SECRET || 'your-secret-key-make-it-long-and-random';
-
   static async generateToken(email: string): Promise<{ token: string; expiryTime: Date }> {
     const timestamp = Date.now();
-    const randomBytes = crypto.randomBytes(16).toString('hex');
-    
-    // Create payload: email:timestamp:randomBytes
+    const randomBytes = randomHex(16);
     const payload = `${email}:${timestamp}:${randomBytes}`;
-    
-    // Create HMAC signature to prevent tampering
-    const signature = crypto
-      .createHmac('sha256', this.SECRET_KEY)
-      .update(payload)
-      .digest('hex');
-    
-    // Combine: base64url(payload).signature
-    const token = `${Buffer.from(payload).toString('base64url')}.${signature}`;
-    
-    const expiryTime = new Date(timestamp + 24 * 60 * 60 * 1000); // 24 hours for testing
-
+    const signature = await hmacSha256Hex(SECRET_KEY, payload);
+    const token = `${toBase64Url(payload)}.${signature}`;
+    const expiryTime = new Date(timestamp + 24 * 60 * 60 * 1000);
     return { token, expiryTime };
   }
 
-  static async verifyToken(email: string, token: string): Promise<{ valid: boolean; error?: string }> {
+  static async verifyToken(
+    email: string,
+    token: string
+  ): Promise<{ valid: boolean; error?: string }> {
     try {
-      // Split token into payload and signature
-      const [payloadB64, signature] = token.split('.');
-      
+      const [payloadB64, signature] = token.split(".");
       if (!payloadB64 || !signature) {
-        return { valid: false, error: 'Invalid token format' };
+        return { valid: false, error: "Invalid token format" };
       }
 
-      // Decode payload
-      const payload = Buffer.from(payloadB64, 'base64url').toString();
-      const [tokenEmail, timestampStr, randomBytes] = payload.split(':');
-      
-      if (!tokenEmail || !timestampStr || !randomBytes) {
-        return { valid: false, error: 'Invalid token payload' };
-      }
+      const payload = fromBase64Url(payloadB64);
+      const [tokenEmail] = payload.split(":");
 
-      // Verify email matches
       if (tokenEmail !== email) {
-        return { valid: false, error: 'Token email mismatch' };
+        return { valid: false, error: "Token email mismatch" };
       }
 
-      // Verify HMAC signature (prevents tampering)
-      const expectedSignature = crypto
-        .createHmac('sha256', this.SECRET_KEY)
-        .update(payload)
-        .digest('hex');
-      
+      const expectedSignature = await hmacSha256Hex(SECRET_KEY, payload);
       if (signature !== expectedSignature) {
-        return { valid: false, error: 'Invalid token signature' };
+        return { valid: false, error: "Invalid token signature" };
       }
 
-      // Check if token is expired
-      // const timestamp = parseInt(timestampStr);
-      // if (isNaN(timestamp) || Date.now() > timestamp + 24 * 60 * 60 * 1000) {
-      //   return { valid: false, error: 'Token expired' };
-      // }
-
-      // Check token in user document
-      const userDoc = await adminDb.doc(`blog/centralparkNews/subscribeUsers/${email}`).get();
-
-      if (!userDoc.exists) {
-        return { valid: false, error: 'User not found' };
+      const user = await getSubscribeUserByEmail(email);
+      if (!user) {
+        return { valid: false, error: "User not found" };
       }
-
-      const userData = userDoc.data();
-
-      if (!userData) {
-        return { valid: false, error: 'User data not found' };
+      if (user.unsubscribeToken !== token) {
+        return { valid: false, error: "Token not found or invalid" };
       }
-
-      // Check if token matches stored token
-      if (userData.unsubscribeToken !== token) {
-        return { valid: false, error: 'Token not found or invalid' };
+      if (user.tokenUsed) {
+        return { valid: false, error: "Token already used" };
       }
-
-      // Check if token has been used
-      if (userData.tokenUsed) {
-        return { valid: false, error: 'Token already used' };
-      }
-
-      // Check token expiry from database
-      // if (userData.tokenExpiresAt && new Date() > userData.tokenExpiresAt.toDate()) {
-      //   return { valid: false, error: 'Token expired' };
-      // }
 
       return { valid: true };
-
     } catch (error) {
-      console.error('Token verification error:', error);
-      return { valid: false, error: 'Invalid token' };
+      console.error("Token verification error:", error);
+      return { valid: false, error: "Invalid token" };
     }
   }
 
-  // Mark token as used (one-time use)
   static async markTokenAsUsed(email: string): Promise<void> {
-    await adminDb.doc(`blog/centralparkNews/subscribeUsers/${email}`).set({
-      tokenUsed: true,
-      tokenUsedAt: new Date()
-    }, { merge: true });
+    await markSubscribeUserTokenUsed(email);
   }
-} 
+}

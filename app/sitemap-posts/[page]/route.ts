@@ -1,8 +1,9 @@
-// Serves /sitemap-posts/1, /sitemap-posts/2, ... (chunked post sitemaps, 150 URLs each)
 import { NextResponse } from "next/server";
-import { sitemapGenerator } from "@/lib/sitemapGenerator";
+import { sitemapGenerator } from "@/lib/sitemap";
 
-const CACHE_MAX_AGE = 900; // 15 min
+export const runtime = "edge";
+
+const CACHE_MAX_AGE = 900; 
 
 export async function GET(
   _request: Request,

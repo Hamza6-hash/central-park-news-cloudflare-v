@@ -3,9 +3,12 @@ import Image, { StaticImageData } from "next/image";
 import { formatedDate } from "@/lib/utils";
 
 import { defultImage } from "@/constants";
-import { News } from "../ClientPages/NewsSingle/NewsClient";
+import type { RelatedNewsItem } from "@/types/article";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from 'remark-gfm';
+import SafeMarkdown from "../ClientPages/SafeMarkdown/SafeMarkdown";
 
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 const BlogsCard = dynamic(() => import("../common/BlogsCard"), {
@@ -27,7 +30,7 @@ export interface DynamicBlogProps {
   authorPosition?: string;
   // @ts-ignore
   authorImg?: string | StaticImageData;
-  relatedNews?: News[];
+  relatedNews?: RelatedNewsItem[];
   createdAt?: string,
   category?: string,
 }
@@ -86,19 +89,7 @@ const DynamicBlog: React.FC<DynamicBlogProps> = ({
         </div>
 
         <div className="markdown-content max-sm:text-[14px] text-base leading-relaxed">
-          <ReactMarkdown
-            components={{
-              h1: ({ node, ...props }) => <h1 className="markdown-h1" {...props} />,
-              h2: ({ node, ...props }) => <h2 className="markdown-h2" {...props} />,
-              h3: ({ node, ...props }) => <h3 className="markdown-h3" {...props} />,
-              h4: ({ node, ...props }) => <h4 className="markdown-h4" {...props} />,
-              h5: ({ node, ...props }) => <h5 className="markdown-h5" {...props} />,
-              h6: ({ node, ...props }) => <h6 className="markdown-h6" {...props} />,
-              p: ({ node, ...props }) => <p className="markdown-p" {...props} />,
-            }}
-          >
-            {content}
-          </ReactMarkdown>
+          <SafeMarkdown content={content} />
         </div>
         <div className="my-8 flex w-full sm:flex-row flex-col gap-4 sm:justify-between">
           {showWritter === true && (

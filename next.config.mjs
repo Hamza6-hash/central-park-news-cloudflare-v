@@ -11,18 +11,13 @@ const withBundleAnalyzer = bundleAnalyzer({
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  // Target modern browsers to avoid unnecessary polyfills
-  // Modern browsers support ES2022 features natively (Array.at, Object.fromEntries, etc.)
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
   experimental: {
-    // Prevent @opentelemetry from being bundled (avoids vendor-chunks path errors)
     serverComponentsExternalPackages: ["@opentelemetry/api"],
-    // performance optimization
-    optimizeCss: true, // Enables CSS optimization and critical CSS extraction
+    optimizeCss: true,
     optimizePackageImports: [
-      "firebase",
       "swiper",
       "@radix-ui/react-dialog",
       "@radix-ui/react-label",
@@ -37,101 +32,73 @@ const nextConfig = {
       "vanilla-cookieconsent",
     ],
   },
-  // Performance optimizations
-  compress: true, // Enable gzip compression
-  // Optimize font loading
+  compress: true,
   optimizeFonts: true,
   poweredByHeader: false,
-  // Optimize production builds
-  productionBrowserSourceMaps: false, // Disable source maps in production to reduce bundle size
+  productionBrowserSourceMaps: false,
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "firebasestorage.googleapis.com",
+        hostname: "storage.googleapis.com",
         pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "storage.googleapis.com",
+        hostname: "pub-336ef3681b5b432ba1f03247c9fb8bba.r2.dev",
         pathname: "/**",
       },
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  // Optional: skip transpiling some packages
   transpilePackages: [],
 
-  // Configure webpack to exclude unnecessary polyfills for modern browsers
-  webpack: (config, { isServer }) => {
-    // Exclude polyfills that are not needed for modern browsers
+  // Configure webpack for Cloudflare Workers compatibility
+  webpack: (config, { isServer, nextRuntime }) => {
+    if (nextRuntime === "edge") {
+      // For Edge Runtime routes running on Cloudflare Workers with nodejs_compat,
+      // Node.js built-ins must be externals (not bundled).
+      // Cloudflare's nodejs_compat provides them at runtime via require().
+      const nodeBuiltins = ["net", "tls", "path", "fs", "dns", "stream", "os", "crypto", "string_decoder"];
+      const existingExternals = Array.isArray(config.externals)
+        ? config.externals
+        : config.externals
+        ? [config.externals]
+        : [];
+      config.externals = [
+        ...existingExternals,
+        ({ request }, callback) => {
+          if (nodeBuiltins.includes(request) || request === "pg-native") {
+            return callback(null, `commonjs ${request}`);
+          }
+          callback();
+        },
+      ];
+    }
+
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
-        // Prevent polyfills from being included
         fs: false,
         net: false,
         tls: false,
-      };
-      
-      // Exclude core-js polyfills for modern browser features
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        // Prevent automatic polyfill injection
       };
     }
     return config;
   },
 
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "http://127.0.0.1:5328/api/:path*",
-      },
-      {
-        source: "/api/:path*",
-        destination: "https://central-park-news.vercel.app/api/:path*",
-      },
-    ];
-  },
 };
 
 export default withSentryConfig(withBundleAnalyzer(nextConfig), {
-  // For all available options, see:
-  // https://www.npmjs.com/package/@sentry/webpack-plugin#options
-
   org: "blackacre-llc",
-
   project: "central-park-news",
-
-  // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
-
-  // For all available options, see:
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-
-  // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
-
-  // Uncomment to route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-  // This can increase your server load as well as your hosting bill.
-  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-  // side errors will fail.
-  // tunnelRoute: "/monitoring",
-
   webpack: {
-    // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-    // See the following for more information:
-    // https://docs.sentry.io/product/crons/
-    // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
-
-    // Tree-shaking options for reducing bundle size
     treeshake: {
-      // Automatically tree-shake Sentry logger statements to reduce bundle size
       removeDebugLogging: true,
     },
   },

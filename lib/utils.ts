@@ -33,23 +33,19 @@ export const formatedDate = (
   try {
     let dateToFormat: Date | null = null;
 
-    // If it's a Firestore timestamp
-    if (date.toDate) {
+    if (date?.toDate && typeof date.toDate === "function") {
       dateToFormat = date.toDate();
     }
-    // If it's a string that can be parsed to a date
     else if (typeof date === "string") {
       const parsedDate = new Date(date);
       if (!isNaN(parsedDate.getTime())) {
         dateToFormat = parsedDate;
       }
     }
-    // If it's already a Date object
     else if (date instanceof Date) {
       dateToFormat = date;
     }
 
-    // Only format if we have a valid date
     if (dateToFormat && !isNaN(dateToFormat.getTime())) {
       return format(dateToFormat, formatString);
     }
@@ -118,16 +114,9 @@ export const getConciseAnchorText = (
   if (!text) return "Read article";
   const words = text.split(" ");
 
-  // If text is already within limits, return as is
   if (words.length <= maxWords && text.length <= maxLength) return text;
-
-  // Take first N words
   const firstWords = words.slice(0, maxWords).join(" ");
-
-  // If first words are within length limit, return them
   if (firstWords.length <= maxLength) return firstWords;
-
-  // Otherwise truncate at character limit with ellipsis
   return text.substring(0, maxLength - 3) + "...";
 };
 
@@ -147,7 +136,6 @@ export const calculateReadingTime = (content: string): number => {
   return Math.max(1, readingTime);
 };
 
-export const liveUrl = "https://www.centralpark.news";
 
 export function extractFaqsFromMarkdown(content: string) {
   const faqs: { question: string; answer: string }[] = [];
@@ -173,3 +161,8 @@ export function extractFaqsFromMarkdown(content: string) {
 
   return faqs;
 }
+
+
+export const liveUrl = "https://www.centralpark.news";
+export const CMS_API_BASE_URL = "http://localhost:3000/"
+export const CMS_BASE_URL = "http://localhost:3000/"

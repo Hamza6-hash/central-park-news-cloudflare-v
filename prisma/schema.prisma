@@ -1,0 +1,83 @@
+// This is your Prisma schema file
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Author {
+  id          String    @id @default(cuid())
+  name        String?
+  author_name String
+  slug        String?
+  position    String?
+  imageURL    String?
+  articles    Article[]
+
+  @@map("authors")
+}
+
+model Article {
+  id               String    @id @default(cuid())
+  title            String
+  content          String    @db.Text
+  imageURL         String?
+  excerpt          String?   @db.Text
+  titleSlug        String    @unique
+  status           String    @default("published")
+  type             String    @default("news") // "news" | "article"
+  authorId         String?
+  category         String?
+  categoryId       String?
+  tags             Json?     // string[] or string from Firebase
+  isFeatured       Boolean   @default(false)
+  position         String?
+  authorImg        String?
+  authorImage      String?
+  socialImageUrls  Json?     // { mobile?: { url }, facebook?: { url }, twitter?: { url }, original?: { url } }
+  createdAt        DateTime  @default(now())
+  date             DateTime? // publish date
+  updatedAt        DateTime?
+  author           Author?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([titleSlug])
+  @@index([category])
+  @@index([type])
+  @@map("articles")
+}
+
+model SubscribeUser {
+  email             String    @id
+  unsubscribeToken  String
+  subscribedAt      DateTime  @default(now())
+  status            String    @default("active")
+  tokenCreatedAt    DateTime?
+  tokenExpiresAt    DateTime?
+  tokenUsed         Boolean   @default(false)
+  tokenUsedAt       DateTime?
+
+  @@map("subscribe_users")
+}
+
+model Contact {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  message     String   @db.Text
+  ip          String?
+  submittedAt DateTime @default(now())
+  expiresAt  DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime?
+
+  @@index([email, expiresAt])
+  @@index([ip, expiresAt])
+  @@map("contacts")
+}

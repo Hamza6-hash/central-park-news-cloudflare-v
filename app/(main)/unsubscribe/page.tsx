@@ -1,17 +1,8 @@
 import { redirect } from "next/navigation";
-import { doc, getDoc, Timestamp } from "firebase/firestore";
-import { db } from "@/lib/firebaseConfig";
 import UnsubscribeClient from "./UnsubscribeClient";
 import { liveUrl } from "@/lib/utils";
 import type { Metadata } from "next";
-
-interface UserData {
-  email: string;
-  tokenCreatedAt: Timestamp;
-  tokenExpiresAt: Timestamp;
-  tokenUsed: boolean;
-  unsubscribeToken: string;
-}
+import { getSubscribeUserByEmail } from "@/lib/services";
 
 export const metadata: Metadata = {
   title: "Unsubscribe | Central Park News",
@@ -25,36 +16,28 @@ export const metadata: Metadata = {
   },
 };
 
-async function validateUser(email: string): Promise<void | null | UserData> {
+async function validateUser(email: string) {
   if (!email) {
     redirect("/?toast=expired");
   }
 
   try {
-    const userDocRef = doc(db, "blog", "centralparkNews", "subscribeUsers", email);
-    const userSnap = await getDoc(userDocRef);
+    const user = await getSubscribeUserByEmail(email);
 
-    if (!userSnap.exists()) {
+    if (!user) {
       redirect("/");
     }
 
-    const userData = userSnap.data() as UserData;
-    const now = new Date();
-
-    if (userData.tokenUsed === true) {
+    if (user.tokenUsed === true) {
       redirect("/?toast=token-already-used");
     }
-
   } catch (error: any) {
     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
       throw error;
     }
-    
     redirect("/?toast=user-check-failed");
   }
 }
-
-
 
 export default async function Page({
   searchParams,
@@ -62,7 +45,6 @@ export default async function Page({
   searchParams: { email?: string; token?: string };
 }) {
   const email = searchParams?.email;
-  // @ts-ignore
   await validateUser(email);
 
   return <UnsubscribeClient />;

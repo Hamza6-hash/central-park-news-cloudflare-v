@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
-import { sitemapGenerator } from '@/lib/sitemapGenerator'; 
+import { sitemapGenerator } from "@/lib/sitemap";
+
+export const runtime = "edge";
 
 export async function GET() {
   try {

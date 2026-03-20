@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import sgMail from "@sendgrid/mail";
-import { adminDb } from "@/lib/firebaseAdmin";
 import { contactAdminEmailTemplate } from "./templet";
 import {
   fromEmail,
@@ -9,8 +7,9 @@ import {
   toEmail,
   validateEmail,
 } from "@/lib/email";
+import { checkContactCooldown, saveContactSubmission } from "@/lib/services";
 
-sgMail.setApiKey(process.env.SendGridApiKey!);
+export const runtime = "edge";
 
 interface ContactFormData {
   name: string;
@@ -21,101 +20,10 @@ interface ContactFormData {
 const COOLDOWN_MINUTES = 1;
 const COOLDOWN_MS = COOLDOWN_MINUTES * 60 * 1000;
 
-const checkCooldown = async (
-  email: string,
-  ip: string
-): Promise<{ allowed: boolean; remainingSeconds?: number }> => {
-  try {
-    const now = new Date();
-    const contactsRef = adminDb
-      .collection("blog")
-      .doc("centralparkNews")
-      .collection("contacts");
-
-    // Query for recent submissions by email
-    const emailQuery = await contactsRef
-      .where("email", "==", email)
-      .where("expiresAt", ">", now)
-      .limit(1)
-      .get();
-
-    if (!emailQuery.empty) {
-      const doc = emailQuery.docs[0];
-      const expiresAt = doc.data().expiresAt.toDate();
-      const remaining = Math.ceil((expiresAt.getTime() - now.getTime()) / 1000);
-      return { allowed: false, remainingSeconds: remaining };
-    }
-
-    // Query for recent submissions by IP
-    const ipQuery = await contactsRef
-      .where("ip", "==", ip)
-      .where("expiresAt", ">", now)
-      .limit(1)
-      .get();
-
-    if (!ipQuery.empty) {
-      const doc = ipQuery.docs[0];
-      const expiresAt = doc.data().expiresAt.toDate();
-      const remaining = Math.ceil((expiresAt.getTime() - now.getTime()) / 1000);
-      return { allowed: false, remainingSeconds: remaining };
-    }
-
-    return { allowed: true };
-  } catch (error) {
-    console.error("Error checking cooldown:", error);
-    return { allowed: true };
-  }
-};
-
 const createAdminEmail = (data: ContactFormData) => {
   const subject = `Central Park News Contact`;
   const htmlContent = contactAdminEmailTemplate(data);
   return { subject, htmlContent };
-};
-
-const saveSubmissionToDb = async (data: ContactFormData, ip: string) => {
-  try {
-    const now = new Date();
-    const expiresAt = new Date(now.getTime() + COOLDOWN_MS);
-
-    const contactsRef = adminDb
-      .collection("blog")
-      .doc("centralparkNews")
-      .collection("contacts");
-
-    // Query for existing submission by email
-    const existingQuery = await contactsRef
-      .where("email", "==", data.email)
-      .limit(1)
-      .get();
-
-    if (!existingQuery.empty) {
-      // Update existing document
-      const docId = existingQuery.docs[0].id;
-      await contactsRef.doc(docId).update({
-        name: sanitizeInput(data.name),
-        message: sanitizeInput(data.message),
-        ip,
-        submittedAt: now,
-        expiresAt,
-        updatedAt: new Date(),
-      });
-    } else {
-      // Create new document
-      await contactsRef.add({
-        name: sanitizeInput(data.name),
-        email: data.email,
-        message: sanitizeInput(data.message),
-        ip,
-        submittedAt: now,
-        expiresAt,
-        createdAt: new Date(),
-      });
-    }
-  } catch (error) {
-    console.error("Error saving submission to DB:", error);
-    // Don't throw - we still want to send the email
-  }
 };
 
 export async function POST(req: NextRequest) {
@@ -123,7 +31,6 @@ export async function POST(req: NextRequest) {
     const body: ContactFormData = await req.json();
     const clientIp = getClientIp(req);
 
-    // Validate required fields first
     if (!body.name || body.name.trim().length === 0) {
       return NextResponse.json(
         { message: "Name is required." },
@@ -145,8 +52,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check cooldown in Firebase
-    const cooldownCheck = await checkCooldown(body.email, clientIp);
+    const cooldownCheck = await checkContactCooldown(body.email, clientIp);
 
     if (!cooldownCheck.allowed) {
       const mins = Math.ceil((cooldownCheck.remainingSeconds || 60) / 60);
@@ -161,17 +67,36 @@ export async function POST(req: NextRequest) {
 
     const { subject, htmlContent } = createAdminEmail(body);
 
-    // Send email to admin
-    await sgMail.send({
-      to: toEmail,
-      from: fromEmail,
-      subject,
-      html: htmlContent,
-      replyTo: body.email,
+    const sgRes = await fetch("https://api.sendgrid.com/v3/mail/send", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.SendGridApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        personalizations: [{ to: [{ email: toEmail }] }],
+        from: { email: fromEmail },
+        subject,
+        content: [{ type: "text/html", value: htmlContent }],
+        reply_to: { email: body.email },
+      }),
     });
 
-    // Save or update submission in Firebase (with cooldown expiry)
-    await saveSubmissionToDb(body, clientIp);
+    if (!sgRes.ok) {
+      const errBody = await sgRes.text();
+      console.error("SendGrid error:", sgRes.status, errBody);
+      throw new Error(`SendGrid error: ${sgRes.status}`);
+    }
+
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + COOLDOWN_MS);
+    await saveContactSubmission(
+      sanitizeInput(body.name),
+      body.email,
+      sanitizeInput(body.message),
+      clientIp,
+      expiresAt
+    );
 
     return NextResponse.json(
       { message: "Message sent successfully." },
@@ -179,7 +104,6 @@ export async function POST(req: NextRequest) {
     );
   } catch (error) {
     console.error("Contact form error:", error);
-
     return NextResponse.json(
       { message: "Failed to send message. Please try again later." },
       { status: 500 }

@@ -2,12 +2,18 @@ import Home from "@/components/ClientPages/Home/Home";
 import { Metadata } from "next";
 import SchemaOrg from "@/components/Schema";
 import { liveUrl } from "@/lib/utils";
-import { db } from "@/lib/firebaseConfig";
-import { collection, query, where, getDocs, doc, getDoc, orderBy, limit } from "firebase/firestore";
+import { getTopStories } from "@/lib/services";
 import { unstable_cache } from "next/cache";
 
+const fetchTopStories = unstable_cache(
+  () => getTopStories(7),
+  ["top-stories"],
+  { revalidate: 360 }
+);
+
 export async function generateMetadata(): Promise<Metadata> {
-  const article = await fetchFeaturedArticle();
+  const topStories = await fetchTopStories();
+  const article = topStories?.[0] ?? null;
   const siteUrl = liveUrl;
   const title = "Central Park News | Home";
   const description = "Covering community events, local news, and stories in and around Central Park, NYC. Fresh coverage, updated daily.";
@@ -58,81 +64,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-async function _fetchFeaturedArticle() {
-  try {
-    if (!db) {
-      return null;
-    }
-
-    const newsPath = 'blog/centralparkNews/newsletter';
-    const newsRef = collection(db, newsPath);
-
-    const newsQuery = query(
-      newsRef,
-      where('status', '==', 'published'),
-      orderBy('createdAt', 'desc'),
-      limit(1)
-    );
-
-    const newsSnap = await getDocs(newsQuery);
-
-    if (newsSnap.empty) {
-      return null;
-    }
-
-    const docSnapshot = newsSnap.docs[0];
-    const data = docSnapshot.data();
-    let authorName = 'Newstrix';
-
-    if (data.authorId) {
-      try {
-        const authorRef = doc(
-          db,
-          'blog/centralparkNews/authors',
-          data.authorId
-        );
-        const authorSnap = await getDoc(authorRef);
-        if (authorSnap.exists()) {
-          const authorData = authorSnap.data();
-          authorName = authorData.author_name;
-        }
-      } catch (error) {
-        console.error('Error fetching author:', error);
-      }
-    }
-
-    return {
-      id: docSnapshot.id,
-      title: data.title || '',
-      content: data.content || '',
-      category: data.category || 'N/A',
-      imageURL: data.imageURL,
-      authorId: data.authorId || '',
-      authorName,
-      mobileURL: data?.socialImageUrls?.mobile?.url || '',
-      titleSlug: data.titleSlug || '',
-      type: 'newsletter',
-      createdAt: data.createdAt,
-      isFeatured: data.isFeatured || false,
-      publishDate: {
-        seconds: data.date?.seconds || new Date().getTime() / 1000,
-        nanoseconds: data.date?.nanoseconds || 0,
-      },
-    };
-  } catch (error) {
-    console.error('Error fetching featured article:', error);
-    return null;
-  }
-}
-
-const fetchFeaturedArticle = unstable_cache(
-  _fetchFeaturedArticle,
-  ['featured-article'],
-  { revalidate: 360 }
-);
-
 export default async function HomePage() {
-  const article = await fetchFeaturedArticle();
+  const topStories = await fetchTopStories();
+  const article = topStories?.[0] ?? null;
   const siteUrl = liveUrl;
   const SITE_LAUNCH_DATE = "2025-01-01T00:00:00Z";
 
@@ -147,7 +81,7 @@ export default async function HomePage() {
     isPartOf: { "@id": `${siteUrl}/#website` },
     publisher: { "@id": `${siteUrl}/#organization` },
     inLanguage: "en-US",
-    datePublished: SITE_LAUNCH_DATE,          
+    datePublished: SITE_LAUNCH_DATE,
     dateModified: article?.createdAt || new Date().toISOString(),
     breadcrumb: {
       "@type": "BreadcrumbList",
@@ -165,9 +99,9 @@ export default async function HomePage() {
   return (
     <>
       <SchemaOrg schemas={[webPageSchema]} />
-      <Home article={article} />
+      <Home article={article} topStories={topStories ?? []} />
     </>
   );
 }
 
-export const revalidate = 360; 
+export const revalidate = 360;

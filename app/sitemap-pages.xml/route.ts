@@ -1,6 +1,8 @@
 // Serves static pages sitemap at /sitemap-pages.xml
 import { NextResponse } from "next/server";
-import { sitemapGenerator } from "@/lib/sitemapGenerator";
+import { sitemapGenerator } from "@/lib/sitemap";
+
+export const runtime = "edge";
 
 const CACHE_MAX_AGE = 900; // 15 min
 
